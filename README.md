@@ -26,20 +26,20 @@ To run the project locally, follow these steps:
 
    **For Unix/Linux/Mac**:
    ```
-   sh run-local.sh
+   sh run-local-dev.sh
    ```
 
    **For Windows**:
    ```
-   run-local.bat
+   run-local-dev.bat
    ```
 
    **Or manually run**:
    ```
-   NODE_ENV=development node --experimental-specifier-resolution=node local-server.js
+   npx tsx server/local-entry.ts
    ```
 
-   This will start a local development server that works with standard Node.js without relying on Replit-specific features.
+   This will start a local development server using tsx, which properly handles TypeScript files and module resolution without relying on Replit-specific features.
 
 ## Authentication
 

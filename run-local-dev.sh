@@ -1,5 +1,8 @@
 #!/bin/bash
 
-# Run the local development server
+# Set development environment
+export NODE_ENV=development
+
+# Run the local development server using tsx
 echo "Starting local development server..."
-NODE_ENV=development tsx server/local-index.ts
+npx tsx server/local-entry.ts

@@ -4,7 +4,7 @@ import path from "path";
 import { createServer } from "http";
 import { createServer as createViteServer } from "vite";
 import { fileURLToPath } from "url";
-import { registerRoutes } from "./server/routes.js";
+import { registerRoutes } from "./server/routes.js"; // Using .js extension for ESM compatibility
 import localViteConfig from "./local-vite.config.js";
 import { nanoid } from "nanoid";
 
