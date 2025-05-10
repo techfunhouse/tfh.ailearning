@@ -2,9 +2,14 @@ import { Reference } from '@/types';
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Edit, ExternalLink, Calendar, User } from 'lucide-react';
+import { Edit, ExternalLink, Calendar, User, Heart } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { getTagColor, getCategoryColor } from '@/lib/utils';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { apiRequest, queryClient } from '@/lib/queryClient';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
 
 interface ReferenceCardProps {
   reference: Reference;
@@ -14,9 +19,56 @@ interface ReferenceCardProps {
 
 export default function ReferenceCard({ reference, isAdmin, onEdit }: ReferenceCardProps) {
   const { id, title, link, description, tags, category, thumbnail, createdBy, updatedAt } = reference;
+  // Handle potentially undefined love properties by providing defaults
+  const lovedBy = reference.lovedBy || [];
+  const loveCount = reference.loveCount || 0;
+  
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [isLoved, setIsLoved] = useState(user ? lovedBy.includes(user.id) : false);
+  const [localLoveCount, setLocalLoveCount] = useState(loveCount);
   
   // Format the date
   const formattedDate = formatDistanceToNow(new Date(updatedAt), { addSuffix: true });
+  
+  // Love mutation
+  const loveMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest('POST', `/api/references/${id}/love`);
+      return response.json();
+    },
+    onSuccess: (data) => {
+      // Update local state with defaults in case data is incomplete
+      const responseLovedBy = data.lovedBy || [];
+      const responseLoveCount = data.loveCount || 0;
+      
+      setIsLoved(user ? responseLovedBy.includes(user.id) : false);
+      setLocalLoveCount(responseLoveCount);
+      
+      // Invalidate cache to update references
+      queryClient.invalidateQueries({ queryKey: ['/api/references'] });
+    },
+    onError: (error) => {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: `Failed to update love status: ${error}`
+      });
+    }
+  });
+  
+  const handleLoveClick = () => {
+    if (!user) {
+      toast({
+        variant: 'destructive',
+        title: 'Authentication Required',
+        description: 'Please login to love references'
+      });
+      return;
+    }
+    
+    loveMutation.mutate();
+  };
   
   return (
     <Card className="overflow-hidden shadow-md border-border/40 card-hover flex flex-col h-full">
@@ -82,15 +134,29 @@ export default function ReferenceCard({ reference, isAdmin, onEdit }: ReferenceC
           </div>
         </div>
         
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="w-full"
-          onClick={() => window.open(link, '_blank', 'noopener,noreferrer')}
-        >
-          <ExternalLink className="h-3 w-3 mr-1" />
-          View Reference
-        </Button>
+        <div className="flex gap-2 items-center">
+          <Button
+            variant={isLoved ? "default" : "outline"}
+            size="sm"
+            className={`flex-none ${isLoved ? 'bg-pink-500 hover:bg-pink-600 text-white border-none' : 'hover:text-pink-500 hover:border-pink-500'}`}
+            onClick={handleLoveClick}
+            disabled={loveMutation.isPending}
+            title={isLoved ? "Unlike" : "Love this reference"}
+          >
+            <Heart className={`h-3.5 w-3.5 mr-1 ${isLoved ? 'fill-current' : ''}`} />
+            <span>{localLoveCount}</span>
+          </Button>
+          
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex-1"
+            onClick={() => window.open(link, '_blank', 'noopener,noreferrer')}
+          >
+            <ExternalLink className="h-3 w-3 mr-1" />
+            View Reference
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

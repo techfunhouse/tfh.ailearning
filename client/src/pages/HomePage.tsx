@@ -154,6 +154,7 @@ export default function HomePage() {
             tags={tagsData || []} 
             selectedCategories={selectedCategories}
             selectedTags={selectedTags}
+            isAdmin={isAdmin}
             onCategoryChange={handleCategoryChange}
             onTagSelect={handleTagSelect}
           />
@@ -195,6 +196,7 @@ export default function HomePage() {
                 tags={tagsData || []} 
                 selectedCategories={selectedCategories}
                 selectedTags={selectedTags}
+                isAdmin={isAdmin}
                 onCategoryChange={(cats) => {
                   handleCategoryChange(cats);
                   setIsMobileSidebarOpen(false);
