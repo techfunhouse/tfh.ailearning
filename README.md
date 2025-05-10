@@ -22,20 +22,24 @@ To run the project locally, follow these steps:
    npm install
    ```
 
-3. Create local environment variables:
+3. Run the app using the provided scripts:
+
+   **For Unix/Linux/Mac**:
    ```
-   touch .env.local
+   sh run-local.sh
    ```
 
-4. Run the app in development mode:
+   **For Windows**:
    ```
-   npm run dev:local
+   run-local.bat
    ```
 
-   If the script isn't defined, you can run:
+   **Or manually run**:
    ```
-   NODE_ENV=development tsx server/local-index.ts
+   NODE_ENV=development node --experimental-specifier-resolution=node local-server.js
    ```
+
+   This will start a local development server that works with standard Node.js without relying on Replit-specific features.
 
 ## Authentication
 
