@@ -537,27 +537,51 @@ export default function AddEditReferenceDialog({
           </Form>
         </ScrollArea>
 
-        <DialogFooter className="flex gap-2 pt-2">
-          <Button type="button" variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button
-            onClick={form.handleSubmit(onSubmit)}
-            disabled={isPending}
-            className="gap-2"
-          >
-            {isPending ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                {isEditing ? "Updating..." : "Adding..."}
-              </>
+        <DialogFooter className="flex flex-col gap-2 pt-2">
+          {!user ? (
+            <div className="text-xs text-amber-500 pb-2 flex items-center">
+              <AlertCircle className="h-3.5 w-3.5 mr-1" />
+              You need to log in with admin credentials to add references.
+            </div>
+          ) : !isAdmin ? (
+            <div className="text-xs text-amber-500 pb-2 flex items-center">
+              <AlertCircle className="h-3.5 w-3.5 mr-1" />
+              You need admin privileges to add references.
+            </div>
+          ) : null}
+          
+          <div className="flex gap-2">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            {!user ? (
+              <Button 
+                onClick={() => navigate('/login')}
+                className="gap-2"
+              >
+                <LinkIcon className="h-4 w-4" />
+                Login First
+              </Button>
             ) : (
-              <>
-                <Save className="h-4 w-4" />
-                {isEditing ? "Update Reference" : "Add Reference"}
-              </>
+              <Button
+                onClick={form.handleSubmit(onSubmit)}
+                disabled={isPending || !isAdmin}
+                className="gap-2"
+              >
+                {isPending ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    {isEditing ? "Updating..." : "Adding..."}
+                  </>
+                ) : (
+                  <>
+                    <Save className="h-4 w-4" />
+                    {isEditing ? "Update Reference" : "Add Reference"}
+                  </>
+                )}
+              </Button>
             )}
-          </Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
