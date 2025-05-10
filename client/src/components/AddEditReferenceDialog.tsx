@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 
 import {
   Dialog,
@@ -32,6 +33,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 import { Reference, Category, Tag, ReferenceFormData } from "@/types";
 import { apiRequest } from "@/lib/queryClient";
 import { queryClient } from "@/lib/queryClient";
@@ -76,6 +78,8 @@ export default function AddEditReferenceDialog({
   onClose,
 }: AddEditReferenceDialogProps) {
   const { toast } = useToast();
+  const { user, isAdmin } = useAuth();
+  const [, navigate] = useLocation();
   const isEditing = !!reference;
   const [tagFilter, setTagFilter] = useState("");
   const [isFetchingThumbnail, setIsFetchingThumbnail] = useState(false);
@@ -213,6 +217,31 @@ export default function AddEditReferenceDialog({
   });
 
   const onSubmit = async (data: ReferenceFormData) => {
+    // Check if user is authenticated
+    if (!user) {
+      toast({
+        variant: 'destructive',
+        title: 'Authentication Required',
+        description: 'You need to log in to add references. Redirecting to login page...',
+        duration: 3000,
+      });
+      // Close the dialog and redirect to login
+      onClose();
+      setTimeout(() => navigate('/login'), 1000);
+      return;
+    }
+    
+    // Check if user has admin privileges for adding/editing references
+    if (!isAdmin) {
+      toast({
+        variant: 'destructive',
+        title: 'Admin Access Required',
+        description: 'You need admin privileges to add or edit references.',
+        duration: 3000,
+      });
+      return;
+    }
+    
     if (isEditing) {
       updateMutation.mutate(data);
     } else {
