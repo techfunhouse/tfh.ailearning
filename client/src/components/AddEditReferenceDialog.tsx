@@ -81,8 +81,8 @@ export default function AddEditReferenceDialog({
   const [isFetchingThumbnail, setIsFetchingThumbnail] = useState(false);
   const [thumbnailFetched, setThumbnailFetched] = useState(false);
   const [thumbnailError, setThumbnailError] = useState(false);
-  const DEFAULT_THUMBNAIL =
-    "https://unsplash.com/photos/black-and-silver-laptop-computer-NoOrDKxUfzo";
+  const DEFAULT_THUMBNAIL = 
+    "https://images.unsplash.com/photo-1590479773265-7464e5d48118";
 
   const form = useForm<ReferenceFormData>({
     resolver: zodResolver(formSchema),
@@ -92,7 +92,7 @@ export default function AddEditReferenceDialog({
       description: "",
       category: "",
       tags: [],
-      thumbnail: "",
+      thumbnail: "https://images.unsplash.com/photo-1590479773265-7464e5d48118",
     },
   });
 
@@ -115,7 +115,7 @@ export default function AddEditReferenceDialog({
         description: "",
         category: "",
         tags: [],
-        thumbnail: "",
+        thumbnail: "https://images.unsplash.com/photo-1590479773265-7464e5d48118",
       });
       setThumbnailFetched(false);
       setThumbnailError(false);
