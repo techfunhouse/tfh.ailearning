@@ -1,16 +1,21 @@
 import express, { type Request, Response, NextFunction } from "express";
 import fs from "fs";
 import path from "path";
-import { createServer } from "http";
+import { createServer, Server as HttpServer } from "http";
 import { createServer as createViteServer } from "vite";
 import { fileURLToPath } from "url";
 import { nanoid } from "nanoid";
 import { registerRoutes } from "./routes";
+import dotenv from "dotenv";
 
 // Get proper dirname for ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.join(__dirname, '..');
+
+// Load environment variables from .env.local file
+dotenv.config({ path: path.join(rootDir, '.env.local') });
+console.log('Loaded environment variables from .env.local');
 
 // Create Express app
 const app = express();
@@ -126,8 +131,15 @@ async function main() {
   });
   
   // Start the server
-  const port = 5000;
-  server.listen(port, '0.0.0.0', () => {
+  const port = parseInt(process.env.PORT || '5000', 10);
+  
+  // Define listen options
+  const listenOptions = {
+    port: port,
+    host: '0.0.0.0',
+  };
+  
+  server.listen(listenOptions, () => {
     log(`Local development server running at http://localhost:${port}`);
   });
 }

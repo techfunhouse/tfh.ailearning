@@ -22,12 +22,29 @@ To run the project locally, follow these steps:
    npm install
    ```
 
-3. Run the local development server:
+3. Create a `.env.local` file in the root directory for your environment variables:
+   ```
+   PORT=3000
+   ```
+
+4. Run the local development server:
    ```
    npx tsx server/local-entry.ts
    ```
 
    This will start a local development server using tsx, which properly handles TypeScript files and module resolution without relying on Replit-specific features.
+
+5. For your package.json, add the following script to run locally:
+   ```json
+   "scripts": {
+     "dev:local": "NODE_ENV=development tsx server/local-entry.ts"
+   }
+   ```
+   
+   Then you can run the server with:
+   ```
+   npm run dev:local
+   ```
 
 ## Authentication
 
