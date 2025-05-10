@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/useAuth';
 import { Badge } from '@/components/ui/badge';
-import { Search, BookOpen, LogOut, User as UserIcon } from 'lucide-react';
+import { Search, BookOpen, LogOut, User as UserIcon, LogIn } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,16 +13,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { useLocation } from 'wouter';
 
 interface HeaderProps {
-  username: string;
-  isAdmin: boolean;
+  username?: string;
+  isAdmin?: boolean;
   onSearch: (query: string) => void;
 }
 
 export default function Header({ username, isAdmin, onSearch }: HeaderProps) {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
+  const [, navigate] = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // Check if user is logged in
+  const isLoggedIn = !!user;
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
@@ -30,7 +35,8 @@ export default function Header({ username, isAdmin, onSearch }: HeaderProps) {
     onSearch(query);
   };
 
-  const getInitials = (name: string) => {
+  const getInitials = (name?: string) => {
+    if (!name) return '?';
     return name.charAt(0).toUpperCase();
   };
 
@@ -60,38 +66,50 @@ export default function Header({ username, isAdmin, onSearch }: HeaderProps) {
         </div>
         
         <div className="flex items-center space-x-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-                <Avatar className="h-9 w-9">
-                  <AvatarFallback className="bg-primary/10 text-primary">
-                    {getInitials(username)}
-                  </AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{username}</p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {isAdmin ? 'Administrator' : 'Regular User'}
-                  </p>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {isAdmin && (
-                <DropdownMenuItem className="flex items-center">
-                  <Badge className="mr-2 bg-accent text-accent-foreground">Admin</Badge>
-                  Administrator Access
+          {isLoggedIn ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-9 w-9 rounded-full">
+                  <Avatar className="h-9 w-9">
+                    <AvatarFallback className="bg-primary/10 text-primary">
+                      {getInitials(user?.username)}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">{user?.username}</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user?.isAdmin ? 'Administrator' : 'Regular User'}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {user?.isAdmin && (
+                  <DropdownMenuItem className="flex items-center">
+                    <Badge className="mr-2 bg-accent text-accent-foreground">Admin</Badge>
+                    Administrator Access
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuItem className="flex items-center" onClick={logout}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
                 </DropdownMenuItem>
-              )}
-              <DropdownMenuItem className="flex items-center" onClick={logout}>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex items-center gap-1"
+              onClick={() => navigate('/login')}
+            >
+              <LogIn className="h-4 w-4" />
+              <span>Login</span>
+            </Button>
+          )}
         </div>
       </div>
       

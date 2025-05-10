@@ -30,12 +30,7 @@ export default function HomePage() {
   const [editingReference, setEditingReference] = useState<Reference | null>(null);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!user) {
-      navigate('/');
-    }
-  }, [user, navigate]);
+  // No longer redirect to login - authenticated state is handled per feature
 
   // Fetch references
   const { data: referencesData, isLoading: loadingReferences } = useQuery({
