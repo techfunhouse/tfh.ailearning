@@ -131,6 +131,8 @@ export class JsonDbStorage implements IStorage {
       category: "programming",
       tags: ["javascript", "frontend", "performance"],
       thumbnail: "https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      loveCount: 0,
+      lovedBy: [],
       createdBy: "admin",
     });
     
@@ -141,6 +143,8 @@ export class JsonDbStorage implements IStorage {
       category: "design",
       tags: ["ui/ux", "design", "frontend"],
       thumbnail: "https://images.unsplash.com/photo-1516031190212-da133013de50?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      loveCount: 0,
+      lovedBy: [],
       createdBy: "admin",
     });
     
@@ -151,6 +155,8 @@ export class JsonDbStorage implements IStorage {
       category: "research",
       tags: ["algorithm", "data", "visualization"],
       thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      loveCount: 0,
+      lovedBy: [],
       createdBy: "admin",
     });
     
@@ -161,6 +167,8 @@ export class JsonDbStorage implements IStorage {
       category: "tools",
       tags: ["productivity", "tools", "development"],
       thumbnail: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      loveCount: 0,
+      lovedBy: [],
       createdBy: "admin",
     });
     
@@ -171,6 +179,8 @@ export class JsonDbStorage implements IStorage {
       category: "programming",
       tags: ["database", "backend", "performance"],
       thumbnail: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      loveCount: 0,
+      lovedBy: [],
       createdBy: "admin",
     });
     
@@ -181,6 +191,8 @@ export class JsonDbStorage implements IStorage {
       category: "design",
       tags: ["mobile", "ui/ux", "frontend"],
       thumbnail: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      loveCount: 0,
+      lovedBy: [],
       createdBy: "admin",
     });
   }

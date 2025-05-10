@@ -235,6 +235,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(500).json({ message: "Internal server error" });
     }
   });
+  
+  app.delete("/api/categories/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const deleted = await storage.deleteCategory(id);
+      
+      if (!deleted) {
+        return res.status(404).json({ message: "Category not found" });
+      }
+      
+      return res.status(200).json({ success: true });
+    } catch (error) {
+      console.error("Error deleting category:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  });
 
   // Tags routes
   app.get("/api/tags", async (req, res) => {
@@ -264,6 +280,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(201).json(tag);
     } catch (error) {
       console.error("Error creating tag:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  });
+  
+  app.delete("/api/tags/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const deleted = await storage.deleteTag(id);
+      
+      if (!deleted) {
+        return res.status(404).json({ message: "Tag not found" });
+      }
+      
+      return res.status(200).json({ success: true });
+    } catch (error) {
+      console.error("Error deleting tag:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  });
+  
+  // Love/favorite reference route
+  app.post("/api/references/:id/love", isAuthenticated, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const userId = req.session!.user!.id;
+      
+      const reference = await storage.toggleLoveReference(id, userId);
+      
+      if (!reference) {
+        return res.status(404).json({ message: "Reference not found" });
+      }
+      
+      return res.status(200).json(reference);
+    } catch (error) {
+      console.error("Error toggling love for reference:", error);
       return res.status(500).json({ message: "Internal server error" });
     }
   });
