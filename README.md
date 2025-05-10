@@ -22,19 +22,7 @@ To run the project locally, follow these steps:
    npm install
    ```
 
-3. Run the app using the provided scripts:
-
-   **For Unix/Linux/Mac**:
-   ```
-   sh run-local-dev.sh
-   ```
-
-   **For Windows**:
-   ```
-   run-local-dev.bat
-   ```
-
-   **Or manually run**:
+3. Run the local development server:
    ```
    npx tsx server/local-entry.ts
    ```
