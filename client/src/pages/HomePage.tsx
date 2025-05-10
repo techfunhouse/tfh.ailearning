@@ -44,6 +44,7 @@ export default function HomePage() {
   // Pagination and infinite scroll
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
   const itemsPerPage = 12;
   const { ref, inView } = useInView({
     threshold: 0.5,
@@ -86,6 +87,29 @@ export default function HomePage() {
       setPage(1);
     }
   }, [referencesData, itemsPerPage]);
+  
+  // Add scroll event listener for scroll to top button
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show button when scrolled down 300px
+      if (window.scrollY > 300) {
+        setShowScrollToTop(true);
+      } else {
+        setShowScrollToTop(false);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  
+  // Function to scroll to top
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   // Filter references when search or filters change
   useEffect(() => {
