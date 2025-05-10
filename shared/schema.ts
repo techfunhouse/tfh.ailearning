@@ -1,16 +1,6 @@
 import { z } from "zod";
-import { pgTable, text, varchar, timestamp, jsonb, index, integer, boolean } from "drizzle-orm/pg-core";
 
-// Session storage table for PostgreSQL
-export const sessions = pgTable(
-  "sessions",
-  {
-    sid: varchar("sid").primaryKey(),
-    sess: jsonb("sess").notNull(),
-    expire: timestamp("expire").notNull(),
-  },
-  (table) => [index("IDX_session_expire").on(table.expire)],
-);
+// Schema definitions for lowdb
 
 // User Schema
 export const userSchema = z.object({

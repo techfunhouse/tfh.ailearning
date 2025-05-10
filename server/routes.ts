@@ -1,14 +1,13 @@
-import type { Express, Request, Response, NextFunction } from "express";
+import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertReferenceSchema, insertCategorySchema, insertTagSchema } from "@shared/schema";
 import { z } from "zod";
 import session from "express-session";
-import connectPgSimple from "connect-pg-simple";
-import { pool } from "./db";
+import createMemoryStore from "memorystore";
 
-// Create PostgreSQL session store
-const PgSession = connectPgSimple(session);
+// Create memory store for sessions
+const MemoryStore = createMemoryStore(session);
 
 // Extend the Express Request type to include session
 declare module "express-session" {
@@ -40,20 +39,13 @@ const isAdmin = (req: Request, res: Response, next: Function) => {
 };
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Configure sessions with PostgreSQL
-  app.set("trust proxy", 1); // Trust first proxy
+  // Configure sessions
   app.use(
     session({
-      store: new PgSession({
-        pool: pool,
-        tableName: 'sessions',
-        createTableIfMissing: true
+      cookie: { maxAge: 86400000 }, // 24 hours
+      store: new MemoryStore({
+        checkPeriod: 86400000, // prune expired entries every 24h
       }),
-      cookie: { 
-        maxAge: 86400000, // 24 hours 
-        secure: process.env.NODE_ENV === 'production',
-        httpOnly: true,
-      },
       resave: false,
       secret: process.env.SESSION_SECRET || "referencehub-secret",
       saveUninitialized: false,
