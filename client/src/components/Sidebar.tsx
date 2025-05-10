@@ -142,6 +142,52 @@ export default function Sidebar({
       });
     },
   });
+  
+  // Mutation for deleting a category
+  const deleteCategoryMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const response = await apiRequest('DELETE', `/api/categories/${id}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Success',
+        description: 'Category deleted successfully',
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/categories'] });
+      // Reset to 'all' if the deleted category was selected
+      onCategoryChange(['all']);
+    },
+    onError: (error) => {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: `Failed to delete category: ${error}`,
+      });
+    },
+  });
+  
+  // Mutation for deleting a tag
+  const deleteTagMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const response = await apiRequest('DELETE', `/api/tags/${id}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Success',
+        description: 'Tag deleted successfully',
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/tags'] });
+    },
+    onError: (error) => {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: `Failed to delete tag: ${error}`,
+      });
+    },
+  });
 
   const handleCategoryChange = (categoryName: string, checked: boolean) => {
     let newCategories: string[];
@@ -270,6 +316,24 @@ export default function Sidebar({
                   >
                     {category.name}
                   </Label>
+                  
+                  {isAdmin && (
+                    <Button
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive ml-1"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (confirm(`Are you sure you want to delete "${category.name}" category?`)) {
+                          deleteCategoryMutation.mutate(category.id);
+                        }
+                      }}
+                      title="Delete Category"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </Button>
+                  )}
                 </div>
               ))}
             </CollapsibleContent>
@@ -323,14 +387,30 @@ export default function Sidebar({
                     <Badge
                       key={tag.id}
                       variant={selectedTags.includes(tag.name.toLowerCase()) ? "default" : "outline"}
-                      className={`cursor-pointer transition-all ${
+                      className={`cursor-pointer transition-all flex items-center gap-1 ${
                         selectedTags.includes(tag.name.toLowerCase())
                           ? "bg-primary text-primary-foreground hover:bg-primary/90"
                           : `hover:bg-muted ${getTagColor(tag.name)}`
                       }`}
-                      onClick={() => onTagSelect(tag.name.toLowerCase())}
                     >
-                      {tag.name}
+                      <span onClick={() => onTagSelect(tag.name.toLowerCase())}>
+                        {tag.name}
+                      </span>
+                      
+                      {isAdmin && (
+                        <span
+                          className="ml-1 cursor-pointer hover:text-destructive"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (confirm(`Are you sure you want to delete "${tag.name}" tag?`)) {
+                              deleteTagMutation.mutate(tag.id);
+                            }
+                          }}
+                          title="Delete Tag"
+                        >
+                          <X className="h-3 w-3" />
+                        </span>
+                      )}
                     </Badge>
                   ))
                 ) : (
