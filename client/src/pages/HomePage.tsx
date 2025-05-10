@@ -99,8 +99,20 @@ export default function HomePage() {
       }
     };
     
+    // Add keyboard shortcut (Home key) for scrolling to top
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Home') {
+        scrollToTop();
+      }
+    };
+    
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('keydown', handleKeyDown);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
   
   // Function to scroll to top
@@ -442,6 +454,21 @@ export default function HomePage() {
         tags={tagsData || []}
         onClose={handleCloseDialog}
       />
+      
+      {/* Scroll to Top Button */}
+      {showScrollToTop && (
+        <Button
+          className="fixed bottom-6 right-6 p-2 rounded-full shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground z-50 flex items-center justify-center"
+          onClick={scrollToTop}
+          aria-label="Scroll to top"
+          title="Scroll to top (Press Home key as shortcut)"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m18 15-6-6-6 6"/>
+          </svg>
+          <span className="ml-2 hidden sm:inline">Back to top (Home key)</span>
+        </Button>
+      )}
     </div>
   );
 }
