@@ -66,7 +66,7 @@ export default function Header({ username, isAdmin, onSearch }: HeaderProps) {
         </div>
         
         <div className="flex items-center space-x-2">
-          {isLoggedIn ? (
+          {isLoggedIn && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-9 w-9 rounded-full">
@@ -99,16 +99,6 @@ export default function Header({ username, isAdmin, onSearch }: HeaderProps) {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          ) : (
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="flex items-center gap-1"
-              onClick={() => navigate('/login')}
-            >
-              <LogIn className="h-4 w-4" />
-              <span>Login</span>
-            </Button>
           )}
         </div>
       </div>

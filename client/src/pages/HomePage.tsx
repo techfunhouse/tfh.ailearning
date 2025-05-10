@@ -136,7 +136,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header 
-        username={user.username} 
+        username={user?.username} 
         isAdmin={isAdmin} 
         onSearch={handleSearch}
       />

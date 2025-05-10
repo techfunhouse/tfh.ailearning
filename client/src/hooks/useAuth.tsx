@@ -89,8 +89,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       description: 'You have been logged out successfully',
     });
     
-    // Reload the page
-    window.location.reload();
+    // Force a redirect to home
+    window.location.href = '/';
   };
 
   const isAdmin = user?.isAdmin || false;
