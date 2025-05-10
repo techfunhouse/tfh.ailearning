@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         });
         
         // Redirect to home page
-        navigate('/home');
+        navigate('/');
       } catch (error) {
         console.error('Login error:', error);
         toast({
@@ -79,14 +79,29 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('user');
-    setUser(null);
-    toast({
-      title: 'Logged out',
-      description: 'You have been logged out successfully',
-    });
-    navigate('/');
+  const logout = async () => {
+    try {
+      // Make API call to logout
+      await apiRequest('POST', '/api/logout');
+      
+      // Clear local state
+      localStorage.removeItem('user');
+      setUser(null);
+      
+      toast({
+        title: 'Logged out',
+        description: 'You have been logged out successfully',
+      });
+      
+      // Force reload to avoid any routing issues
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Even if there's an error with the API call, clear local state
+      localStorage.removeItem('user');
+      setUser(null);
+      window.location.href = '/';
+    }
   };
 
   const isAdmin = user?.isAdmin || false;
