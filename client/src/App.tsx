@@ -17,7 +17,7 @@ function Router() {
     <Switch location={location}>
       <Route path="/" component={HomePage} />
       <Route path="/login" component={LoginPage} />
-      <Route component={NotFound} />
+      <Route path="/:rest*" component={HomePage} />
     </Switch>
   );
 }
