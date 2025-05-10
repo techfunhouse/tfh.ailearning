@@ -12,6 +12,8 @@ export interface Reference {
   category: string;
   tags: string[];
   thumbnail: string;
+  loveCount: number;
+  lovedBy: number[];
   createdBy: string;
   createdAt: string;
   updatedAt: string;

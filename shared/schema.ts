@@ -21,6 +21,8 @@ export const referenceSchema = z.object({
   category: z.string(),
   tags: z.array(z.string()),
   thumbnail: z.string().url(),
+  loveCount: z.number().default(0),
+  lovedBy: z.array(z.number()).default([]),
   createdBy: z.string(),
   createdAt: z.string(), // ISO timestamp
   updatedAt: z.string(), // ISO timestamp

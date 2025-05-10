@@ -30,14 +30,17 @@ export interface IStorage {
   createReference(reference: InsertReference): Promise<Reference>;
   updateReference(id: string, reference: Partial<InsertReference>): Promise<Reference | undefined>;
   deleteReference(id: string): Promise<boolean>;
+  toggleLoveReference(id: string, userId: number): Promise<Reference | undefined>;
   
   // Category methods
   getCategories(): Promise<Category[]>;
   createCategory(category: InsertCategory): Promise<Category>;
+  deleteCategory(id: string): Promise<boolean>;
   
   // Tag methods
   getTags(): Promise<Tag[]>;
   createTag(tag: InsertTag): Promise<Tag>;
+  deleteTag(id: string): Promise<boolean>;
   
   // Query methods
   getReferencesByCategory(category: string): Promise<Reference[]>;
@@ -237,6 +240,8 @@ export class JsonDbStorage implements IStorage {
     const newReference: Reference = {
       ...reference,
       id,
+      loveCount: 0,
+      lovedBy: [],
       createdAt: now,
       updatedAt: now,
     };
@@ -294,6 +299,18 @@ export class JsonDbStorage implements IStorage {
     return newCategory;
   }
 
+  async deleteCategory(id: string): Promise<boolean> {
+    const initialLength = this.db.data.categories.length;
+    this.db.data.categories = this.db.data.categories.filter(cat => cat.id !== id);
+    
+    const deleted = initialLength > this.db.data.categories.length;
+    if (deleted) {
+      this.saveData();
+    }
+    
+    return deleted;
+  }
+
   // Tag methods
   async getTags(): Promise<Tag[]> {
     return this.db.data.tags;
@@ -308,6 +325,18 @@ export class JsonDbStorage implements IStorage {
     
     return newTag;
   }
+  
+  async deleteTag(id: string): Promise<boolean> {
+    const initialLength = this.db.data.tags.length;
+    this.db.data.tags = this.db.data.tags.filter(tag => tag.id !== id);
+    
+    const deleted = initialLength > this.db.data.tags.length;
+    if (deleted) {
+      this.saveData();
+    }
+    
+    return deleted;
+  }
 
   // Query methods
   async getReferencesByCategory(category: string): Promise<Reference[]> {
@@ -320,6 +349,34 @@ export class JsonDbStorage implements IStorage {
     return this.db.data.references.filter(reference =>
       reference.tags.some(t => t.toLowerCase() === tag.toLowerCase())
     );
+  }
+
+  async toggleLoveReference(id: string, userId: number): Promise<Reference | undefined> {
+    const index = this.db.data.references.findIndex(ref => ref.id === id);
+    
+    if (index === -1) {
+      return undefined;
+    }
+    
+    const reference = this.db.data.references[index];
+    
+    // Check if user already loved this reference
+    const alreadyLoved = reference.lovedBy.includes(userId);
+    
+    if (alreadyLoved) {
+      // Remove user from lovedBy array
+      reference.lovedBy = reference.lovedBy.filter(id => id !== userId);
+      reference.loveCount = Math.max(0, reference.loveCount - 1);
+    } else {
+      // Add user to lovedBy array
+      reference.lovedBy.push(userId);
+      reference.loveCount = reference.loveCount + 1;
+    }
+    
+    this.db.data.references[index] = reference;
+    this.saveData();
+    
+    return reference;
   }
 
   async searchReferences(query: string): Promise<Reference[]> {
