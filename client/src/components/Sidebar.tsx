@@ -58,6 +58,7 @@ interface SidebarProps {
   tags: Tag[];
   selectedCategories: string[];
   selectedTags: string[];
+  isAdmin: boolean;
   onCategoryChange: (categories: string[]) => void;
   onTagSelect: (tag: string) => void;
 }
@@ -67,6 +68,7 @@ export default function Sidebar({
   tags,
   selectedCategories,
   selectedTags,
+  isAdmin,
   onCategoryChange,
   onTagSelect,
 }: SidebarProps) {
