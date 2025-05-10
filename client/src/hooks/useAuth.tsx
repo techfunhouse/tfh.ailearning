@@ -1,3 +1,4 @@
+import * as React from "react"
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useLocation } from 'wouter';
 import { User, LoginCredentials } from '@/types';

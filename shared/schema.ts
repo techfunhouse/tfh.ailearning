@@ -30,6 +30,8 @@ export const referenceSchema = z.object({
 
 export const insertReferenceSchema = referenceSchema.omit({ 
   id: true,
+  createdBy: true,
+  loveCount: true,
   createdAt: true,
   updatedAt: true
 });

@@ -2514,6 +2514,23 @@
       "id": "4930b812-d3f7-4ea2-b52b-aca302cb9365",
       "createdAt": "2025-05-10T10:04:48.910Z",
       "updatedAt": "2025-05-10T10:04:48.910Z"
+    },
+    {
+      "title": "XXX",
+      "link": "https://solace.com/integration-hub/mqtt-bridge-connector/",
+      "description": "XXX",
+      "category": "design",
+      "tags": [
+        "security",
+        "research"
+      ],
+      "thumbnail": "https://iad.microlink.io/Q6qL8DDFKe0xEWwBomIRRylicZ-bskbXhGaJwoy9d8c5JAyiCAv4MQW7JCgthMxWg8I8SDdoPYsbM4kJeoZLVg.png",
+      "lovedBy": [],
+      "createdBy": "admin",
+      "id": "0b925bc4-f9e5-48f9-9830-1673962bdcfc",
+      "loveCount": 0,
+      "createdAt": "2025-05-10T14:22:15.426Z",
+      "updatedAt": "2025-05-10T14:22:41.398Z"
     }
   ]
 }
