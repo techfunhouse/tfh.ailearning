@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import Fuse from "fuse.js";
+import { useInView } from "react-intersection-observer";
 
 import { useAuth } from "@/hooks/useAuth";
 import Header from "@/components/Header";
@@ -28,6 +29,7 @@ export default function HomePage() {
   const [, navigate] = useLocation();
   const [references, setReferences] = useState<Reference[]>([]);
   const [filteredReferences, setFilteredReferences] = useState<Reference[]>([]);
+  const [displayReferences, setDisplayReferences] = useState<Reference[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([
     "all",
@@ -38,6 +40,15 @@ export default function HomePage() {
     null,
   );
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  
+  // Pagination and infinite scroll
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const itemsPerPage = 12;
+  const { ref, inView } = useInView({
+    threshold: 0.5,
+    triggerOnce: false
+  });
 
   // No longer redirect to login - authenticated state is handled per feature
 
@@ -70,8 +81,11 @@ export default function HomePage() {
     if (referencesData) {
       setReferences(referencesData);
       setFilteredReferences(referencesData);
+      setDisplayReferences(referencesData.slice(0, itemsPerPage));
+      setHasMore(referencesData.length > itemsPerPage);
+      setPage(1);
     }
-  }, [referencesData]);
+  }, [referencesData, itemsPerPage]);
 
   // Filter references when search or filters change
   useEffect(() => {
@@ -97,8 +111,32 @@ export default function HomePage() {
       );
     }
 
+    // Reset pagination when filters change
+    setPage(1);
     setFilteredReferences(result);
-  }, [searchQuery, selectedCategories, selectedTags, references]);
+    setDisplayReferences(result.slice(0, itemsPerPage));
+    setHasMore(result.length > itemsPerPage);
+  }, [searchQuery, selectedCategories, selectedTags, references, itemsPerPage]);
+  
+  // Handle pagination when inView changes
+  useEffect(() => {
+    if (inView && hasMore) {
+      const nextPage = page + 1;
+      const start = (nextPage - 1) * itemsPerPage;
+      const end = nextPage * itemsPerPage;
+      
+      if (start < filteredReferences.length) {
+        setPage(nextPage);
+        setDisplayReferences(prev => [
+          ...prev,
+          ...filteredReferences.slice(start, end)
+        ]);
+        setHasMore(end < filteredReferences.length);
+      } else {
+        setHasMore(false);
+      }
+    }
+  }, [inView, filteredReferences, page, hasMore, itemsPerPage]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
