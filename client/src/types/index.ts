@@ -22,8 +22,16 @@ export interface Category {
   name: string;
 }
 
+export interface InsertCategory {
+  name: string;
+}
+
 export interface Tag {
   id: string;
+  name: string;
+}
+
+export interface InsertTag {
   name: string;
 }
 
