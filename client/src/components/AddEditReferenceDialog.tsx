@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useMutation } from '@tanstack/react-query';
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
 
 import {
   Dialog,
@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -20,36 +20,36 @@ import {
   FormLabel,
   FormMessage,
   FormDescription,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { useToast } from '@/hooks/use-toast';
-import { Reference, Category, Tag, ReferenceFormData } from '@/types';
-import { apiRequest } from '@/lib/queryClient';
-import { queryClient } from '@/lib/queryClient';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
-import { getTagColor } from '@/lib/utils';
-import { 
-  BookmarkPlus, 
-  Link as LinkIcon, 
-  Save, 
-  Loader2, 
+} from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
+import { Reference, Category, Tag, ReferenceFormData } from "@/types";
+import { apiRequest } from "@/lib/queryClient";
+import { queryClient } from "@/lib/queryClient";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { getTagColor } from "@/lib/utils";
+import {
+  BookmarkPlus,
+  Link as LinkIcon,
+  Save,
+  Loader2,
   Tag as TagIcon,
   Image,
   FileText,
-  Check, 
-  AlertCircle
-} from 'lucide-react';
+  Check,
+  AlertCircle,
+} from "lucide-react";
 
 interface AddEditReferenceDialogProps {
   isOpen: boolean;
@@ -60,12 +60,12 @@ interface AddEditReferenceDialogProps {
 }
 
 const formSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  link: z.string().url('Valid URL is required'),
-  description: z.string().min(1, 'Description is required'),
-  category: z.string().min(1, 'Category is required'),
-  tags: z.string().array().min(1, 'At least one tag is required'),
-  thumbnail: z.string().url('Valid thumbnail URL is required'),
+  title: z.string().min(1, "Title is required"),
+  link: z.string().url("Valid URL is required"),
+  description: z.string().min(1, "Description is required"),
+  category: z.string().min(1, "Category is required"),
+  tags: z.string().array().min(1, "At least one tag is required"),
+  thumbnail: z.string().url("Valid thumbnail URL is required"),
 });
 
 export default function AddEditReferenceDialog({
@@ -77,21 +77,22 @@ export default function AddEditReferenceDialog({
 }: AddEditReferenceDialogProps) {
   const { toast } = useToast();
   const isEditing = !!reference;
-  const [tagFilter, setTagFilter] = useState('');
+  const [tagFilter, setTagFilter] = useState("");
   const [isFetchingThumbnail, setIsFetchingThumbnail] = useState(false);
   const [thumbnailFetched, setThumbnailFetched] = useState(false);
   const [thumbnailError, setThumbnailError] = useState(false);
-  const DEFAULT_THUMBNAIL = 'https://unsplash.com/photos/black-and-silver-laptop-computer-NoOrDKxUfzo';
+  const DEFAULT_THUMBNAIL =
+    "https://unsplash.com/photos/black-and-silver-laptop-computer-NoOrDKxUfzo";
 
   const form = useForm<ReferenceFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
-      link: '',
-      description: '',
-      category: '',
+      title: "",
+      link: "",
+      description: "",
+      category: "",
       tags: [],
-      thumbnail: '',
+      thumbnail: "",
     },
   });
 
@@ -109,31 +110,33 @@ export default function AddEditReferenceDialog({
       setThumbnailFetched(true); // Mark as fetched for existing references
     } else {
       form.reset({
-        title: '',
-        link: '',
-        description: '',
-        category: '',
+        title: "",
+        link: "",
+        description: "",
+        category: "",
         tags: [],
-        thumbnail: '',
+        thumbnail: "",
       });
       setThumbnailFetched(false);
       setThumbnailError(false);
     }
   }, [reference, form]);
-  
+
   // Function to fetch thumbnail from microlink.io
   const fetchThumbnailFromUrl = async (url: string) => {
-    if (!url || url.trim() === '') return;
-    
+    if (!url || url.trim() === "") return;
+
     try {
       setIsFetchingThumbnail(true);
       setThumbnailError(false);
-      
-      const response = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true`);
+
+      const response = await fetch(
+        `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true`,
+      );
       const data = await response.json();
-      
-      if (data.status === 'success' && data.data?.screenshot?.url) {
-        form.setValue('thumbnail', data.data.screenshot.url);
+
+      if (data.status === "success" && data.data?.screenshot?.url) {
+        form.setValue("thumbnail", data.data.screenshot.url);
         setThumbnailFetched(true);
         toast({
           title: "Thumbnail generated",
@@ -141,12 +144,12 @@ export default function AddEditReferenceDialog({
           duration: 3000,
         });
       } else {
-        throw new Error('Failed to generate thumbnail');
+        throw new Error("Failed to generate thumbnail");
       }
     } catch (error) {
-      console.error('Error fetching thumbnail:', error);
+      console.error("Error fetching thumbnail:", error);
       setThumbnailError(true);
-      form.setValue('thumbnail', DEFAULT_THUMBNAIL);
+      form.setValue("thumbnail", DEFAULT_THUMBNAIL);
       toast({
         title: "Thumbnail generation failed",
         description: "Using default thumbnail instead.",
@@ -161,22 +164,22 @@ export default function AddEditReferenceDialog({
   // Create mutation for adding a reference
   const addMutation = useMutation({
     mutationFn: async (data: ReferenceFormData) => {
-      const response = await apiRequest('POST', '/api/references', data);
+      const response = await apiRequest("POST", "/api/references", data);
       return response.json();
     },
     onSuccess: () => {
       toast({
-        title: 'Success',
-        description: 'Reference added successfully',
-        variant: 'default'
+        title: "Success",
+        description: "Reference added successfully",
+        variant: "default",
       });
-      queryClient.invalidateQueries({ queryKey: ['/api/references'] });
+      queryClient.invalidateQueries({ queryKey: ["/api/references"] });
       onClose();
     },
     onError: (error) => {
       toast({
-        variant: 'destructive',
-        title: 'Error',
+        variant: "destructive",
+        title: "Error",
         description: `Failed to add reference: ${error}`,
       });
     },
@@ -185,21 +188,25 @@ export default function AddEditReferenceDialog({
   // Update mutation for editing a reference
   const updateMutation = useMutation({
     mutationFn: async (data: ReferenceFormData) => {
-      const response = await apiRequest('PUT', `/api/references/${reference?.id}`, data);
+      const response = await apiRequest(
+        "PUT",
+        `/api/references/${reference?.id}`,
+        data,
+      );
       return response.json();
     },
     onSuccess: () => {
       toast({
-        title: 'Success',
-        description: 'Reference updated successfully',
+        title: "Success",
+        description: "Reference updated successfully",
       });
-      queryClient.invalidateQueries({ queryKey: ['/api/references'] });
+      queryClient.invalidateQueries({ queryKey: ["/api/references"] });
       onClose();
     },
     onError: (error) => {
       toast({
-        variant: 'destructive',
-        title: 'Error',
+        variant: "destructive",
+        title: "Error",
         description: `Failed to update reference: ${error}`,
       });
     },
@@ -214,11 +221,14 @@ export default function AddEditReferenceDialog({
   };
 
   // Consider a form "pending" if it's submitting OR if it's actively fetching a thumbnail
-  const isPending = addMutation.isPending || updateMutation.isPending || isFetchingThumbnail;
+  const isPending =
+    addMutation.isPending || updateMutation.isPending || isFetchingThumbnail;
 
   // Filter tags based on search input
-  const filteredTags = tagFilter 
-    ? tags.filter(tag => tag.name.toLowerCase().includes(tagFilter.toLowerCase())) 
+  const filteredTags = tagFilter
+    ? tags.filter((tag) =>
+        tag.name.toLowerCase().includes(tagFilter.toLowerCase()),
+      )
     : tags;
 
   return (
@@ -239,12 +249,12 @@ export default function AddEditReferenceDialog({
             )}
           </DialogTitle>
           <DialogDescription>
-            {isEditing 
+            {isEditing
               ? "Update the details of your reference below."
               : "Add a new reference to your collection."}
           </DialogDescription>
         </DialogHeader>
-        
+
         <ScrollArea className="max-h-[calc(80vh-10rem)] pr-4">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -258,9 +268,9 @@ export default function AddEditReferenceDialog({
                       Title
                     </FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="Enter a descriptive title" 
-                        {...field} 
+                      <Input
+                        placeholder="Enter a descriptive title"
+                        {...field}
                         className="focus-visible:ring-primary"
                       />
                     </FormControl>
@@ -268,7 +278,7 @@ export default function AddEditReferenceDialog({
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="link"
@@ -279,16 +289,22 @@ export default function AddEditReferenceDialog({
                       URL
                     </FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="https://example.com/resource" 
-                        {...field} 
+                      <Input
+                        placeholder="https://example.com/resource"
+                        {...field}
                         className="focus-visible:ring-primary"
                         onBlur={(e) => {
                           field.onBlur(); // Call the original onBlur
                           const url = e.target.value;
-                          if (url && !isEditing && !thumbnailFetched && !isFetchingThumbnail) {
+                          if (
+                            url &&
+                            !isEditing &&
+                            !thumbnailFetched &&
+                            !isFetchingThumbnail
+                          ) {
                             // Only fetch thumbnail if URL is valid
-                            const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+                            const urlRegex =
+                              /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
                             if (urlRegex.test(url)) {
                               fetchThumbnailFromUrl(url);
                             }
@@ -320,7 +336,7 @@ export default function AddEditReferenceDialog({
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="description"
@@ -331,9 +347,9 @@ export default function AddEditReferenceDialog({
                       Description
                     </FormLabel>
                     <FormControl>
-                      <Textarea 
-                        placeholder="Provide a brief summary of this reference" 
-                        {...field} 
+                      <Textarea
+                        placeholder="Provide a brief summary of this reference"
+                        {...field}
                         className="min-h-24 focus-visible:ring-primary"
                       />
                     </FormControl>
@@ -341,7 +357,7 @@ export default function AddEditReferenceDialog({
                   </FormItem>
                 )}
               />
-              
+
               <div className="grid sm:grid-cols-2 gap-5">
                 <FormField
                   control={form.control}
@@ -352,8 +368,8 @@ export default function AddEditReferenceDialog({
                         <TagIcon className="h-4 w-4 text-primary" />
                         Category
                       </FormLabel>
-                      <Select 
-                        onValueChange={field.onChange} 
+                      <Select
+                        onValueChange={field.onChange}
                         defaultValue={field.value}
                         value={field.value}
                       >
@@ -363,8 +379,11 @@ export default function AddEditReferenceDialog({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {categories.map(category => (
-                            <SelectItem key={category.id} value={category.name.toLowerCase()}>
+                          {categories.map((category) => (
+                            <SelectItem
+                              key={category.id}
+                              value={category.name.toLowerCase()}
+                            >
                               {category.name}
                             </SelectItem>
                           ))}
@@ -374,7 +393,7 @@ export default function AddEditReferenceDialog({
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="thumbnail"
@@ -386,17 +405,17 @@ export default function AddEditReferenceDialog({
                       </FormLabel>
                       <FormControl>
                         <div className="space-y-2">
-                          <Input 
-                            placeholder="https://example.com/image.jpg" 
-                            {...field} 
+                          <Input
+                            placeholder="https://example.com/image.jpg"
+                            {...field}
                             className="focus-visible:ring-primary"
                             disabled={isFetchingThumbnail}
                           />
                           {field.value && (
                             <div className="relative h-32 w-full overflow-hidden rounded-md border">
-                              <img 
-                                src={field.value} 
-                                alt="Thumbnail preview" 
+                              <img
+                                src={field.value}
+                                alt="Thumbnail preview"
                                 className="h-full w-full object-cover"
                                 onError={(e) => {
                                   e.currentTarget.src = DEFAULT_THUMBNAIL;
@@ -430,10 +449,14 @@ export default function AddEditReferenceDialog({
                     />
                     <FormControl>
                       <div className="flex flex-wrap gap-1.5 p-2 border rounded-md min-h-12 bg-muted/20">
-                        {filteredTags.map(tag => (
+                        {filteredTags.map((tag) => (
                           <Badge
                             key={tag.id}
-                            variant={field.value.includes(tag.name.toLowerCase()) ? "default" : "outline"}
+                            variant={
+                              field.value.includes(tag.name.toLowerCase())
+                                ? "default"
+                                : "outline"
+                            }
                             className={`cursor-pointer transition-all ${
                               field.value.includes(tag.name.toLowerCase())
                                 ? "bg-primary text-primary-foreground hover:bg-primary/90"
@@ -442,7 +465,7 @@ export default function AddEditReferenceDialog({
                             onClick={() => {
                               const tagName = tag.name.toLowerCase();
                               const newTags = field.value.includes(tagName)
-                                ? field.value.filter(t => t !== tagName)
+                                ? field.value.filter((t) => t !== tagName)
                                 : [...field.value, tagName];
                               field.onChange(newTags);
                             }}
@@ -462,9 +485,11 @@ export default function AddEditReferenceDialog({
                     </FormControl>
                     {field.value.length > 0 && (
                       <div className="mt-2">
-                        <p className="text-xs text-muted-foreground mb-1">Selected tags:</p>
+                        <p className="text-xs text-muted-foreground mb-1">
+                          Selected tags:
+                        </p>
                         <div className="flex flex-wrap gap-1.5">
-                          {field.value.map(tag => (
+                          {field.value.map((tag) => (
                             <Badge
                               key={`selected-${tag}`}
                               className="bg-primary text-primary-foreground"
@@ -487,16 +512,20 @@ export default function AddEditReferenceDialog({
           <Button type="button" variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={form.handleSubmit(onSubmit)} disabled={isPending} className="gap-2">
+          <Button
+            onClick={form.handleSubmit(onSubmit)}
+            disabled={isPending}
+            className="gap-2"
+          >
             {isPending ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
-                {isEditing ? 'Updating...' : 'Adding...'}
+                {isEditing ? "Updating..." : "Adding..."}
               </>
             ) : (
               <>
                 <Save className="h-4 w-4" />
-                {isEditing ? 'Update Reference' : 'Add Reference'}
+                {isEditing ? "Update Reference" : "Add Reference"}
               </>
             )}
           </Button>
