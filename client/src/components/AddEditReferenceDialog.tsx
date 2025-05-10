@@ -47,7 +47,8 @@ import {
   Tag as TagIcon,
   Image,
   FileText,
-  Check
+  Check, 
+  AlertCircle
 } from 'lucide-react';
 
 interface AddEditReferenceDialogProps {
@@ -77,6 +78,10 @@ export default function AddEditReferenceDialog({
   const { toast } = useToast();
   const isEditing = !!reference;
   const [tagFilter, setTagFilter] = useState('');
+  const [isFetchingThumbnail, setIsFetchingThumbnail] = useState(false);
+  const [thumbnailFetched, setThumbnailFetched] = useState(false);
+  const [thumbnailError, setThumbnailError] = useState(false);
+  const DEFAULT_THUMBNAIL = 'https://unsplash.com/photos/black-and-silver-laptop-computer-NoOrDKxUfzo';
 
   const form = useForm<ReferenceFormData>({
     resolver: zodResolver(formSchema),
