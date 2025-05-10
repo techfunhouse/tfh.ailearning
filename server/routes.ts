@@ -236,6 +236,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  app.patch("/api/categories/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { name } = req.body;
+      
+      if (!name || typeof name !== 'string' || name.trim() === '') {
+        return res.status(400).json({ message: "Invalid category name" });
+      }
+      
+      const updatedCategory = await storage.updateCategory(id, name);
+      
+      if (!updatedCategory) {
+        return res.status(404).json({ message: "Category not found" });
+      }
+      
+      return res.status(200).json(updatedCategory);
+    } catch (error) {
+      console.error("Error updating category:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  });
+  
   app.delete("/api/categories/:id", isAuthenticated, isAdmin, async (req, res) => {
     try {
       const { id } = req.params;
@@ -280,6 +302,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(201).json(tag);
     } catch (error) {
       console.error("Error creating tag:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  });
+  
+  app.patch("/api/tags/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { name } = req.body;
+      
+      if (!name || typeof name !== 'string' || name.trim() === '') {
+        return res.status(400).json({ message: "Invalid tag name" });
+      }
+      
+      const updatedTag = await storage.updateTag(id, name);
+      
+      if (!updatedTag) {
+        return res.status(404).json({ message: "Tag not found" });
+      }
+      
+      return res.status(200).json(updatedTag);
+    } catch (error) {
+      console.error("Error updating tag:", error);
       return res.status(500).json({ message: "Internal server error" });
     }
   });

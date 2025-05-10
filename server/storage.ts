@@ -399,6 +399,41 @@ export class JsonDbStorage implements IStorage {
     return newTag;
   }
   
+  async updateTag(id: string, name: string): Promise<Tag | undefined> {
+    const tagIndex = this.tagsDb.data.tags.findIndex(tag => tag.id === id);
+    
+    if (tagIndex === -1) {
+      return undefined;
+    }
+    
+    const updatedTag = {
+      ...this.tagsDb.data.tags[tagIndex],
+      name
+    };
+    
+    this.tagsDb.data.tags[tagIndex] = updatedTag;
+    this.saveTagData();
+    
+    // Update all references using this tag to use the new name
+    const oldName = this.tagsDb.data.tags[tagIndex].name.toLowerCase();
+    const newName = name.toLowerCase();
+    
+    if (oldName !== newName) {
+      this.referencesDb.data.references = this.referencesDb.data.references.map(ref => {
+        if (ref.tags.includes(oldName)) {
+          return {
+            ...ref,
+            tags: ref.tags.map(tag => tag === oldName ? newName : tag)
+          };
+        }
+        return ref;
+      });
+      this.saveReferenceData();
+    }
+    
+    return updatedTag;
+  }
+  
   async deleteTag(id: string): Promise<boolean> {
     const initialLength = this.tagsDb.data.tags.length;
     this.tagsDb.data.tags = this.tagsDb.data.tags.filter(tag => tag.id !== id);

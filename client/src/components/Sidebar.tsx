@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -19,7 +19,8 @@ import {
   Book, 
   PlusCircle,
   Save,
-  Loader2
+  Loader2,
+  Pencil as PencilIcon
 } from 'lucide-react';
 import { getTagColor } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -78,6 +79,12 @@ export default function Sidebar({
   const [tagFilter, setTagFilter] = useState('');
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
   const [isAddTagOpen, setIsAddTagOpen] = useState(false);
+  const [isEditCategoryOpen, setIsEditCategoryOpen] = useState(false);
+  const [isEditTagOpen, setIsEditTagOpen] = useState(false);
+  const [editingCategoryId, setEditingCategoryId] = useState<string>('');
+  const [editingTagId, setEditingTagId] = useState<string>('');
+  const [editCategoryName, setEditCategoryName] = useState('');
+  const [editTagName, setEditTagName] = useState('');
 
   // Form setup for adding a new category
   const categoryForm = useForm<{ name: string }>({
@@ -86,6 +93,19 @@ export default function Sidebar({
       name: "",
     },
   });
+  
+  // Form setup for editing a category
+  const editCategoryForm = useForm<{ name: string }>({
+    resolver: zodResolver(categorySchema),
+    defaultValues: {
+      name: editCategoryName,
+    },
+  });
+  
+  // Update form values when editing category changes
+  useEffect(() => {
+    editCategoryForm.setValue('name', editCategoryName);
+  }, [editCategoryName, editCategoryForm]);
 
   // Form setup for adding a new tag
   const tagForm = useForm<{ name: string }>({
@@ -94,6 +114,19 @@ export default function Sidebar({
       name: "",
     },
   });
+  
+  // Form setup for editing a tag
+  const editTagForm = useForm<{ name: string }>({
+    resolver: zodResolver(tagSchema),
+    defaultValues: {
+      name: editTagName,
+    },
+  });
+  
+  // Update form values when editing tag changes
+  useEffect(() => {
+    editTagForm.setValue('name', editTagName);
+  }, [editTagName, editTagForm]);
 
   // Mutation for adding a new category
   const addCategoryMutation = useMutation({
@@ -118,6 +151,31 @@ export default function Sidebar({
       });
     },
   });
+  
+  // Mutation for updating a category
+  const updateCategoryMutation = useMutation({
+    mutationFn: async ({ id, name }: { id: string; name: string }) => {
+      const response = await apiRequest('PATCH', `/api/categories/${id}`, { name });
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Success',
+        description: 'Category updated successfully',
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/categories'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/references'] });
+      setIsEditCategoryOpen(false);
+      editCategoryForm.reset();
+    },
+    onError: (error) => {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: `Failed to update category: ${error}`,
+      });
+    },
+  });
 
   // Mutation for adding a new tag
   const addTagMutation = useMutation({
@@ -139,6 +197,31 @@ export default function Sidebar({
         variant: 'destructive',
         title: 'Error',
         description: `Failed to add tag: ${error}`,
+      });
+    },
+  });
+  
+  // Mutation for updating a tag
+  const updateTagMutation = useMutation({
+    mutationFn: async ({ id, name }: { id: string; name: string }) => {
+      const response = await apiRequest('PATCH', `/api/tags/${id}`, { name });
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Success',
+        description: 'Tag updated successfully',
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/tags'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/references'] });
+      setIsEditTagOpen(false);
+      editTagForm.reset();
+    },
+    onError: (error) => {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: `Failed to update tag: ${error}`,
       });
     },
   });
@@ -224,6 +307,14 @@ export default function Sidebar({
 
   const onSubmitTag = (data: { name: string }) => {
     addTagMutation.mutate({ name: data.name });
+  };
+  
+  const onSubmitEditCategory = (data: { name: string }) => {
+    updateCategoryMutation.mutate({ id: editingCategoryId, name: data.name });
+  };
+  
+  const onSubmitEditTag = (data: { name: string }) => {
+    updateTagMutation.mutate({ id: editingTagId, name: data.name });
   };
 
   return (
@@ -320,21 +411,38 @@ export default function Sidebar({
                   </Label>
                   
                   {isAdmin && (
-                    <Button
-                      variant="ghost" 
-                      size="sm" 
-                      className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive ml-1"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        if (confirm(`Are you sure you want to delete "${category.name}" category?`)) {
-                          deleteCategoryMutation.mutate(category.id);
-                        }
-                      }}
-                      title="Delete Category"
-                    >
-                      <X className="h-3.5 w-3.5" />
-                    </Button>
+                    <div className="flex items-center">
+                      <Button
+                        variant="ghost" 
+                        size="sm" 
+                        className="h-6 w-6 p-0 text-muted-foreground hover:text-primary ml-1"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setEditingCategoryId(category.id);
+                          setEditCategoryName(category.name);
+                          setIsEditCategoryOpen(true);
+                        }}
+                        title="Edit Category"
+                      >
+                        <PencilIcon className="h-3.5 w-3.5" />
+                      </Button>
+                      <Button
+                        variant="ghost" 
+                        size="sm" 
+                        className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive ml-1"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          if (confirm(`Are you sure you want to delete "${category.name}" category?`)) {
+                            deleteCategoryMutation.mutate(category.id);
+                          }
+                        }}
+                        title="Delete Category"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
                   )}
                 </div>
               ))}
@@ -402,17 +510,31 @@ export default function Sidebar({
                       </span>
                       
                       {isAdmin && (
-                        <span
-                          className="ml-1 cursor-pointer hover:text-destructive"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (confirm(`Are you sure you want to delete "${tag.name}" tag?`)) {
-                              deleteTagMutation.mutate(tag.id);
-                            }
-                          }}
-                          title="Delete Tag"
-                        >
-                          <X className="h-3 w-3" />
+                        <span className="flex">
+                          <span
+                            className="ml-1 cursor-pointer hover:text-primary"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEditingTagId(tag.id);
+                              setEditTagName(tag.name);
+                              setIsEditTagOpen(true);
+                            }}
+                            title="Edit Tag"
+                          >
+                            <PencilIcon className="h-3 w-3 mr-1" />
+                          </span>
+                          <span
+                            className="cursor-pointer hover:text-destructive"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (confirm(`Are you sure you want to delete "${tag.name}" tag?`)) {
+                                deleteTagMutation.mutate(tag.id);
+                              }
+                            }}
+                            title="Delete Tag"
+                          >
+                            <X className="h-3 w-3" />
+                          </span>
                         </span>
                       )}
                     </Badge>
@@ -550,6 +672,106 @@ export default function Sidebar({
                       Add Tag
                     </>
                   )}
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+      
+      {/* Edit Category Dialog */}
+      <Dialog open={isEditCategoryOpen} onOpenChange={setIsEditCategoryOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Book className="h-5 w-5" />
+              Edit Category
+            </DialogTitle>
+          </DialogHeader>
+          
+          <Form {...editCategoryForm}>
+            <form onSubmit={editCategoryForm.handleSubmit((data) => {
+              updateCategoryMutation.mutate({ id: editingCategoryId, name: data.name });
+            })} className="space-y-4 pt-2">
+              <FormField
+                control={editCategoryForm.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter category name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <DialogFooter>
+                <Button 
+                  variant="outline" 
+                  type="button" 
+                  onClick={() => setIsEditCategoryOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  type="submit" 
+                  disabled={updateCategoryMutation.isPending}
+                  className="gap-1"
+                >
+                  {updateCategoryMutation.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
+                  Update Category
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+      
+      {/* Edit Tag Dialog */}
+      <Dialog open={isEditTagOpen} onOpenChange={setIsEditTagOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <TagIcon className="h-5 w-5" />
+              Edit Tag
+            </DialogTitle>
+          </DialogHeader>
+          
+          <Form {...editTagForm}>
+            <form onSubmit={editTagForm.handleSubmit((data) => {
+              updateTagMutation.mutate({ id: editingTagId, name: data.name });
+            })} className="space-y-4 pt-2">
+              <FormField
+                control={editTagForm.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tag Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter tag name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <DialogFooter>
+                <Button 
+                  variant="outline" 
+                  type="button" 
+                  onClick={() => setIsEditTagOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  type="submit" 
+                  disabled={updateTagMutation.isPending}
+                  className="gap-1"
+                >
+                  {updateTagMutation.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
+                  Update Tag
                 </Button>
               </DialogFooter>
             </form>
