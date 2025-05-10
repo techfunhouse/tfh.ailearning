@@ -365,17 +365,15 @@ export default function Sidebar({
                 </div>
               </div>
               
-              {isAdmin && (
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="h-7 w-7 p-0" 
-                  onClick={() => setIsAddCategoryOpen(true)}
-                  title="Add New Category"
-                >
-                  <PlusCircle className="h-4 w-4 text-muted-foreground hover:text-primary" />
-                </Button>
-              )}
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="h-7 w-7 p-0" 
+                onClick={() => setIsAddCategoryOpen(true)}
+                title="Add New Category"
+              >
+                <PlusCircle className="h-4 w-4 text-muted-foreground hover:text-primary" />
+              </Button>
             </div>
 
             <CollapsibleContent className="space-y-1 ml-6">
@@ -470,17 +468,15 @@ export default function Sidebar({
                 </div>
               </div>
               
-              {isAdmin && (
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="h-7 w-7 p-0" 
-                  onClick={() => setIsAddTagOpen(true)}
-                  title="Add New Tag"
-                >
-                  <PlusCircle className="h-4 w-4 text-muted-foreground hover:text-primary" />
-                </Button>
-              )}
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="h-7 w-7 p-0" 
+                onClick={() => setIsAddTagOpen(true)}
+                title="Add New Tag"
+              >
+                <PlusCircle className="h-4 w-4 text-muted-foreground hover:text-primary" />
+              </Button>
             </div>
 
             <CollapsibleContent>
