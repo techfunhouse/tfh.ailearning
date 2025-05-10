@@ -358,7 +358,7 @@ export default function HomePage() {
               <>
                 {filteredReferences.length > 0 ? (
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {filteredReferences.map((reference) => (
+                    {displayReferences.map((reference) => (
                       <ReferenceCard
                         key={reference.id}
                         reference={reference}
@@ -366,6 +366,17 @@ export default function HomePage() {
                         onEdit={() => handleEditReference(reference)}
                       />
                     ))}
+                    
+                    {/* Infinite scroll loading indicator */}
+                    {hasMore && (
+                      <div 
+                        ref={ref} 
+                        className="col-span-full flex items-center justify-center p-4"
+                      >
+                        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                        <span className="ml-2">Loading more references...</span>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <Card className="border-dashed py-12">
