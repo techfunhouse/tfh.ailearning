@@ -3,7 +3,11 @@ import fs from "fs";
 import path from "path";
 import { createServer as createViteServer, createLogger } from "vite";
 import { type Server } from "http";
-import viteConfig from "../vite.config";
+// Choose the appropriate config based on environment
+import viteConfigReplit from "../vite.config.js";
+import viteConfigLocal from "../vite.config.local.js";
+
+const viteConfig = process.env.REPL_ID ? viteConfigReplit : viteConfigLocal;
 import { nanoid } from "nanoid";
 import { fileURLToPath } from "url";
 
@@ -39,7 +43,7 @@ export async function setupVite(app: Express, server: Server) {
   const serverOptions = {
     middlewareMode: true,
     hmr: { server },
-    allowedHosts: true,
+    allowedHosts: ['localhost', '0.0.0.0'] as string[],
   };
 
   const vite = await createViteServer({
