@@ -106,6 +106,7 @@ export default function AddEditReferenceDialog({
         tags: reference.tags,
         thumbnail: reference.thumbnail,
       });
+      setThumbnailFetched(true); // Mark as fetched for existing references
     } else {
       form.reset({
         title: '',
@@ -115,8 +116,47 @@ export default function AddEditReferenceDialog({
         tags: [],
         thumbnail: '',
       });
+      setThumbnailFetched(false);
+      setThumbnailError(false);
     }
   }, [reference, form]);
+  
+  // Function to fetch thumbnail from microlink.io
+  const fetchThumbnailFromUrl = async (url: string) => {
+    if (!url || url.trim() === '') return;
+    
+    try {
+      setIsFetchingThumbnail(true);
+      setThumbnailError(false);
+      
+      const response = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true`);
+      const data = await response.json();
+      
+      if (data.status === 'success' && data.data?.screenshot?.url) {
+        form.setValue('thumbnail', data.data.screenshot.url);
+        setThumbnailFetched(true);
+        toast({
+          title: "Thumbnail generated",
+          description: "A thumbnail image has been automatically generated.",
+          duration: 3000,
+        });
+      } else {
+        throw new Error('Failed to generate thumbnail');
+      }
+    } catch (error) {
+      console.error('Error fetching thumbnail:', error);
+      setThumbnailError(true);
+      form.setValue('thumbnail', DEFAULT_THUMBNAIL);
+      toast({
+        title: "Thumbnail generation failed",
+        description: "Using default thumbnail instead.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    } finally {
+      setIsFetchingThumbnail(false);
+    }
+  };
 
   // Create mutation for adding a reference
   const addMutation = useMutation({
@@ -173,7 +213,8 @@ export default function AddEditReferenceDialog({
     }
   };
 
-  const isPending = addMutation.isPending || updateMutation.isPending;
+  // Consider a form "pending" if it's submitting OR if it's actively fetching a thumbnail
+  const isPending = addMutation.isPending || updateMutation.isPending || isFetchingThumbnail;
 
   // Filter tags based on search input
   const filteredTags = tagFilter 
@@ -242,10 +283,38 @@ export default function AddEditReferenceDialog({
                         placeholder="https://example.com/resource" 
                         {...field} 
                         className="focus-visible:ring-primary"
+                        onBlur={(e) => {
+                          field.onBlur(); // Call the original onBlur
+                          const url = e.target.value;
+                          if (url && !isEditing && !thumbnailFetched && !isFetchingThumbnail) {
+                            // Only fetch thumbnail if URL is valid
+                            const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+                            if (urlRegex.test(url)) {
+                              fetchThumbnailFromUrl(url);
+                            }
+                          }
+                        }}
                       />
                     </FormControl>
                     <FormDescription>
-                      The direct link to the reference resource
+                      {isFetchingThumbnail ? (
+                        <span className="flex items-center text-amber-500">
+                          <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                          Generating thumbnail...
+                        </span>
+                      ) : thumbnailFetched ? (
+                        <span className="flex items-center text-green-500">
+                          <Check className="h-3 w-3 mr-1" />
+                          Thumbnail generated
+                        </span>
+                      ) : thumbnailError ? (
+                        <span className="flex items-center text-red-500">
+                          <AlertCircle className="h-3 w-3 mr-1" />
+                          Using default thumbnail
+                        </span>
+                      ) : (
+                        "The direct link to the reference resource"
+                      )}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -313,14 +382,30 @@ export default function AddEditReferenceDialog({
                     <FormItem>
                       <FormLabel className="flex items-center gap-1.5">
                         <Image className="h-4 w-4 text-primary" />
-                        Thumbnail URL
+                        Thumbnail
                       </FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="https://example.com/image.jpg" 
-                          {...field} 
-                          className="focus-visible:ring-primary"
-                        />
+                        <div className="space-y-2">
+                          <Input 
+                            placeholder="https://example.com/image.jpg" 
+                            {...field} 
+                            className="focus-visible:ring-primary"
+                            disabled={isFetchingThumbnail}
+                          />
+                          {field.value && (
+                            <div className="relative h-32 w-full overflow-hidden rounded-md border">
+                              <img 
+                                src={field.value} 
+                                alt="Thumbnail preview" 
+                                className="h-full w-full object-cover"
+                                onError={(e) => {
+                                  e.currentTarget.src = DEFAULT_THUMBNAIL;
+                                  setThumbnailError(true);
+                                }}
+                              />
+                            </div>
+                          )}
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
