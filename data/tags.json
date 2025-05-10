@@ -1,6 +1,22 @@
 {
   "tags": [
     {
+      "name": "ai",
+      "id": "f8e7d6c5-b4a3-2c1d-0e9f-8a7b6c5d4e3f"
+    },
+    {
+      "name": "blockchain",
+      "id": "a1b2c3d4-e5f6-7g8h-9i0j-1k2l3m4n5o6p"
+    },
+    {
+      "name": "security",
+      "id": "p6o5n4m3-l2k1-j0i9-h8g7-f6e5d4c3b2a1"
+    },
+    {
+      "name": "research",
+      "id": "z9y8x7w6-v5u4-t3s2-r1q0-p9o8n7m6l5k4"
+    },
+    {
       "name": "javascript",
       "id": "57e9be44-31fd-4f90-a81d-ba2a4e3231d7"
     },

@@ -1,6 +1,114 @@
 {
   "references": [
     {
+      "title": "Artificial Intelligence Fundamentals",
+      "link": "https://example.com/ai-fundamentals",
+      "description": "A beginner's guide to understanding artificial intelligence concepts and applications.",
+      "category": "research",
+      "tags": [
+        "ai",
+        "data",
+        "algorithm"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "loveCount": 3,
+      "lovedBy": [1, 2, 3],
+      "createdBy": "curator",
+      "id": "d8f1e631-5f85-4f8c-a7a6-b293a9c7e6d7",
+      "createdAt": "2025-05-09T10:04:48.908Z",
+      "updatedAt": "2025-05-09T10:04:48.908Z"
+    },
+    {
+      "title": "React Performance Optimization",
+      "link": "https://example.com/react-performance",
+      "description": "Advanced techniques for optimizing React application performance and reducing bundle size.",
+      "category": "programming",
+      "tags": [
+        "javascript",
+        "frontend",
+        "performance"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "loveCount": 5,
+      "lovedBy": [1, 2, 3, 4, 5],
+      "createdBy": "curator",
+      "id": "7a91b3e2-8c01-4f3e-9d6a-db12c52e3f8f",
+      "createdAt": "2025-05-08T14:30:48.908Z",
+      "updatedAt": "2025-05-08T14:30:48.908Z"
+    },
+    {
+      "title": "Cloud Architecture Patterns",
+      "link": "https://example.com/cloud-architecture",
+      "description": "Best practices and design patterns for building resilient and scalable cloud applications.",
+      "category": "programming",
+      "tags": [
+        "backend",
+        "development",
+        "tools"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "loveCount": 2,
+      "lovedBy": [2, 3],
+      "createdBy": "admin",
+      "id": "e5f2d9a1-7b6c-4c3d-8e7f-2a15b3c54d9e",
+      "createdAt": "2025-05-07T09:15:48.908Z",
+      "updatedAt": "2025-05-07T09:15:48.908Z"
+    },
+    {
+      "title": "Typography in Web Design",
+      "link": "https://example.com/web-typography",
+      "description": "Principles and techniques for effective typography in modern web design projects.",
+      "category": "design",
+      "tags": [
+        "design",
+        "ui/ux",
+        "frontend"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1561647784-2f9c43b07a0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "loveCount": 7,
+      "lovedBy": [1, 2, 3, 4, 5, 6, 7],
+      "createdBy": "curator",
+      "id": "c3e7d8a6-5b4f-4a2e-9d8c-1f7e6b5a4c3b",
+      "createdAt": "2025-05-06T16:45:48.908Z",
+      "updatedAt": "2025-05-06T16:45:48.908Z"
+    },
+    {
+      "title": "Blockchain Development Guide",
+      "link": "https://example.com/blockchain-guide",
+      "description": "Comprehensive tutorial on developing applications using blockchain technology.",
+      "category": "programming",
+      "tags": [
+        "blockchain",
+        "backend",
+        "security"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "loveCount": 4,
+      "lovedBy": [3, 4, 5, 6],
+      "createdBy": "admin",
+      "id": "b2a1c7d6-4e3f-5a8b-9c7d-6e5f4a3b2c1d",
+      "createdAt": "2025-05-05T11:20:48.908Z",
+      "updatedAt": "2025-05-05T11:20:48.908Z"
+    },
+    {
+      "title": "User Research Methods",
+      "link": "https://example.com/user-research",
+      "description": "Effective methods for conducting user research to inform product design decisions.",
+      "category": "research",
+      "tags": [
+        "ui/ux",
+        "design",
+        "research"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "loveCount": 6,
+      "lovedBy": [1, 2, 3, 5, 6, 7],
+      "createdBy": "curator",
+      "id": "a9b8c7d6-5e4f-3a2b-1c9d-8e7f6a5b4c3d",
+      "createdAt": "2025-05-04T13:10:48.908Z",
+      "updatedAt": "2025-05-04T13:10:48.908Z"
+    },
+    {
       "title": "Modern JavaScript Techniques",
       "link": "https://example.com/javascript-techniques",
       "description": "A comprehensive guide to advanced JavaScript patterns and performance optimization techniques.",
