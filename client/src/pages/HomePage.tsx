@@ -10,7 +10,7 @@ import ReferenceCard from '@/components/ReferenceCard';
 import AddEditReferenceDialog from '@/components/AddEditReferenceDialog';
 import { Reference, Category, Tag } from '@/types';
 import { Button } from '@/components/ui/button';
-import { PlusIcon, LayoutGrid, BookOpen, Filter, FileSearch, Loader2 } from 'lucide-react';
+import { PlusIcon, LayoutGrid, BookOpen, Filter, FileSearch, Loader2, X } from 'lucide-react';
 import { 
   Card, 
   CardContent 
