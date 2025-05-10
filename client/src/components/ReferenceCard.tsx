@@ -123,16 +123,18 @@ export default function ReferenceCard({ reference, isAdmin, onEdit }: ReferenceC
       </CardContent>
       
       <CardFooter className="bg-muted/30 p-3 flex flex-col space-y-2 border-t">
-        <div className="flex justify-between items-center w-full">
-          <div className="flex items-center text-xs text-muted-foreground">
-            <Calendar className="h-3 w-3 mr-1" />
-            <span>{formattedDate}</span>
+        {isAdmin && (
+          <div className="flex justify-between items-center w-full">
+            <div className="flex items-center text-xs text-muted-foreground">
+              <Calendar className="h-3 w-3 mr-1" />
+              <span>{formattedDate}</span>
+            </div>
+            <div className="flex items-center text-xs text-muted-foreground">
+              <User className="h-3 w-3 mr-1" />
+              <span>{createdBy}</span>
+            </div>
           </div>
-          <div className="flex items-center text-xs text-muted-foreground">
-            <User className="h-3 w-3 mr-1" />
-            <span>{createdBy}</span>
-          </div>
-        </div>
+        )}
         
         <div className="flex gap-2 items-center">
           <Button

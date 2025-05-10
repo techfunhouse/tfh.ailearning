@@ -6,8 +6,7 @@ import {
   Category,
   InsertCategory,
   Tag,
-  InsertTag,
-  Database
+  InsertTag
 } from "@shared/schema";
 import { LowSync } from "lowdb";
 import { JSONFileSync } from "lowdb/node";
@@ -54,29 +53,42 @@ if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
+// Define types for each database file
+type UsersDB = { users: User[] };
+type ReferencesDB = { references: Reference[] };
+type CategoriesDB = { categories: Category[] };
+type TagsDB = { tags: Tag[] };
+
 // LowDB implementation
 export class JsonDbStorage implements IStorage {
-  private db: LowSync<Database>;
+  private usersDb: LowSync<UsersDB>;
+  private referencesDb: LowSync<ReferencesDB>;
+  private categoriesDb: LowSync<CategoriesDB>;
+  private tagsDb: LowSync<TagsDB>;
   private initialized: boolean = false;
 
   constructor() {
-    // Set up the JSON file adapter
-    const file = path.join(dataDir, "db.json");
+    // Set up the JSON file adapters for each entity type
+    const usersFile = path.join(dataDir, "users.json");
+    const referencesFile = path.join(dataDir, "references.json");
+    const categoriesFile = path.join(dataDir, "categories.json");
+    const tagsFile = path.join(dataDir, "tags.json");
     
-    // Create the database instance
-    this.db = new LowSync<Database>(new JSONFileSync<Database>(file), {
-      users: [],
-      references: [],
-      categories: [],
-      tags: []
-    });
+    // Create the database instances
+    this.usersDb = new LowSync<UsersDB>(new JSONFileSync<UsersDB>(usersFile), { users: [] });
+    this.referencesDb = new LowSync<ReferencesDB>(new JSONFileSync<ReferencesDB>(referencesFile), { references: [] });
+    this.categoriesDb = new LowSync<CategoriesDB>(new JSONFileSync<CategoriesDB>(categoriesFile), { categories: [] });
+    this.tagsDb = new LowSync<TagsDB>(new JSONFileSync<TagsDB>(tagsFile), { tags: [] });
     
-    // Load data from the JSON file
-    this.db.read();
+    // Load data from the JSON files
+    this.usersDb.read();
+    this.referencesDb.read();
+    this.categoriesDb.read();
+    this.tagsDb.read();
     
     // Initialize with default data if DB is empty
     if (!this.initialized && 
-        (!this.db.data.users || this.db.data.users.length === 0)) {
+        (!this.usersDb.data.users || this.usersDb.data.users.length === 0)) {
       this.initializeDefaultData();
       this.initialized = true;
     }
@@ -197,30 +209,42 @@ export class JsonDbStorage implements IStorage {
     });
   }
   
-  // Helper method to save changes to the JSON file
-  private saveData(): void {
-    this.db.write();
+  // Helper methods to save changes to the respective JSON file
+  private saveUserData(): void {
+    this.usersDb.write();
+  }
+
+  private saveReferenceData(): void {
+    this.referencesDb.write();
+  }
+
+  private saveCategoryData(): void {
+    this.categoriesDb.write();
+  }
+
+  private saveTagData(): void {
+    this.tagsDb.write();
   }
 
   // User methods
   async getUser(id: number): Promise<User | undefined> {
-    return this.db.data.users.find(user => user.id === id);
+    return this.usersDb.data.users.find(user => user.id === id);
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return this.db.data.users.find(
+    return this.usersDb.data.users.find(
       user => user.username.toLowerCase() === username.toLowerCase()
     );
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
     // Find the highest ID to determine the next ID
-    const maxId = this.db.data.users.reduce((max, user) => (user.id > max ? user.id : max), 0);
+    const maxId = this.usersDb.data.users.reduce((max, user) => (user.id > max ? user.id : max), 0);
     const newId = maxId + 1;
     
     const user: User = { ...insertUser, id: newId };
-    this.db.data.users.push(user);
-    this.saveData();
+    this.usersDb.data.users.push(user);
+    this.saveUserData();
     
     return user;
   }
@@ -238,11 +262,11 @@ export class JsonDbStorage implements IStorage {
 
   // Reference methods
   async getReferences(): Promise<Reference[]> {
-    return this.db.data.references;
+    return this.referencesDb.data.references;
   }
 
   async getReference(id: string): Promise<Reference | undefined> {
-    return this.db.data.references.find(ref => ref.id === id);
+    return this.referencesDb.data.references.find(ref => ref.id === id);
   }
 
   async createReference(reference: InsertReference): Promise<Reference> {
@@ -258,39 +282,39 @@ export class JsonDbStorage implements IStorage {
       updatedAt: now,
     };
     
-    this.db.data.references.push(newReference);
-    this.saveData();
+    this.referencesDb.data.references.push(newReference);
+    this.saveReferenceData();
     
     return newReference;
   }
 
   async updateReference(id: string, reference: Partial<InsertReference>): Promise<Reference | undefined> {
-    const index = this.db.data.references.findIndex(ref => ref.id === id);
+    const index = this.referencesDb.data.references.findIndex(ref => ref.id === id);
     
     if (index === -1) {
       return undefined;
     }
     
-    const existingReference = this.db.data.references[index];
+    const existingReference = this.referencesDb.data.references[index];
     const updatedReference: Reference = {
       ...existingReference,
       ...reference,
       updatedAt: new Date().toISOString(),
     };
     
-    this.db.data.references[index] = updatedReference;
-    this.saveData();
+    this.referencesDb.data.references[index] = updatedReference;
+    this.saveReferenceData();
     
     return updatedReference;
   }
 
   async deleteReference(id: string): Promise<boolean> {
-    const initialLength = this.db.data.references.length;
-    this.db.data.references = this.db.data.references.filter(ref => ref.id !== id);
+    const initialLength = this.referencesDb.data.references.length;
+    this.referencesDb.data.references = this.referencesDb.data.references.filter(ref => ref.id !== id);
     
-    const deleted = initialLength > this.db.data.references.length;
+    const deleted = initialLength > this.referencesDb.data.references.length;
     if (deleted) {
-      this.saveData();
+      this.saveReferenceData();
     }
     
     return deleted;
@@ -298,26 +322,26 @@ export class JsonDbStorage implements IStorage {
 
   // Category methods
   async getCategories(): Promise<Category[]> {
-    return this.db.data.categories;
+    return this.categoriesDb.data.categories;
   }
 
   async createCategory(category: InsertCategory): Promise<Category> {
     const id = uuid();
     const newCategory: Category = { ...category, id };
     
-    this.db.data.categories.push(newCategory);
-    this.saveData();
+    this.categoriesDb.data.categories.push(newCategory);
+    this.saveCategoryData();
     
     return newCategory;
   }
 
   async deleteCategory(id: string): Promise<boolean> {
-    const initialLength = this.db.data.categories.length;
-    this.db.data.categories = this.db.data.categories.filter(cat => cat.id !== id);
+    const initialLength = this.categoriesDb.data.categories.length;
+    this.categoriesDb.data.categories = this.categoriesDb.data.categories.filter(cat => cat.id !== id);
     
-    const deleted = initialLength > this.db.data.categories.length;
+    const deleted = initialLength > this.categoriesDb.data.categories.length;
     if (deleted) {
-      this.saveData();
+      this.saveCategoryData();
     }
     
     return deleted;
@@ -325,26 +349,26 @@ export class JsonDbStorage implements IStorage {
 
   // Tag methods
   async getTags(): Promise<Tag[]> {
-    return this.db.data.tags;
+    return this.tagsDb.data.tags;
   }
 
   async createTag(tag: InsertTag): Promise<Tag> {
     const id = uuid();
     const newTag: Tag = { ...tag, id };
     
-    this.db.data.tags.push(newTag);
-    this.saveData();
+    this.tagsDb.data.tags.push(newTag);
+    this.saveTagData();
     
     return newTag;
   }
   
   async deleteTag(id: string): Promise<boolean> {
-    const initialLength = this.db.data.tags.length;
-    this.db.data.tags = this.db.data.tags.filter(tag => tag.id !== id);
+    const initialLength = this.tagsDb.data.tags.length;
+    this.tagsDb.data.tags = this.tagsDb.data.tags.filter(tag => tag.id !== id);
     
-    const deleted = initialLength > this.db.data.tags.length;
+    const deleted = initialLength > this.tagsDb.data.tags.length;
     if (deleted) {
-      this.saveData();
+      this.saveTagData();
     }
     
     return deleted;
@@ -352,25 +376,25 @@ export class JsonDbStorage implements IStorage {
 
   // Query methods
   async getReferencesByCategory(category: string): Promise<Reference[]> {
-    return this.db.data.references.filter(
+    return this.referencesDb.data.references.filter(
       reference => reference.category.toLowerCase() === category.toLowerCase()
     );
   }
 
   async getReferencesByTag(tag: string): Promise<Reference[]> {
-    return this.db.data.references.filter(reference =>
+    return this.referencesDb.data.references.filter(reference =>
       reference.tags.some(t => t.toLowerCase() === tag.toLowerCase())
     );
   }
 
   async toggleLoveReference(id: string, userId: number): Promise<Reference | undefined> {
-    const index = this.db.data.references.findIndex(ref => ref.id === id);
+    const index = this.referencesDb.data.references.findIndex(ref => ref.id === id);
     
     if (index === -1) {
       return undefined;
     }
     
-    const reference = this.db.data.references[index];
+    const reference = this.referencesDb.data.references[index];
     
     // Check if user already loved this reference
     const alreadyLoved = reference.lovedBy.includes(userId);
@@ -385,8 +409,8 @@ export class JsonDbStorage implements IStorage {
       reference.loveCount = reference.loveCount + 1;
     }
     
-    this.db.data.references[index] = reference;
-    this.saveData();
+    this.referencesDb.data.references[index] = reference;
+    this.saveReferenceData();
     
     return reference;
   }
@@ -394,7 +418,7 @@ export class JsonDbStorage implements IStorage {
   async searchReferences(query: string): Promise<Reference[]> {
     const normalizedQuery = query.toLowerCase();
     
-    return this.db.data.references.filter(reference => {
+    return this.referencesDb.data.references.filter(reference => {
       return (
         reference.title.toLowerCase().includes(normalizedQuery) ||
         reference.description.toLowerCase().includes(normalizedQuery) ||

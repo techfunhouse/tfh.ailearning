@@ -1,0 +1,112 @@
+{
+  "references": [
+    {
+      "title": "Modern JavaScript Techniques",
+      "link": "https://example.com/javascript-techniques",
+      "description": "A comprehensive guide to advanced JavaScript patterns and performance optimization techniques.",
+      "category": "programming",
+      "tags": [
+        "javascript",
+        "frontend",
+        "performance"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "loveCount": 0,
+      "lovedBy": [],
+      "createdBy": "admin",
+      "id": "c92510cd-5990-49b8-a3ea-1fb68941c9c3",
+      "createdAt": "2025-05-10T10:04:48.908Z",
+      "updatedAt": "2025-05-10T10:04:48.908Z"
+    },
+    {
+      "title": "UI/UX Design Principles",
+      "link": "https://example.com/uiux-design",
+      "description": "Essential principles for creating intuitive and aesthetically pleasing user interfaces.",
+      "category": "design",
+      "tags": [
+        "ui/ux",
+        "design",
+        "frontend"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1516031190212-da133013de50?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "loveCount": 0,
+      "lovedBy": [],
+      "createdBy": "admin",
+      "id": "afe9082f-2548-4ff9-9a21-eb1062d73297",
+      "createdAt": "2025-05-10T10:04:48.909Z",
+      "updatedAt": "2025-05-10T10:04:48.909Z"
+    },
+    {
+      "title": "Data Visualization Techniques",
+      "link": "https://example.com/data-viz",
+      "description": "Methods for effectively visualizing complex data sets to derive meaningful insights.",
+      "category": "research",
+      "tags": [
+        "algorithm",
+        "data",
+        "visualization"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "loveCount": 0,
+      "lovedBy": [],
+      "createdBy": "admin",
+      "id": "ab71a857-bea4-467c-bf70-e70501150916",
+      "createdAt": "2025-05-10T10:04:48.909Z",
+      "updatedAt": "2025-05-10T10:04:48.909Z"
+    },
+    {
+      "title": "Essential Developer Tools",
+      "link": "https://example.com/dev-tools",
+      "description": "A collection of must-have tools and utilities for modern software development workflows.",
+      "category": "tools",
+      "tags": [
+        "productivity",
+        "tools",
+        "development"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "loveCount": 0,
+      "lovedBy": [],
+      "createdBy": "admin",
+      "id": "518f8e71-4867-4591-9124-f5a8102123bc",
+      "createdAt": "2025-05-10T10:04:48.909Z",
+      "updatedAt": "2025-05-10T10:04:48.909Z"
+    },
+    {
+      "title": "Database Optimization Patterns",
+      "link": "https://example.com/db-optimization",
+      "description": "Strategies and techniques for optimizing database performance in high-scale applications.",
+      "category": "programming",
+      "tags": [
+        "database",
+        "backend",
+        "performance"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "loveCount": 0,
+      "lovedBy": [],
+      "createdBy": "admin",
+      "id": "54c1e1fe-03b9-4595-b953-42852d161012",
+      "createdAt": "2025-05-10T10:04:48.909Z",
+      "updatedAt": "2025-05-10T10:04:48.909Z"
+    },
+    {
+      "title": "Mobile UX Design Patterns",
+      "link": "https://example.com/mobile-ux",
+      "description": "Best practices for creating intuitive and engaging user experiences for mobile applications.",
+      "category": "design",
+      "tags": [
+        "mobile",
+        "ui/ux",
+        "frontend"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "loveCount": 0,
+      "lovedBy": [],
+      "createdBy": "admin",
+      "id": "4930b812-d3f7-4ea2-b52b-aca302cb9365",
+      "createdAt": "2025-05-10T10:04:48.910Z",
+      "updatedAt": "2025-05-10T10:04:48.910Z"
+    }
+  ]
+}
