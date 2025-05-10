@@ -3,7 +3,16 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/useAuth';
 import { Badge } from '@/components/ui/badge';
-import { Search } from 'lucide-react';
+import { Search, BookOpen, LogOut, User as UserIcon } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 interface HeaderProps {
   username: string;
@@ -21,40 +30,68 @@ export default function Header({ username, isAdmin, onSearch }: HeaderProps) {
     onSearch(query);
   };
 
+  const getInitials = (name: string) => {
+    return name.charAt(0).toUpperCase();
+  };
+
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-        <div className="flex items-center">
-          <h1 className="text-2xl font-bold text-gray-900">RefHub</h1>
+    <header className="bg-card border-b sticky top-0 z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex justify-between items-center">
+        <div className="flex items-center space-x-2">
+          <div className="icon-container h-9 w-9">
+            <BookOpen className="h-5 w-5 text-primary" />
+          </div>
+          <h1 className="text-xl font-bold gradient-text hidden sm:inline-block">RefHub</h1>
         </div>
         
         {/* Desktop search bar */}
         <div className="hidden md:block max-w-3xl w-full mx-8">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-4 w-4 text-gray-400" />
+              <Search className="h-4 w-4 text-muted-foreground" />
             </div>
             <Input
               value={searchQuery}
               onChange={handleSearchChange}
               placeholder="Search references..."
-              className="pl-10"
+              className="pl-10 bg-muted/40"
             />
           </div>
         </div>
         
-        <div className="flex items-center space-x-4">
-          {isAdmin && (
-            <Badge className="bg-secondary hover:bg-secondary/80">
-              Admin
-            </Badge>
-          )}
-          <div className="flex items-center">
-            <span className="text-sm font-medium text-gray-700 mr-2">{username}</span>
-            <Button variant="link" className="text-primary p-0" onClick={logout}>
-              Logout
-            </Button>
-          </div>
+        <div className="flex items-center space-x-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="relative h-9 w-9 rounded-full">
+                <Avatar className="h-9 w-9">
+                  <AvatarFallback className="bg-primary/10 text-primary">
+                    {getInitials(username)}
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">{username}</p>
+                  <p className="text-xs leading-none text-muted-foreground">
+                    {isAdmin ? 'Administrator' : 'Regular User'}
+                  </p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {isAdmin && (
+                <DropdownMenuItem className="flex items-center">
+                  <Badge className="mr-2 bg-accent text-accent-foreground">Admin</Badge>
+                  Administrator Access
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem className="flex items-center" onClick={logout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       
@@ -62,13 +99,13 @@ export default function Header({ username, isAdmin, onSearch }: HeaderProps) {
       <div className="md:hidden px-4 pb-4">
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-4 w-4 text-gray-400" />
+            <Search className="h-4 w-4 text-muted-foreground" />
           </div>
           <Input
             value={searchQuery}
             onChange={handleSearchChange}
             placeholder="Search references..."
-            className="pl-10"
+            className="pl-10 bg-muted/40"
           />
         </div>
       </div>

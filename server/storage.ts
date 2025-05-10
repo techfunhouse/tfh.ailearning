@@ -1,15 +1,20 @@
-import { 
-  User, 
-  InsertUser, 
-  Reference, 
-  InsertReference, 
-  Category, 
-  InsertCategory, 
-  Tag, 
-  InsertTag 
+import {
+  User,
+  InsertUser,
+  Reference,
+  InsertReference,
+  Category,
+  InsertCategory,
+  Tag,
+  InsertTag,
+  Database
 } from "@shared/schema";
+import { LowSync } from "lowdb";
+import { JSONFileSync } from "lowdb/node";
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
+import path from "path";
+import fs from "fs";
 
 // Storage interface
 export interface IStorage {
@@ -40,23 +45,38 @@ export interface IStorage {
   searchReferences(query: string): Promise<Reference[]>;
 }
 
-// In-memory storage implementation
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private references: Map<string, Reference>;
-  private categories: Map<string, Category>;
-  private tags: Map<string, Tag>;
-  private nextUserId: number;
+// Create data directory if it doesn't exist
+const dataDir = path.join(process.cwd(), "data");
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
+
+// LowDB implementation
+export class JsonDbStorage implements IStorage {
+  private db: LowSync<Database>;
+  private initialized: boolean = false;
 
   constructor() {
-    this.users = new Map();
-    this.references = new Map();
-    this.categories = new Map();
-    this.tags = new Map();
-    this.nextUserId = 1;
+    // Set up the JSON file adapter
+    const file = path.join(dataDir, "db.json");
     
-    // Initialize with default data
-    this.initializeDefaultData();
+    // Create the database instance
+    this.db = new LowSync<Database>(new JSONFileSync<Database>(file), {
+      users: [],
+      references: [],
+      categories: [],
+      tags: []
+    });
+    
+    // Load data from the JSON file
+    this.db.read();
+    
+    // Initialize with default data if DB is empty
+    if (!this.initialized && 
+        (!this.db.data.users || this.db.data.users.length === 0)) {
+      this.initializeDefaultData();
+      this.initialized = true;
+    }
   }
 
   private async initializeDefaultData() {
@@ -161,22 +181,32 @@ export class MemStorage implements IStorage {
       createdBy: "admin",
     });
   }
+  
+  // Helper method to save changes to the JSON file
+  private saveData(): void {
+    this.db.write();
+  }
 
   // User methods
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    return this.db.data.users.find(user => user.id === id);
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username.toLowerCase() === username.toLowerCase()
+    return this.db.data.users.find(
+      user => user.username.toLowerCase() === username.toLowerCase()
     );
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.nextUserId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    // Find the highest ID to determine the next ID
+    const maxId = this.db.data.users.reduce((max, user) => (user.id > max ? user.id : max), 0);
+    const newId = maxId + 1;
+    
+    const user: User = { ...insertUser, id: newId };
+    this.db.data.users.push(user);
+    this.saveData();
+    
     return user;
   }
 
@@ -187,19 +217,17 @@ export class MemStorage implements IStorage {
       return null;
     }
     
-    // In a real app, we'd use bcrypt.compare
     const isValidPassword = await bcrypt.compare(password, user.password);
-    
     return isValidPassword ? user : null;
   }
 
   // Reference methods
   async getReferences(): Promise<Reference[]> {
-    return Array.from(this.references.values());
+    return this.db.data.references;
   }
 
   async getReference(id: string): Promise<Reference | undefined> {
-    return this.references.get(id);
+    return this.db.data.references.find(ref => ref.id === id);
   }
 
   async createReference(reference: InsertReference): Promise<Reference> {
@@ -213,79 +241,98 @@ export class MemStorage implements IStorage {
       updatedAt: now,
     };
     
-    this.references.set(id, newReference);
+    this.db.data.references.push(newReference);
+    this.saveData();
+    
     return newReference;
   }
 
   async updateReference(id: string, reference: Partial<InsertReference>): Promise<Reference | undefined> {
-    const existingReference = this.references.get(id);
+    const index = this.db.data.references.findIndex(ref => ref.id === id);
     
-    if (!existingReference) {
+    if (index === -1) {
       return undefined;
     }
     
+    const existingReference = this.db.data.references[index];
     const updatedReference: Reference = {
       ...existingReference,
       ...reference,
       updatedAt: new Date().toISOString(),
     };
     
-    this.references.set(id, updatedReference);
+    this.db.data.references[index] = updatedReference;
+    this.saveData();
+    
     return updatedReference;
   }
 
   async deleteReference(id: string): Promise<boolean> {
-    return this.references.delete(id);
+    const initialLength = this.db.data.references.length;
+    this.db.data.references = this.db.data.references.filter(ref => ref.id !== id);
+    
+    const deleted = initialLength > this.db.data.references.length;
+    if (deleted) {
+      this.saveData();
+    }
+    
+    return deleted;
   }
 
   // Category methods
   async getCategories(): Promise<Category[]> {
-    return Array.from(this.categories.values());
+    return this.db.data.categories;
   }
 
   async createCategory(category: InsertCategory): Promise<Category> {
     const id = uuid();
     const newCategory: Category = { ...category, id };
-    this.categories.set(id, newCategory);
+    
+    this.db.data.categories.push(newCategory);
+    this.saveData();
+    
     return newCategory;
   }
 
   // Tag methods
   async getTags(): Promise<Tag[]> {
-    return Array.from(this.tags.values());
+    return this.db.data.tags;
   }
 
   async createTag(tag: InsertTag): Promise<Tag> {
     const id = uuid();
     const newTag: Tag = { ...tag, id };
-    this.tags.set(id, newTag);
+    
+    this.db.data.tags.push(newTag);
+    this.saveData();
+    
     return newTag;
   }
 
   // Query methods
   async getReferencesByCategory(category: string): Promise<Reference[]> {
-    return Array.from(this.references.values()).filter(
-      (reference) => reference.category.toLowerCase() === category.toLowerCase()
+    return this.db.data.references.filter(
+      reference => reference.category.toLowerCase() === category.toLowerCase()
     );
   }
 
   async getReferencesByTag(tag: string): Promise<Reference[]> {
-    return Array.from(this.references.values()).filter((reference) =>
-      reference.tags.some((t) => t.toLowerCase() === tag.toLowerCase())
+    return this.db.data.references.filter(reference =>
+      reference.tags.some(t => t.toLowerCase() === tag.toLowerCase())
     );
   }
 
   async searchReferences(query: string): Promise<Reference[]> {
     const normalizedQuery = query.toLowerCase();
     
-    return Array.from(this.references.values()).filter((reference) => {
+    return this.db.data.references.filter(reference => {
       return (
         reference.title.toLowerCase().includes(normalizedQuery) ||
         reference.description.toLowerCase().includes(normalizedQuery) ||
-        reference.tags.some((tag) => tag.toLowerCase().includes(normalizedQuery))
+        reference.tags.some(tag => tag.toLowerCase().includes(normalizedQuery))
       );
     });
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new JsonDbStorage();
