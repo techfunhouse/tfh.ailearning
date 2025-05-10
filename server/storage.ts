@@ -34,11 +34,13 @@ export interface IStorage {
   // Category methods
   getCategories(): Promise<Category[]>;
   createCategory(category: InsertCategory): Promise<Category>;
+  updateCategory(id: string, name: string): Promise<Category | undefined>;
   deleteCategory(id: string): Promise<boolean>;
   
   // Tag methods
   getTags(): Promise<Tag[]>;
   createTag(tag: InsertTag): Promise<Tag>;
+  updateTag(id: string, name: string): Promise<Tag | undefined>;
   deleteTag(id: string): Promise<boolean>;
   
   // Query methods
@@ -333,6 +335,41 @@ export class JsonDbStorage implements IStorage {
     this.saveCategoryData();
     
     return newCategory;
+  }
+  
+  async updateCategory(id: string, name: string): Promise<Category | undefined> {
+    const categoryIndex = this.categoriesDb.data.categories.findIndex(cat => cat.id === id);
+    
+    if (categoryIndex === -1) {
+      return undefined;
+    }
+    
+    const updatedCategory = {
+      ...this.categoriesDb.data.categories[categoryIndex],
+      name
+    };
+    
+    this.categoriesDb.data.categories[categoryIndex] = updatedCategory;
+    this.saveCategoryData();
+    
+    // Update all references with this category to use the new name
+    const oldName = this.categoriesDb.data.categories[categoryIndex].name.toLowerCase();
+    const newName = name.toLowerCase();
+    
+    if (oldName !== newName) {
+      this.referencesDb.data.references = this.referencesDb.data.references.map(ref => {
+        if (ref.category === oldName) {
+          return {
+            ...ref,
+            category: newName
+          };
+        }
+        return ref;
+      });
+      this.saveReferenceData();
+    }
+    
+    return updatedCategory;
   }
 
   async deleteCategory(id: string): Promise<boolean> {
