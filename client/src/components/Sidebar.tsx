@@ -690,9 +690,7 @@ export default function Sidebar({
           </DialogHeader>
           
           <Form {...editCategoryForm}>
-            <form onSubmit={editCategoryForm.handleSubmit((data) => {
-              updateCategoryMutation.mutate({ id: editingCategoryId, name: data.name });
-            })} className="space-y-4 pt-2">
+            <form onSubmit={editCategoryForm.handleSubmit(onSubmitEditCategory)} className="space-y-4 pt-2">
               <FormField
                 control={editCategoryForm.control}
                 name="name"
@@ -740,9 +738,7 @@ export default function Sidebar({
           </DialogHeader>
           
           <Form {...editTagForm}>
-            <form onSubmit={editTagForm.handleSubmit((data) => {
-              updateTagMutation.mutate({ id: editingTagId, name: data.name });
-            })} className="space-y-4 pt-2">
+            <form onSubmit={editTagForm.handleSubmit(onSubmitEditTag)} className="space-y-4 pt-2">
               <FormField
                 control={editTagForm.control}
                 name="name"
