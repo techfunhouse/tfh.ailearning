@@ -215,7 +215,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/categories", isAuthenticated, isAdmin, async (req, res) => {
+  app.post("/api/categories", isAuthenticated, async (req, res) => {
     try {
       const validationResult = insertCategorySchema.safeParse(req.body);
       
@@ -285,7 +285,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/tags", isAuthenticated, isAdmin, async (req, res) => {
+  app.post("/api/tags", isAuthenticated, async (req, res) => {
     try {
       const validationResult = insertTagSchema.safeParse(req.body);
       

@@ -104,10 +104,10 @@ export class JsonDbStorage implements IStorage {
       isAdmin: true,
     });
     
-    // Create default user
+    // Create default curator
     await this.createUser({
-      username: "user",
-      password: await bcrypt.hash("user123", 10),
+      username: "curator",
+      password: await bcrypt.hash("curator123", 10),
       isAdmin: false,
     });
     
