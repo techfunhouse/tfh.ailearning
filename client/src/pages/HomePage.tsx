@@ -788,8 +788,8 @@ export default function HomePage() {
       <AddEditReferenceDialog
         isOpen={isAddDialogOpen}
         reference={editingReference}
-        categories={categoriesData || []}
-        tags={tagsData || []}
+        categories={categoriesData as Category[] || []}
+        tags={tagsData as Tag[] || []}
         onClose={handleCloseDialog}
       />
       

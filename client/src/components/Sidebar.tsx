@@ -604,7 +604,10 @@ export default function Sidebar({
                         borderColor: getTagColor(tag.name),
                         color: selectedTags.includes(tag.name) ? 'white' : getTagColor(tag.name),
                       }}
-                      onClick={() => onTagSelect(tag.name)}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent event bubbling
+                        onTagSelect(tag.name);
+                      }}
                     >
                       {tag.name}
                       {isAdmin && (
