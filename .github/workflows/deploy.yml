@@ -59,17 +59,16 @@ jobs:
           else
             echo "index.html not found in build output. Creating a minimal index.html."
             mkdir -p dist/public
-            cat > $ORIGINAL_INDEX << EOF
+            cat > "$ORIGINAL_INDEX" << 'HTMLFILE'
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reference Viewer</title>
-    <base href="/${REPO_NAME}/">
+    <base href="/__REPO_NAME__/">
     <script type="text/javascript">
       // Single Page Apps for GitHub Pages
-      // MIT License - https://github.com/rafgraph/spa-github-pages
       (function(l) {
         if (l.search[1] === '/' ) {
           var decoded = l.search.slice(1).split('&').map(function(s) { 
@@ -98,14 +97,21 @@ jobs:
         .then(response => response.json())
         .then(data => {
           const container = document.getElementById('references');
-          const items = data.slice(0, 5).map(ref => 
-            \`<div class="card">
-              <h3>\${ref.title}</h3>
-              <p>\${ref.description}</p>
-              <p><a href="\${ref.link}" target="_blank">View Reference</a></p>
-            </div>\`
-          ).join('');
-          container.innerHTML = items;
+          let html = '';
+          
+          if (data && data.length > 0) {
+            data.slice(0, 5).forEach(ref => {
+              html += '<div class="card">';
+              html += '<h3>' + (ref.title || 'No Title') + '</h3>';
+              html += '<p>' + (ref.description || 'No Description') + '</p>';
+              html += '<p><a href="' + (ref.link || '#') + '" target="_blank">View Reference</a></p>';
+              html += '</div>';
+            });
+          } else {
+            html = '<p>No references found</p>';
+          }
+          
+          container.innerHTML = html;
         })
         .catch(error => {
           document.getElementById('references').innerHTML = 
@@ -114,7 +120,9 @@ jobs:
     </script>
   </body>
 </html>
-EOF
+HTMLFILE
+            # Replace placeholder with actual repo name
+            sed -i "s/__REPO_NAME__/${REPO_NAME}/g" "$ORIGINAL_INDEX"
           fi
           
           # Create 404.html file for SPA routing
