@@ -94,14 +94,12 @@ export default function HomePage() {
     staleTime: Infinity, // Tags don't change often
   });
 
-  // Categories and tags state
+  // Define categories and tags state
   const [categories, setCategories] = useState<Category[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   
   // Ensure we have valid arrays to work with
   const safeReferences = Array.isArray(references) ? references : [];
-  const safeCategories = Array.isArray(categories) ? categories : [];
-  const safeTags = Array.isArray(tags) ? tags : [];
   
   // Setup fuzzy search with Fuse.js
   const fuse = new Fuse(safeReferences, {
@@ -133,6 +131,44 @@ export default function HomePage() {
       setPage(1);
     }
   }, [referencesData, itemsPerPage]);
+  
+  // Update categories when data is fetched
+  useEffect(() => {
+    if (categoriesData) {
+      // Ensure we're working with arrays
+      const safeData = Array.isArray(categoriesData) ? categoriesData : 
+                      (typeof categoriesData === 'object' && categoriesData !== null) ? 
+                        Object.values(categoriesData) : [];
+                        
+      // Make sure each category has required properties
+      const normalizedData = safeData.map(cat => ({
+        ...cat,
+        id: cat.id || `temp-${Math.random().toString(36).substring(2, 9)}`,
+        name: cat.name || 'Uncategorized'
+      }));
+      
+      setCategories(normalizedData);
+    }
+  }, [categoriesData]);
+
+  // Update tags when data is fetched
+  useEffect(() => {
+    if (tagsData) {
+      // Ensure we're working with arrays
+      const safeData = Array.isArray(tagsData) ? tagsData : 
+                      (typeof tagsData === 'object' && tagsData !== null) ? 
+                        Object.values(tagsData) : [];
+                        
+      // Make sure each tag has required properties
+      const normalizedData = safeData.map(tag => ({
+        ...tag,
+        id: tag.id || `temp-${Math.random().toString(36).substring(2, 9)}`,
+        name: tag.name || 'Unnamed'
+      }));
+      
+      setTags(normalizedData);
+    }
+  }, [tagsData]);
   
   // GitHub sync functionality
   const checkGitHubConfig = async () => {
@@ -364,15 +400,25 @@ export default function HomePage() {
     setIsMobileSidebarOpen(!isMobileSidebarOpen);
   };
 
-  // Create category count data
-  const categoryCounts =
-    categoriesData?.reduce<Record<string, number>>((acc, category) => {
-      const categoryName = category.name.toLowerCase();
-      acc[categoryName] = references.filter(
-        (ref) => ref.category === categoryName,
+  // Create category count data with safe handling for GitHub Pages
+  const categoryCounts = (() => {
+    // Ensure categoriesData is actually an array
+    const safeCategories = Array.isArray(categoriesData) 
+      ? categoriesData 
+      : (categoriesData && typeof categoriesData === 'object')
+        ? Object.values(categoriesData)
+        : [];
+        
+    // Now safely reduce the array
+    return safeCategories.reduce<Record<string, number>>((acc, category) => {
+      // Ensure category has a name property
+      const categoryName = category && category.name ? category.name.toLowerCase() : 'unknown';
+      acc[categoryName] = safeReferences.filter(
+        (ref) => ref.category && ref.category.toLowerCase() === categoryName,
       ).length;
       return acc;
-    }, {}) || {};
+    }, {});
+  })() || {};
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -386,8 +432,8 @@ export default function HomePage() {
         {/* Desktop sidebar */}
         <div className="hidden lg:block">
           <Sidebar
-            categories={categoriesData || []}
-            tags={tagsData || []}
+            categories={categories}
+            tags={tags}
             selectedCategories={selectedCategories}
             selectedTags={selectedTags}
             isAdmin={isAdmin}
@@ -434,8 +480,8 @@ export default function HomePage() {
                 </Button>
               </div>
               <Sidebar
-                categories={categoriesData || []}
-                tags={tagsData || []}
+                categories={categories}
+                tags={tags}
                 selectedCategories={selectedCategories}
                 selectedTags={selectedTags}
                 isAdmin={isAdmin}
@@ -550,29 +596,31 @@ export default function HomePage() {
                   </Card>
 
                   {/* Category cards */}
-                  {categoriesData?.map((category) => (
-                    <Card 
-                      key={category.id} 
-                      className="bg-muted/30 flex-shrink-0 w-[230px] hover:bg-muted/50 transition-colors cursor-pointer"
-                      onClick={() => handleCategoryChange([category.name.toLowerCase()])}
-                    >
-                      <CardContent className="p-4">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <p className="text-xs text-muted-foreground capitalize">
-                              {category.name}
-                            </p>
-                            <p className="text-2xl font-medium capitalize">
-                              {category.name}
-                            </p>
+                  {Array.isArray(categoriesData) ? 
+                    categoriesData.map((category) => (
+                      <Card 
+                        key={category.id || `cat-${Math.random()}`} 
+                        className="bg-muted/30 flex-shrink-0 w-[230px] hover:bg-muted/50 transition-colors cursor-pointer"
+                        onClick={() => handleCategoryChange([category.name?.toLowerCase() || 'unknown'])}
+                      >
+                        <CardContent className="p-4">
+                          <div className="flex justify-between items-center">
+                            <div>
+                              <p className="text-xs text-muted-foreground capitalize">
+                                {category.name || 'Uncategorized'}
+                              </p>
+                              <p className="text-2xl font-medium capitalize">
+                                {category.name || 'Uncategorized'}
+                              </p>
+                            </div>
+                            <Badge variant="outline" className="px-2 py-1 rounded-full">
+                              {categoryCounts[category.name?.toLowerCase() || ''] || 0}
+                            </Badge>
                           </div>
-                          <Badge variant="outline" className="px-2 py-1 rounded-full">
-                            {categoryCounts[category.name.toLowerCase()] || 0}
-                          </Badge>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        </CardContent>
+                      </Card>
+                    ))
+                  : <div>No categories available</div>}
                 </div>
               </div>
             </div>

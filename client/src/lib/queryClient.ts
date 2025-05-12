@@ -12,8 +12,11 @@ function getAdjustedUrl(url: string): string {
     // This converts API calls like '/api/references' to 'data/references.json'
     if (url.startsWith('/api/')) {
       const resource = url.replace('/api/', '');
-      // Path without leading slash for GitHub Pages compatibility
-      return `data/${resource}.json`;
+      if (resource === 'references' || resource === 'categories' || resource === 'tags') {
+        // Path without leading slash for GitHub Pages compatibility
+        console.log(`GitHub Pages: Converting ${url} to data/${resource}.json`);
+        return `data/${resource}.json`;
+      }
     }
     
     // For any other URLs with leading slash, remove it for GitHub Pages
@@ -85,26 +88,47 @@ export const getQueryFn: <T>(options: {
     await throwIfResNotOk(res);
     
     // Safe handling of JSON response
-    const jsonData = await res.json();
+    let jsonData = await res.json();
     
     // For GitHub Pages deployment, ensure we're returning arrays when expected
     if (isGitHubPages()) {
-      // If endpoint maps to an expected array type, ensure we return an array
+      console.log(`GitHub Pages data for ${url}:`, jsonData);
+      
+      // If endpoint maps to our static JSON files
       if (url.includes('references.json') || url.includes('categories.json') || url.includes('tags.json')) {
-        // If the data is not an array, but is an object with data we need, handle it
-        if (!Array.isArray(jsonData) && typeof jsonData === 'object') {
-          // Try to extract the array from the object if it exists in a property
-          if (jsonData.references) return jsonData.references;
-          if (jsonData.categories) return jsonData.categories;
-          if (jsonData.tags) return jsonData.tags;
+        // Always ensure we return an array
+        if (!Array.isArray(jsonData)) {
+          console.warn(`Data is not an array for ${url}, attempting to convert...`);
           
-          // If none of those exist, try to convert object values to an array
-          const objValues = Object.values(jsonData);
-          if (objValues.length > 0) return objValues;
-          
-          // Last resort, return empty array
-          console.warn(`Response data not in expected format for ${url}`);
-          return [];
+          if (jsonData && typeof jsonData === 'object') {
+            // Try to extract data from common properties
+            if (jsonData.references) {
+              console.log('Found references property, using it');
+              jsonData = jsonData.references;
+            } else if (jsonData.categories) {
+              console.log('Found categories property, using it');
+              jsonData = jsonData.categories;
+            } else if (jsonData.tags) {
+              console.log('Found tags property, using it');
+              jsonData = jsonData.tags;
+            } else if (Object.keys(jsonData).length > 0) {
+              // Convert object to array if it has keys (might be a record/map)
+              console.log('Converting object values to array');
+              jsonData = Object.values(jsonData);
+            } else {
+              console.warn('Could not extract data, returning empty array');
+              jsonData = [];
+            }
+          } else {
+            console.warn('Invalid data format, returning empty array');
+            jsonData = [];
+          }
+        }
+        
+        // Final check to ensure we have a valid array
+        if (!Array.isArray(jsonData)) {
+          console.error('Failed to convert data to array, using empty array');
+          jsonData = [];
         }
       }
     }
