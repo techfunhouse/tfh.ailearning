@@ -1,0 +1,56 @@
+==== HTML Analysis for https://aireferencehub.techfunhouse.com/ ====
+
+== BASE TAG ==
+Found <base> tag with href="/ReferenceViewer/"
+
+== CSS LINKS ==
+1. ./assets/index-DQecbofj.css
+
+== SCRIPT TAGS ==
+1. ./assets/index-Bk9FbnTw.js
+2. https://replit.com/public/js/replit-dev-banner.js
+
+== PATH ANALYSIS ==
+Repository name in paths: YES - PROBLEM DETECTED
+Found 1 occurrences of '/ReferenceViewer/' in the HTML
+
+== SAMPLE CONTEXTS ==
+1. .../ReferenceViewer/...
+
+
+==== FULL HTML CONTENT ====
+
+<!doctype html>
+<html lang="en">
+  <head><base href="/ReferenceViewer/"><script>(function(l){if(l.search[1]==='/'){var decoded=l.search.slice(1).split('<head>').map(function(s){return s.replace(/~and~/g,'<head>')}).join('?');window.history.replaceState(null,null,l.pathname.slice(0,-1)+decoded+l.hash);}}(window.location))</script>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
+    <title>RefHub - Reference Management</title>
+    <meta
+      name="description"
+      content="Your personal reference management system for organizing, searching, and sharing your favorite resources."
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="./assets/index-Bk9FbnTw.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DQecbofj.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
+    <script
+      type="text/javascript"
+      src="https://replit.com/public/js/replit-dev-banner.js"
+    ></script>
+  </body>
+</html>
