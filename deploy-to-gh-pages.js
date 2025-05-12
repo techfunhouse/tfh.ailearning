@@ -44,8 +44,25 @@ try {
 // Step 2: Build the application
 console.log('\n📦 Building the application for GitHub Pages...');
 try {
-  execSync('npm run build -- --mode github-pages', { stdio: 'inherit' });
+  // Create a temporary .env file for GitHub Pages build
+  fs.writeFileSync('.env.local.github-pages', 'VITE_GITHUB_PAGES=true\nVITE_BASE_PATH=/ReferenceViewer/');
+  console.log('✅ Created temporary environment file for GitHub Pages build');
+  
+  // Run standard build - don't use custom mode flag
+  execSync('npm run build', { 
+    stdio: 'inherit',
+    env: { 
+      ...process.env, 
+      VITE_GITHUB_PAGES: 'true', 
+      VITE_BASE_PATH: '/ReferenceViewer/' 
+    }
+  });
   console.log('✅ Build successful');
+  
+  // Clean up temporary file
+  if (fs.existsSync('.env.local.github-pages')) {
+    fs.unlinkSync('.env.local.github-pages');
+  }
 } catch (error) {
   console.error('❌ Build failed:', error.message);
   process.exit(1);
@@ -262,6 +279,7 @@ const notFoundContent = `<!DOCTYPE html>
       
       // If you're creating a Project Pages site and NOT using a custom domain,
       // then set pathSegmentsToKeep to 1 (enterprise users may need to set it to > 1).
+      // For GitHub Pages with a repo name, keep 1 segment (the repo name)
       var pathSegmentsToKeep = 1;
 
       var l = window.location;

@@ -7,12 +7,27 @@ function isGitHubPages(): boolean {
 
 // Get the base path from environment variables or determine dynamically
 const getBasePath = (): string => {
-  const envBasePath = import.meta.env.VITE_BASE_PATH;
-  if (envBasePath) {
+  // First check environment variables
+  if (import.meta.env.VITE_BASE_PATH) {
+    const envBasePath = import.meta.env.VITE_BASE_PATH;
     console.log(`Using base path from environment: ${envBasePath}`);
     return envBasePath;
   }
-  return isGitHubPages() ? '/ReferenceViewer/' : '/';
+  
+  // Next check if we're explicitly in GitHub Pages mode
+  if (import.meta.env.VITE_GITHUB_PAGES === 'true') {
+    console.log('Using GitHub Pages mode from environment variables');
+    return '/ReferenceViewer/';
+  }
+  
+  // Finally, detect GitHub Pages based on hostname
+  if (isGitHubPages()) {
+    console.log('Detected GitHub Pages domain, using ReferenceViewer path');
+    return '/ReferenceViewer/';
+  }
+  
+  // Default for local/Replit development
+  return '/';
 };
 
 // Helper to adjust API URLs for GitHub Pages deployment
