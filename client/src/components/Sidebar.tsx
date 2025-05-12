@@ -409,6 +409,24 @@ export default function Sidebar({
   const onSubmitEditTag = (data: { name: string }) => {
     updateTagMutation.mutate({ id: editingTagId, name: data.name });
   };
+  
+  // Handle category deletion confirmation
+  const handleConfirmCategoryDelete = () => {
+    if (categoryToDelete) {
+      deleteCategoryMutation.mutate(categoryToDelete.id);
+      setIsDeleteCategoryDialogOpen(false);
+      setCategoryToDelete(null);
+    }
+  };
+  
+  // Handle tag deletion confirmation
+  const handleConfirmTagDelete = () => {
+    if (tagToDelete) {
+      deleteTagMutation.mutate(tagToDelete.id);
+      setIsDeleteTagDialogOpen(false);
+      setTagToDelete(null);
+    }
+  };
 
   return (
     <aside className="bg-card shadow-sm lg:w-72 lg:flex-shrink-0 border-r border-border/50">
@@ -845,5 +863,35 @@ export default function Sidebar({
       
 
     </aside>
+    
+    {/* Category delete confirmation dialog */}
+    <ConfirmationDialog
+      isOpen={isDeleteCategoryDialogOpen}
+      title="Delete Category"
+      description={categoryToDelete ? `Are you sure you want to delete "${categoryToDelete.name}" category? All references in this category will be affected.` : ''}
+      confirmText="Delete"
+      cancelText="Cancel"
+      variant="danger"
+      onConfirm={handleConfirmCategoryDelete}
+      onCancel={() => {
+        setIsDeleteCategoryDialogOpen(false);
+        setCategoryToDelete(null);
+      }}
+    />
+    
+    {/* Tag delete confirmation dialog */}
+    <ConfirmationDialog
+      isOpen={isDeleteTagDialogOpen}
+      title="Delete Tag"
+      description={tagToDelete ? `Are you sure you want to delete "${tagToDelete.name}" tag? This will remove the tag from all references.` : ''}
+      confirmText="Delete"
+      cancelText="Cancel"
+      variant="danger"
+      onConfirm={handleConfirmTagDelete}
+      onCancel={() => {
+        setIsDeleteTagDialogOpen(false);
+        setTagToDelete(null);
+      }}
+    />
   );
 }
