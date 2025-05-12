@@ -27,13 +27,12 @@ interface ReferenceCardProps {
 
 export default function ReferenceCard({ reference, isAdmin, onEdit }: ReferenceCardProps) {
   const { id, title, link, description, tags, category, thumbnail, createdBy, updatedAt } = reference;
-  // Handle potentially undefined love properties by providing defaults
-  const lovedBy = reference.lovedBy || [];
+  // Handle potentially undefined love count by providing default
   const loveCount = reference.loveCount || 0;
   
   const { user } = useAuth();
   const { toast } = useToast();
-  const [isLoved, setIsLoved] = useState(user ? lovedBy.includes(user.id) : false);
+  const [isLoved, setIsLoved] = useState(false); // Always start as not loved
   const [localLoveCount, setLocalLoveCount] = useState(loveCount);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   
@@ -47,11 +46,10 @@ export default function ReferenceCard({ reference, isAdmin, onEdit }: ReferenceC
       return response.json();
     },
     onSuccess: (data) => {
-      // Update local state with defaults in case data is incomplete
-      const responseLovedBy = data.lovedBy || [];
+      // Update local state with default count in case data is incomplete
       const responseLoveCount = data.loveCount || 0;
       
-      setIsLoved(user ? responseLovedBy.includes(user.id) : false);
+      setIsLoved(true); // Set to loved after clicking
       setLocalLoveCount(responseLoveCount);
       
       // Invalidate cache to update references
