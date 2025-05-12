@@ -56,21 +56,35 @@ function getAdjustedUrl(url: string): string {
     // Log for debugging
     console.log(`Adjusting URL for GitHub Pages: ${url}`);
     
+    // Check if we're using a custom domain
+    const usingCustomDomain = isCustomDomain();
+    if (usingCustomDomain) {
+      console.log(`Using custom domain adjustments for: ${url}`);
+    }
+    
     // On GitHub Pages, we need to use pre-loaded mock data
     // This converts API calls like '/api/references' to 'data/references.json'
     if (url.startsWith('/api/')) {
       const resource = url.replace('/api/', '');
       if (resource === 'references' || resource === 'categories' || resource === 'tags') {
-        // GitHub Pages data path uses repo name in the path
-        const basePath = getBasePath().replace(/\/$/, ''); // Remove trailing slash if present
-        const dataUrl = `${basePath}/data/${resource}.json`;
-        console.log(`GitHub Pages: Converting ${url} to ${dataUrl}`);
-        return dataUrl;
+        // GitHub Pages data path
+        if (usingCustomDomain) {
+          // For custom domains, use root-relative paths
+          const dataUrl = `/data/${resource}.json`;
+          console.log(`Custom Domain: Converting ${url} to ${dataUrl}`);
+          return dataUrl;
+        } else {
+          // For github.io domain, use repository name in the path
+          const basePath = getBasePath().replace(/\/$/, ''); // Remove trailing slash if present
+          const dataUrl = `${basePath}/data/${resource}.json`;
+          console.log(`GitHub Pages: Converting ${url} to ${dataUrl}`);
+          return dataUrl;
+        }
       }
     }
     
-    // Handle asset paths by adding repository name prefix
-    const basePath = getBasePath().replace(/\/$/, ''); // Remove trailing slash if present
+    // Handle asset paths by adding repository name prefix if needed
+    const basePath = usingCustomDomain ? '' : getBasePath().replace(/\/$/, ''); // Remove trailing slash if present
     
     // Common static asset path patterns
     const staticPathPatterns = ['/assets/', '/images/', '/static/', '/data/'];

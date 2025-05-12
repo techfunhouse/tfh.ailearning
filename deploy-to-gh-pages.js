@@ -20,7 +20,13 @@ const rootDir = path.join(__dirname, '.');
 // Load environment variables from .env.local file
 dotenv.config({ path: path.join(rootDir, '.env.local') });
 console.log('Loaded environment variables from .env.local');
+
+// Also load GitHub Pages specific environment variables
+dotenv.config({ path: path.join(rootDir, '.env.github-pages') });
+console.log('Loaded environment variables from .env.github-pages');
+
 const username = process.env.GITHUB_USERNAME || 'username';
+const customDomain = process.env.CUSTOM_DOMAIN;
 
 
 // Configuration - edit these values as needed
@@ -244,16 +250,34 @@ if (customDomain) {
   indexContent = indexContent.replace(/(href|src)="\/assets\//g, `$1="/${REPO_NAME}/assets/`);
   indexContent = indexContent.replace(/(href|src)="\/images\//g, `$1="/${REPO_NAME}/images/`);
 }
-indexContent = indexContent.replace(/(href|src)="\/data\//g, `$1="/${REPO_NAME}/data/`);
-
-// Fix other asset references that might not have the leading slash
-indexContent = indexContent.replace(/(href|src)="assets\//g, `$1="/${REPO_NAME}/assets/`);
-indexContent = indexContent.replace(/(href|src)="images\//g, `$1="/${REPO_NAME}/images/`);
-indexContent = indexContent.replace(/(href|src)="data\//g, `$1="/${REPO_NAME}/data/`);
-
-// Look for CSS url() references
-indexContent = indexContent.replace(/url\(\/assets\//g, `url(/${REPO_NAME}/assets/`);
-indexContent = indexContent.replace(/url\(\/images\//g, `url(/${REPO_NAME}/images/`);
+// Update paths based on whether we're using a custom domain
+if (customDomain) {
+  // For custom domains, use root-relative paths
+  console.log('Using root paths for custom domain');
+  indexContent = indexContent.replace(/(href|src)="\/data\//g, `$1="/data/`);
+  
+  // Fix references without leading slash
+  indexContent = indexContent.replace(/(href|src)="assets\//g, `$1="/assets/`);
+  indexContent = indexContent.replace(/(href|src)="images\//g, `$1="/images/`);
+  indexContent = indexContent.replace(/(href|src)="data\//g, `$1="/data/`);
+  
+  // Look for CSS url() references
+  indexContent = indexContent.replace(/url\(\/assets\//g, `url(/assets/`);
+  indexContent = indexContent.replace(/url\(\/images\//g, `url(/images/`);
+} else {
+  // For GitHub Pages without custom domain, include the repo name
+  console.log(`Using /${REPO_NAME}/ paths for GitHub Pages`);
+  indexContent = indexContent.replace(/(href|src)="\/data\//g, `$1="/${REPO_NAME}/data/`);
+  
+  // Fix references without leading slash
+  indexContent = indexContent.replace(/(href|src)="assets\//g, `$1="/${REPO_NAME}/assets/`);
+  indexContent = indexContent.replace(/(href|src)="images\//g, `$1="/${REPO_NAME}/images/`);
+  indexContent = indexContent.replace(/(href|src)="data\//g, `$1="/${REPO_NAME}/data/`);
+  
+  // Look for CSS url() references
+  indexContent = indexContent.replace(/url\(\/assets\//g, `url(/${REPO_NAME}/assets/`);
+  indexContent = indexContent.replace(/url\(\/images\//g, `url(/${REPO_NAME}/images/`);
+}
 
 // Add detailed debug info to the page
 console.log('Adding debugging info for troubleshooting');
