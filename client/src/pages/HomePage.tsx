@@ -83,13 +83,13 @@ export default function HomePage() {
   });
 
   // Fetch categories
-  const { data: categoriesData } = useQuery({
+  const { data: categoriesData } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
     staleTime: Infinity, // Categories don't change often
   });
 
   // Fetch tags
-  const { data: tagsData } = useQuery({
+  const { data: tagsData } = useQuery<Tag[]>({
     queryKey: ["/api/tags"],
     staleTime: Infinity, // Tags don't change often
   });
@@ -136,15 +136,14 @@ export default function HomePage() {
   useEffect(() => {
     if (categoriesData) {
       // Ensure we're working with arrays
-      const safeData = Array.isArray(categoriesData) ? categoriesData : 
+      const safeData = (Array.isArray(categoriesData) ? categoriesData : 
                       (typeof categoriesData === 'object' && categoriesData !== null) ? 
-                        Object.values(categoriesData) : [];
+                        Object.values(categoriesData) : []) as Array<Record<string, any>>;
                         
       // Make sure each category has required properties
-      const normalizedData = safeData.map(cat => ({
-        ...cat,
-        id: cat.id || `temp-${Math.random().toString(36).substring(2, 9)}`,
-        name: cat.name || 'Uncategorized'
+      const normalizedData = safeData.map((cat) => ({
+        id: cat?.id || `temp-${Math.random().toString(36).substring(2, 9)}`,
+        name: cat?.name || 'Uncategorized'
       }));
       
       setCategories(normalizedData);
@@ -155,15 +154,14 @@ export default function HomePage() {
   useEffect(() => {
     if (tagsData) {
       // Ensure we're working with arrays
-      const safeData = Array.isArray(tagsData) ? tagsData : 
+      const safeData = (Array.isArray(tagsData) ? tagsData : 
                       (typeof tagsData === 'object' && tagsData !== null) ? 
-                        Object.values(tagsData) : [];
+                        Object.values(tagsData) : []) as Array<Record<string, any>>;
                         
       // Make sure each tag has required properties
-      const normalizedData = safeData.map(tag => ({
-        ...tag,
-        id: tag.id || `temp-${Math.random().toString(36).substring(2, 9)}`,
-        name: tag.name || 'Unnamed'
+      const normalizedData = safeData.map((tag) => ({
+        id: tag?.id || `temp-${Math.random().toString(36).substring(2, 9)}`,
+        name: tag?.name || 'Unnamed'
       }));
       
       setTags(normalizedData);
@@ -788,8 +786,8 @@ export default function HomePage() {
       <AddEditReferenceDialog
         isOpen={isAddDialogOpen}
         reference={editingReference}
-        categories={categoriesData as Category[] || []}
-        tags={tagsData as Tag[] || []}
+        categories={categoriesData || []}
+        tags={tagsData || []}
         onClose={handleCloseDialog}
       />
       
