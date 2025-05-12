@@ -439,8 +439,9 @@ export default function HomePage() {
               </div>
 
               {/* Category summary cards */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-                <Card className="bg-primary/5 border-primary/20">
+              <div className="flex gap-3 mb-6 overflow-x-auto pb-2 scrollbar-hide">
+                {/* Total card - fixed and always visible */}
+                <Card className="bg-primary/5 border-primary/20 flex-shrink-0 min-w-[150px]">
                   <CardContent className="p-4 flex justify-between items-center">
                     <div>
                       <p className="text-xs text-muted-foreground">Total</p>
@@ -454,8 +455,13 @@ export default function HomePage() {
                   </CardContent>
                 </Card>
 
-                {categoriesData?.slice(0, 3).map((category) => (
-                  <Card key={category.id} className="bg-muted/30">
+                {/* Scrollable category cards */}
+                {categoriesData?.map((category) => (
+                  <Card 
+                    key={category.id} 
+                    className="bg-muted/30 flex-shrink-0 min-w-[150px] hover:bg-muted/50 transition-colors cursor-pointer"
+                    onClick={() => handleCategoryChange([category.name.toLowerCase()])}
+                  >
                     <CardContent className="p-4">
                       <div className="flex justify-between items-center">
                         <p className="text-xs text-muted-foreground capitalize">

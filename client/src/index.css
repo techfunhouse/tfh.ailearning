@@ -104,6 +104,15 @@
     @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
   }
   
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;            /* Chrome, Safari and Opera */
+  }
+  
   .icon-container {
     @apply flex items-center justify-center h-10 w-10 rounded-full bg-primary/10 text-primary;
   }
