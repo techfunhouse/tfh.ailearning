@@ -18,7 +18,16 @@ const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
 const PUBLIC_DATA_DIR = path.join(__dirname, 'public', 'data');
 const DIST_DATA_DIR = path.join(__dirname, 'dist', 'public', 'data');
-const DEPLOY_DATA_DIR = path.join(__dirname, 'gh-pages-deploy', 'data');
+const DEPLOY_DATA_DIR = path.join(__dirname, 'deploy', 'data');
+
+// Check if we're in a custom domain environment
+const envFile = path.join(__dirname, '.env.github-pages');
+let isCustomDomain = false;
+if (fs.existsSync(envFile)) {
+  const envContent = fs.readFileSync(envFile, 'utf8');
+  isCustomDomain = envContent.includes('VITE_USE_CUSTOM_DOMAIN=true');
+  console.log(`Custom domain mode: ${isCustomDomain ? 'ON' : 'OFF'}`);
+}
 
 // Ensure the directories exist
 [PUBLIC_DATA_DIR, DIST_DATA_DIR, DEPLOY_DATA_DIR].forEach(dir => {
@@ -104,12 +113,12 @@ dataFiles.forEach(file => {
       }
       
       // Write to deployment directory if it exists
-      if (fs.existsSync(DEPLOY_DATA_DIR)) {
+      if (fs.existsSync(path.dirname(DEPLOY_DATA_DIR))) {
         fs.writeFileSync(
           path.join(DEPLOY_DATA_DIR, file.target), 
           JSON.stringify(exportData, null, 2)
         );
-        console.log(`✅ Exported ${file.source} to gh-pages-deploy/data/${file.target}`);
+        console.log(`✅ Exported ${file.source} to deploy/data/${file.target}`);
       }
     } catch (error) {
       console.error(`❌ Error exporting ${file.source}:`, error.message);

@@ -1,0 +1,190 @@
+{
+  "users": [
+    {
+      "username": "admin",
+      "password": "$2b$10$LRE9MqSEf9W3yOr9ylg.AuXnFe1.abzpks3iG4DJQEDeJmS2jiOwC",
+      "isAdmin": true,
+      "id": 1
+    },
+    {
+      "username": "user",
+      "password": "$2b$10$rdbRcVL/qSBKphGeNbWszu7zfFu83/E5g/exr8dkzlNw7oljJjMB2",
+      "isAdmin": false,
+      "id": 2
+    }
+  ],
+  "references": [
+    {
+      "title": "Modern JavaScript Techniques",
+      "link": "https://example.com/javascript-techniques",
+      "description": "A comprehensive guide to advanced JavaScript patterns and performance optimization techniques.",
+      "category": "programming",
+      "tags": [
+        "javascript",
+        "frontend",
+        "performance"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "createdBy": "admin",
+      "id": "9c7d1b28-402e-4677-91f9-3a4e98da3e89",
+      "createdAt": "2025-05-10T09:31:01.449Z",
+      "updatedAt": "2025-05-10T09:31:01.449Z"
+    },
+    {
+      "title": "UI/UX Design Principles",
+      "link": "https://example.com/uiux-design",
+      "description": "Essential principles for creating intuitive and aesthetically pleasing user interfaces.",
+      "category": "design",
+      "tags": [
+        "ui/ux",
+        "design",
+        "frontend"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1516031190212-da133013de50?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "createdBy": "admin",
+      "id": "2f315e7c-d153-4f1b-8035-2510a14dbab1",
+      "createdAt": "2025-05-10T09:31:01.450Z",
+      "updatedAt": "2025-05-10T09:31:01.450Z"
+    },
+    {
+      "title": "Data Visualization Techniques",
+      "link": "https://example.com/data-viz",
+      "description": "Methods for effectively visualizing complex data sets to derive meaningful insights.",
+      "category": "research",
+      "tags": [
+        "algorithm",
+        "data",
+        "visualization"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "createdBy": "admin",
+      "id": "9c158e19-8186-4218-a7e5-9fbd3280c31a",
+      "createdAt": "2025-05-10T09:31:01.450Z",
+      "updatedAt": "2025-05-10T09:31:01.450Z"
+    },
+    {
+      "title": "Essential Developer Tools",
+      "link": "https://example.com/dev-tools",
+      "description": "A collection of must-have tools and utilities for modern software development workflows.",
+      "category": "tools",
+      "tags": [
+        "productivity",
+        "tools",
+        "development"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "createdBy": "admin",
+      "id": "0275cd13-5f51-4e99-ad73-8249c682b0ba",
+      "createdAt": "2025-05-10T09:31:01.450Z",
+      "updatedAt": "2025-05-10T09:31:01.450Z"
+    },
+    {
+      "title": "Database Optimization Patterns",
+      "link": "https://example.com/db-optimization",
+      "description": "Strategies and techniques for optimizing database performance in high-scale applications.",
+      "category": "programming",
+      "tags": [
+        "database",
+        "backend",
+        "performance"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "createdBy": "admin",
+      "id": "a03c88a6-f794-4545-b5d4-866bf11b2214",
+      "createdAt": "2025-05-10T09:31:01.450Z",
+      "updatedAt": "2025-05-10T09:31:01.450Z"
+    },
+    {
+      "title": "Mobile UX Design Patterns",
+      "link": "https://example.com/mobile-ux",
+      "description": "Best practices for creating intuitive and engaging user experiences for mobile applications.",
+      "category": "design",
+      "tags": [
+        "mobile",
+        "ui/ux",
+        "frontend"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "createdBy": "admin",
+      "id": "c9643501-bfd6-4765-be86-7f38d682695d",
+      "createdAt": "2025-05-10T09:31:01.450Z",
+      "updatedAt": "2025-05-10T09:31:01.450Z"
+    }
+  ],
+  "categories": [
+    {
+      "name": "Programming",
+      "id": "3f091fa4-cb9b-4327-9bcf-6c9702804248"
+    },
+    {
+      "name": "Design",
+      "id": "96fa6721-17a5-465b-baa3-22364e5c02b4"
+    },
+    {
+      "name": "Research",
+      "id": "9d8869af-4fb5-498d-8a0d-6058378a875b"
+    },
+    {
+      "name": "Tools",
+      "id": "bc4291b8-eb4b-4a48-afdb-d9873d87eb7f"
+    }
+  ],
+  "tags": [
+    {
+      "name": "javascript",
+      "id": "9b70e2c9-dbd6-4dda-889f-98ea19253a3a"
+    },
+    {
+      "name": "ui/ux",
+      "id": "8df4c1a9-8ea4-43ff-9bcc-4e17b0f63a8b"
+    },
+    {
+      "name": "algorithm",
+      "id": "84234441-36fa-4334-9094-ee62ca3e8370"
+    },
+    {
+      "name": "database",
+      "id": "6bede948-bd4c-4ede-a2d1-bd4412b051bd"
+    },
+    {
+      "name": "frontend",
+      "id": "9a1f0c4e-ff11-4ecc-93c1-0a23d44d841d"
+    },
+    {
+      "name": "backend",
+      "id": "48a65868-188e-476e-94d8-a328c239f00f"
+    },
+    {
+      "name": "mobile",
+      "id": "869ccbf5-8720-452e-87da-40b2fde30dc7"
+    },
+    {
+      "name": "productivity",
+      "id": "dc25c343-3786-4a19-8974-8f1196e6546e"
+    },
+    {
+      "name": "tools",
+      "id": "60308cf6-a966-4af6-b343-392d68c50a23"
+    },
+    {
+      "name": "data",
+      "id": "fa133faa-95a0-4b09-9dc7-990fb5bdbe6c"
+    },
+    {
+      "name": "visualization",
+      "id": "3195ce33-ef41-43a5-a12b-238a5d20ad3a"
+    },
+    {
+      "name": "design",
+      "id": "d8514721-b69f-4733-ad3d-4b77e16952ba"
+    },
+    {
+      "name": "development",
+      "id": "aaf027b8-757d-4e91-8129-75dc9aed977e"
+    },
+    {
+      "name": "performance",
+      "id": "ef6e0ff1-aa7e-4a70-98ce-3fd7a1af156a"
+    }
+  ]
+}
