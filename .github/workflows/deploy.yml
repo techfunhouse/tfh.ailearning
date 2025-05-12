@@ -118,7 +118,19 @@ jobs:
           EOL
       
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: deploy
-          branch: gh-pages
+        # Use direct git commands for more reliability
+        run: |
+          echo "Deploying to GitHub Pages branch..."
+          cd deploy
+          
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+          git init
+          git add -A
+          git commit -m "Deploy to GitHub Pages"
+          
+          # Force push to the gh-pages branch
+          git push -f https://x-access-token:${{ github.token }}@github.com/${{ github.repository }} HEAD:gh-pages
+          
+          echo "✅ Successfully deployed to GitHub Pages"
