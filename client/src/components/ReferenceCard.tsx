@@ -3,7 +3,7 @@ import { Reference } from '@/types';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Edit, ExternalLink, Calendar, User, Heart } from 'lucide-react';
+import { Edit, ExternalLink, Calendar, User, Heart, Trash2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { getTagColor, getCategoryColor } from '@/lib/utils';
 import { useState } from 'react';
@@ -23,9 +23,10 @@ interface ReferenceCardProps {
   reference: Reference;
   isAdmin: boolean;
   onEdit: () => void;
+  onDelete?: (id: string) => void;
 }
 
-export default function ReferenceCard({ reference, isAdmin, onEdit }: ReferenceCardProps) {
+export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete }: ReferenceCardProps) {
   const { id, title, link, description, tags, category, thumbnail, createdBy, updatedAt } = reference;
   // Handle potentially undefined love count by providing default
   const loveCount = reference.loveCount || 0;
@@ -96,9 +97,45 @@ export default function ReferenceCard({ reference, isAdmin, onEdit }: ReferenceC
     window.open(link, '_blank', 'noopener,noreferrer');
   };
   
+  // Delete mutation
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest('DELETE', `/api/references/${id}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Reference deleted",
+        description: "The reference was successfully deleted",
+      });
+      
+      // Invalidate cache to update references
+      queryClient.invalidateQueries({ queryKey: ['/api/references'] });
+    },
+    onError: (error) => {
+      toast({
+        variant: 'destructive',
+        title: "Error",
+        description: "Failed to delete reference. Please try again.",
+      });
+      console.error("Error deleting reference:", error);
+    }
+  });
+
   const handleEditClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent opening the dialog
     onEdit();
+  };
+  
+  // Handle delete button click
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent opening the detail dialog
+    if (confirm("Are you sure you want to delete this reference?")) {
+      deleteMutation.mutate();
+      if (onDelete) {
+        onDelete(id);
+      }
+    }
   };
 
   return (
@@ -118,17 +155,28 @@ export default function ReferenceCard({ reference, isAdmin, onEdit }: ReferenceC
             }}
           />
           
-          {/* Admin edit button */}
+          {/* Admin edit and delete buttons */}
           {isAdmin && (
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="absolute top-2 right-2 h-8 w-8 bg-white/90 rounded-full shadow-md hover:bg-white"
-              onClick={handleEditClick}
-            >
-              <Edit className="h-4 w-4 text-primary" />
-              <span className="sr-only">Edit</span>
-            </Button>
+            <div className="absolute top-2 right-2 flex gap-2">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="h-8 w-8 bg-white/90 rounded-full shadow-md hover:bg-white"
+                onClick={handleEditClick}
+              >
+                <Edit className="h-4 w-4 text-primary" />
+                <span className="sr-only">Edit</span>
+              </Button>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="h-8 w-8 bg-white/90 rounded-full shadow-md hover:bg-white hover:bg-red-50"
+                onClick={handleDeleteClick}
+              >
+                <Trash2 className="h-4 w-4 text-red-500" />
+                <span className="sr-only">Delete</span>
+              </Button>
+            </div>
           )}
           
           {/* Category badge */}
