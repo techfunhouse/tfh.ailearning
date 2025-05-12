@@ -164,10 +164,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const referenceData = validationResult.data;
       
-      // Add createdBy from session user
-      referenceData.createdBy = req.session!.user!.username;
+      // For create, we'll pass the user's username separately since it's omitted from the schema
+      const createdBy = req.session!.user!.username;
       
-      const reference = await storage.createReference(referenceData);
+      const reference = await storage.createReference(referenceData, createdBy);
       return res.status(201).json(reference);
     } catch (error) {
       console.error("Error creating reference:", error);

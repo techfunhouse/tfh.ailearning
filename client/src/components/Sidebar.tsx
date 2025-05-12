@@ -570,28 +570,27 @@ export default function Sidebar({
                 <PlusCircle className="h-4 w-4 text-muted-foreground hover:text-primary" />
               </Button>
             </div>
-
-            <CollapsibleContent>
-              <div className="ml-6 mb-3">
+            
+            <CollapsibleContent className="ml-6">
+              <div className="mb-3">
                 <Input
-                  placeholder="Filter tags..."
+                  placeholder="Search tags..."
                   value={tagFilter}
                   onChange={(e) => setTagFilter(e.target.value)}
-                  className="h-8 text-sm bg-muted/40"
+                  className="h-8 text-sm"
                 />
               </div>
               
-              <div className="ml-6 flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-1.5 mb-2">
                 {filteredTags.length > 0 ? (
                   filteredTags.map(tag => (
                     <Badge
                       key={tag.id}
-                      variant={selectedTags.includes(tag.name.toLowerCase()) ? "default" : "outline"}
-                      className={`cursor-pointer transition-all flex items-center gap-1 ${
+                      className={`${
                         selectedTags.includes(tag.name.toLowerCase())
-                          ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                          : `hover:bg-muted ${getTagColor(tag.name)}`
-                      }`}
+                          ? 'bg-primary text-primary-foreground'
+                          : getTagColor(tag.name)
+                      } cursor-pointer`}
                     >
                       <span onClick={() => onTagSelect(tag.name.toLowerCase())}>
                         {tag.name}
@@ -701,36 +700,75 @@ export default function Sidebar({
                   <FormItem>
                     <FormLabel>Category Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter category name" {...field} autoFocus />
+                      <Input placeholder="Enter category name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <DialogFooter>
-                <Button 
-                  type="button" 
-                  variant="outline" 
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
                   onClick={() => setIsAddCategoryOpen(false)}
                 >
                   Cancel
                 </Button>
                 <Button 
                   type="submit" 
+                  size="sm"
                   disabled={addCategoryMutation.isPending}
-                  className="gap-1"
                 >
-                  {addCategoryMutation.isPending ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Adding...
-                    </>
-                  ) : (
-                    <>
-                      <Save className="h-4 w-4" />
-                      Add Category
-                    </>
-                  )}
+                  {addCategoryMutation.isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                  Add Category
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Category Dialog */}
+      <Dialog open={isEditCategoryOpen} onOpenChange={setIsEditCategoryOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <PencilIcon className="h-5 w-5 text-primary" />
+              Edit Category
+            </DialogTitle>
+          </DialogHeader>
+          <Form {...editCategoryForm}>
+            <form onSubmit={editCategoryForm.handleSubmit(onSubmitEditCategory)} className="space-y-4">
+              <FormField
+                control={editCategoryForm.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter category name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsEditCategoryOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  type="submit" 
+                  size="sm"
+                  disabled={updateCategoryMutation.isPending}
+                >
+                  {updateCategoryMutation.isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                  Save Changes
                 </Button>
               </DialogFooter>
             </form>
@@ -756,103 +794,46 @@ export default function Sidebar({
                   <FormItem>
                     <FormLabel>Tag Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter tag name" {...field} autoFocus />
+                      <Input placeholder="Enter tag name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <DialogFooter>
-                <Button 
-                  type="button" 
-                  variant="outline" 
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
                   onClick={() => setIsAddTagOpen(false)}
                 >
                   Cancel
                 </Button>
                 <Button 
                   type="submit" 
+                  size="sm"
                   disabled={addTagMutation.isPending}
-                  className="gap-1"
                 >
-                  {addTagMutation.isPending ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Adding...
-                    </>
-                  ) : (
-                    <>
-                      <Save className="h-4 w-4" />
-                      Add Tag
-                    </>
-                  )}
+                  {addTagMutation.isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                  Add Tag
                 </Button>
               </DialogFooter>
             </form>
           </Form>
         </DialogContent>
       </Dialog>
-      
-      {/* Edit Category Dialog */}
-      <Dialog open={isEditCategoryOpen} onOpenChange={setIsEditCategoryOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Book className="h-5 w-5" />
-              Edit Category
-            </DialogTitle>
-          </DialogHeader>
-          
-          <Form {...editCategoryForm}>
-            <form onSubmit={editCategoryForm.handleSubmit(onSubmitEditCategory)} className="space-y-4 pt-2">
-              <FormField
-                control={editCategoryForm.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Category Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter category name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <DialogFooter>
-                <Button 
-                  variant="outline" 
-                  type="button" 
-                  onClick={() => setIsEditCategoryOpen(false)}
-                >
-                  Cancel
-                </Button>
-                <Button 
-                  type="submit" 
-                  disabled={updateCategoryMutation.isPending}
-                  className="gap-1"
-                >
-                  {updateCategoryMutation.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
-                  Update Category
-                </Button>
-              </DialogFooter>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
-      
+
       {/* Edit Tag Dialog */}
       <Dialog open={isEditTagOpen} onOpenChange={setIsEditTagOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <TagIcon className="h-5 w-5" />
+              <PencilIcon className="h-5 w-5 text-primary" />
               Edit Tag
             </DialogTitle>
           </DialogHeader>
-          
           <Form {...editTagForm}>
-            <form onSubmit={editTagForm.handleSubmit(onSubmitEditTag)} className="space-y-4 pt-2">
+            <form onSubmit={editTagForm.handleSubmit(onSubmitEditTag)} className="space-y-4">
               <FormField
                 control={editTagForm.control}
                 name="name"
@@ -866,22 +847,22 @@ export default function Sidebar({
                   </FormItem>
                 )}
               />
-              
               <DialogFooter>
-                <Button 
-                  variant="outline" 
-                  type="button" 
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
                   onClick={() => setIsEditTagOpen(false)}
                 >
                   Cancel
                 </Button>
                 <Button 
                   type="submit" 
+                  size="sm"
                   disabled={updateTagMutation.isPending}
-                  className="gap-1"
                 >
-                  {updateTagMutation.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
-                  Update Tag
+                  {updateTagMutation.isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                  Save Changes
                 </Button>
               </DialogFooter>
             </form>
