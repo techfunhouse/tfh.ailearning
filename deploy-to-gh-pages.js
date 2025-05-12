@@ -26,7 +26,6 @@ dotenv.config({ path: path.join(rootDir, '.env.github-pages') });
 console.log('Loaded environment variables from .env.github-pages');
 
 const username = process.env.GITHUB_USERNAME || 'username';
-const customDomain = process.env.CUSTOM_DOMAIN;
 
 
 // Configuration - edit these values as needed

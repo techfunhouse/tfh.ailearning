@@ -17,6 +17,7 @@ console.log('RefHub App Starting:');
 console.log('- Environment mode:', import.meta.env.MODE);
 console.log('- GitHub Pages mode:', import.meta.env.VITE_GITHUB_PAGES ? 'Yes' : 'No');
 console.log('- Custom domain:', isCustomDomain() ? 'Yes' : 'No');
+console.log('- Custom domain flag:', import.meta.env.VITE_USE_CUSTOM_DOMAIN || 'Not set');
 console.log('- Domain:', window.location.hostname);
 console.log('- Base path:', import.meta.env.VITE_BASE_PATH || 'Default (/)');
 

@@ -7,6 +7,13 @@ function isGitHubPages(): boolean {
 
 // Check if we're using a custom domain
 function isCustomDomain(): boolean {
+  // First check if we have an explicit flag set
+  if (import.meta.env.VITE_USE_CUSTOM_DOMAIN === 'true') {
+    console.log('Using custom domain explicitly set in environment variables');
+    return true;
+  }
+  
+  // Otherwise detect based on hostname
   const hostname = window.location.hostname;
   return !hostname.includes('github.io') && 
          !hostname.includes('replit.app') && 
