@@ -26,28 +26,53 @@ Your personal reference management system for organizing, searching, and sharing
 
 ## Deployment to GitHub Pages
 
-This project is configured for deployment to GitHub Pages using GitHub Actions.
+This project provides a specialized script for GitHub Pages deployment that handles all necessary adjustments for proper asset paths and routing.
 
-### Manual Deployment
+### Using the Deployment Script (Recommended)
 
-If you prefer to deploy manually:
+The easiest way to deploy is using our deployment script:
 
-1. Build the application: `npm run build`
-2. Create a `.nojekyll` file in the `dist/public` directory to bypass Jekyll processing
-3. Copy the `index.html` file to `404.html` for client-side routing
-4. Push the contents of the `dist/public` directory to your GitHub repository's `gh-pages` branch
+1. Set your GitHub username in an environment variable (optional):
+   ```bash
+   export GITHUB_USERNAME=yourusername
+   ```
 
-### Automated Deployment with GitHub Actions
+2. Run the deployment script:
+   ```bash
+   node deploy-to-gh-pages.js
+   ```
 
-This repository includes a GitHub Actions workflow that automatically deploys the application to GitHub Pages whenever changes are pushed to the main branch.
+3. The script will:
+   - Export the data files for static hosting
+   - Build the application
+   - Prepare a deployment directory with all necessary files
+   - Configure paths correctly for GitHub Pages
+   - Create special 404.html for SPA routing
 
-**To configure GitHub Pages:**
+4. Deploy the contents of the `gh-pages-deploy` directory to your GitHub Pages branch:
+   ```bash
+   cd gh-pages-deploy
+   git init
+   git checkout -b gh-pages
+   git add .
+   git commit -m "Deploy to GitHub Pages"
+   git remote add origin https://github.com/yourusername/ReferenceViewer.git
+   git push -f origin gh-pages
+   ```
 
-1. Go to your repository settings
-2. Navigate to the "Pages" section
-3. Set the Source to "Deploy from a branch"
-4. Select the `gh-pages` branch and the `/ (root)` folder
-5. Save your changes
+5. Access your deployed app at: `https://yourusername.github.io/ReferenceViewer/`
+
+### Troubleshooting GitHub Pages Deployment
+
+If you encounter issues with paths or resources not loading:
+
+1. **404 Errors for Data Files**: Make sure the data files are correctly exported to the `data` directory and the paths don't have leading slashes.
+
+2. **Asset Paths**: Verify that asset paths in the HTML use relative paths without leading slashes.
+
+3. **SPA Routing**: The 404.html file should be properly configured to redirect to the main application with the correct path segments.
+
+4. **Base Path**: The `<base>` tag in the HTML head should point to the correct repository name without a trailing slash.
 
 ## GitHub Sync Feature
 

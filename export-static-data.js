@@ -17,9 +17,10 @@ const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, 'data');
 const PUBLIC_DATA_DIR = path.join(__dirname, 'public', 'data');
 const DIST_DATA_DIR = path.join(__dirname, 'dist', 'public', 'data');
+const DEPLOY_DATA_DIR = path.join(__dirname, 'gh-pages-deploy', 'data');
 
 // Ensure the directories exist
-[PUBLIC_DATA_DIR, DIST_DATA_DIR].forEach(dir => {
+[PUBLIC_DATA_DIR, DIST_DATA_DIR, DEPLOY_DATA_DIR].forEach(dir => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
@@ -72,6 +73,15 @@ dataFiles.forEach(file => {
           JSON.stringify(exportData, null, 2)
         );
         console.log(`✅ Exported ${file.source} to dist/public/data/${file.target}`);
+      }
+      
+      // Write to deployment directory if it exists
+      if (fs.existsSync(DEPLOY_DATA_DIR)) {
+        fs.writeFileSync(
+          path.join(DEPLOY_DATA_DIR, file.target), 
+          JSON.stringify(exportData, null, 2)
+        );
+        console.log(`✅ Exported ${file.source} to gh-pages-deploy/data/${file.target}`);
       }
     } catch (error) {
       console.error(`❌ Error exporting ${file.source}:`, error.message);

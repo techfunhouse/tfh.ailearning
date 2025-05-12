@@ -201,8 +201,8 @@ let indexContent = fs.readFileSync(indexPath, 'utf8');
 indexContent = indexContent.replace(
   '<head>',
   `<head>
-    <!-- GitHub Pages base path -->
-    <base href="/${REPO_NAME}/">
+    <!-- GitHub Pages base path - no trailing slash to help with relative asset paths -->
+    <base href="/${REPO_NAME}">
     <!-- Single Page App fix for GitHub Pages -->
     <script type="text/javascript">
       // When the GitHub Pages site loads, it may be loading a path other than the root.
@@ -217,6 +217,17 @@ indexContent = indexContent.replace(
           );
         }
       }(window.location))
+    </script>
+    <!-- Asset and data path fixer for GitHub Pages -->
+    <script type="text/javascript">
+      // This script fixes asset and data paths by making them relative to the base URL
+      window.fixGitHubPagesPath = function(path) {
+        // Remove leading slash if present
+        if (path && path.startsWith('/')) {
+          return path.substring(1);
+        }
+        return path;
+      }
     </script>`
 );
 
@@ -317,7 +328,7 @@ const specialIndexContent = `<!DOCTYPE html>
       <h1>RefHub</h1>
       <p>A modern reference collection management system for organizing, discovering, and sharing valuable resources.</p>
       <p>Built with React, TypeScript, and modern web technologies.</p>
-      <a href="${REPO_NAME}/" class="button">Go to Application</a>
+      <a href="./${REPO_NAME}" class="button">Go to Application</a>
     </div>
   </body>
 </html>`;

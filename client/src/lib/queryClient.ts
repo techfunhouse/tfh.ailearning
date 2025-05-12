@@ -12,7 +12,13 @@ function getAdjustedUrl(url: string): string {
     // This converts API calls like '/api/references' to 'data/references.json'
     if (url.startsWith('/api/')) {
       const resource = url.replace('/api/', '');
+      // Path without leading slash for GitHub Pages compatibility
       return `data/${resource}.json`;
+    }
+    
+    // For any other URLs with leading slash, remove it for GitHub Pages
+    if (url.startsWith('/')) {
+      return url.substring(1);
     }
   }
   return url;
