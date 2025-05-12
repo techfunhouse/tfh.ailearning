@@ -439,18 +439,20 @@ export default function HomePage() {
               </div>
 
               {/* Category summary cards */}
-              <div className="flex gap-3 mb-6 overflow-x-auto pb-2 scrollbar-hide">
-                {/* Total card - fixed and always visible */}
-                <Card className="bg-primary/5 border-primary/20 flex-shrink-0 min-w-[150px]">
-                  <CardContent className="p-4 flex justify-between items-center">
-                    <div>
-                      <p className="text-xs text-muted-foreground">Total</p>
-                      <p className="text-2xl font-semibold">
-                        {references.length}
-                      </p>
-                    </div>
-                    <div className="icon-container h-10 w-10">
-                      <BookOpen className="h-5 w-5" />
+              <div className="flex flex-col gap-3 mb-6 overflow-y-auto max-h-[320px] scrollbar-hide">
+                {/* Total card - fixed at the top */}
+                <Card className="bg-primary/5 border-primary/20 w-full">
+                  <CardContent className="p-4">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <p className="text-xs text-muted-foreground">Total</p>
+                        <p className="text-2xl font-semibold">
+                          {references.length}
+                        </p>
+                      </div>
+                      <Badge variant="outline" className="h-8 w-8 flex items-center justify-center p-0 rounded-full">
+                        <BookOpen className="h-5 w-5" />
+                      </Badge>
                     </div>
                   </CardContent>
                 </Card>
@@ -459,21 +461,23 @@ export default function HomePage() {
                 {categoriesData?.map((category) => (
                   <Card 
                     key={category.id} 
-                    className="bg-muted/30 flex-shrink-0 min-w-[150px] hover:bg-muted/50 transition-colors cursor-pointer"
+                    className="bg-muted/30 w-full hover:bg-muted/50 transition-colors cursor-pointer"
                     onClick={() => handleCategoryChange([category.name.toLowerCase()])}
                   >
                     <CardContent className="p-4">
                       <div className="flex justify-between items-center">
-                        <p className="text-xs text-muted-foreground capitalize">
-                          {category.name}
-                        </p>
-                        <Badge variant="outline" className="h-5 px-1.5">
+                        <div>
+                          <p className="text-xs text-muted-foreground capitalize">
+                            {category.name}
+                          </p>
+                          <p className="text-2xl font-medium capitalize">
+                            {category.name}
+                          </p>
+                        </div>
+                        <Badge variant="outline" className="h-8 w-8 flex items-center justify-center p-0 rounded-full">
                           {categoryCounts[category.name.toLowerCase()] || 0}
                         </Badge>
                       </div>
-                      <p className="text-lg font-medium capitalize mt-1">
-                        {category.name}
-                      </p>
                     </CardContent>
                   </Card>
                 ))}

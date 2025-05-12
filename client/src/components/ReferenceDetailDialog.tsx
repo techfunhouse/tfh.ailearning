@@ -36,10 +36,9 @@ export default function ReferenceDetailDialog({
   if (!reference) return null;
   
   const { id, title, link, description, tags, category, thumbnail, createdBy, updatedAt } = reference;
-  const lovedBy = reference.lovedBy || [];
   const loveCount = reference.loveCount || 0;
   
-  const [isLoved, setIsLoved] = React.useState(user ? lovedBy.includes(user.id) : false);
+  const [isLoved, setIsLoved] = React.useState(false);
   const [localLoveCount, setLocalLoveCount] = React.useState(loveCount);
   
   // Format the date
