@@ -189,6 +189,7 @@ EOL
           branch: gh-pages  # The branch the action should deploy to
           folder: dist/public  # The folder the action should deploy
           clean: true  # Automatically remove deleted files from deploy branch
+          token: ${{ secrets.PAGES_DEPLOY_TOKEN }}  # Use PAT instead of GITHUB_TOKEN
           
       - name: Output deployment status
         run: |
