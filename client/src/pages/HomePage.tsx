@@ -471,8 +471,16 @@ export default function HomePage() {
 
         {/* Mobile sidebar */}
         {isMobileSidebarOpen && (
-          <div className="lg:hidden fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
-            <div className="fixed inset-y-0 left-0 w-full sm:w-3/4 max-w-sm bg-card shadow-lg animate-in slide-in-from-left">
+          <div 
+            className="lg:hidden fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
+            onClick={(e) => {
+              // Close the sidebar when clicking the backdrop, but not when clicking inside the sidebar
+              if (e.target === e.currentTarget) {
+                setIsMobileSidebarOpen(false);
+              }
+            }}
+          >
+            <div className="fixed inset-y-0 left-0 w-full sm:w-3/4 max-w-sm bg-card shadow-lg animate-in slide-in-from-left" onClick={(e) => e.stopPropagation()}>
               <div className="flex justify-between items-center p-4 border-b">
                 <h2 className="font-semibold">Filters</h2>
                 <Button variant="ghost" size="sm" onClick={toggleMobileSidebar}>
@@ -491,6 +499,7 @@ export default function HomePage() {
                 }}
                 onTagSelect={(tag) => {
                   handleTagSelect(tag);
+                  // Don't close the sidebar when selecting tags so users can select multiple
                 }}
               />
             </div>
