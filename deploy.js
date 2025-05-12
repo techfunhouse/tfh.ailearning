@@ -189,10 +189,47 @@ async function main() {
     
     success('All deployment preparation complete!');
     log('Deploy files are ready in the "deploy" directory');
-    log('Run the following manual commands to complete the deployment:');
-    log('  git add -f deploy');
-    log('  git commit -m "Deploy to GitHub Pages"');
-    log('  git subtree push --prefix deploy origin gh-pages');
+    
+    // Check if we should perform the actual deployment
+    if (process.env.PERFORM_DEPLOYMENT === 'true') {
+      log('Performing automated deployment to GitHub Pages...');
+      
+      try {
+        // Change to the deploy directory
+        process.chdir(DEPLOY_DIR);
+        
+        // Initialize git repository
+        await execPromise('git init');
+        await execPromise('git config user.name "Deployment Script"');
+        await execPromise('git config user.email "deploy@example.com"');
+        
+        // Add all files and commit
+        await execPromise('git add -A');
+        await execPromise('git commit -m "Deploy to GitHub Pages"');
+        
+        // Push to gh-pages branch (force)
+        const remoteUrl = (await execPromise('git config --get remote.origin.url || echo ""')).stdout.trim();
+        const pushCommand = remoteUrl ? 
+          `git push -f ${remoteUrl} HEAD:gh-pages` : 
+          'echo "No remote URL found. Set it with: git remote add origin YOUR_REPO_URL"';
+        
+        await execPromise(pushCommand);
+        success('Successfully deployed to GitHub Pages!');
+      } catch (err) {
+        error(`Deployment to GitHub Pages failed: ${err.message}`);
+        error('You can try manual deployment instead.');
+      }
+    } else {
+      log('For manual deployment, run the following commands:');
+      log('  cd deploy');
+      log('  git init');
+      log('  git add -A');
+      log('  git commit -m "Deploy to GitHub Pages"');
+      log('  git push -f https://github.com/USERNAME/REPO.git HEAD:gh-pages');
+      log('');
+      log('Or run this script with PERFORM_DEPLOYMENT=true to deploy automatically:');
+      log('  PERFORM_DEPLOYMENT=true node deploy.js');
+    }
     
   } catch (err) {
     error(`Deployment process failed: ${err.message}`);
