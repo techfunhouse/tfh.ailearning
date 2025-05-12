@@ -13,7 +13,6 @@ export interface Reference {
   tags: string[];
   thumbnail: string;
   loveCount: number;
-  lovedBy: number[];
   createdBy: string;
   createdAt: string;
   updatedAt: string;
