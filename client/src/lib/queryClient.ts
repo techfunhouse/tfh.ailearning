@@ -9,10 +9,10 @@ function isGitHubPages(): boolean {
 function getAdjustedUrl(url: string): string {
   if (isGitHubPages()) {
     // On GitHub Pages, we need to use pre-loaded mock data
-    // This converts API calls like '/api/references' to './data/references.json'
+    // This converts API calls like '/api/references' to 'data/references.json'
     if (url.startsWith('/api/')) {
       const resource = url.replace('/api/', '');
-      return `./data/${resource}.json`;
+      return `data/${resource}.json`;
     }
   }
   return url;
