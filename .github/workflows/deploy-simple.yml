@@ -1,0 +1,73 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Export Static Data
+        run: |
+          mkdir -p public/data
+          node --experimental-json-modules export-static-data.js
+        
+      - name: Build
+        run: npm run build
+        
+      - name: Create basic required files
+        run: |
+          # Get repository name from GitHub context
+          REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
+          echo "Using repository name: $REPO_NAME"
+          
+          # Create .nojekyll file
+          touch dist/public/.nojekyll
+          
+          # Ensure data folder exists in build output
+          mkdir -p dist/public/data
+          
+          # Copy data files
+          if [ -d "public/data" ]; then
+            cp -r public/data/* dist/public/data/
+          fi
+          
+          # Create basic 404.html file
+          echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Redirecting...</title><script>var pathSegmentsToKeep=1,l=window.location;l.replace(l.protocol+"//"+l.hostname+(l.port?":"+l.port:"")+l.pathname.split("/").slice(0,1+pathSegmentsToKeep).join("/")+"/?/"+l.pathname.slice(1).split("/").slice(pathSegmentsToKeep).join("/").replace(/&/g,"~and~")+(l.search?"&"+l.search.slice(1).replace(/&/g,"~and~"):"")+l.hash);</script></head><body><h1>Redirecting...</h1></body></html>' > dist/public/404.html
+          
+          # Add base tag to index.html if it exists
+          if [ -f "dist/public/index.html" ]; then
+            sed -i "s|<head>|<head><base href=\"/${REPO_NAME}/\"><script>(function(l){if(l.search[1]==='/'){var decoded=l.search.slice(1).split('&').map(function(s){return s.replace(/~and~/g,'&')}).join('?');window.history.replaceState(null,null,l.pathname.slice(0,-1)+decoded+l.hash);}}(window.location))</script>|" dist/public/index.html
+          else
+            # Create simple index.html if it doesn't exist
+            echo "<!DOCTYPE html><html><head><base href=\"/${REPO_NAME}/\"><title>Reference Viewer</title></head><body><h1>Reference Viewer</h1><p>Loading data...</p><script>fetch('./data/references.json').then(r=>r.json()).then(data=>{document.body.innerHTML+='<pre>'+JSON.stringify(data.slice(0,3),null,2)+'</pre>'});</script></body></html>" > dist/public/index.html
+          fi
+      
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: dist/public
+          clean: true
+          token: ${{ secrets.PAGES_DEPLOY_TOKEN }}  # Use PAT instead of GITHUB_TOKEN
