@@ -1,0 +1,74 @@
+[
+  {
+    "name": "ai",
+    "id": "f8e7d6c5-b4a3-2c1d-0e9f-8a7b6c5d4e3f"
+  },
+  {
+    "name": "blockchain",
+    "id": "a1b2c3d4-e5f6-7g8h-9i0j-1k2l3m4n5o6p"
+  },
+  {
+    "name": "security",
+    "id": "p6o5n4m3-l2k1-j0i9-h8g7-f6e5d4c3b2a1"
+  },
+  {
+    "name": "research",
+    "id": "z9y8x7w6-v5u4-t3s2-r1q0-p9o8n7m6l5k4"
+  },
+  {
+    "name": "javascript",
+    "id": "57e9be44-31fd-4f90-a81d-ba2a4e3231d7"
+  },
+  {
+    "name": "ui/ux",
+    "id": "86b1284d-fbf5-4180-855c-b4645775dcc3"
+  },
+  {
+    "name": "algorithm",
+    "id": "cf1d1bfc-8699-4d64-989b-c04a48489be8"
+  },
+  {
+    "name": "database",
+    "id": "863219e6-7a44-486a-bca0-2e69c5b38aaf"
+  },
+  {
+    "name": "frontend",
+    "id": "d1335ec3-02f3-4254-a3ef-2a8dce71e58a"
+  },
+  {
+    "name": "backend",
+    "id": "e2e4ce8f-6dd0-4e1a-99d2-216d33bc6aad"
+  },
+  {
+    "name": "mobile",
+    "id": "c0a28b35-af39-4f00-a812-f983bfe48044"
+  },
+  {
+    "name": "productivity",
+    "id": "feab9538-7e46-4a7b-949e-3b3b93a7e68b"
+  },
+  {
+    "name": "tools",
+    "id": "5c30bc8c-2fd9-42d3-a38a-237dd04a275d"
+  },
+  {
+    "name": "data",
+    "id": "2bc38e32-03b5-41ae-991e-5eab9fd6b4cc"
+  },
+  {
+    "name": "visualization",
+    "id": "b1321eec-213e-4ab9-9ce9-1e147bd39ac9"
+  },
+  {
+    "name": "design",
+    "id": "2524f7a4-2840-4a16-85d1-f8d79dcfa2d8"
+  },
+  {
+    "name": "development",
+    "id": "84309c27-9201-41ba-a694-91bcce8d7a7c"
+  },
+  {
+    "name": "performance",
+    "id": "7b445256-f3bd-47a7-a302-4003c7557dd6"
+  }
+]

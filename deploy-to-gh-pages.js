@@ -6,9 +6,14 @@
  * It builds the app and prepares all necessary files for proper SPA routing on GitHub Pages.
  */
 
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
+
+// Get directory name in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Configuration - edit these values as needed
 const REPO_NAME = 'ReferenceViewer';
@@ -20,7 +25,7 @@ console.log('=== GitHub Pages Deployment Script ===');
 // Step 1: Export static data for GitHub Pages
 console.log('\n📊 Exporting static data for GitHub Pages...');
 try {
-  execSync('node export-static-data.js', { stdio: 'inherit' });
+  execSync('node --experimental-json-modules export-static-data.js', { stdio: 'inherit' });
   console.log('✅ Static data export successful');
 } catch (error) {
   console.error('❌ Static data export failed:', error.message);
