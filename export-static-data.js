@@ -8,6 +8,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import crypto from 'crypto';
 
 // Get directory name in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -46,14 +47,41 @@ dataFiles.forEach(file => {
       const data = fs.readFileSync(sourcePath, 'utf8');
       const jsonData = JSON.parse(data);
       
-      // Extract just the data arrays (remove the lowdb wrapper)
+      // Extract just the data arrays (remove the lowdb wrapper) and ensure they're valid arrays
       let exportData;
       if (file.source === 'references.json') {
-        exportData = jsonData.references || [];
+        // Make sure we have a valid array
+        const refData = jsonData.references || [];
+        if (!Array.isArray(refData)) {
+          console.warn(`Warning: references data is not an array. Converting to array format.`);
+          exportData = Object.values(refData);
+        } else {
+          exportData = refData;
+        }
+        
+        // Ensure each reference has expected properties to avoid runtime errors
+        exportData = exportData.map(ref => ({
+          ...ref,
+          id: ref.id || crypto.randomUUID(),
+          tags: Array.isArray(ref.tags) ? ref.tags : [],
+          loveCount: ref.loveCount || 0
+        }));
       } else if (file.source === 'categories.json') {
-        exportData = jsonData.categories || [];
+        const catData = jsonData.categories || [];
+        if (!Array.isArray(catData)) {
+          console.warn(`Warning: categories data is not an array. Converting to array format.`);
+          exportData = Object.values(catData);
+        } else {
+          exportData = catData;
+        }
       } else if (file.source === 'tags.json') {
-        exportData = jsonData.tags || [];
+        const tagData = jsonData.tags || [];
+        if (!Array.isArray(tagData)) {
+          console.warn(`Warning: tags data is not an array. Converting to array format.`);
+          exportData = Object.values(tagData);
+        } else {
+          exportData = tagData;
+        }
       } else {
         // Default handling for other files
         exportData = jsonData;

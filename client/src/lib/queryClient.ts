@@ -83,7 +83,33 @@ export const getQueryFn: <T>(options: {
     }
 
     await throwIfResNotOk(res);
-    return await res.json();
+    
+    // Safe handling of JSON response
+    const jsonData = await res.json();
+    
+    // For GitHub Pages deployment, ensure we're returning arrays when expected
+    if (isGitHubPages()) {
+      // If endpoint maps to an expected array type, ensure we return an array
+      if (url.includes('references.json') || url.includes('categories.json') || url.includes('tags.json')) {
+        // If the data is not an array, but is an object with data we need, handle it
+        if (!Array.isArray(jsonData) && typeof jsonData === 'object') {
+          // Try to extract the array from the object if it exists in a property
+          if (jsonData.references) return jsonData.references;
+          if (jsonData.categories) return jsonData.categories;
+          if (jsonData.tags) return jsonData.tags;
+          
+          // If none of those exist, try to convert object values to an array
+          const objValues = Object.values(jsonData);
+          if (objValues.length > 0) return objValues;
+          
+          // Last resort, return empty array
+          console.warn(`Response data not in expected format for ${url}`);
+          return [];
+        }
+      }
+    }
+    
+    return jsonData;
   };
 
 export const queryClient = new QueryClient({
