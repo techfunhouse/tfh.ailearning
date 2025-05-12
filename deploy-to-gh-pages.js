@@ -453,7 +453,5 @@ console.log('git init');
 console.log('git checkout -b gh-pages');
 console.log('git add .');
 console.log('git commit -m "Deploy to GitHub Pages"');
-customDomain ?
-  console.log(`git remote add origin https://github.${customDomain}`) :
-  console.log(`git remote add origin https://github.com/${username}/ReferenceViewer.git`);
+console.log(`git remote add origin https://github.com/${username}/ReferenceViewer.git`);
 console.log('git push -f origin gh-pages');
