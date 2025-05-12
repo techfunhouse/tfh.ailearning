@@ -94,8 +94,17 @@ export default function HomePage() {
     staleTime: Infinity, // Tags don't change often
   });
 
+  // Categories and tags state
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
+  
+  // Ensure we have valid arrays to work with
+  const safeReferences = Array.isArray(references) ? references : [];
+  const safeCategories = Array.isArray(categories) ? categories : [];
+  const safeTags = Array.isArray(tags) ? tags : [];
+  
   // Setup fuzzy search with Fuse.js
-  const fuse = new Fuse(references, {
+  const fuse = new Fuse(safeReferences, {
     keys: ["title", "description", "tags"],
     threshold: 0.4,
   });
@@ -103,10 +112,24 @@ export default function HomePage() {
   // Update references when data is fetched
   useEffect(() => {
     if (referencesData) {
-      setReferences(referencesData);
-      setFilteredReferences(referencesData);
-      setDisplayReferences(referencesData.slice(0, itemsPerPage));
-      setHasMore(referencesData.length > itemsPerPage);
+      // Ensure we're working with arrays
+      const safeData = Array.isArray(referencesData) ? referencesData : 
+                      (typeof referencesData === 'object' && referencesData !== null) ? 
+                        Object.values(referencesData) : [];
+                        
+      // Make sure each reference has required properties
+      const normalizedData = safeData.map(ref => ({
+        ...ref,
+        id: ref.id || `temp-${Math.random().toString(36).substring(2, 9)}`,
+        tags: Array.isArray(ref.tags) ? ref.tags : [],
+        category: ref.category || 'Uncategorized',
+        loveCount: ref.loveCount || 0
+      }));
+      
+      setReferences(normalizedData);
+      setFilteredReferences(normalizedData);
+      setDisplayReferences(normalizedData.slice(0, itemsPerPage));
+      setHasMore(normalizedData.length > itemsPerPage);
       setPage(1);
     }
   }, [referencesData, itemsPerPage]);
