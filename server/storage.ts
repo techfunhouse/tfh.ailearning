@@ -164,10 +164,8 @@ export class JsonDbStorage implements IStorage {
       category: "research",
       tags: ["algorithm", "data", "visualization"],
       thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
-      loveCount: 0,
-      lovedBy: [],
-      createdBy: "admin",
-    });
+      lovedBy: []
+    }, "admin");
     
     await this.createReference({
       title: "Essential Developer Tools",
@@ -176,10 +174,8 @@ export class JsonDbStorage implements IStorage {
       category: "tools",
       tags: ["productivity", "tools", "development"],
       thumbnail: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
-      loveCount: 0,
-      lovedBy: [],
-      createdBy: "admin",
-    });
+      lovedBy: []
+    }, "admin");
     
     await this.createReference({
       title: "Database Optimization Patterns",
@@ -188,10 +184,8 @@ export class JsonDbStorage implements IStorage {
       category: "programming",
       tags: ["database", "backend", "performance"],
       thumbnail: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
-      loveCount: 0,
-      lovedBy: [],
-      createdBy: "admin",
-    });
+      lovedBy: []
+    }, "admin");
     
     await this.createReference({
       title: "Mobile UX Design Patterns",
