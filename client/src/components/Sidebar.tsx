@@ -45,6 +45,7 @@ import {
 import { apiRequest } from '@/lib/queryClient';
 import { queryClient } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
+import ConfirmationDialog from './ConfirmationDialog';
 
 // Schema for adding a new category
 const categorySchema = z.object({
@@ -90,6 +91,10 @@ export default function Sidebar({
   const [isGitHubSyncDialogOpen, setIsGitHubSyncDialogOpen] = useState(false);
   const [syncResult, setSyncResult] = useState<any>(null);
   const [isSyncing, setIsSyncing] = useState(false);
+  const [isDeleteCategoryDialogOpen, setIsDeleteCategoryDialogOpen] = useState(false);
+  const [isDeleteTagDialogOpen, setIsDeleteTagDialogOpen] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState<{id: string, name: string} | null>(null);
+  const [tagToDelete, setTagToDelete] = useState<{id: string, name: string} | null>(null);
   
   // GitHub sync functionality
   const checkGitHubConfig = async () => {
@@ -520,9 +525,8 @@ export default function Sidebar({
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          if (confirm(`Are you sure you want to delete "${category.name}" category?`)) {
-                            deleteCategoryMutation.mutate(category.id);
-                          }
+                          setCategoryToDelete({id: category.id, name: category.name});
+                          setIsDeleteCategoryDialogOpen(true);
                         }}
                         title="Delete Category"
                       >
@@ -610,9 +614,8 @@ export default function Sidebar({
                             className="cursor-pointer hover:text-destructive"
                             onClick={(e) => {
                               e.stopPropagation();
-                              if (confirm(`Are you sure you want to delete "${tag.name}" tag?`)) {
-                                deleteTagMutation.mutate(tag.id);
-                              }
+                              setTagToDelete({id: tag.id, name: tag.name});
+                              setIsDeleteTagDialogOpen(true);
                             }}
                             title="Delete Tag"
                           >
