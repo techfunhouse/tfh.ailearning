@@ -225,12 +225,51 @@ console.log('\n🔄 Modifying index.html for GitHub Pages...');
 const indexPath = path.join(DEPLOY_DIR, 'index.html');
 let indexContent = fs.readFileSync(indexPath, 'utf8');
 
+// Fix asset paths directly in the HTML
+console.log('Fixing asset paths in index.html...');
+
+// Fix asset references in script and link tags (look for both href and src attributes)
+// This handles link elements (CSS) and script elements (JS)
+indexContent = indexContent.replace(/(href|src)="\/assets\//g, `$1="/${REPO_NAME}/assets/`);
+indexContent = indexContent.replace(/(href|src)="\/images\//g, `$1="/${REPO_NAME}/images/`);
+indexContent = indexContent.replace(/(href|src)="\/data\//g, `$1="/${REPO_NAME}/data/`);
+
+// Fix other asset references that might not have the leading slash
+indexContent = indexContent.replace(/(href|src)="assets\//g, `$1="/${REPO_NAME}/assets/`);
+indexContent = indexContent.replace(/(href|src)="images\//g, `$1="/${REPO_NAME}/images/`);
+indexContent = indexContent.replace(/(href|src)="data\//g, `$1="/${REPO_NAME}/data/`);
+
+// Look for CSS url() references
+indexContent = indexContent.replace(/url\(\/assets\//g, `url(/${REPO_NAME}/assets/`);
+indexContent = indexContent.replace(/url\(\/images\//g, `url(/${REPO_NAME}/images/`);
+
+// Add detailed debug info to the page
+console.log('Adding debugging info for troubleshooting');
+
 // Add base tag and path handling script
 indexContent = indexContent.replace(
   '<head>',
   `<head>
     <!-- GitHub Pages base path - with trailing slash for correct asset paths -->
     <base href="/${REPO_NAME}/">
+    <!-- Important: Set mandatory vite base path for GitHub Pages -->
+    <script>
+      // Explicitly set the base URL for GitHub Pages deployment
+      window.__vite_base__ = "/${REPO_NAME}/";
+      
+      // Inject a helper function to fix asset paths at runtime
+      window.fixAssetPath = function(path) {
+        if (!path) return path;
+        // If path starts with a slash but doesn't include the repo name, add it
+        if (path.startsWith('/') && !path.startsWith('/${REPO_NAME}/')) {
+          return '/${REPO_NAME}' + path;
+        }
+        return path;
+      };
+      
+      // Add helper for debugging asset loading issues
+      console.log('GitHub Pages path helper initialized for /${REPO_NAME}/');
+    </script>
     <!-- Single Page App fix for GitHub Pages -->
     <script type="text/javascript">
       // When the GitHub Pages site loads, it may be loading a path other than the root.

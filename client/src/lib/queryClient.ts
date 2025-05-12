@@ -32,7 +32,10 @@ const getBasePath = (): string => {
 
 // Helper to adjust API URLs for GitHub Pages deployment
 function getAdjustedUrl(url: string): string {
-  if (isGitHubPages()) {
+  if (isGitHubPages() || import.meta.env.VITE_GITHUB_PAGES === 'true') {
+    // Log for debugging
+    console.log(`Adjusting URL for GitHub Pages: ${url}`);
+    
     // On GitHub Pages, we need to use pre-loaded mock data
     // This converts API calls like '/api/references' to 'data/references.json'
     if (url.startsWith('/api/')) {
@@ -40,23 +43,34 @@ function getAdjustedUrl(url: string): string {
       if (resource === 'references' || resource === 'categories' || resource === 'tags') {
         // GitHub Pages data path uses repo name in the path
         const basePath = getBasePath().replace(/\/$/, ''); // Remove trailing slash if present
-        console.log(`GitHub Pages: Converting ${url} to ${basePath}/data/${resource}.json`);
-        return `${basePath}/data/${resource}.json`;
+        const dataUrl = `${basePath}/data/${resource}.json`;
+        console.log(`GitHub Pages: Converting ${url} to ${dataUrl}`);
+        return dataUrl;
       }
     }
     
-    // For asset URLs, ensure they have the proper GitHub Pages prefix
-    if (url.startsWith('/assets/')) {
-      const basePath = getBasePath().replace(/\/$/, ''); // Remove trailing slash if present
-      return `${basePath}${url}`;
+    // Handle asset paths by adding repository name prefix
+    const basePath = getBasePath().replace(/\/$/, ''); // Remove trailing slash if present
+    
+    // Common static asset path patterns
+    const staticPathPatterns = ['/assets/', '/images/', '/static/', '/data/'];
+    for (const pattern of staticPathPatterns) {
+      if (url.startsWith(pattern)) {
+        const adjustedUrl = `${basePath}${url}`;
+        console.log(`GitHub Pages: Adjusting static path ${url} to ${adjustedUrl}`);
+        return adjustedUrl;
+      }
     }
     
     // For any other URLs with leading slash, ensure they're properly prefixed
     if (url.startsWith('/')) {
-      const basePath = getBasePath().replace(/\/$/, ''); // Remove trailing slash if present
-      return `${basePath}${url}`;
+      const adjustedUrl = `${basePath}${url}`;
+      console.log(`GitHub Pages: Prefixing URL ${url} to ${adjustedUrl}`);
+      return adjustedUrl;
     }
   }
+  
+  // Return original URL for non-GitHub Pages environments
   return url;
 }
 
