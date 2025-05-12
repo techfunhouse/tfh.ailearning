@@ -221,10 +221,14 @@ console.log('✅ .nojekyll file created');
 
 // Step 6: Create CNAME file if using a custom domain
 // Create CNAME file for custom domain if specified
+const customDomain = process.env.CUSTOM_DOMAIN;
+const usingCustomDomain = !!customDomain;
+
 if (customDomain) {
   console.log(`\n🌐 Creating CNAME file for custom domain: ${customDomain}`);
   fs.writeFileSync(path.join(DEPLOY_DIR, 'CNAME'), customDomain);
   console.log('✅ CNAME file created');
+  console.log('Custom domain detected - will adjust asset paths accordingly');
 }
 
 // Step 7: Modify the index.html file
@@ -235,36 +239,36 @@ let indexContent = fs.readFileSync(indexPath, 'utf8');
 // Fix asset paths directly in the HTML
 console.log('Fixing asset paths in index.html...');
 
-// If using a custom domain, use root-relative paths
-if (customDomain) {
-  console.log('Using root-relative paths for custom domain');
-  // Make sure paths are root-relative
+// Handle paths based on whether we're using a custom domain
+if (usingCustomDomain) {
+  // For custom domains, use root-relative paths (no repo name)
+  console.log('⚠️ CUSTOM DOMAIN DETECTED - Using root-relative paths');
+  
+  // Handle paths with leading slash
   indexContent = indexContent.replace(/(href|src)="\/assets\//g, `$1="/assets/`);
   indexContent = indexContent.replace(/(href|src)="\/images\//g, `$1="/images/`);
-} else {
-  // Otherwise, use repository-relative paths for GitHub Pages
-  console.log('Using repository-relative paths for GitHub Pages');
-  // Fix asset references in script and link tags
-  indexContent = indexContent.replace(/(href|src)="\/assets\//g, `$1="/${REPO_NAME}/assets/`);
-  indexContent = indexContent.replace(/(href|src)="\/images\//g, `$1="/${REPO_NAME}/images/`);
-}
-// Update paths based on whether we're using a custom domain
-if (customDomain) {
-  // For custom domains, use root-relative paths
-  console.log('Using root paths for custom domain');
   indexContent = indexContent.replace(/(href|src)="\/data\//g, `$1="/data/`);
   
-  // Fix references without leading slash
+  // Fix references without leading slash (add leading slash)
   indexContent = indexContent.replace(/(href|src)="assets\//g, `$1="/assets/`);
   indexContent = indexContent.replace(/(href|src)="images\//g, `$1="/images/`);
   indexContent = indexContent.replace(/(href|src)="data\//g, `$1="/data/`);
   
-  // Look for CSS url() references
+  // Handle CSS url() references
   indexContent = indexContent.replace(/url\(\/assets\//g, `url(/assets/`);
   indexContent = indexContent.replace(/url\(\/images\//g, `url(/images/`);
+  
+  // Special case for the base tag
+  indexContent = indexContent.replace(/<base href="[^"]*"/, `<base href="/"`);
+  
+  console.log('✅ Fixed paths for custom domain:', customDomain);
 } else {
   // For GitHub Pages without custom domain, include the repo name
-  console.log(`Using /${REPO_NAME}/ paths for GitHub Pages`);
+  console.log(`⚠️ Using /${REPO_NAME}/ paths for GitHub Pages (no custom domain)`);
+  
+  // Handle paths with leading slash
+  indexContent = indexContent.replace(/(href|src)="\/assets\//g, `$1="/${REPO_NAME}/assets/`);
+  indexContent = indexContent.replace(/(href|src)="\/images\//g, `$1="/${REPO_NAME}/images/`);
   indexContent = indexContent.replace(/(href|src)="\/data\//g, `$1="/${REPO_NAME}/data/`);
   
   // Fix references without leading slash
@@ -272,9 +276,14 @@ if (customDomain) {
   indexContent = indexContent.replace(/(href|src)="images\//g, `$1="/${REPO_NAME}/images/`);
   indexContent = indexContent.replace(/(href|src)="data\//g, `$1="/${REPO_NAME}/data/`);
   
-  // Look for CSS url() references
+  // Handle CSS url() references
   indexContent = indexContent.replace(/url\(\/assets\//g, `url(/${REPO_NAME}/assets/`);
   indexContent = indexContent.replace(/url\(\/images\//g, `url(/${REPO_NAME}/images/`);
+  
+  // Special case for the base tag
+  indexContent = indexContent.replace(/<base href="[^"]*"/, `<base href="/${REPO_NAME}/"`);
+  
+  console.log('✅ Fixed paths for GitHub Pages with repository name:', REPO_NAME);
 }
 
 // Add detailed debug info to the page
