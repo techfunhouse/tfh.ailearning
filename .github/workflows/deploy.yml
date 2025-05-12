@@ -1,0 +1,124 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install Dependencies
+        run: npm ci
+      
+      - name: Setup Environment
+        run: |
+          # Create customized environment settings
+          if [[ "$GITHUB_REPOSITORY" == *"github.io"* ]]; then
+            # For username.github.io repos - use root path
+            echo "BASE_PATH=/" >> $GITHUB_ENV
+            echo "Using root path for username.github.io repository"
+          elif [[ ! -z "$CUSTOM_DOMAIN" ]]; then
+            # For custom domains - use root path
+            echo "BASE_PATH=/" >> $GITHUB_ENV
+            echo "Using root path for custom domain: $CUSTOM_DOMAIN"
+          else
+            # For project repositories - use repo name
+            REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d '/' -f 2)
+            echo "BASE_PATH=/$REPO_NAME/" >> $GITHUB_ENV
+            echo "Using repository path: /$REPO_NAME/"
+          fi
+          
+          # Create .env file for the build
+          echo "# Build environment configuration" > .env.github-pages
+          echo "VITE_BASE_PATH=$BASE_PATH" >> .env.github-pages
+          
+          # Add custom domain if specified
+          if [[ ! -z "$CUSTOM_DOMAIN" ]]; then
+            echo "CUSTOM_DOMAIN=$CUSTOM_DOMAIN" >> .env.github-pages
+            echo "VITE_USE_CUSTOM_DOMAIN=true" >> .env.github-pages
+          fi
+          
+          cat .env.github-pages
+      
+      - name: Export Static Data
+        run: node export-static-data.js
+      
+      - name: Build
+        run: npm run build
+        env:
+          VITE_BASE_PATH: ${{ env.BASE_PATH }}
+          VITE_USE_CUSTOM_DOMAIN: ${{ env.CUSTOM_DOMAIN != '' }}
+      
+      - name: Setup Deployment Directory
+        run: |
+          mkdir -p deploy
+          cp -r dist/public/* deploy/
+          touch deploy/.nojekyll
+          
+          # Create CNAME file if custom domain is specified
+          if [[ ! -z "$CUSTOM_DOMAIN" ]]; then
+            echo "$CUSTOM_DOMAIN" > deploy/CNAME
+            echo "Created CNAME file for $CUSTOM_DOMAIN"
+          fi
+      
+      - name: Fix HTML Files for Custom Domain
+        if: env.CUSTOM_DOMAIN != ''
+        run: |
+          echo "Fixing HTML files for custom domain deployment..."
+          
+          # Fix index.html - very aggressive path correction
+          sed -i 's/<base href="[^"]*"/<base href="\/"/g' deploy/index.html
+          
+          # Replace all references to repository path with root path
+          REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d '/' -f 2)
+          sed -i "s/\/$REPO_NAME\//\//g" deploy/index.html
+          
+          # Ensure asset paths have leading slash
+          sed -i 's/href="assets\//href="\/assets\//g' deploy/index.html
+          sed -i 's/src="assets\//src="\/assets\//g' deploy/index.html
+          
+          # Fix CSS url() references
+          sed -i "s/url(\/$REPO_NAME\//url(\//g" deploy/index.html
+          
+          # Add custom domain meta tag
+          sed -i 's/<\/head>/<meta name="custom-domain" content="true">\n  <\/head>/g' deploy/index.html
+          
+          echo "Completed HTML fixes for custom domain"
+      
+      - name: Create 404.html for SPA Routing
+        run: |
+          cat > deploy/404.html << 'EOL'
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <meta charset="utf-8">
+              <title>Redirecting...</title>
+              <script>
+                // Single Page App redirection
+                sessionStorage.setItem('redirect', window.location.pathname);
+                window.location.href = '/';
+              </script>
+            </head>
+            <body>
+              <h1>Redirecting...</h1>
+              <p>If you are not redirected automatically, <a href="/">click here</a>.</p>
+            </body>
+          </html>
+          EOL
+      
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: deploy
+          branch: gh-pages
