@@ -72,11 +72,16 @@ async function buildApp(basePath) {
     await execPromise('node export-static-data.js');
     log('Static data exported successfully');
     
+    // Fix JSON files for static deployment
+    await execPromise('node fix-json-for-deployment.js');
+    log('JSON files processed for static deployment');
+    
     // Set environment variables for the build
     const env = {
       ...process.env,
       VITE_BASE_PATH: basePath,
-      VITE_USE_CUSTOM_DOMAIN: IS_CUSTOM_DOMAIN ? 'true' : 'false'
+      VITE_USE_CUSTOM_DOMAIN: IS_CUSTOM_DOMAIN ? 'true' : 'false',
+      VITE_GITHUB_PAGES: 'true' // Explicitly mark as GitHub Pages deployment
     };
     
     // Run the build

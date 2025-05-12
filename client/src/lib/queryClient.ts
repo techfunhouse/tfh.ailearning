@@ -2,6 +2,16 @@ import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
 // This helper determines if we're running on GitHub Pages or as a static deployment
 function isStaticDeployment(): boolean {
+  // If we're in development mode, check for forced static mode for testing
+  if (import.meta.env.DEV) {
+    // Use localStorage to allow toggling static mode for testing
+    const devStaticMode = localStorage.getItem('devStaticMode') === 'true';
+    if (devStaticMode) {
+      console.log('Development static mode enabled via localStorage');
+      return true;
+    }
+  }
+  
   // First check for environment variable flag
   if (import.meta.env.VITE_GITHUB_PAGES === 'true') {
     console.log('Static deployment mode set by environment variables');
