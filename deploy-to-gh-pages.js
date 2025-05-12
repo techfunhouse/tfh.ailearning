@@ -215,10 +215,13 @@ fs.writeFileSync(path.join(DEPLOY_DIR, '.nojekyll'), '');
 console.log('✅ .nojekyll file created');
 
 // Step 6: Create CNAME file if using a custom domain
-// Uncomment and modify if needed
-// console.log('\n🌐 Creating CNAME file for custom domain...');
-// fs.writeFileSync(path.join(DEPLOY_DIR, 'CNAME'), 'your-custom-domain.com');
-// console.log('✅ CNAME file created');
+// Create CNAME file for custom domain if specified
+const customDomain = process.env.CUSTOM_DOMAIN;
+if (customDomain) {
+  console.log(`\n🌐 Creating CNAME file for custom domain: ${customDomain}`);
+  fs.writeFileSync(path.join(DEPLOY_DIR, 'CNAME'), customDomain);
+  console.log('✅ CNAME file created');
+}
 
 // Step 7: Modify the index.html file
 console.log('\n🔄 Modifying index.html for GitHub Pages...');
@@ -228,10 +231,19 @@ let indexContent = fs.readFileSync(indexPath, 'utf8');
 // Fix asset paths directly in the HTML
 console.log('Fixing asset paths in index.html...');
 
-// Fix asset references in script and link tags (look for both href and src attributes)
-// This handles link elements (CSS) and script elements (JS)
-indexContent = indexContent.replace(/(href|src)="\/assets\//g, `$1="/${REPO_NAME}/assets/`);
-indexContent = indexContent.replace(/(href|src)="\/images\//g, `$1="/${REPO_NAME}/images/`);
+// If using a custom domain, use root-relative paths
+if (customDomain) {
+  console.log('Using root-relative paths for custom domain');
+  // Make sure paths are root-relative
+  indexContent = indexContent.replace(/(href|src)="\/assets\//g, `$1="/assets/`);
+  indexContent = indexContent.replace(/(href|src)="\/images\//g, `$1="/images/`);
+} else {
+  // Otherwise, use repository-relative paths for GitHub Pages
+  console.log('Using repository-relative paths for GitHub Pages');
+  // Fix asset references in script and link tags
+  indexContent = indexContent.replace(/(href|src)="\/assets\//g, `$1="/${REPO_NAME}/assets/`);
+  indexContent = indexContent.replace(/(href|src)="\/images\//g, `$1="/${REPO_NAME}/images/`);
+}
 indexContent = indexContent.replace(/(href|src)="\/data\//g, `$1="/${REPO_NAME}/data/`);
 
 // Fix other asset references that might not have the leading slash

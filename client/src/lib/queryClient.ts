@@ -5,6 +5,15 @@ function isGitHubPages(): boolean {
   return window.location.hostname.includes('github.io');
 }
 
+// Check if we're using a custom domain
+function isCustomDomain(): boolean {
+  const hostname = window.location.hostname;
+  return !hostname.includes('github.io') && 
+         !hostname.includes('replit.app') && 
+         hostname !== 'localhost' &&
+         !hostname.includes('127.0.0.1');
+}
+
 // Get the base path from environment variables or determine dynamically
 const getBasePath = (): string => {
   // First check environment variables
@@ -16,8 +25,19 @@ const getBasePath = (): string => {
   
   // Next check if we're explicitly in GitHub Pages mode
   if (import.meta.env.VITE_GITHUB_PAGES === 'true') {
+    // Custom domain with CNAME should use root path
+    if (isCustomDomain()) {
+      console.log('Using root path for custom domain');
+      return '/';
+    }
     console.log('Using GitHub Pages mode from environment variables');
     return '/ReferenceViewer/';
+  }
+  
+  // Check for custom domain
+  if (isCustomDomain()) {
+    console.log('Detected custom domain, using root path');
+    return '/';
   }
   
   // Finally, detect GitHub Pages based on hostname
