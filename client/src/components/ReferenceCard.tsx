@@ -67,16 +67,6 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete }: 
   
   const handleLoveClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent opening the dialog
-    
-    if (!user) {
-      toast({
-        variant: 'destructive',
-        title: 'Authentication Required',
-        description: 'Please login to love references'
-      });
-      return;
-    }
-    
     loveMutation.mutate();
   };
   

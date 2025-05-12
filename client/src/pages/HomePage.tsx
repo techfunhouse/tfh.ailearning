@@ -513,6 +513,7 @@ export default function HomePage() {
                         reference={reference}
                         isAdmin={isAdmin}
                         onEdit={() => handleEditReference(reference)}
+                        onDelete={(id) => console.log("Reference deleted:", id)}
                       />
                     ))}
                     

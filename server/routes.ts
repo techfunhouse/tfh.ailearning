@@ -346,10 +346,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Love/favorite reference route
-  app.post("/api/references/:id/love", isAuthenticated, async (req, res) => {
+  app.post("/api/references/:id/love", async (req, res) => {
     try {
       const { id } = req.params;
-      const userId = req.session!.user!.id;
+      const userId = req.session?.user?.id || 0; // Use 0 as default user ID if not logged in
       
       const reference = await storage.toggleLoveReference(id, userId);
       
