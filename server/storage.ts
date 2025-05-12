@@ -162,8 +162,7 @@ export class JsonDbStorage implements IStorage {
       description: "Methods for effectively visualizing complex data sets to derive meaningful insights.",
       category: "research",
       tags: ["algorithm", "data", "visualization"],
-      thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
-      lovedBy: []
+      thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80"
     }, "admin");
     
     await this.createReference({
@@ -172,8 +171,7 @@ export class JsonDbStorage implements IStorage {
       description: "A collection of must-have tools and utilities for modern software development workflows.",
       category: "tools",
       tags: ["productivity", "tools", "development"],
-      thumbnail: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
-      lovedBy: []
+      thumbnail: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80"
     }, "admin");
     
     await this.createReference({
@@ -182,8 +180,7 @@ export class JsonDbStorage implements IStorage {
       description: "Strategies and techniques for optimizing database performance in high-scale applications.",
       category: "programming",
       tags: ["database", "backend", "performance"],
-      thumbnail: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
-      lovedBy: []
+      thumbnail: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80"
     }, "admin");
     
     await this.createReference({
@@ -192,11 +189,8 @@ export class JsonDbStorage implements IStorage {
       description: "Best practices for creating intuitive and engaging user experiences for mobile applications.",
       category: "design",
       tags: ["mobile", "ui/ux", "frontend"],
-      thumbnail: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
-      loveCount: 0,
-      lovedBy: [],
-      createdBy: "admin",
-    });
+      thumbnail: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80"
+    }, "admin");
   }
   
   // Helper methods to save changes to the respective JSON file
