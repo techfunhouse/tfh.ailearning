@@ -5,6 +5,7 @@ import { insertReferenceSchema, insertCategorySchema, insertTagSchema } from "@s
 import { z } from "zod";
 import session from "express-session";
 import createMemoryStore from "memorystore";
+import { syncWithGitHub, validateGitHubConfig } from './services/github-sync';
 
 // Create memory store for sessions
 const MemoryStore = createMemoryStore(session);
@@ -360,6 +361,57 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error toggling love for reference:", error);
       return res.status(500).json({ message: "Internal server error" });
+    }
+  });
+  
+  // GitHub sync endpoints
+  // Check if GitHub sync is configured
+  app.get("/api/admin/github-status", isAuthenticated, isAdmin, (req, res) => {
+    try {
+      const config = validateGitHubConfig();
+      
+      if (!config) {
+        return res.status(200).json({ 
+          configured: false,
+          message: "GitHub sync is not configured. Missing required environment variables."
+        });
+      }
+      
+      return res.status(200).json({ 
+        configured: true,
+        owner: config.owner,
+        repo: config.repo,
+        baseBranch: config.baseBranch,
+        dataFilesPaths: config.dataFilesPaths
+      });
+    } catch (error) {
+      console.error("Error checking GitHub configuration:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  });
+  
+  // Dry run - check if sync is needed without creating PR
+  app.get("/api/admin/github-sync/check", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const result = await syncWithGitHub(true); // true for dry run
+      return res.status(200).json(result);
+    } catch (error) {
+      console.error("Error checking GitHub sync status:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  });
+  
+  // Create PR to sync data with GitHub
+  app.post("/api/admin/github-sync", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const result = await syncWithGitHub(false); // false to actually create PR
+      return res.status(200).json(result);
+    } catch (error) {
+      console.error("Error syncing with GitHub:", error);
+      return res.status(500).json({ 
+        message: "Failed to sync with GitHub", 
+        error: error instanceof Error ? error.message : String(error)
+      });
     }
   });
 
