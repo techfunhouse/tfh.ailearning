@@ -26,6 +26,8 @@ import {
   Github,
   GitPullRequest,
   AlertCircle,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -438,49 +440,85 @@ export default function HomePage() {
                 )}
               </div>
 
-              {/* Category summary cards */}
-              <div className="flex flex-col gap-3 mb-6 overflow-y-auto max-h-[320px] scrollbar-hide">
-                {/* Total card - fixed at the top */}
-                <Card className="bg-primary/5 border-primary/20 w-full">
-                  <CardContent className="p-4">
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <p className="text-xs text-muted-foreground">Total</p>
-                        <p className="text-2xl font-semibold">
-                          {references.length}
-                        </p>
-                      </div>
-                      <Badge variant="outline" className="h-8 w-8 flex items-center justify-center p-0 rounded-full">
-                        <BookOpen className="h-5 w-5" />
-                      </Badge>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Scrollable category cards */}
-                {categoriesData?.map((category) => (
-                  <Card 
-                    key={category.id} 
-                    className="bg-muted/30 w-full hover:bg-muted/50 transition-colors cursor-pointer"
-                    onClick={() => handleCategoryChange([category.name.toLowerCase()])}
-                  >
+              {/* Category summary cards - Horizontal layout */}
+              <div className="relative mb-6">
+                {/* Left scroll button */}
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background/80 backdrop-blur-sm shadow-md"
+                  onClick={() => {
+                    const container = document.getElementById('category-scroll-container');
+                    if (container) {
+                      container.scrollBy({ left: -300, behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                
+                {/* Right scroll button */}
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background/80 backdrop-blur-sm shadow-md"
+                  onClick={() => {
+                    const container = document.getElementById('category-scroll-container');
+                    if (container) {
+                      container.scrollBy({ left: 300, behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+                
+                {/* Scrollable container */}
+                <div 
+                  id="category-scroll-container" 
+                  className="flex gap-4 overflow-x-auto py-2 px-10 scrollbar-hide"
+                >
+                  {/* Total card */}
+                  <Card className="bg-primary/5 border-primary/20 flex-shrink-0 w-[230px]">
                     <CardContent className="p-4">
                       <div className="flex justify-between items-center">
                         <div>
-                          <p className="text-xs text-muted-foreground capitalize">
-                            {category.name}
-                          </p>
-                          <p className="text-2xl font-medium capitalize">
-                            {category.name}
+                          <p className="text-xs text-muted-foreground">Total</p>
+                          <p className="text-2xl font-semibold">
+                            {references.length}
                           </p>
                         </div>
                         <Badge variant="outline" className="h-8 w-8 flex items-center justify-center p-0 rounded-full">
-                          {categoryCounts[category.name.toLowerCase()] || 0}
+                          <BookOpen className="h-5 w-5" />
                         </Badge>
                       </div>
                     </CardContent>
                   </Card>
-                ))}
+
+                  {/* Category cards */}
+                  {categoriesData?.map((category) => (
+                    <Card 
+                      key={category.id} 
+                      className="bg-muted/30 flex-shrink-0 w-[230px] hover:bg-muted/50 transition-colors cursor-pointer"
+                      onClick={() => handleCategoryChange([category.name.toLowerCase()])}
+                    >
+                      <CardContent className="p-4">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <p className="text-xs text-muted-foreground capitalize">
+                              {category.name}
+                            </p>
+                            <p className="text-2xl font-medium capitalize">
+                              {category.name}
+                            </p>
+                          </div>
+                          <Badge variant="outline" className="px-2 py-1 rounded-full">
+                            {categoryCounts[category.name.toLowerCase()] || 0}
+                          </Badge>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </div>
             </div>
 
