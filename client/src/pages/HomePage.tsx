@@ -6,6 +6,8 @@ import Fuse from "fuse.js";
 import { useInView } from "react-intersection-observer";
 
 import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import ReferenceCard from "@/components/ReferenceCard";
@@ -20,6 +22,9 @@ import {
   FileSearch,
   Loader2,
   X,
+  GitBranchPlus,
+  Github,
+  GitPullRequest,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -27,6 +32,7 @@ import { Separator } from "@/components/ui/separator";
 
 export default function HomePage() {
   const { user, isAdmin } = useAuth();
+  const { toast } = useToast();
   const [, navigate] = useLocation();
   const [references, setReferences] = useState<Reference[]>([]);
   const [filteredReferences, setFilteredReferences] = useState<Reference[]>([]);
@@ -41,6 +47,9 @@ export default function HomePage() {
     null,
   );
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isGitHubSyncDialogOpen, setIsGitHubSyncDialogOpen] = useState(false);
+  const [syncResult, setSyncResult] = useState<any>(null);
+  const [isSyncing, setIsSyncing] = useState(false);
   
   // Pagination and infinite scroll
   const [page, setPage] = useState(1);
@@ -88,6 +97,89 @@ export default function HomePage() {
       setPage(1);
     }
   }, [referencesData, itemsPerPage]);
+  
+  // GitHub sync functionality
+  const checkGitHubConfig = async () => {
+    try {
+      setIsSyncing(true);
+      setSyncResult(null);
+      
+      const response = await apiRequest('GET', '/api/admin/github-status');
+      const data = await response.json();
+      
+      setSyncResult({
+        ...data,
+        syncCheckResult: null,
+        syncResult: null
+      });
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: `Failed to check GitHub configuration: ${error}`,
+      });
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+  
+  const checkSyncStatus = async () => {
+    try {
+      setIsSyncing(true);
+      
+      const response = await apiRequest('GET', '/api/admin/github-sync/check');
+      const data = await response.json();
+      
+      setSyncResult({
+        ...syncResult,
+        syncCheckResult: data,
+        syncResult: null
+      });
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: `Failed to check sync status: ${error}`,
+      });
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+  
+  const createPullRequest = async () => {
+    try {
+      setIsSyncing(true);
+      
+      const response = await apiRequest('POST', '/api/admin/github-sync');
+      const data = await response.json();
+      
+      setSyncResult({
+        ...syncResult,
+        syncResult: data
+      });
+      
+      if (data.prUrl) {
+        toast({
+          title: 'Success',
+          description: 'Pull request created successfully',
+        });
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: data.message,
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: `Failed to create pull request: ${error}`,
+      });
+    } finally {
+      setIsSyncing(false);
+    }
+  };
   
   // Add scroll event listener for scroll to top button
   useEffect(() => {
@@ -315,14 +407,25 @@ export default function HomePage() {
                 </div>
 
                 {isAdmin && (
-                  <Button
-                    onClick={handleAddReference}
-                    className="flex items-center gap-1 shadow-sm"
-                    size="sm"
-                  >
-                    <PlusIcon className="h-4 w-4" />
-                    Add Reference
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => setIsGitHubSyncDialogOpen(true)}
+                      variant="outline"
+                      className="flex items-center gap-1 shadow-sm"
+                      size="sm"
+                    >
+                      <GitBranchPlus className="h-4 w-4" />
+                      GitHub Sync
+                    </Button>
+                    <Button
+                      onClick={handleAddReference}
+                      className="flex items-center gap-1 shadow-sm"
+                      size="sm"
+                    >
+                      <PlusIcon className="h-4 w-4" />
+                      Add Reference
+                    </Button>
+                  </div>
                 )}
               </div>
 
