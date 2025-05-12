@@ -36,8 +36,42 @@ jobs:
           # Copy index.html to 404.html for client-side routing
           cp dist/public/index.html dist/public/404.html
           
-          # Add base path to index.html if needed (uncomment and adjust if necessary)
-          # sed -i 's/<head>/<head><base href="\/your-repo-name\/">/' dist/public/index.html
+          # Copy GitHub Pages specific index file to the root
+          cp github-pages-index.html dist/public/index.html
+          
+          # Create a _redirects file for SPA routing
+          echo "/*    /index.html   200" > dist/public/_redirects
+          
+          # Add base path to index.html for GitHub Pages deployment
+          sed -i 's/<head>/<head><base href="\/ReferenceViewer\/">/' dist/public/index.html
+          sed -i 's/<head>/<head><base href="\/ReferenceViewer\/">/' dist/public/404.html
+          
+          # Create a script to handle routing
+          cat > dist/public/routing-handler.js << 'EOL'
+          // Handle client-side routing for GitHub Pages
+          (function() {
+            // Get the base path from the base tag
+            const basePath = document.querySelector('base').getAttribute('href');
+            
+            // Listen for navigation and handle SPA routing
+            window.addEventListener('popstate', function() {
+              const path = window.location.pathname;
+              // Redirect to base path if not already within it
+              if (!path.startsWith(basePath)) {
+                window.location.replace(basePath + path.replace(/^\//, ''));
+              }
+            });
+            
+            // Handle initial load
+            if (!window.location.pathname.startsWith(basePath)) {
+              window.history.replaceState(null, null, basePath);
+            }
+          })();
+          EOL
+          
+          # Add the routing script to both index.html and 404.html
+          sed -i 's/<\/head>/<script src="\/ReferenceViewer\/routing-handler.js"><\/script><\/head>/' dist/public/index.html
+          sed -i 's/<\/head>/<script src="\/ReferenceViewer\/routing-handler.js"><\/script><\/head>/' dist/public/404.html
       
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
