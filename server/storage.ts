@@ -154,10 +154,8 @@ export class JsonDbStorage implements IStorage {
       category: "design",
       tags: ["ui/ux", "design", "frontend"],
       thumbnail: "https://images.unsplash.com/photo-1516031190212-da133013de50?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
-      loveCount: 0,
-      lovedBy: [],
-      createdBy: "admin",
-    });
+      lovedBy: []
+    }, "admin");
     
     await this.createReference({
       title: "Data Visualization Techniques",
