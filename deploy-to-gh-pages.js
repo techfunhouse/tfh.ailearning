@@ -53,21 +53,133 @@ console.log('✅ Deployment directory created');
 
 // Step 4: Copy build files to deployment directory
 console.log('\n📋 Copying build files...');
-fs.cpSync(BUILD_DIR, DEPLOY_DIR, { recursive: true });
-console.log('✅ Build files copied to deployment directory');
+try {
+  // Try to copy the build output first
+  if (fs.existsSync(BUILD_DIR) && fs.readdirSync(BUILD_DIR).length > 0) {
+    fs.cpSync(BUILD_DIR, DEPLOY_DIR, { recursive: true });
+    console.log('✅ Build files copied to deployment directory');
+  } else {
+    // If build output is not available, create a minimal deployment package
+    console.log('⚠️ Build directory empty or not found, creating minimal deployment package...');
+    
+    // Copy index.html
+    const indexHtmlTemplate = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RefHub - Reference Hub</title>
+    <base href="/${REPO_NAME}/">
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      h1 { color: #4338ca; }
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .tag {
+        display: inline-block;
+        background: #eef2ff;
+        color: #4338ca;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        margin-right: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>RefHub</h1>
+    <p>A modern reference collection and management system.</p>
+    
+    <div class="card">
+      <h2>References</h2>
+      <p>Loading references from JSON data...</p>
+      <div id="references"></div>
+    </div>
+    
+    <script>
+      // Simple client-side rendering of references
+      fetch('./data/references.json')
+        .then(response => response.json())
+        .then(data => {
+          const container = document.getElementById('references');
+          
+          data.slice(0, 5).forEach(ref => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            const title = document.createElement('h3');
+            title.textContent = ref.title;
+            
+            const description = document.createElement('p');
+            description.textContent = ref.description;
+            
+            const tags = document.createElement('div');
+            ref.tags.forEach(tag => {
+              const tagEl = document.createElement('span');
+              tagEl.className = 'tag';
+              tagEl.textContent = tag;
+              tags.appendChild(tagEl);
+            });
+            
+            card.appendChild(title);
+            card.appendChild(description);
+            card.appendChild(tags);
+            container.appendChild(card);
+          });
+        })
+        .catch(error => {
+          const container = document.getElementById('references');
+          container.innerHTML = '<p>Error loading references: ' + error.message + '</p>';
+        });
+    </script>
+  </body>
+</html>`;
+    
+    fs.writeFileSync(path.join(DEPLOY_DIR, 'index.html'), indexHtmlTemplate);
+    
+    // Create data directory and copy the data files
+    const dataDir = path.join(DEPLOY_DIR, 'data');
+    fs.mkdirSync(dataDir, { recursive: true });
+    
+    // Copy data files from public/data if available
+    const sourceDataDir = path.join(__dirname, 'public/data');
+    if (fs.existsSync(sourceDataDir)) {
+      fs.readdirSync(sourceDataDir).forEach(file => {
+        fs.copyFileSync(path.join(sourceDataDir, file), path.join(dataDir, file));
+      });
+    }
+    
+    console.log('✅ Minimal deployment package created');
+  }
+} catch (error) {
+  console.error('❌ Error copying build files:', error.message);
+  process.exit(1);
+}
 
-// Step 4: Create .nojekyll file to bypass Jekyll processing
+// Step 5: Create .nojekyll file to bypass Jekyll processing
 console.log('\n🔧 Creating .nojekyll file...');
 fs.writeFileSync(path.join(DEPLOY_DIR, '.nojekyll'), '');
 console.log('✅ .nojekyll file created');
 
-// Step 5: Create CNAME file if using a custom domain
+// Step 6: Create CNAME file if using a custom domain
 // Uncomment and modify if needed
 // console.log('\n🌐 Creating CNAME file for custom domain...');
 // fs.writeFileSync(path.join(DEPLOY_DIR, 'CNAME'), 'your-custom-domain.com');
 // console.log('✅ CNAME file created');
 
-// Step 6: Modify the index.html file
+// Step 7: Modify the index.html file
 console.log('\n🔄 Modifying index.html for GitHub Pages...');
 const indexPath = path.join(DEPLOY_DIR, 'index.html');
 let indexContent = fs.readFileSync(indexPath, 'utf8');
@@ -98,7 +210,7 @@ indexContent = indexContent.replace(
 fs.writeFileSync(indexPath, indexContent);
 console.log('✅ index.html modified for GitHub Pages');
 
-// Step 7: Create a 404.html file that redirects back to index.html
+// Step 8: Create a 404.html file that redirects back to index.html
 console.log('\n🔄 Creating 404.html for SPA routing...');
 const notFoundContent = `<!DOCTYPE html>
 <html>
@@ -135,7 +247,7 @@ const notFoundContent = `<!DOCTYPE html>
 fs.writeFileSync(path.join(DEPLOY_DIR, '404.html'), notFoundContent);
 console.log('✅ 404.html created for SPA routing');
 
-// Step 8: Create a specialized github-pages-app.html file that ensures proper routing
+// Step 9: Create a specialized github-pages-app.html file that ensures proper routing
 console.log('\n🔄 Creating specialized entry points...');
 
 // Create specialized index for the gh-pages root
