@@ -28,53 +28,42 @@ jobs:
       - name: Build
         run: npm run build
         
-      - name: Prepare for routing
+      - name: Fix for GitHub Pages SPA routing
         run: |
-          # Create a .nojekyll file to bypass GitHub Pages Jekyll processing
+          # Get repository name from GitHub context
+          REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
+          echo "Using repository name: $REPO_NAME"
+          
+          # Backup original index.html
+          cp dist/public/index.html dist/public/original-index.html
+          
+          # Create .nojekyll file
           touch dist/public/.nojekyll
           
-          # Copy index.html to 404.html for client-side routing
-          cp dist/public/index.html dist/public/404.html
-          
-          # Copy GitHub Pages specific index file to the root
-          cp github-pages-index.html dist/public/index.html
-          
-          # Create a _redirects file for SPA routing
-          echo "/*    /index.html   200" > dist/public/_redirects
-          
-          # Add base path to index.html for GitHub Pages deployment
-          # Get repository name dynamically from GitHub context
-          REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
-          echo "Using repository name for base path: $REPO_NAME"
-          sed -i "s/<head>/<head><base href=\"\/$REPO_NAME\/\">/" dist/public/index.html
-          sed -i "s/<head>/<head><base href=\"\/$REPO_NAME\/\">/" dist/public/404.html
-          
-          # Create a script to handle routing
-          cat > dist/public/routing-handler.js << 'EOL'
-          // Handle client-side routing for GitHub Pages
-          (function() {
-            // Get the base path from the base tag
-            const basePath = document.querySelector('base').getAttribute('href');
-            
-            // Listen for navigation and handle SPA routing
-            window.addEventListener('popstate', function() {
-              const path = window.location.pathname;
-              // Redirect to base path if not already within it
-              if (!path.startsWith(basePath)) {
-                window.location.replace(basePath + path.replace(/^\//, ''));
-              }
-            });
-            
-            // Handle initial load
-            if (!window.location.pathname.startsWith(basePath)) {
-              window.history.replaceState(null, null, basePath);
-            }
-          })();
+          # Create 404.html for SPA routing
+          cat > dist/public/404.html << EOL
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <title>Redirecting...</title>
+            <script>
+              // Store the path we're trying to access
+              sessionStorage.redirect = location.href;
+              // Redirect to the index page
+              location.replace("/${REPO_NAME}/");
+            </script>
+          </head>
+          <body>
+            <h1>Redirecting...</h1>
+          </body>
+          </html>
           EOL
           
-          # Add the routing script to both index.html and 404.html with dynamic repo name
-          sed -i "s/<\/head>/<script src=\"\/$REPO_NAME\/routing-handler.js\"><\/script><\/head>/" dist/public/index.html
-          sed -i "s/<\/head>/<script src=\"\/$REPO_NAME\/routing-handler.js\"><\/script><\/head>/" dist/public/404.html
+          # Modify the original index.html to handle redirects
+          sed -i "s/<head>/<head>\n  <base href=\"\/${REPO_NAME}\/\">\n  <script>\n    \/\/ Handle redirects from 404.html\n    (function() {\n      var redirect = sessionStorage.redirect;\n      delete sessionStorage.redirect;\n      if (redirect && redirect !== location.href) {\n        history.replaceState(null, null, redirect.replace(location.origin, ''));\n      }\n    })();\n  <\/script>/" dist/public/index.html
+          
+          echo "GitHub Pages SPA routing fix applied"
       
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4

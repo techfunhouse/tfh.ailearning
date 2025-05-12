@@ -15,39 +15,49 @@ mkdir -p $DEPLOY_DIR
 echo "Copying build files..."
 cp -r dist/public/* $DEPLOY_DIR/
 
+# Backup original index.html
+echo "Backing up original index.html..."
+cp $DEPLOY_DIR/index.html $DEPLOY_DIR/original-index.html
+
 # Create necessary files for GitHub Pages
 echo "Creating GitHub Pages configuration files..."
 touch $DEPLOY_DIR/.nojekyll
-cp $DEPLOY_DIR/index.html $DEPLOY_DIR/404.html
 
-# Add base path for GitHub Pages
-echo "Adding base path for GitHub Pages..."
-sed -i 's/<head>/<head><base href="\/ReferenceViewer\/">/' $DEPLOY_DIR/index.html
-sed -i 's/<head>/<head><base href="\/ReferenceViewer\/">/' $DEPLOY_DIR/404.html
-
-# Create a routing handler script
-echo "Creating routing handler script..."
-cat > $DEPLOY_DIR/routing-handler.js << 'EOL'
-// Handle client-side routing for GitHub Pages
-(function() {
-  // Get the base path from the base tag
-  const basePath = document.querySelector('base').getAttribute('href');
-  
-  // Listen for navigation
-  window.addEventListener('popstate', function() {
-    const path = window.location.pathname;
-    // Redirect to base path if not already within it
-    if (!path.startsWith(basePath)) {
-      window.location.replace(basePath + path.replace(/^\//, ''));
-    }
-  });
-})();
+# Create 404.html for SPA routing
+echo "Creating 404.html for SPA routing..."
+cat > $DEPLOY_DIR/404.html << 'EOL'
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting...</title>
+  <script>
+    // Store the path we're trying to access
+    sessionStorage.redirect = location.href;
+    // Redirect to the index page
+    location.replace("/ReferenceViewer/");
+  </script>
+</head>
+<body>
+  <h1>Redirecting...</h1>
+</body>
+</html>
 EOL
 
-# Add the routing script to the HTML files
-echo "Adding routing script to HTML files..."
-sed -i 's/<\/head>/<script src="\/ReferenceViewer\/routing-handler.js"><\/script><\/head>/' $DEPLOY_DIR/index.html
-sed -i 's/<\/head>/<script src="\/ReferenceViewer\/routing-handler.js"><\/script><\/head>/' $DEPLOY_DIR/404.html
+# Modify the original index.html to handle redirects
+echo "Adding SPA routing fix to index.html..."
+sed -i '/<head>/a\
+  <base href="/ReferenceViewer/">\
+  <script>\
+    // Handle redirects from 404.html\
+    (function() {\
+      var redirect = sessionStorage.redirect;\
+      delete sessionStorage.redirect;\
+      if (redirect && redirect !== location.href) {\
+        history.replaceState(null, null, redirect.replace(location.origin, ""));\
+      }\
+    })();\
+  </script>' $DEPLOY_DIR/index.html
 
 # Add a note for manual deployment
 echo "
