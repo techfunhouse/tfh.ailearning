@@ -68,13 +68,9 @@ async function buildApp(basePath) {
   log('Building application...');
   
   try {
-    // Export static data first
-    await execPromise('node export-static-data.js');
-    log('Static data exported successfully');
-    
-    // Fix JSON files for static deployment
-    await execPromise('node fix-json-for-deployment.js');
-    log('JSON files processed for static deployment');
+    // Prepare all static data files using our comprehensive script
+    await execPromise('./prepare-static-data.sh');
+    log('Static data prepared successfully');
     
     // Set environment variables for the build
     const env = {

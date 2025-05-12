@@ -10,6 +10,10 @@ function isStaticDeployment(): boolean {
       console.log('Development static mode enabled via localStorage');
       return true;
     }
+    
+    // In development, DON'T auto-enable static mode based on meta tag
+    // This prevents unexpected behavior during development
+    return false;
   }
   
   // First check for environment variable flag
