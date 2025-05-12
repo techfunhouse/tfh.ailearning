@@ -1,5 +1,23 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
+// This helper determines if we're running on GitHub Pages
+function isGitHubPages(): boolean {
+  return window.location.hostname.includes('github.io');
+}
+
+// Helper to adjust API URLs for GitHub Pages deployment
+function getAdjustedUrl(url: string): string {
+  if (isGitHubPages()) {
+    // On GitHub Pages, we need to use pre-loaded mock data
+    // This converts API calls like '/api/references' to './data/references.json'
+    if (url.startsWith('/api/')) {
+      const resource = url.replace('/api/', '');
+      return `./data/${resource}.json`;
+    }
+  }
+  return url;
+}
+
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
     const text = (await res.text()) || res.statusText;
@@ -12,10 +30,22 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const res = await fetch(url, {
-    method,
-    headers: data ? { "Content-Type": "application/json" } : {},
-    body: data ? JSON.stringify(data) : undefined,
+  // Adjust URL for GitHub Pages if needed
+  const adjustedUrl = getAdjustedUrl(url);
+  
+  // Use GET for GitHub Pages data fetching regardless of the original method
+  const effectiveMethod = isGitHubPages() ? 'GET' : method;
+  
+  // Log the request in development
+  if (import.meta.env.DEV) {
+    console.log(`API ${effectiveMethod} request to: ${adjustedUrl}`, 
+      isGitHubPages() ? '(GitHub Pages mode)' : '');
+  }
+  
+  const res = await fetch(adjustedUrl, {
+    method: effectiveMethod,
+    headers: data && !isGitHubPages() ? { "Content-Type": "application/json" } : {},
+    body: data && !isGitHubPages() ? JSON.stringify(data) : undefined,
     credentials: "include",
   });
 
@@ -29,7 +59,16 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const res = await fetch(queryKey[0] as string, {
+    // Adjust URL for GitHub Pages if needed
+    const url = getAdjustedUrl(queryKey[0] as string);
+    
+    // Log the query in development
+    if (import.meta.env.DEV) {
+      console.log(`Query request to: ${url}`, 
+        isGitHubPages() ? '(GitHub Pages mode)' : '');
+    }
+    
+    const res = await fetch(url, {
       credentials: "include",
     });
 

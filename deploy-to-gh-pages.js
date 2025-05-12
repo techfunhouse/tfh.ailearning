@@ -17,7 +17,17 @@ const DEPLOY_DIR = path.join(__dirname, 'gh-pages-deploy');
 
 console.log('=== GitHub Pages Deployment Script ===');
 
-// Step 1: Build the application
+// Step 1: Export static data for GitHub Pages
+console.log('\n📊 Exporting static data for GitHub Pages...');
+try {
+  execSync('node export-static-data.js', { stdio: 'inherit' });
+  console.log('✅ Static data export successful');
+} catch (error) {
+  console.error('❌ Static data export failed:', error.message);
+  // Continue anyway, as we might want to deploy even if data export fails
+}
+
+// Step 2: Build the application
 console.log('\n📦 Building the application...');
 try {
   execSync('npm run build', { stdio: 'inherit' });
@@ -27,7 +37,7 @@ try {
   process.exit(1);
 }
 
-// Step 2: Prepare deployment directory
+// Step 3: Prepare deployment directory
 console.log('\n🔧 Preparing deployment directory...');
 if (fs.existsSync(DEPLOY_DIR)) {
   console.log('Cleaning existing deployment directory...');
@@ -36,7 +46,7 @@ if (fs.existsSync(DEPLOY_DIR)) {
 fs.mkdirSync(DEPLOY_DIR, { recursive: true });
 console.log('✅ Deployment directory created');
 
-// Step 3: Copy build files to deployment directory
+// Step 4: Copy build files to deployment directory
 console.log('\n📋 Copying build files...');
 fs.cpSync(BUILD_DIR, DEPLOY_DIR, { recursive: true });
 console.log('✅ Build files copied to deployment directory');
