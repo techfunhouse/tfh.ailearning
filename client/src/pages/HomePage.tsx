@@ -501,6 +501,70 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto">
             {/* Header area with stats */}
             <div className="mb-8">
+              {/* Active Filters Display */}
+              {((selectedCategories.length > 0 && !selectedCategories.includes("all")) || selectedTags.length > 0) && (
+                <div className="bg-muted rounded-lg p-3 mb-4">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-sm font-medium text-muted-foreground">Active Filters:</span>
+                    
+                    {/* Selected Categories */}
+                    {selectedCategories.length > 0 && !selectedCategories.includes("all") && (
+                      <div className="flex flex-wrap gap-2">
+                        {selectedCategories.map(cat => (
+                          <Badge 
+                            key={cat} 
+                            variant="secondary"
+                            className="flex items-center gap-1 px-2.5 py-1"
+                          >
+                            <span>{cat}</span>
+                            <X 
+                              className="h-3 w-3 cursor-pointer" 
+                              onClick={() => handleCategoryChange(
+                                selectedCategories.filter(c => c !== cat).length > 0 
+                                  ? selectedCategories.filter(c => c !== cat) 
+                                  : ["all"]
+                              )}
+                            />
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {/* Selected Tags */}
+                    {selectedTags.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {selectedTags.map(tag => (
+                          <Badge 
+                            key={tag} 
+                            variant="default"
+                            className="flex items-center gap-1 px-2.5 py-1"
+                          >
+                            <span>{tag}</span>
+                            <X 
+                              className="h-3 w-3 cursor-pointer" 
+                              onClick={() => handleTagSelect(tag)}
+                            />
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {/* Clear all filters button */}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 text-xs ml-auto"
+                      onClick={() => {
+                        handleCategoryChange(["all"]);
+                        setSelectedTags([]);
+                      }}
+                    >
+                      Clear All
+                    </Button>
+                  </div>
+                </div>
+              )}
+              
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
                 <div>
                   <h1 className="text-2xl font-bold mb-1">Reference Library</h1>
