@@ -42,9 +42,9 @@ try {
 }
 
 // Step 2: Build the application
-console.log('\n📦 Building the application...');
+console.log('\n📦 Building the application for GitHub Pages...');
 try {
-  execSync('npm run build', { stdio: 'inherit' });
+  execSync('npm run build -- --mode github-pages', { stdio: 'inherit' });
   console.log('✅ Build successful');
 } catch (error) {
   console.error('❌ Build failed:', error.message);
@@ -63,8 +63,19 @@ console.log('✅ Deployment directory created');
 // Step 4: Copy build files to deployment directory
 console.log('\n📋 Copying build files...');
 try {
+  // Ensure the data directory exists in the deployment directory
+  if (!fs.existsSync(`${DEPLOY_DIR}/data`)) {
+    fs.mkdirSync(`${DEPLOY_DIR}/data`, { recursive: true });
+  }
+
+  // Copy JSON data files
   if (fs.existsSync(JSON_DIR) && fs.readdirSync(JSON_DIR).length > 0) {
+    console.log(`Copying data files from ${JSON_DIR} to ${DEPLOY_DIR}/data`);
     fs.cpSync(JSON_DIR, `${DEPLOY_DIR}/data`, { recursive: true });
+    
+    // Log the files that were copied
+    const dataFiles = fs.readdirSync(`${DEPLOY_DIR}/data`);
+    console.log(`Data files copied: ${dataFiles.join(', ')}`);
     console.log('✅ Data files copied to deployment directory');
   }
   // Try to copy the build output first
@@ -201,8 +212,8 @@ let indexContent = fs.readFileSync(indexPath, 'utf8');
 indexContent = indexContent.replace(
   '<head>',
   `<head>
-    <!-- GitHub Pages base path - no trailing slash to help with relative asset paths -->
-    <base href="/${REPO_NAME}">
+    <!-- GitHub Pages base path - with trailing slash for correct asset paths -->
+    <base href="/${REPO_NAME}/">
     <!-- Single Page App fix for GitHub Pages -->
     <script type="text/javascript">
       // When the GitHub Pages site loads, it may be loading a path other than the root.

@@ -5,6 +5,16 @@ function isGitHubPages(): boolean {
   return window.location.hostname.includes('github.io');
 }
 
+// Get the base path from environment variables or determine dynamically
+const getBasePath = (): string => {
+  const envBasePath = import.meta.env.VITE_BASE_PATH;
+  if (envBasePath) {
+    console.log(`Using base path from environment: ${envBasePath}`);
+    return envBasePath;
+  }
+  return isGitHubPages() ? '/ReferenceViewer/' : '/';
+};
+
 // Helper to adjust API URLs for GitHub Pages deployment
 function getAdjustedUrl(url: string): string {
   if (isGitHubPages()) {
@@ -13,15 +23,23 @@ function getAdjustedUrl(url: string): string {
     if (url.startsWith('/api/')) {
       const resource = url.replace('/api/', '');
       if (resource === 'references' || resource === 'categories' || resource === 'tags') {
-        // Path without leading slash for GitHub Pages compatibility
-        console.log(`GitHub Pages: Converting ${url} to data/${resource}.json`);
-        return `data/${resource}.json`;
+        // GitHub Pages data path uses repo name in the path
+        const basePath = getBasePath().replace(/\/$/, ''); // Remove trailing slash if present
+        console.log(`GitHub Pages: Converting ${url} to ${basePath}/data/${resource}.json`);
+        return `${basePath}/data/${resource}.json`;
       }
     }
     
-    // For any other URLs with leading slash, remove it for GitHub Pages
+    // For asset URLs, ensure they have the proper GitHub Pages prefix
+    if (url.startsWith('/assets/')) {
+      const basePath = getBasePath().replace(/\/$/, ''); // Remove trailing slash if present
+      return `${basePath}${url}`;
+    }
+    
+    // For any other URLs with leading slash, ensure they're properly prefixed
     if (url.startsWith('/')) {
-      return url.substring(1);
+      const basePath = getBasePath().replace(/\/$/, ''); // Remove trailing slash if present
+      return `${basePath}${url}`;
     }
   }
   return url;
