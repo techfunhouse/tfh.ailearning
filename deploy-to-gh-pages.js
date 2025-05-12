@@ -10,13 +10,22 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
+import dotenv from "dotenv";
 
 // Get directory name in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const rootDir = path.join(__dirname, '.');
+
+// Load environment variables from .env.local file
+dotenv.config({ path: path.join(rootDir, '.env.local') });
+console.log('Loaded environment variables from .env.local');
+const username = process.env.GITHUB_USERNAME || 'username';
+
 
 // Configuration - edit these values as needed
 const REPO_NAME = 'ReferenceViewer';
+const JSON_DIR = path.join(__dirname, 'data');
 const BUILD_DIR = path.join(__dirname, 'dist/public');
 const DEPLOY_DIR = path.join(__dirname, 'gh-pages-deploy');
 
@@ -54,6 +63,10 @@ console.log('✅ Deployment directory created');
 // Step 4: Copy build files to deployment directory
 console.log('\n📋 Copying build files...');
 try {
+  if (fs.existsSync(JSON_DIR) && fs.readdirSync(JSON_DIR).length > 0) {
+    fs.cpSync(JSON_DIR, `${DEPLOY_DIR}/data`, { recursive: true });
+    console.log('✅ Data files copied to deployment directory');
+  }
   // Try to copy the build output first
   if (fs.existsSync(BUILD_DIR) && fs.readdirSync(BUILD_DIR).length > 0) {
     fs.cpSync(BUILD_DIR, DEPLOY_DIR, { recursive: true });
@@ -317,12 +330,12 @@ console.log(`\nYour files are ready in: ${DEPLOY_DIR}`);
 console.log('\nNext steps:');
 console.log('1. Commit and push the contents of the deployment directory to the gh-pages branch of your repository');
 console.log('2. Configure GitHub Pages in your repository settings to use the gh-pages branch');
-console.log('3. Access your deployed app at: https://[username].github.io/ReferenceViewer/');
+console.log(`3. Access your deployed app at: https://${username}.github.io/ReferenceViewer/`);
 console.log('\nTo deploy manually:');
 console.log(`cd ${DEPLOY_DIR}`);
 console.log('git init');
 console.log('git checkout -b gh-pages');
 console.log('git add .');
 console.log('git commit -m "Deploy to GitHub Pages"');
-console.log('git remote add origin https://github.com/[username]/ReferenceViewer.git');
+console.log(`git remote add origin https://github.com/${username}/ReferenceViewer.git`);
 console.log('git push -f origin gh-pages');
