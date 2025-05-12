@@ -22,6 +22,12 @@ fi
 echo "📄 Creating custom domain version of .env.github-pages..."
 mv .env.github-pages-temp .env.github-pages
 
+# Clean up the dist/public directory if it exists
+if [ -d "dist/public" ]; then
+  echo "🧹 Cleaning up previous build..."
+  rm -rf dist/public
+fi
+
 # Export the static data for GitHub Pages
 echo "📊 Exporting static data..."
 node export-static-data.js
@@ -29,6 +35,10 @@ node export-static-data.js
 # Run the deployment script
 echo "🔄 Running deployment script..."
 node deploy-to-gh-pages.js
+
+# Run the advanced HTML fixer for custom domains
+echo "🔧 Running advanced HTML fixing for custom domain..."
+node fix-html-for-custom-domain.js
 
 # Restore the original .env.github-pages file if it existed
 if [ -f ".env.github-pages.backup" ]; then
