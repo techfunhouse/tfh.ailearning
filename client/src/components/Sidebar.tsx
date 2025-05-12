@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
@@ -21,7 +21,11 @@ import {
   PlusCircle,
   Save,
   Loader2,
-  Pencil as PencilIcon
+  Pencil as PencilIcon,
+  GitBranchPlus,
+  AlertCircle,
+  Github,
+  GitPullRequest
 } from 'lucide-react';
 import { getTagColor } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -32,6 +36,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import {
   Form,
