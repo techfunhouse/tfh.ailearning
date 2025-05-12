@@ -18,6 +18,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
+import ConfirmationDialog from './ConfirmationDialog';
 
 interface ReferenceCardProps {
   reference: Reference;
@@ -36,6 +37,7 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete }: 
   const [isLoved, setIsLoved] = useState(false); // Always start as not loved
   const [localLoveCount, setLocalLoveCount] = useState(loveCount);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   
   // Format the date
   const formattedDate = formatDistanceToNow(new Date(updatedAt), { addSuffix: true });
@@ -120,12 +122,16 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete }: 
   // Handle delete button click
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent opening the detail dialog
-    if (confirm("Are you sure you want to delete this reference?")) {
-      deleteMutation.mutate();
-      if (onDelete) {
-        onDelete(id);
-      }
+    setIsDeleteDialogOpen(true);
+  };
+  
+  // Handle confirmation of delete
+  const handleConfirmDelete = () => {
+    deleteMutation.mutate();
+    if (onDelete) {
+      onDelete(id);
     }
+    setIsDeleteDialogOpen(false);
   };
 
   return (
@@ -305,6 +311,18 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete }: 
           </div>
         </DialogContent>
       </Dialog>
+      
+      {/* Confirmation Dialog for Delete */}
+      <ConfirmationDialog
+        isOpen={isDeleteDialogOpen}
+        title="Delete Reference"
+        description={`Are you sure you want to delete "${title}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setIsDeleteDialogOpen(false)}
+      />
     </>
   );
 }
