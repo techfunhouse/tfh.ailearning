@@ -40,11 +40,82 @@ jobs:
           # Create .nojekyll file
           touch dist/public/.nojekyll
           
+          # Ensure data directory exists in the build output
+          mkdir -p dist/public/data
+          
+          # Copy data files to the build output
+          if [ -d "public/data" ]; then
+            echo "Copying data files from public/data to dist/public/data"
+            cp -r public/data/* dist/public/data/
+          fi
+          
           # Add base tag and fix script to index.html
           ORIGINAL_INDEX="dist/public/index.html"
           
-          # Insert base tag for GitHub Pages and spa-github-pages script
-          sed -i "s|<head>|<head>\n    <base href=\"/${REPO_NAME}/\">\n    <script type=\"text/javascript\">\n      // Single Page Apps for GitHub Pages\n      // MIT License - https://github.com/rafgraph/spa-github-pages\n      (function(l) {\n        if (l.search[1] === '/' ) {\n          var decoded = l.search.slice(1).split('&').map(function(s) { \n            return s.replace(/~and~/g, '&')\n          }).join('?');\n          window.history.replaceState(null, null,\n              l.pathname.slice(0, -1) + decoded + l.hash\n          );\n        }\n      }(window.location))\n    </script>|" $ORIGINAL_INDEX
+          if [ -f "$ORIGINAL_INDEX" ]; then
+            echo "Modifying index.html for GitHub Pages compatibility"
+            # Insert base tag for GitHub Pages and spa-github-pages script
+            sed -i "s|<head>|<head>\n    <base href=\"/${REPO_NAME}/\">\n    <script type=\"text/javascript\">\n      // Single Page Apps for GitHub Pages\n      // MIT License - https://github.com/rafgraph/spa-github-pages\n      (function(l) {\n        if (l.search[1] === '/' ) {\n          var decoded = l.search.slice(1).split('&').map(function(s) { \n            return s.replace(/~and~/g, '&')\n          }).join('?');\n          window.history.replaceState(null, null,\n              l.pathname.slice(0, -1) + decoded + l.hash\n          );\n        }\n      }(window.location))\n    </script>|" $ORIGINAL_INDEX
+          else
+            echo "index.html not found in build output. Creating a minimal index.html."
+            mkdir -p dist/public
+            cat > $ORIGINAL_INDEX << EOF
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reference Viewer</title>
+    <base href="/${REPO_NAME}/">
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // MIT License - https://github.com/rafgraph/spa-github-pages
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <style>
+      body { font-family: -apple-system, system-ui, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+      .card { border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin: 20px 0; }
+      h1 { color: #4338ca; }
+    </style>
+  </head>
+  <body>
+    <h1>Reference Viewer</h1>
+    <div class="card">
+      <p>Loading references from JSON data...</p>
+      <div id="references"></div>
+    </div>
+    <script>
+      fetch('./data/references.json')
+        .then(response => response.json())
+        .then(data => {
+          const container = document.getElementById('references');
+          const items = data.slice(0, 5).map(ref => 
+            \`<div class="card">
+              <h3>\${ref.title}</h3>
+              <p>\${ref.description}</p>
+              <p><a href="\${ref.link}" target="_blank">View Reference</a></p>
+            </div>\`
+          ).join('');
+          container.innerHTML = items;
+        })
+        .catch(error => {
+          document.getElementById('references').innerHTML = 
+            '<p>Error loading references. Please try again later.</p>';
+        });
+    </script>
+  </body>
+</html>
+EOF
+          fi
           
           # Create 404.html file for SPA routing
           cat > dist/public/404.html << 'EOL'
