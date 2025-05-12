@@ -43,8 +43,11 @@ jobs:
           echo "/*    /index.html   200" > dist/public/_redirects
           
           # Add base path to index.html for GitHub Pages deployment
-          sed -i 's/<head>/<head><base href="\/ReferenceViewer\/">/' dist/public/index.html
-          sed -i 's/<head>/<head><base href="\/ReferenceViewer\/">/' dist/public/404.html
+          # Get repository name dynamically from GitHub context
+          REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
+          echo "Using repository name for base path: $REPO_NAME"
+          sed -i "s/<head>/<head><base href=\"\/$REPO_NAME\/\">/" dist/public/index.html
+          sed -i "s/<head>/<head><base href=\"\/$REPO_NAME\/\">/" dist/public/404.html
           
           # Create a script to handle routing
           cat > dist/public/routing-handler.js << 'EOL'
@@ -69,9 +72,9 @@ jobs:
           })();
           EOL
           
-          # Add the routing script to both index.html and 404.html
-          sed -i 's/<\/head>/<script src="\/ReferenceViewer\/routing-handler.js"><\/script><\/head>/' dist/public/index.html
-          sed -i 's/<\/head>/<script src="\/ReferenceViewer\/routing-handler.js"><\/script><\/head>/' dist/public/404.html
+          # Add the routing script to both index.html and 404.html with dynamic repo name
+          sed -i "s/<\/head>/<script src=\"\/$REPO_NAME\/routing-handler.js\"><\/script><\/head>/" dist/public/index.html
+          sed -i "s/<\/head>/<script src=\"\/$REPO_NAME\/routing-handler.js\"><\/script><\/head>/" dist/public/404.html
       
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
