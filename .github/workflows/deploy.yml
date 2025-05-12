@@ -82,66 +82,66 @@ jobs:
             echo "index.html not found in build output. Creating a minimal index.html."
             mkdir -p dist/public
             cat > "$ORIGINAL_INDEX" << 'HTMLFILE'
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reference Viewer</title>
-    <base href="/__REPO_NAME__/">
-    <script type="text/javascript">
-      // Single Page Apps for GitHub Pages
-      (function(l) {
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&')
-          }).join('?');
-          window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + decoded + l.hash
-          );
-        }
-      }(window.location))
-    </script>
-    <style>
-      body { font-family: -apple-system, system-ui, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
-      .card { border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin: 20px 0; }
-      h1 { color: #4338ca; }
-    </style>
-  </head>
-  <body>
-    <h1>Reference Viewer</h1>
-    <div class="card">
-      <p>Loading references from JSON data...</p>
-      <div id="references"></div>
-    </div>
-    <script>
-      fetch('./data/references.json')
-        .then(response => response.json())
-        .then(data => {
-          const container = document.getElementById('references');
-          let html = '';
-          
-          if (data && data.length > 0) {
-            data.slice(0, 5).forEach(ref => {
-              html += '<div class="card">';
-              html += '<h3>' + (ref.title || 'No Title') + '</h3>';
-              html += '<p>' + (ref.description || 'No Description') + '</p>';
-              html += '<p><a href="' + (ref.link || '#') + '" target="_blank">View Reference</a></p>';
-              html += '</div>';
-            });
-          } else {
-            html = '<p>No references found</p>';
-          }
-          
-          container.innerHTML = html;
-        })
-        .catch(error => {
-          document.getElementById('references').innerHTML = 
-            '<p>Error loading references. Please try again later.</p>';
-        });
-    </script>
-  </body>
-</html>
+            <!DOCTYPE html>
+            <html lang="en">
+              <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Reference Viewer</title>
+                <base href="/__REPO_NAME__/">
+                <script type="text/javascript">
+                  // Single Page Apps for GitHub Pages
+                  (function(l) {
+                    if (l.search[1] === '/' ) {
+                      var decoded = l.search.slice(1).split('&').map(function(s) { 
+                        return s.replace(/~and~/g, '&')
+                      }).join('?');
+                      window.history.replaceState(null, null,
+                          l.pathname.slice(0, -1) + decoded + l.hash
+                      );
+                    }
+                  }(window.location))
+                </script>
+                <style>
+                  body { font-family: -apple-system, system-ui, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+                  .card { border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin: 20px 0; }
+                  h1 { color: #4338ca; }
+                </style>
+              </head>
+              <body>
+                <h1>Reference Viewer</h1>
+                <div class="card">
+                  <p>Loading references from JSON data...</p>
+                  <div id="references"></div>
+                </div>
+                <script>
+                  fetch('./data/references.json')
+                    .then(response => response.json())
+                    .then(data => {
+                      const container = document.getElementById('references');
+                      let html = '';
+                      
+                      if (data && data.length > 0) {
+                        data.slice(0, 5).forEach(ref => {
+                          html += '<div class="card">';
+                          html += '<h3>' + (ref.title || 'No Title') + '</h3>';
+                          html += '<p>' + (ref.description || 'No Description') + '</p>';
+                          html += '<p><a href="' + (ref.link || '#') + '" target="_blank">View Reference</a></p>';
+                          html += '</div>';
+                        });
+                      } else {
+                        html = '<p>No references found</p>';
+                      }
+                      
+                      container.innerHTML = html;
+                    })
+                    .catch(error => {
+                      document.getElementById('references').innerHTML = 
+                        '<p>Error loading references. Please try again later.</p>';
+                    });
+                </script>
+              </body>
+            </html>
 HTMLFILE
             # Replace placeholder with actual repo name
             sed -i "s/__REPO_NAME__/${REPO_NAME}/g" "$ORIGINAL_INDEX"
@@ -149,36 +149,36 @@ HTMLFILE
           
           # Create 404.html file for SPA routing
           cat > dist/public/404.html << 'EOL'
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>RefHub - Redirecting</title>
-    <script type="text/javascript">
-      // Single Page Apps for GitHub Pages
-      // MIT License - https://github.com/rafgraph/spa-github-pages
-      // This script takes the current url and converts the path and query
-      // string into just a query string, and then redirects the browser
-      // to the new url with only a query string and hash fragment
-      
-      // If you're creating a Project Pages site and NOT using a custom domain,
-      // then set pathSegmentsToKeep to 1 (enterprise users may need to set it to > 1).
-      var pathSegmentsToKeep = 1;
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <meta charset="utf-8">
+              <title>RefHub - Redirecting</title>
+              <script type="text/javascript">
+                // Single Page Apps for GitHub Pages
+                // MIT License - https://github.com/rafgraph/spa-github-pages
+                // This script takes the current url and converts the path and query
+                // string into just a query string, and then redirects the browser
+                // to the new url with only a query string and hash fragment
+                
+                // If you're creating a Project Pages site and NOT using a custom domain,
+                // then set pathSegmentsToKeep to 1 (enterprise users may need to set it to > 1).
+                var pathSegmentsToKeep = 1;
 
-      var l = window.location;
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
-      );
-    </script>
-  </head>
-  <body>
-    <h1>Redirecting...</h1>
-  </body>
-</html>
+                var l = window.location;
+                l.replace(
+                  l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+                  l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+                  l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+                  (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+                  l.hash
+                );
+              </script>
+            </head>
+            <body>
+              <h1>Redirecting...</h1>
+            </body>
+          </html>
 EOL
           
           echo "✅ GitHub Pages preparation completed successfully"
