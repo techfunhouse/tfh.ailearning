@@ -153,8 +153,7 @@ export class JsonDbStorage implements IStorage {
       description: "Essential principles for creating intuitive and aesthetically pleasing user interfaces.",
       category: "design",
       tags: ["ui/ux", "design", "frontend"],
-      thumbnail: "https://images.unsplash.com/photo-1516031190212-da133013de50?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
-      lovedBy: []
+      thumbnail: "https://images.unsplash.com/photo-1516031190212-da133013de50?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80"
     }, "admin");
     
     await this.createReference({
@@ -269,7 +268,6 @@ export class JsonDbStorage implements IStorage {
       id,
       createdBy,
       loveCount: 0,
-      lovedBy: [],
       createdAt: now,
       updatedAt: now,
     };
@@ -458,18 +456,8 @@ export class JsonDbStorage implements IStorage {
     
     const reference = this.referencesDb.data.references[index];
     
-    // Check if user already loved this reference
-    const alreadyLoved = reference.lovedBy.includes(userId);
-    
-    if (alreadyLoved) {
-      // Remove user from lovedBy array
-      reference.lovedBy = reference.lovedBy.filter(id => id !== userId);
-      reference.loveCount = Math.max(0, reference.loveCount - 1);
-    } else {
-      // Add user to lovedBy array
-      reference.lovedBy.push(userId);
-      reference.loveCount = reference.loveCount + 1;
-    }
+    // Simply increment the love count
+    reference.loveCount = reference.loveCount + 1;
     
     this.referencesDb.data.references[index] = reference;
     this.saveReferenceData();
