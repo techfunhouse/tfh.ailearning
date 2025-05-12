@@ -1,8 +1,8 @@
 /**
- * GitHub Pages Simplified Deployment Script
- *
- * This script handles the complete deployment process for a React SPA to GitHub Pages.
- * It works with both repository and custom domain deployments with automatic configuration.
+ * GitHub Pages Deployment Test Script
+ * 
+ * This simplified version just tests the deployment configuration
+ * without performing the actual build (which can be time-consuming).
  */
 import fs from 'fs';
 import path from 'path';
@@ -17,17 +17,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configuration
-const BUILD_DIR = path.join(__dirname, 'dist/public');
-const DEPLOY_DIR = path.join(__dirname, 'deploy');
+const DEPLOY_DIR = path.join(__dirname, 'deploy-test');
 const IS_CUSTOM_DOMAIN = process.env.CUSTOM_DOMAIN || fs.existsSync(path.join(__dirname, 'CNAME'));
 const CUSTOM_DOMAIN = IS_CUSTOM_DOMAIN ? 
   (process.env.CUSTOM_DOMAIN || fs.readFileSync(path.join(__dirname, 'CNAME'), 'utf8').trim()) : 
   null;
 
 // Utility functions
-const log = (message) => console.log(`\x1b[36m[Deploy]\x1b[0m ${message}`);
-const error = (message) => console.error(`\x1b[31m[Deploy ERROR]\x1b[0m ${message}`);
-const success = (message) => console.log(`\x1b[32m[Deploy SUCCESS]\x1b[0m ${message}`);
+const log = (message) => console.log(`\x1b[36m[Deploy Test]\x1b[0m ${message}`);
+const error = (message) => console.error(`\x1b[31m[Deploy Test ERROR]\x1b[0m ${message}`);
+const success = (message) => console.log(`\x1b[32m[Deploy Test SUCCESS]\x1b[0m ${message}`);
 
 async function setupEnvironment() {
   log('Setting up deployment environment...');
@@ -64,32 +63,8 @@ ${IS_CUSTOM_DOMAIN ? `CUSTOM_DOMAIN=${CUSTOM_DOMAIN}\nVITE_USE_CUSTOM_DOMAIN=tru
   }
 }
 
-async function buildApp(basePath) {
-  log('Building application...');
-  
-  try {
-    // Export static data first
-    await execPromise('node export-static-data.js');
-    log('Static data exported successfully');
-    
-    // Set environment variables for the build
-    const env = {
-      ...process.env,
-      VITE_BASE_PATH: basePath,
-      VITE_USE_CUSTOM_DOMAIN: IS_CUSTOM_DOMAIN ? 'true' : 'false'
-    };
-    
-    // Run the build
-    await execPromise('npm run build', { env });
-    success('Application built successfully');
-  } catch (err) {
-    error(`Build failed: ${err.message}`);
-    throw err;
-  }
-}
-
-async function prepareDeploymentFiles() {
-  log('Preparing deployment files...');
+async function prepareTestDeploymentFiles() {
+  log('Creating test deployment directory...');
   
   try {
     // Create deployment directory
@@ -98,11 +73,41 @@ async function prepareDeploymentFiles() {
     }
     fs.mkdirSync(DEPLOY_DIR, { recursive: true });
     
-    // Copy build files
-    fs.cpSync(BUILD_DIR, DEPLOY_DIR, { recursive: true });
-    
     // Create .nojekyll file
     fs.writeFileSync(path.join(DEPLOY_DIR, '.nojekyll'), '');
+    
+    // Create test HTML file
+    fs.writeFileSync(
+      path.join(DEPLOY_DIR, 'index.html'),
+      `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Deployment Test</title>
+    <base href="/">
+    <link rel="stylesheet" href="assets/style.css">
+  </head>
+  <body>
+    <h1>Deployment Test Page</h1>
+    <p>This is a test page for GitHub Pages deployment.</p>
+    <script src="assets/main.js"></script>
+  </body>
+</html>`
+    );
+    
+    // Create assets directory with test files
+    const assetsDir = path.join(DEPLOY_DIR, 'assets');
+    fs.mkdirSync(assetsDir, { recursive: true });
+    
+    fs.writeFileSync(
+      path.join(assetsDir, 'style.css'),
+      `body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }`
+    );
+    
+    fs.writeFileSync(
+      path.join(assetsDir, 'main.js'),
+      `console.log("Deployment test successful!");`
+    );
     
     // Create CNAME file if needed
     if (IS_CUSTOM_DOMAIN && CUSTOM_DOMAIN) {
@@ -131,9 +136,9 @@ async function prepareDeploymentFiles() {
 </html>`
     );
     
-    success('Deployment files prepared successfully');
+    success('Test deployment files prepared successfully');
   } catch (err) {
-    error(`Failed to prepare deployment files: ${err.message}`);
+    error(`Failed to prepare test deployment files: ${err.message}`);
     throw err;
   }
 }
@@ -182,69 +187,26 @@ async function fixHtmlForCustomDomain() {
 
 async function main() {
   try {
-    log('Starting deployment process...');
+    log('Starting deployment test...');
     
     const { basePath } = await setupEnvironment();
-    await buildApp(basePath);
-    await prepareDeploymentFiles();
+    await prepareTestDeploymentFiles();
     
     if (IS_CUSTOM_DOMAIN) {
       await fixHtmlForCustomDomain();
     }
     
-    success('All deployment preparation complete!');
-    log('Deploy files are ready in the "deploy" directory');
-    
-    // Check if we should perform the actual deployment
-    if (process.env.PERFORM_DEPLOYMENT === 'true') {
-      log('Performing automated deployment to GitHub Pages...');
-      
-      try {
-        // Change to the deploy directory
-        process.chdir(DEPLOY_DIR);
-        
-        // Initialize git repository
-        await execPromise('git init');
-        await execPromise('git config user.name "Deployment Script"');
-        await execPromise('git config user.email "deploy@example.com"');
-        
-        // Add all files and commit
-        await execPromise('git add -A');
-        await execPromise('git commit -m "Deploy to GitHub Pages"');
-        
-        // Push to gh-pages branch (force)
-        const remoteUrl = (await execPromise('git config --get remote.origin.url || echo ""')).stdout.trim();
-        const pushCommand = remoteUrl ? 
-          `git push -f ${remoteUrl} HEAD:gh-pages` : 
-          'echo "No remote URL found. Set it with: git remote add origin YOUR_REPO_URL"';
-        
-        await execPromise(pushCommand);
-        success('Successfully deployed to GitHub Pages!');
-      } catch (err) {
-        error(`Deployment to GitHub Pages failed: ${err.message}`);
-        error('You can try manual deployment instead.');
-      }
-    } else {
-      log('For manual deployment, run the following commands:');
-      log('  cd deploy');
-      log('  git init');
-      log('  git add -A');
-      log('  git commit -m "Deploy to GitHub Pages"');
-      log('  git push -f https://github.com/USERNAME/REPO.git HEAD:gh-pages');
-      log('');
-      log('Or run this script with PERFORM_DEPLOYMENT=true to deploy automatically:');
-      log('  PERFORM_DEPLOYMENT=true node deploy.js');
-    }
+    success('All deployment test steps completed successfully!');
+    log(`Test files are ready in the "${DEPLOY_DIR}" directory`);
     
     return 0;
   } catch (err) {
-    error(`Deployment process failed: ${err.message}`);
+    error(`Deployment test failed: ${err.message}`);
     return 1;
   }
 }
 
-// ES modules don't have access to the main module like CommonJS
-// So we call the main function and handle the exit code
+// Run the main function and handle the exit code
 main().then(exitCode => {
   if (exitCode !== 0) {
     process.exit(exitCode);

@@ -23,42 +23,30 @@ jobs:
       
       - name: Setup Environment
         run: |
-          # Create customized environment settings
-          if [[ "$GITHUB_REPOSITORY" == *"github.io"* ]]; then
-            # For username.github.io repos - use root path
-            echo "BASE_PATH=/" >> $GITHUB_ENV
-            echo "Using root path for username.github.io repository"
-          elif [[ ! -z "$CUSTOM_DOMAIN" ]]; then
-            # For custom domains - use root path
-            echo "BASE_PATH=/" >> $GITHUB_ENV
-            echo "Using root path for custom domain: $CUSTOM_DOMAIN"
-          else
-            # For project repositories - use repo name
-            REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d '/' -f 2)
-            echo "BASE_PATH=/$REPO_NAME/" >> $GITHUB_ENV
-            echo "Using repository path: /$REPO_NAME/"
-          fi
-          
-          # Create .env file for the build
-          echo "# Build environment configuration" > .env.github-pages
-          echo "VITE_BASE_PATH=$BASE_PATH" >> .env.github-pages
-          
-          # Add custom domain if specified
+          # Set up custom domain from repository secret or environment variable
           if [[ ! -z "$CUSTOM_DOMAIN" ]]; then
-            echo "CUSTOM_DOMAIN=$CUSTOM_DOMAIN" >> .env.github-pages
-            echo "VITE_USE_CUSTOM_DOMAIN=true" >> .env.github-pages
+            echo "Using custom domain: $CUSTOM_DOMAIN"
           fi
           
+          # Run our deploy-test script to generate the configuration
+          # This ensures all domain and path detection logic matches what we use in deployment
+          node deploy-test.js
+          
+          # Show the generated configuration
+          echo "Generated environment configuration:"
           cat .env.github-pages
       
       - name: Export Static Data
         run: node export-static-data.js
       
       - name: Build
-        run: npm run build
-        env:
-          VITE_BASE_PATH: ${{ env.BASE_PATH }}
-          VITE_USE_CUSTOM_DOMAIN: ${{ env.CUSTOM_DOMAIN != '' }}
+        run: |
+          # Read environment settings from our config file
+          export $(grep -v '^#' .env.github-pages | xargs)
+          echo "Building with BASE_PATH=$VITE_BASE_PATH and CUSTOM_DOMAIN=${CUSTOM_DOMAIN:-none}"
+          
+          # Run the build with these settings
+          npm run build
       
       - name: Setup Deployment Directory
         run: |

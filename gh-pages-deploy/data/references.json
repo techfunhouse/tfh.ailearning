@@ -1,0 +1,2534 @@
+[
+  {
+    "title": "Practical Data Visualization Implementation",
+    "link": "https://example.com/data-visualization-1",
+    "description": "Discover effective strategies for implementing Data Visualization in production environments.",
+    "category": "research",
+    "tags": [
+      "tools",
+      "python",
+      "angular"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 4,
+    "lovedBy": [
+      3,
+      3,
+      6
+    ],
+    "createdBy": "curator",
+    "id": "9f1bb253-9604-4821-8488-cabe2347f4f4",
+    "createdAt": "2025-04-30T11:31:35.586Z",
+    "updatedAt": "2025-04-30T11:31:35.586Z"
+  },
+  {
+    "title": "Practical GraphQL Implementation",
+    "link": "https://example.com/graphql-2",
+    "description": "Discover effective strategies for implementing GraphQL in production environments.",
+    "category": "design",
+    "tags": [
+      "ai"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 3,
+    "lovedBy": [
+      1,
+      7
+    ],
+    "createdBy": "admin",
+    "id": "583abe43-e63c-455a-b83a-94ec9c1aaf91",
+    "createdAt": "2025-04-26T11:31:35.588Z",
+    "updatedAt": "2025-04-26T11:31:35.588Z"
+  },
+  {
+    "title": "Modern Deep Learning Frameworks",
+    "link": "https://example.com/deep-learning-3",
+    "description": "A curated collection of Deep Learning resources, tools, and methodologies.",
+    "category": "design",
+    "tags": [
+      "machine-learning",
+      "algorithm"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 9,
+    "lovedBy": [
+      4,
+      6,
+      6,
+      10,
+      4,
+      3,
+      3,
+      1,
+      7
+    ],
+    "createdBy": "curator",
+    "id": "3d04d336-4a9f-430b-8252-554ea255c4a2",
+    "createdAt": "2025-04-15T11:31:35.588Z",
+    "updatedAt": "2025-04-15T11:31:35.588Z"
+  },
+  {
+    "title": "Guide to Design System Development",
+    "link": "https://example.com/design-system-4",
+    "description": "Discover effective strategies for implementing Design System in production environments.",
+    "category": "tools",
+    "tags": [
+      "docker",
+      "blockchain"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 4,
+    "lovedBy": [
+      7,
+      8,
+      1,
+      4
+    ],
+    "createdBy": "curator",
+    "id": "73e31d04-13a6-4493-9c0c-95905e520964",
+    "createdAt": "2025-05-01T11:31:35.588Z",
+    "updatedAt": "2025-05-01T11:31:35.588Z"
+  },
+  {
+    "title": "Optimizing Figma Performance",
+    "link": "https://example.com/figma-5",
+    "description": "Master the fundamentals of Figma through step-by-step tutorials and exercises.",
+    "category": "tools",
+    "tags": [
+      "tools",
+      "python",
+      "backend"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1610563166150-b34df4f3bcd6?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 9,
+    "lovedBy": [
+      7,
+      9,
+      3,
+      2,
+      1,
+      6,
+      7,
+      3,
+      7
+    ],
+    "createdBy": "admin",
+    "id": "8edc8c42-93bd-4c86-b2f3-c18f519e718a",
+    "createdAt": "2025-04-13T11:31:35.588Z",
+    "updatedAt": "2025-04-13T11:31:35.588Z"
+  },
+  {
+    "title": "Building Product Design Applications",
+    "link": "https://example.com/product-design-6",
+    "description": "Advanced techniques for optimizing Product Design performance and scalability.",
+    "category": "tools",
+    "tags": [
+      "linux",
+      "development",
+      "database"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1610563166150-b34df4f3bcd6?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 6,
+    "lovedBy": [
+      9,
+      2,
+      5,
+      10,
+      7,
+      7
+    ],
+    "createdBy": "admin",
+    "id": "dee2494d-35c5-4dcd-98ad-7a2c0edc3adc",
+    "createdAt": "2025-04-20T11:31:35.588Z",
+    "updatedAt": "2025-04-20T11:31:35.588Z"
+  },
+  {
+    "title": "Mastering Data Visualization Architecture",
+    "link": "https://example.com/data-visualization-7",
+    "description": "Learn practical Data Visualization skills through real-world examples and case studies.",
+    "category": "research",
+    "tags": [
+      "vue"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 1,
+    "lovedBy": [
+      7
+    ],
+    "createdBy": "admin",
+    "id": "fa60c197-d815-475f-87bb-9ef46fe618b6",
+    "createdAt": "2025-04-23T11:31:35.588Z",
+    "updatedAt": "2025-04-23T11:31:35.588Z"
+  },
+  {
+    "title": "Practical Web Implementation",
+    "link": "https://example.com/web-8",
+    "description": "Master the fundamentals of Web through step-by-step tutorials and exercises.",
+    "category": "programming",
+    "tags": [
+      "devops",
+      "algorithm"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 8,
+    "lovedBy": [
+      7,
+      2,
+      9,
+      2,
+      6,
+      5,
+      8
+    ],
+    "createdBy": "admin",
+    "id": "9bb4dcdc-7058-4243-8135-0ed2d5197b98",
+    "createdAt": "2025-04-29T11:31:35.588Z",
+    "updatedAt": "2025-04-29T11:31:35.588Z"
+  },
+  {
+    "title": "UI Security Fundamentals",
+    "link": "https://example.com/ui-9",
+    "description": "Explore the latest trends and best practices in UI development.",
+    "category": "research",
+    "tags": [
+      "research",
+      "frontend"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 9,
+    "lovedBy": [
+      4,
+      9,
+      7,
+      3,
+      5,
+      8,
+      8,
+      8,
+      5
+    ],
+    "createdBy": "admin",
+    "id": "9053e450-90a8-4f0e-8877-265bff744fca",
+    "createdAt": "2025-04-19T11:31:35.588Z",
+    "updatedAt": "2025-04-19T11:31:35.588Z"
+  },
+  {
+    "title": "Introduction to Accessibility Design",
+    "link": "https://example.com/accessibility-10",
+    "description": "A comprehensive guide to Accessibility that covers everything from basic principles to advanced techniques.",
+    "category": "design",
+    "tags": [
+      "cloud"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 6,
+    "lovedBy": [
+      3,
+      9,
+      6,
+      4,
+      9,
+      4
+    ],
+    "createdBy": "admin",
+    "id": "8a663768-c918-4545-8cf3-fd9ca3f99679",
+    "createdAt": "2025-04-13T11:31:35.588Z",
+    "updatedAt": "2025-04-13T11:31:35.588Z"
+  },
+  {
+    "title": "Future of Node.js Development",
+    "link": "https://example.com/node.js-11",
+    "description": "Discover effective strategies for implementing Node.js in production environments.",
+    "category": "research",
+    "tags": [
+      "nlp",
+      "javascript"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 0,
+    "lovedBy": [],
+    "createdBy": "curator",
+    "id": "69c5dcad-ce9b-4061-8ea8-45e9d58557b3",
+    "createdAt": "2025-04-19T11:31:35.588Z",
+    "updatedAt": "2025-04-19T11:31:35.588Z"
+  },
+  {
+    "title": "SEO for Beginners",
+    "link": "https://example.com/seo-12",
+    "description": "Understanding the core concepts behind SEO with practical implementation guides.",
+    "category": "programming",
+    "tags": [
+      "cloud",
+      "visualization"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 4,
+    "lovedBy": [
+      8,
+      6,
+      7,
+      7
+    ],
+    "createdBy": "admin",
+    "id": "a21f9505-1ab7-4800-9fba-eb3a60eba42c",
+    "createdAt": "2025-05-02T11:31:35.588Z",
+    "updatedAt": "2025-05-02T11:31:35.588Z"
+  },
+  {
+    "title": "Introduction to Blockchain Design",
+    "link": "https://example.com/blockchain-13",
+    "description": "Advanced techniques for optimizing Blockchain performance and scalability.",
+    "category": "research",
+    "tags": [
+      "performance",
+      "statistics",
+      "color-theory"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 7,
+    "lovedBy": [
+      5,
+      5,
+      1,
+      7,
+      10,
+      6,
+      4
+    ],
+    "createdBy": "admin",
+    "id": "80b75778-7135-45ba-a7d7-5dcffa46e6b7",
+    "createdAt": "2025-05-04T11:31:35.588Z",
+    "updatedAt": "2025-05-04T11:31:35.588Z"
+  },
+  {
+    "title": "Exploring Frontend Technologies",
+    "link": "https://example.com/frontend-14",
+    "description": "Explore the latest trends and best practices in Frontend development.",
+    "category": "research",
+    "tags": [
+      "nlp",
+      "cloud",
+      "database"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 1,
+    "lovedBy": [
+      2
+    ],
+    "createdBy": "admin",
+    "id": "b0e8a07c-0a7d-4bfa-a54b-4d573ff84044",
+    "createdAt": "2025-04-27T11:31:35.588Z",
+    "updatedAt": "2025-04-27T11:31:35.588Z"
+  },
+  {
+    "title": "Practical GraphQL Implementation",
+    "link": "https://example.com/graphql-15",
+    "description": "Master the fundamentals of GraphQL through step-by-step tutorials and exercises.",
+    "category": "tools",
+    "tags": [
+      "data-science",
+      "cloud"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 3,
+    "lovedBy": [
+      5,
+      2,
+      3
+    ],
+    "createdBy": "admin",
+    "id": "18c27eec-3c9c-4ec4-a994-791ba9970503",
+    "createdAt": "2025-04-27T11:31:35.588Z",
+    "updatedAt": "2025-04-27T11:31:35.588Z"
+  },
+  {
+    "title": "Layout Best Practices",
+    "link": "https://example.com/layout-16",
+    "description": "Learn practical Layout skills through real-world examples and case studies.",
+    "category": "programming",
+    "tags": [
+      "tools",
+      "linux"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 8,
+    "lovedBy": [
+      3,
+      4,
+      6,
+      4,
+      9,
+      7,
+      6,
+      5
+    ],
+    "createdBy": "curator",
+    "id": "89e33a83-4eab-4952-98b0-0865b865eaf1",
+    "createdAt": "2025-04-20T11:31:35.588Z",
+    "updatedAt": "2025-04-20T11:31:35.588Z"
+  },
+  {
+    "title": "Mastering Robotics Architecture",
+    "link": "https://example.com/robotics-17",
+    "description": "Discover effective strategies for implementing Robotics in production environments.",
+    "category": "research",
+    "tags": [
+      "cloud"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 0,
+    "lovedBy": [],
+    "createdBy": "curator",
+    "id": "ea18ce99-3fe6-4994-a1d2-6067acbee4ce",
+    "createdAt": "2025-04-18T11:31:35.588Z",
+    "updatedAt": "2025-04-18T11:31:35.588Z"
+  },
+  {
+    "title": "Introduction to GraphQL Design",
+    "link": "https://example.com/graphql-18",
+    "description": "This reference provides in-depth information about GraphQL with practical applications.",
+    "category": "research",
+    "tags": [
+      "cms",
+      "backend"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 3,
+    "lovedBy": [
+      2,
+      1,
+      6
+    ],
+    "createdBy": "admin",
+    "id": "2d16fa9e-c6f5-40ce-bbf0-999e1351ce01",
+    "createdAt": "2025-04-29T11:31:35.588Z",
+    "updatedAt": "2025-04-29T11:31:35.588Z"
+  },
+  {
+    "title": "Effective Git Patterns",
+    "link": "https://example.com/git-19",
+    "description": "A curated collection of Git resources, tools, and methodologies.",
+    "category": "tools",
+    "tags": [
+      "nlp",
+      "serverless"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 4,
+    "lovedBy": [
+      4,
+      1,
+      1,
+      9
+    ],
+    "createdBy": "admin",
+    "id": "cad51078-8094-4b7d-9c4c-bf61f4fb8848",
+    "createdAt": "2025-04-27T11:31:35.588Z",
+    "updatedAt": "2025-04-27T11:31:35.588Z"
+  },
+  {
+    "title": "Introduction to AI Design",
+    "link": "https://example.com/ai-20",
+    "description": "Explore the latest trends and best practices in AI development.",
+    "category": "programming",
+    "tags": [
+      "visualization"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 7,
+    "lovedBy": [
+      3,
+      5,
+      6,
+      5,
+      9,
+      5,
+      2
+    ],
+    "createdBy": "admin",
+    "id": "de3c061f-dd3e-4ea7-ac86-42dd0d185f23",
+    "createdAt": "2025-04-16T11:31:35.588Z",
+    "updatedAt": "2025-04-16T11:31:35.588Z"
+  },
+  {
+    "title": "Accessibility Security Fundamentals",
+    "link": "https://example.com/accessibility-21",
+    "description": "Explore the latest trends and best practices in Accessibility development.",
+    "category": "tools",
+    "tags": [
+      "api",
+      "algorithm"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 4,
+    "lovedBy": [
+      10,
+      9,
+      3,
+      3
+    ],
+    "createdBy": "curator",
+    "id": "86ccd530-4f9b-4527-ab88-b876e7636448",
+    "createdAt": "2025-04-21T11:31:35.588Z",
+    "updatedAt": "2025-04-21T11:31:35.588Z"
+  },
+  {
+    "title": "Guide to Deep Learning Development",
+    "link": "https://example.com/deep-learning-22",
+    "description": "This reference provides in-depth information about Deep Learning with practical applications.",
+    "category": "programming",
+    "tags": [
+      "docker",
+      "python",
+      "serverless"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 7,
+    "lovedBy": [
+      2,
+      4,
+      4,
+      7,
+      1,
+      1,
+      3
+    ],
+    "createdBy": "admin",
+    "id": "c113897d-af37-4f23-9bcf-3fae7cd646ae",
+    "createdAt": "2025-04-24T11:31:35.588Z",
+    "updatedAt": "2025-04-24T11:31:35.588Z"
+  },
+  {
+    "title": "Exploring Database Technologies",
+    "link": "https://example.com/database-23",
+    "description": "A curated collection of Database resources, tools, and methodologies.",
+    "category": "tools",
+    "tags": [
+      "react",
+      "security",
+      "database"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 6,
+    "lovedBy": [
+      9,
+      2,
+      1,
+      7,
+      3,
+      7
+    ],
+    "createdBy": "admin",
+    "id": "697497a4-3669-4b1e-ada4-42f1932445c3",
+    "createdAt": "2025-04-15T11:31:35.588Z",
+    "updatedAt": "2025-04-15T11:31:35.588Z"
+  },
+  {
+    "title": "Mastering Machine Learning Architecture",
+    "link": "https://example.com/machine-learning-24",
+    "description": "Explore the latest trends and best practices in Machine Learning development.",
+    "category": "design",
+    "tags": [
+      "cms"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 5,
+    "lovedBy": [
+      7,
+      1,
+      1,
+      4,
+      1
+    ],
+    "createdBy": "admin",
+    "id": "c706691c-58d0-450a-af1a-63ca7f6b4896",
+    "createdAt": "2025-05-03T11:31:35.588Z",
+    "updatedAt": "2025-05-03T11:31:35.588Z"
+  },
+  {
+    "title": "Optimizing Deep Learning Performance",
+    "link": "https://example.com/deep-learning-25",
+    "description": "A detailed exploration of Deep Learning patterns and architecture for modern applications.",
+    "category": "tools",
+    "tags": [
+      "statistics",
+      "blockchain"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 3,
+    "lovedBy": [
+      7,
+      4,
+      9
+    ],
+    "createdBy": "curator",
+    "id": "ae5b4a30-dcfe-437f-befe-5e6a16f7d91f",
+    "createdAt": "2025-04-11T11:31:35.588Z",
+    "updatedAt": "2025-04-11T11:31:35.588Z"
+  },
+  {
+    "title": "Guide to UI Development",
+    "link": "https://example.com/ui-26",
+    "description": "Learn practical UI skills through real-world examples and case studies.",
+    "category": "design",
+    "tags": [
+      "serverless",
+      "cloud"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 5,
+    "lovedBy": [
+      1,
+      8,
+      9,
+      10,
+      5
+    ],
+    "createdBy": "admin",
+    "id": "1886c3dd-c809-4090-b936-a2149c11aa78",
+    "createdAt": "2025-05-04T11:31:35.588Z",
+    "updatedAt": "2025-05-04T11:31:35.588Z"
+  },
+  {
+    "title": "Future of Machine Learning Development",
+    "link": "https://example.com/machine-learning-27",
+    "description": "Explore the latest trends and best practices in Machine Learning development.",
+    "category": "tools",
+    "tags": [
+      "javascript",
+      "css"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 7,
+    "lovedBy": [
+      9,
+      8,
+      2,
+      2,
+      5,
+      1,
+      7
+    ],
+    "createdBy": "admin",
+    "id": "4f180749-4a87-4569-a027-fca03a81455f",
+    "createdAt": "2025-05-08T11:31:35.588Z",
+    "updatedAt": "2025-05-08T11:31:35.588Z"
+  },
+  {
+    "title": "Advanced React Techniques",
+    "link": "https://example.com/react-28",
+    "description": "Advanced techniques for optimizing React performance and scalability.",
+    "category": "tools",
+    "tags": [
+      "git",
+      "serverless",
+      "angular"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 1,
+    "lovedBy": [
+      7
+    ],
+    "createdBy": "curator",
+    "id": "150a14f7-30d2-4a77-9cd3-f6ac49ed8fe0",
+    "createdAt": "2025-04-28T11:31:35.589Z",
+    "updatedAt": "2025-04-28T11:31:35.589Z"
+  },
+  {
+    "title": "Future of Robotics Development",
+    "link": "https://example.com/robotics-29",
+    "description": "Discover effective strategies for implementing Robotics in production environments.",
+    "category": "research",
+    "tags": [
+      "machine-learning"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 9,
+    "lovedBy": [
+      1,
+      6,
+      9,
+      7,
+      3,
+      2,
+      8,
+      7,
+      2
+    ],
+    "createdBy": "curator",
+    "id": "d266b6a8-e394-4b89-81c5-eb0930524c1a",
+    "createdAt": "2025-04-25T11:31:35.589Z",
+    "updatedAt": "2025-04-25T11:31:35.589Z"
+  },
+  {
+    "title": "Future of Backend Development",
+    "link": "https://example.com/backend-30",
+    "description": "Advanced techniques for optimizing Backend performance and scalability.",
+    "category": "programming",
+    "tags": [
+      "color-theory",
+      "algorithm"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1610563166150-b34df4f3bcd6?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 5,
+    "lovedBy": [
+      9,
+      3,
+      4,
+      1,
+      9
+    ],
+    "createdBy": "curator",
+    "id": "841f2318-d5a6-4561-a7d8-cd5bedc8f92e",
+    "createdAt": "2025-05-03T11:31:35.589Z",
+    "updatedAt": "2025-05-03T11:31:35.589Z"
+  },
+  {
+    "title": "React Best Practices",
+    "link": "https://example.com/react-31",
+    "description": "A curated collection of React resources, tools, and methodologies.",
+    "category": "design",
+    "tags": [
+      "ui/ux",
+      "accessibility",
+      "performance"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 1,
+    "lovedBy": [
+      5
+    ],
+    "createdBy": "curator",
+    "id": "2ac4632e-5615-4928-9d7f-3311ce038c53",
+    "createdAt": "2025-05-09T11:31:35.589Z",
+    "updatedAt": "2025-05-09T11:31:35.589Z"
+  },
+  {
+    "title": "Effective Data Visualization Patterns",
+    "link": "https://example.com/data-visualization-32",
+    "description": "Learn practical Data Visualization skills through real-world examples and case studies.",
+    "category": "design",
+    "tags": [
+      "development"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 2,
+    "lovedBy": [
+      3,
+      2
+    ],
+    "createdBy": "curator",
+    "id": "bff2b520-9bdc-4d5a-ab09-7d2a51368a97",
+    "createdAt": "2025-04-26T11:31:35.589Z",
+    "updatedAt": "2025-04-26T11:31:35.589Z"
+  },
+  {
+    "title": "UX for Beginners",
+    "link": "https://example.com/ux-33",
+    "description": "Learn practical UX skills through real-world examples and case studies.",
+    "category": "research",
+    "tags": [
+      "color-theory",
+      "ui/ux"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 6,
+    "lovedBy": [
+      9,
+      8,
+      9,
+      6,
+      10,
+      6
+    ],
+    "createdBy": "curator",
+    "id": "8ba3b6f7-c9d1-4b0a-bdd1-b5fc672c2cf3",
+    "createdAt": "2025-04-22T11:31:35.589Z",
+    "updatedAt": "2025-04-22T11:31:35.589Z"
+  },
+  {
+    "title": "Exploring Cloud Technologies",
+    "link": "https://example.com/cloud-34",
+    "description": "This reference provides in-depth information about Cloud with practical applications.",
+    "category": "tools",
+    "tags": [
+      "frontend"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 9,
+    "lovedBy": [
+      9,
+      4,
+      3,
+      9,
+      7,
+      8,
+      10,
+      5,
+      8
+    ],
+    "createdBy": "admin",
+    "id": "2425e369-1045-42c7-8a73-772889379270",
+    "createdAt": "2025-04-11T11:31:35.589Z",
+    "updatedAt": "2025-04-11T11:31:35.589Z"
+  },
+  {
+    "title": "Optimizing Full Stack Performance",
+    "link": "https://example.com/full-stack-35",
+    "description": "A comprehensive guide to Full Stack that covers everything from basic principles to advanced techniques.",
+    "category": "research",
+    "tags": [
+      "machine-learning"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 1,
+    "lovedBy": [
+      8
+    ],
+    "createdBy": "curator",
+    "id": "9eccd452-9e90-4036-98bc-c6ad1860d735",
+    "createdAt": "2025-04-28T11:31:35.589Z",
+    "updatedAt": "2025-04-28T11:31:35.589Z"
+  },
+  {
+    "title": "Practical DevOps Implementation",
+    "link": "https://example.com/devops-36",
+    "description": "This reference provides in-depth information about DevOps with practical applications.",
+    "category": "programming",
+    "tags": [
+      "cloud"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 9,
+    "lovedBy": [
+      6,
+      6,
+      8,
+      6,
+      10,
+      8,
+      1,
+      4,
+      7
+    ],
+    "createdBy": "curator",
+    "id": "470598bd-0f34-4c50-b468-b29efb9ad8d2",
+    "createdAt": "2025-05-05T11:31:35.589Z",
+    "updatedAt": "2025-05-05T11:31:35.589Z"
+  },
+  {
+    "title": "Exploring UX Technologies",
+    "link": "https://example.com/ux-37",
+    "description": "Explore the latest trends and best practices in UX development.",
+    "category": "programming",
+    "tags": [
+      "mobile",
+      "devops",
+      "linux"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 4,
+    "lovedBy": [
+      9,
+      9,
+      2,
+      3
+    ],
+    "createdBy": "curator",
+    "id": "74e9195c-6f3c-4c22-978e-f47e15198dc0",
+    "createdAt": "2025-05-09T11:31:35.589Z",
+    "updatedAt": "2025-05-09T11:31:35.589Z"
+  },
+  {
+    "title": "Complete Python Reference Guide",
+    "link": "https://example.com/python-38",
+    "description": "Learn practical Python skills through real-world examples and case studies.",
+    "category": "programming",
+    "tags": [
+      "ui/ux",
+      "node.js"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 8,
+    "lovedBy": [
+      8,
+      8,
+      1,
+      1,
+      8,
+      3,
+      3,
+      4
+    ],
+    "createdBy": "admin",
+    "id": "e7cb0def-7d76-4fef-9032-0bc96e969f71",
+    "createdAt": "2025-04-12T11:31:35.589Z",
+    "updatedAt": "2025-04-12T11:31:35.589Z"
+  },
+  {
+    "title": "Effective Cloud Patterns",
+    "link": "https://example.com/cloud-39",
+    "description": "Master the fundamentals of Cloud through step-by-step tutorials and exercises.",
+    "category": "research",
+    "tags": [
+      "vue"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 7,
+    "lovedBy": [
+      6,
+      8,
+      6,
+      10,
+      8,
+      6,
+      7
+    ],
+    "createdBy": "admin",
+    "id": "e37e5239-6a4d-4c8a-8266-4b18e8bc469b",
+    "createdAt": "2025-04-26T11:31:35.589Z",
+    "updatedAt": "2025-04-26T11:31:35.589Z"
+  },
+  {
+    "title": "Practical DevOps Implementation",
+    "link": "https://example.com/devops-40",
+    "description": "A curated collection of DevOps resources, tools, and methodologies.",
+    "category": "tools",
+    "tags": [
+      "nlp",
+      "devops",
+      "seo"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 5,
+    "lovedBy": [
+      6,
+      7,
+      4,
+      4,
+      8
+    ],
+    "createdBy": "curator",
+    "id": "e264fe6d-b1f9-45bf-ad31-d62a42c2e32c",
+    "createdAt": "2025-04-17T11:31:35.589Z",
+    "updatedAt": "2025-04-17T11:31:35.589Z"
+  },
+  {
+    "title": "React Design Patterns",
+    "link": "https://example.com/react-41",
+    "description": "Understanding the core concepts behind React with practical implementation guides.",
+    "category": "programming",
+    "tags": [
+      "tools"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 6,
+    "lovedBy": [
+      6,
+      4,
+      1,
+      2,
+      10,
+      3
+    ],
+    "createdBy": "admin",
+    "id": "b8176a0b-1968-469e-910e-8b42146973dd",
+    "createdAt": "2025-04-14T11:31:35.589Z",
+    "updatedAt": "2025-04-14T11:31:35.589Z"
+  },
+  {
+    "title": "SEO Design Patterns",
+    "link": "https://example.com/seo-42",
+    "description": "A detailed exploration of SEO patterns and architecture for modern applications.",
+    "category": "programming",
+    "tags": [
+      "blockchain",
+      "vue"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 1,
+    "lovedBy": [
+      3
+    ],
+    "createdBy": "curator",
+    "id": "0b05f3db-1354-4296-ac88-860d16dd4f8b",
+    "createdAt": "2025-05-04T11:31:35.589Z",
+    "updatedAt": "2025-05-04T11:31:35.589Z"
+  },
+  {
+    "title": "Complete Accessibility Reference Guide",
+    "link": "https://example.com/accessibility-43",
+    "description": "Explore the latest trends and best practices in Accessibility development.",
+    "category": "programming",
+    "tags": [
+      "data"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 6,
+    "lovedBy": [
+      7,
+      8,
+      1,
+      8,
+      10,
+      9
+    ],
+    "createdBy": "admin",
+    "id": "8f92e029-94a3-41e4-b97d-5fb8e51ae87d",
+    "createdAt": "2025-05-09T11:31:35.589Z",
+    "updatedAt": "2025-05-09T11:31:35.589Z"
+  },
+  {
+    "title": "Essential UX Concepts",
+    "link": "https://example.com/ux-44",
+    "description": "Advanced techniques for optimizing UX performance and scalability.",
+    "category": "tools",
+    "tags": [
+      "iot"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 0,
+    "lovedBy": [],
+    "createdBy": "admin",
+    "id": "6963520a-1f86-4428-8cfb-49b8acdabd86",
+    "createdAt": "2025-04-26T11:31:35.589Z",
+    "updatedAt": "2025-04-26T11:31:35.589Z"
+  },
+  {
+    "title": "IoT Best Practices",
+    "link": "https://example.com/iot-45",
+    "description": "Learn practical IoT skills through real-world examples and case studies.",
+    "category": "programming",
+    "tags": [
+      "animation",
+      "api"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1610563166150-b34df4f3bcd6?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 7,
+    "lovedBy": [
+      6,
+      4,
+      2,
+      7,
+      4,
+      1,
+      1
+    ],
+    "createdBy": "admin",
+    "id": "b9bacee5-c091-46a3-88ea-32ea77b3fdc6",
+    "createdAt": "2025-04-23T11:31:35.589Z",
+    "updatedAt": "2025-04-23T11:31:35.589Z"
+  },
+  {
+    "title": "Practical Backend Implementation",
+    "link": "https://example.com/backend-46",
+    "description": "Explore the latest trends and best practices in Backend development.",
+    "category": "programming",
+    "tags": [
+      "tools",
+      "docker",
+      "cloud"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 0,
+    "lovedBy": [],
+    "createdBy": "curator",
+    "id": "ee78fba6-04f0-4787-ae63-b748cb5d10e4",
+    "createdAt": "2025-04-25T11:31:35.589Z",
+    "updatedAt": "2025-04-25T11:31:35.589Z"
+  },
+  {
+    "title": "Understanding UI Systems",
+    "link": "https://example.com/ui-47",
+    "description": "Master the fundamentals of UI through step-by-step tutorials and exercises.",
+    "category": "programming",
+    "tags": [
+      "mobile",
+      "database",
+      "design"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 2,
+    "lovedBy": [
+      10,
+      6
+    ],
+    "createdBy": "admin",
+    "id": "baf162bb-989d-449e-a0e2-e9a64dd9b62f",
+    "createdAt": "2025-04-16T11:31:35.589Z",
+    "updatedAt": "2025-04-16T11:31:35.589Z"
+  },
+  {
+    "title": "Building CSS Applications",
+    "link": "https://example.com/css-48",
+    "description": "Explore the latest trends and best practices in CSS development.",
+    "category": "design",
+    "tags": [
+      "iot",
+      "vue",
+      "security"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 7,
+    "lovedBy": [
+      2,
+      8,
+      8,
+      1,
+      7,
+      7,
+      5
+    ],
+    "createdBy": "admin",
+    "id": "c377ca69-6ba0-424f-8831-22ecf1c8665a",
+    "createdAt": "2025-04-20T11:31:35.589Z",
+    "updatedAt": "2025-04-20T11:31:35.589Z"
+  },
+  {
+    "title": "Introduction to Database Design",
+    "link": "https://example.com/database-49",
+    "description": "A curated collection of Database resources, tools, and methodologies.",
+    "category": "tools",
+    "tags": [
+      "data-science",
+      "testing"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 6,
+    "lovedBy": [
+      1,
+      3,
+      10,
+      6,
+      7,
+      1
+    ],
+    "createdBy": "curator",
+    "id": "9a12d959-d47e-45f7-8ba8-cb072edd1c8f",
+    "createdAt": "2025-04-11T11:31:35.589Z",
+    "updatedAt": "2025-04-11T11:31:35.589Z"
+  },
+  {
+    "title": "Understanding Mobile Systems",
+    "link": "https://example.com/mobile-50",
+    "description": "Advanced techniques for optimizing Mobile performance and scalability.",
+    "category": "programming",
+    "tags": [
+      "python",
+      "tools"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 7,
+    "lovedBy": [
+      4,
+      10,
+      8,
+      3,
+      8,
+      2,
+      6
+    ],
+    "createdBy": "admin",
+    "id": "4f7d166c-2cf6-4eed-a4e2-97cffe20434c",
+    "createdAt": "2025-04-16T11:31:35.589Z",
+    "updatedAt": "2025-04-16T11:31:35.589Z"
+  },
+  {
+    "title": "Introduction to Typography Design",
+    "link": "https://example.com/typography-51",
+    "description": "Advanced techniques for optimizing Typography performance and scalability.",
+    "category": "programming",
+    "tags": [
+      "accessibility",
+      "docker",
+      "seo"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 4,
+    "lovedBy": [
+      7,
+      8,
+      6,
+      6
+    ],
+    "createdBy": "admin",
+    "id": "d45ab88b-b9b4-45d6-ab21-686b3b09f61a",
+    "createdAt": "2025-04-12T11:31:35.589Z",
+    "updatedAt": "2025-04-12T11:31:35.589Z"
+  },
+  {
+    "title": "AI for Beginners",
+    "link": "https://example.com/ai-52",
+    "description": "Learn practical AI skills through real-world examples and case studies.",
+    "category": "design",
+    "tags": [
+      "docker",
+      "devops",
+      "backend"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 6,
+    "lovedBy": [
+      6,
+      1,
+      2,
+      6,
+      4,
+      1
+    ],
+    "createdBy": "admin",
+    "id": "62366e8e-9a83-4348-b221-883321e984d6",
+    "createdAt": "2025-05-09T11:31:35.589Z",
+    "updatedAt": "2025-05-09T11:31:35.589Z"
+  },
+  {
+    "title": "Performance Security Fundamentals",
+    "link": "https://example.com/performance-53",
+    "description": "A detailed exploration of Performance patterns and architecture for modern applications.",
+    "category": "tools",
+    "tags": [
+      "visualization",
+      "typography",
+      "machine-learning"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 3,
+    "lovedBy": [
+      5,
+      6,
+      6
+    ],
+    "createdBy": "admin",
+    "id": "c17804fc-236c-4c71-9faf-cdac8dc44f18",
+    "createdAt": "2025-04-13T11:31:35.589Z",
+    "updatedAt": "2025-04-13T11:31:35.589Z"
+  },
+  {
+    "title": "Advanced CSS Techniques",
+    "link": "https://example.com/css-54",
+    "description": "Discover effective strategies for implementing CSS in production environments.",
+    "category": "tools",
+    "tags": [
+      "design",
+      "cloud"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 7,
+    "lovedBy": [
+      9,
+      7,
+      7,
+      2,
+      10,
+      1,
+      4
+    ],
+    "createdBy": "admin",
+    "id": "802e0c0e-bd96-4b46-8d86-e497e98207ae",
+    "createdAt": "2025-05-06T11:31:35.589Z",
+    "updatedAt": "2025-05-06T11:31:35.589Z"
+  },
+  {
+    "title": "Complete CSS Reference Guide",
+    "link": "https://example.com/css-55",
+    "description": "A comprehensive guide to CSS that covers everything from basic principles to advanced techniques.",
+    "category": "tools",
+    "tags": [
+      "security"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 6,
+    "lovedBy": [
+      3,
+      4,
+      5,
+      5,
+      5,
+      4
+    ],
+    "createdBy": "admin",
+    "id": "563f8a59-bd3e-4b96-a110-be3dc7385c3b",
+    "createdAt": "2025-05-03T11:31:35.589Z",
+    "updatedAt": "2025-05-03T11:31:35.589Z"
+  },
+  {
+    "title": "SASS Research Methods",
+    "link": "https://example.com/sass-56",
+    "description": "Learn practical SASS skills through real-world examples and case studies.",
+    "category": "tools",
+    "tags": [
+      "accessibility"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1610563166150-b34df4f3bcd6?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 9,
+    "lovedBy": [
+      1,
+      1,
+      3,
+      9,
+      9,
+      1,
+      7,
+      7,
+      4
+    ],
+    "createdBy": "admin",
+    "id": "226cb8a3-0330-44bf-9862-b8ddd8d14811",
+    "createdAt": "2025-04-11T11:31:35.589Z",
+    "updatedAt": "2025-04-11T11:31:35.589Z"
+  },
+  {
+    "title": "Modern Web Frameworks",
+    "link": "https://example.com/web-57",
+    "description": "Learn practical Web skills through real-world examples and case studies.",
+    "category": "design",
+    "tags": [
+      "angular",
+      "animation"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 2,
+    "lovedBy": [
+      4,
+      1
+    ],
+    "createdBy": "admin",
+    "id": "7cbf3d1c-21e3-4001-851f-cf5b6e4763c0",
+    "createdAt": "2025-04-19T11:31:35.589Z",
+    "updatedAt": "2025-04-19T11:31:35.589Z"
+  },
+  {
+    "title": "Robotics Security Fundamentals",
+    "link": "https://example.com/robotics-58",
+    "description": "Discover effective strategies for implementing Robotics in production environments.",
+    "category": "design",
+    "tags": [
+      "typography"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 8,
+    "lovedBy": [
+      4,
+      1,
+      6,
+      5,
+      3,
+      6,
+      9,
+      8
+    ],
+    "createdBy": "curator",
+    "id": "ba66b822-a73f-4f9b-90c3-7b111213488c",
+    "createdAt": "2025-04-28T11:31:35.589Z",
+    "updatedAt": "2025-04-28T11:31:35.589Z"
+  },
+  {
+    "title": "Mastering SEO Architecture",
+    "link": "https://example.com/seo-59",
+    "description": "Advanced techniques for optimizing SEO performance and scalability.",
+    "category": "research",
+    "tags": [
+      "cloud"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 7,
+    "lovedBy": [
+      5,
+      8,
+      8,
+      8,
+      9,
+      10,
+      10
+    ],
+    "createdBy": "admin",
+    "id": "c7cd3eca-66da-4220-8a6d-2548e3f71c01",
+    "createdAt": "2025-04-27T11:31:35.589Z",
+    "updatedAt": "2025-04-27T11:31:35.589Z"
+  },
+  {
+    "title": "Effective Animation Patterns",
+    "link": "https://example.com/animation-60",
+    "description": "Learn practical Animation skills through real-world examples and case studies.",
+    "category": "research",
+    "tags": [
+      "api",
+      "serverless"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 8,
+    "lovedBy": [
+      5,
+      9,
+      5,
+      3,
+      7,
+      5,
+      10,
+      4
+    ],
+    "createdBy": "admin",
+    "id": "514ace56-6ac8-4256-b0db-b1c7af8ba738",
+    "createdAt": "2025-04-14T11:31:35.589Z",
+    "updatedAt": "2025-04-14T11:31:35.589Z"
+  },
+  {
+    "title": "Exploring User Research Technologies",
+    "link": "https://example.com/user-research-61",
+    "description": "Understanding the core concepts behind User Research with practical implementation guides.",
+    "category": "research",
+    "tags": [
+      "productivity"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 5,
+    "lovedBy": [
+      10,
+      7,
+      5,
+      4,
+      8
+    ],
+    "createdBy": "curator",
+    "id": "b3d3f586-250e-4db5-9c39-8eb86435cb2a",
+    "createdAt": "2025-05-08T11:31:35.589Z",
+    "updatedAt": "2025-05-08T11:31:35.589Z"
+  },
+  {
+    "title": "Understanding Backend Systems",
+    "link": "https://example.com/backend-62",
+    "description": "Discover effective strategies for implementing Backend in production environments.",
+    "category": "design",
+    "tags": [
+      "api",
+      "tools"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 0,
+    "lovedBy": [],
+    "createdBy": "curator",
+    "id": "3cedfc9e-2fd8-4f2a-993f-ac20e47aaaaa",
+    "createdAt": "2025-04-29T11:31:35.589Z",
+    "updatedAt": "2025-04-29T11:31:35.589Z"
+  },
+  {
+    "title": "Frontend Design Patterns",
+    "link": "https://example.com/frontend-63",
+    "description": "Discover effective strategies for implementing Frontend in production environments.",
+    "category": "design",
+    "tags": [
+      "iot",
+      "frontend"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 9,
+    "lovedBy": [
+      8,
+      4,
+      1,
+      9,
+      10,
+      3,
+      2,
+      8,
+      7
+    ],
+    "createdBy": "admin",
+    "id": "1be2fa08-c190-493e-9d7a-84b3d5e291a1",
+    "createdAt": "2025-04-22T11:31:35.589Z",
+    "updatedAt": "2025-04-22T11:31:35.589Z"
+  },
+  {
+    "title": "Modern Robotics Frameworks",
+    "link": "https://example.com/robotics-64",
+    "description": "Explore the latest trends and best practices in Robotics development.",
+    "category": "research",
+    "tags": [
+      "data",
+      "machine-learning",
+      "research"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1610563166150-b34df4f3bcd6?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 2,
+    "lovedBy": [
+      9,
+      4
+    ],
+    "createdBy": "curator",
+    "id": "0e1fb048-34c6-4214-9246-8e99046d57ab",
+    "createdAt": "2025-05-01T11:31:35.589Z",
+    "updatedAt": "2025-05-01T11:31:35.589Z"
+  },
+  {
+    "title": "Mastering Machine Learning Architecture",
+    "link": "https://example.com/machine-learning-65",
+    "description": "A comprehensive guide to Machine Learning that covers everything from basic principles to advanced techniques.",
+    "category": "programming",
+    "tags": [
+      "data"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 6,
+    "lovedBy": [
+      2,
+      4,
+      7,
+      10,
+      7,
+      2
+    ],
+    "createdBy": "curator",
+    "id": "f3ac6572-c6c1-45f6-b583-dba8953f10d4",
+    "createdAt": "2025-04-29T11:31:35.589Z",
+    "updatedAt": "2025-04-29T11:31:35.589Z"
+  },
+  {
+    "title": "IoT for Beginners",
+    "link": "https://example.com/iot-66",
+    "description": "Understanding the core concepts behind IoT with practical implementation guides.",
+    "category": "tools",
+    "tags": [
+      "react",
+      "visualization",
+      "kubernetes"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 2,
+    "lovedBy": [
+      10,
+      3
+    ],
+    "createdBy": "curator",
+    "id": "72ba5b13-258d-4083-90df-f37dab8dcf31",
+    "createdAt": "2025-04-29T11:31:35.589Z",
+    "updatedAt": "2025-04-29T11:31:35.589Z"
+  },
+  {
+    "title": "Practical Security Implementation",
+    "link": "https://example.com/security-67",
+    "description": "Master the fundamentals of Security through step-by-step tutorials and exercises.",
+    "category": "research",
+    "tags": [
+      "accessibility",
+      "cms"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 6,
+    "lovedBy": [
+      6,
+      10,
+      6,
+      3,
+      4,
+      2
+    ],
+    "createdBy": "admin",
+    "id": "6e8bc266-a049-4fbf-a98c-da7200d682d9",
+    "createdAt": "2025-05-10T11:31:35.589Z",
+    "updatedAt": "2025-05-10T11:31:35.589Z"
+  },
+  {
+    "title": "Frontend Best Practices",
+    "link": "https://example.com/frontend-68",
+    "description": "A comprehensive guide to Frontend that covers everything from basic principles to advanced techniques.",
+    "category": "programming",
+    "tags": [
+      "blockchain"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 0,
+    "lovedBy": [],
+    "createdBy": "curator",
+    "id": "5427fc3b-89e0-4310-b152-0d0aabf4760d",
+    "createdAt": "2025-04-12T11:31:35.589Z",
+    "updatedAt": "2025-04-12T11:31:35.589Z"
+  },
+  {
+    "title": "HTML Security Fundamentals",
+    "link": "https://example.com/html-69",
+    "description": "A detailed exploration of HTML patterns and architecture for modern applications.",
+    "category": "research",
+    "tags": [
+      "database",
+      "data"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 3,
+    "lovedBy": [
+      7,
+      3,
+      8
+    ],
+    "createdBy": "curator",
+    "id": "7719b584-c23e-478a-8f04-91a0946ff9fb",
+    "createdAt": "2025-04-17T11:31:35.589Z",
+    "updatedAt": "2025-04-17T11:31:35.589Z"
+  },
+  {
+    "title": "Essential Backend Concepts",
+    "link": "https://example.com/backend-70",
+    "description": "Learn practical Backend skills through real-world examples and case studies.",
+    "category": "programming",
+    "tags": [
+      "visualization",
+      "python",
+      "nlp"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 9,
+    "lovedBy": [
+      1,
+      5,
+      2,
+      10,
+      9,
+      2,
+      8,
+      6,
+      6
+    ],
+    "createdBy": "admin",
+    "id": "1946e523-4764-42ed-8c7f-745082f87fa1",
+    "createdAt": "2025-05-09T11:31:35.589Z",
+    "updatedAt": "2025-05-09T11:31:35.589Z"
+  },
+  {
+    "title": "Mastering Design System Architecture",
+    "link": "https://example.com/design-system-71",
+    "description": "This reference provides in-depth information about Design System with practical applications.",
+    "category": "tools",
+    "tags": [
+      "serverless"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 9,
+    "lovedBy": [
+      5,
+      5,
+      9,
+      1,
+      5,
+      10,
+      10,
+      10,
+      6
+    ],
+    "createdBy": "curator",
+    "id": "f4802e17-a728-4891-a191-4a8fa272698e",
+    "createdAt": "2025-04-19T11:31:35.589Z",
+    "updatedAt": "2025-04-19T11:31:35.589Z"
+  },
+  {
+    "title": "Guide to CSS Development",
+    "link": "https://example.com/css-72",
+    "description": "Discover effective strategies for implementing CSS in production environments.",
+    "category": "tools",
+    "tags": [
+      "serverless",
+      "visualization"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 7,
+    "lovedBy": [
+      3,
+      9,
+      8,
+      9,
+      4,
+      9,
+      8
+    ],
+    "createdBy": "curator",
+    "id": "55a05a2e-74fc-4966-bba9-1377163b027c",
+    "createdAt": "2025-04-16T11:31:35.589Z",
+    "updatedAt": "2025-04-16T11:31:35.589Z"
+  },
+  {
+    "title": "Practical Machine Learning Implementation",
+    "link": "https://example.com/machine-learning-73",
+    "description": "Advanced techniques for optimizing Machine Learning performance and scalability.",
+    "category": "tools",
+    "tags": [
+      "linux",
+      "backend"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 0,
+    "lovedBy": [],
+    "createdBy": "admin",
+    "id": "38bf5b9f-29bd-440c-82dd-fa84cbe44070",
+    "createdAt": "2025-05-04T11:31:35.589Z",
+    "updatedAt": "2025-05-04T11:31:35.589Z"
+  },
+  {
+    "title": "Effective CSS Patterns",
+    "link": "https://example.com/css-74",
+    "description": "Master the fundamentals of CSS through step-by-step tutorials and exercises.",
+    "category": "research",
+    "tags": [
+      "tools",
+      "graphql",
+      "kubernetes"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 1,
+    "lovedBy": [
+      3
+    ],
+    "createdBy": "curator",
+    "id": "5cc99319-169f-4b6d-8943-0325b5abdcda",
+    "createdAt": "2025-04-21T11:31:35.589Z",
+    "updatedAt": "2025-04-21T11:31:35.589Z"
+  },
+  {
+    "title": "Exploring IoT Technologies",
+    "link": "https://example.com/iot-75",
+    "description": "Learn practical IoT skills through real-world examples and case studies.",
+    "category": "programming",
+    "tags": [
+      "serverless"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 2,
+    "lovedBy": [
+      2,
+      6
+    ],
+    "createdBy": "admin",
+    "id": "679b4684-30b9-4a47-8630-4da4539e63da",
+    "createdAt": "2025-05-01T11:31:35.589Z",
+    "updatedAt": "2025-05-01T11:31:35.589Z"
+  },
+  {
+    "title": "HTML for Beginners",
+    "link": "https://example.com/html-76",
+    "description": "Explore the latest trends and best practices in HTML development.",
+    "category": "design",
+    "tags": [
+      "cloud",
+      "algorithm",
+      "typography"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 3,
+    "lovedBy": [
+      9,
+      10,
+      9
+    ],
+    "createdBy": "admin",
+    "id": "e685ac01-9157-40d7-b009-070424542371",
+    "createdAt": "2025-04-13T11:31:35.589Z",
+    "updatedAt": "2025-04-13T11:31:35.589Z"
+  },
+  {
+    "title": "Exploring Docker Technologies",
+    "link": "https://example.com/docker-77",
+    "description": "This reference provides in-depth information about Docker with practical applications.",
+    "category": "design",
+    "tags": [
+      "javascript",
+      "docker"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 1,
+    "lovedBy": [
+      9
+    ],
+    "createdBy": "curator",
+    "id": "fef65bc6-ead4-4521-a915-6fe928a721ee",
+    "createdAt": "2025-04-30T11:31:35.589Z",
+    "updatedAt": "2025-04-30T11:31:35.589Z"
+  },
+  {
+    "title": "Guide to Layout Development",
+    "link": "https://example.com/layout-78",
+    "description": "A detailed exploration of Layout patterns and architecture for modern applications.",
+    "category": "programming",
+    "tags": [
+      "python",
+      "research"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 7,
+    "lovedBy": [
+      5,
+      4,
+      9,
+      10,
+      2,
+      5,
+      6
+    ],
+    "createdBy": "curator",
+    "id": "77e1008c-29ac-433d-bce2-389aae39417f",
+    "createdAt": "2025-05-04T11:31:35.589Z",
+    "updatedAt": "2025-05-04T11:31:35.589Z"
+  },
+  {
+    "title": "Backend Best Practices",
+    "link": "https://example.com/backend-79",
+    "description": "Discover effective strategies for implementing Backend in production environments.",
+    "category": "design",
+    "tags": [
+      "design"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 4,
+    "lovedBy": [
+      8,
+      2,
+      7,
+      10
+    ],
+    "createdBy": "admin",
+    "id": "ae45d28d-dc59-4f63-8e76-fd879b4b59a3",
+    "createdAt": "2025-04-23T11:31:35.589Z",
+    "updatedAt": "2025-04-23T11:31:35.589Z"
+  },
+  {
+    "title": "Essential Git Concepts",
+    "link": "https://example.com/git-80",
+    "description": "A curated collection of Git resources, tools, and methodologies.",
+    "category": "research",
+    "tags": [
+      "iot"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 6,
+    "lovedBy": [
+      8,
+      3,
+      1,
+      7,
+      10,
+      6
+    ],
+    "createdBy": "admin",
+    "id": "735cd6ca-2201-4ac2-b43e-ed183548bbe5",
+    "createdAt": "2025-05-04T11:31:35.589Z",
+    "updatedAt": "2025-05-04T11:31:35.589Z"
+  },
+  {
+    "title": "Innovative CSS Solutions",
+    "link": "https://example.com/css-81",
+    "description": "Discover effective strategies for implementing CSS in production environments.",
+    "category": "tools",
+    "tags": [
+      "css",
+      "python"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 9,
+    "lovedBy": [
+      1,
+      3,
+      3,
+      1,
+      6,
+      4,
+      8,
+      5,
+      9
+    ],
+    "createdBy": "admin",
+    "id": "fb67153e-d4e3-45e7-8ed9-2dcdb4fcfc1e",
+    "createdAt": "2025-05-01T11:31:35.589Z",
+    "updatedAt": "2025-05-01T11:31:35.589Z"
+  },
+  {
+    "title": "Performance Research Methods",
+    "link": "https://example.com/performance-82",
+    "description": "Understanding the core concepts behind Performance with practical implementation guides.",
+    "category": "tools",
+    "tags": [
+      "cloud"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 7,
+    "lovedBy": [
+      5,
+      10,
+      5,
+      9,
+      5,
+      4,
+      10
+    ],
+    "createdBy": "admin",
+    "id": "4a89e042-46da-4fc3-8c14-d0ef9d50cc49",
+    "createdAt": "2025-05-08T11:31:35.589Z",
+    "updatedAt": "2025-05-08T11:31:35.589Z"
+  },
+  {
+    "title": "Effective Performance Patterns",
+    "link": "https://example.com/performance-83",
+    "description": "Explore the latest trends and best practices in Performance development.",
+    "category": "tools",
+    "tags": [
+      "algorithm",
+      "data"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1610563166150-b34df4f3bcd6?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 4,
+    "lovedBy": [
+      5,
+      10,
+      5,
+      9
+    ],
+    "createdBy": "curator",
+    "id": "2532b082-8cda-439a-a90b-f56e9fa4cdf5",
+    "createdAt": "2025-04-17T11:31:35.589Z",
+    "updatedAt": "2025-04-17T11:31:35.589Z"
+  },
+  {
+    "title": "Guide to Frontend Development",
+    "link": "https://example.com/frontend-84",
+    "description": "This reference provides in-depth information about Frontend with practical applications.",
+    "category": "design",
+    "tags": [
+      "git",
+      "ai",
+      "graphql"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 1,
+    "lovedBy": [
+      9
+    ],
+    "createdBy": "admin",
+    "id": "1fbc1842-cf4c-43da-9d35-475ca2794f28",
+    "createdAt": "2025-04-13T11:31:35.589Z",
+    "updatedAt": "2025-04-13T11:31:35.589Z"
+  },
+  {
+    "title": "Modern i18n Frameworks",
+    "link": "https://example.com/i18n-85",
+    "description": "Discover effective strategies for implementing i18n in production environments.",
+    "category": "tools",
+    "tags": [
+      "data-science"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1610563166150-b34df4f3bcd6?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 8,
+    "lovedBy": [
+      7,
+      2,
+      6,
+      8,
+      2,
+      5,
+      4,
+      6
+    ],
+    "createdBy": "curator",
+    "id": "8e247e8d-fca7-437d-90a7-adbfe608d6c7",
+    "createdAt": "2025-04-17T11:31:35.589Z",
+    "updatedAt": "2025-04-17T11:31:35.589Z"
+  },
+  {
+    "title": "Advanced Performance Techniques",
+    "link": "https://example.com/performance-86",
+    "description": "Explore the latest trends and best practices in Performance development.",
+    "category": "programming",
+    "tags": [
+      "tools",
+      "frontend"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 0,
+    "lovedBy": [],
+    "createdBy": "curator",
+    "id": "7e7f24cd-e480-4cdb-a06a-0555088cab64",
+    "createdAt": "2025-05-02T11:31:35.589Z",
+    "updatedAt": "2025-05-02T11:31:35.589Z"
+  },
+  {
+    "title": "Exploring Security Technologies",
+    "link": "https://example.com/security-87",
+    "description": "A curated collection of Security resources, tools, and methodologies.",
+    "category": "tools",
+    "tags": [
+      "machine-learning"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 1,
+    "lovedBy": [
+      1
+    ],
+    "createdBy": "curator",
+    "id": "f55d5b3c-9848-45c1-a1d3-52a809eee4f9",
+    "createdAt": "2025-05-06T11:31:35.589Z",
+    "updatedAt": "2025-05-06T11:31:35.589Z"
+  },
+  {
+    "title": "Advanced Figma Techniques",
+    "link": "https://example.com/figma-88",
+    "description": "Learn practical Figma skills through real-world examples and case studies.",
+    "category": "programming",
+    "tags": [
+      "development",
+      "research",
+      "seo"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1610563166150-b34df4f3bcd6?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 6,
+    "lovedBy": [
+      2,
+      1,
+      3,
+      5,
+      6,
+      2
+    ],
+    "createdBy": "curator",
+    "id": "06c934cc-8025-44ba-9120-bbd57b070ed6",
+    "createdAt": "2025-04-20T11:31:35.589Z",
+    "updatedAt": "2025-04-20T11:31:35.589Z"
+  },
+  {
+    "title": "Essential AI Concepts",
+    "link": "https://example.com/ai-89",
+    "description": "Master the fundamentals of AI through step-by-step tutorials and exercises.",
+    "category": "design",
+    "tags": [
+      "accessibility"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 1,
+    "lovedBy": [
+      1
+    ],
+    "createdBy": "curator",
+    "id": "6be9e204-e4bf-49d4-bed4-f3a621803694",
+    "createdAt": "2025-04-23T11:31:35.589Z",
+    "updatedAt": "2025-04-23T11:31:35.589Z"
+  },
+  {
+    "title": "Building SEO Applications",
+    "link": "https://example.com/seo-90",
+    "description": "A curated collection of SEO resources, tools, and methodologies.",
+    "category": "programming",
+    "tags": [
+      "mobile",
+      "algorithm",
+      "accessibility"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 7,
+    "lovedBy": [
+      6,
+      5,
+      3,
+      2,
+      4,
+      2,
+      5
+    ],
+    "createdBy": "admin",
+    "id": "115547b9-0750-44aa-bf4b-b0216a8129f7",
+    "createdAt": "2025-04-30T11:31:35.589Z",
+    "updatedAt": "2025-04-30T11:31:35.589Z"
+  },
+  {
+    "title": "Essential Data Visualization Concepts",
+    "link": "https://example.com/data-visualization-91",
+    "description": "This reference provides in-depth information about Data Visualization with practical applications.",
+    "category": "programming",
+    "tags": [
+      "research",
+      "backend",
+      "nlp"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 8,
+    "lovedBy": [
+      3,
+      7,
+      7,
+      7,
+      1,
+      8,
+      1,
+      9
+    ],
+    "createdBy": "admin",
+    "id": "737cc5e7-f274-41d8-9ab6-49b4aff8f236",
+    "createdAt": "2025-05-03T11:31:35.589Z",
+    "updatedAt": "2025-05-03T11:31:35.589Z"
+  },
+  {
+    "title": "Introduction to Mobile Design",
+    "link": "https://example.com/mobile-92",
+    "description": "Explore the latest trends and best practices in Mobile development.",
+    "category": "design",
+    "tags": [
+      "visualization",
+      "mobile"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 6,
+    "lovedBy": [
+      1,
+      2,
+      9,
+      3,
+      6,
+      8
+    ],
+    "createdBy": "admin",
+    "id": "eeebf00a-d4b6-4962-9a7b-c62868179535",
+    "createdAt": "2025-04-13T11:31:35.589Z",
+    "updatedAt": "2025-04-13T11:31:35.589Z"
+  },
+  {
+    "title": "Git for Beginners",
+    "link": "https://example.com/git-93",
+    "description": "A curated collection of Git resources, tools, and methodologies.",
+    "category": "programming",
+    "tags": [
+      "ui/ux",
+      "accessibility",
+      "typography"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 9,
+    "lovedBy": [
+      3,
+      10,
+      2,
+      9,
+      7,
+      6,
+      6,
+      9,
+      4
+    ],
+    "createdBy": "admin",
+    "id": "fb92fb7a-725b-477e-8d89-b26daeb23bf6",
+    "createdAt": "2025-05-05T11:31:35.589Z",
+    "updatedAt": "2025-05-05T11:31:35.589Z"
+  },
+  {
+    "title": "Backend Security Fundamentals",
+    "link": "https://example.com/backend-94",
+    "description": "Discover effective strategies for implementing Backend in production environments.",
+    "category": "research",
+    "tags": [
+      "api"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 4,
+    "lovedBy": [
+      2,
+      5,
+      1,
+      2
+    ],
+    "createdBy": "curator",
+    "id": "9cae3716-b838-4d1b-8d32-c6c82b73dc6a",
+    "createdAt": "2025-05-03T11:31:35.589Z",
+    "updatedAt": "2025-05-03T11:31:35.589Z"
+  },
+  {
+    "title": "Optimizing Accessibility Performance",
+    "link": "https://example.com/accessibility-95",
+    "description": "Master the fundamentals of Accessibility through step-by-step tutorials and exercises.",
+    "category": "design",
+    "tags": [
+      "performance",
+      "color-theory",
+      "mobile"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 8,
+    "lovedBy": [
+      3,
+      5,
+      7,
+      8,
+      3,
+      8,
+      2,
+      6
+    ],
+    "createdBy": "curator",
+    "id": "ac38b2af-20f6-4721-88b9-6797fba37b2d",
+    "createdAt": "2025-05-10T11:31:35.589Z",
+    "updatedAt": "2025-05-10T11:31:35.589Z"
+  },
+  {
+    "title": "Practical Serverless Implementation",
+    "link": "https://example.com/serverless-96",
+    "description": "A curated collection of Serverless resources, tools, and methodologies.",
+    "category": "tools",
+    "tags": [
+      "research",
+      "iot"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1610563166150-b34df4f3bcd6?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 3,
+    "lovedBy": [
+      8,
+      1,
+      10
+    ],
+    "createdBy": "curator",
+    "id": "59f22e66-75d1-41a7-9d8c-e210e6a3e790",
+    "createdAt": "2025-04-20T11:31:35.589Z",
+    "updatedAt": "2025-04-20T11:31:35.589Z"
+  },
+  {
+    "title": "Frontend Security Fundamentals",
+    "link": "https://example.com/frontend-97",
+    "description": "Understanding the core concepts behind Frontend with practical implementation guides.",
+    "category": "research",
+    "tags": [
+      "tools",
+      "docker",
+      "performance"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 8,
+    "lovedBy": [
+      9,
+      3,
+      2,
+      1,
+      9,
+      2,
+      2,
+      4
+    ],
+    "createdBy": "curator",
+    "id": "7788970d-457e-430e-9a01-bcf672ef6d96",
+    "createdAt": "2025-04-27T11:31:35.589Z",
+    "updatedAt": "2025-04-27T11:31:35.589Z"
+  },
+  {
+    "title": "Mastering Backend Architecture",
+    "link": "https://example.com/backend-98",
+    "description": "A comprehensive guide to Backend that covers everything from basic principles to advanced techniques.",
+    "category": "programming",
+    "tags": [
+      "devops"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 0,
+    "lovedBy": [],
+    "createdBy": "admin",
+    "id": "d6e0b9e1-178d-4cce-8832-6e15015b8b1d",
+    "createdAt": "2025-05-09T11:31:35.589Z",
+    "updatedAt": "2025-05-09T11:31:35.589Z"
+  },
+  {
+    "title": "Practical Microservice Implementation",
+    "link": "https://example.com/microservice-99",
+    "description": "Discover effective strategies for implementing Microservice in production environments.",
+    "category": "programming",
+    "tags": [
+      "linux",
+      "nlp"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 9,
+    "lovedBy": [
+      8,
+      2,
+      9,
+      2,
+      4,
+      9,
+      9,
+      3,
+      7
+    ],
+    "createdBy": "curator",
+    "id": "376fe7b4-d901-47a2-9b03-29ca1e298995",
+    "createdAt": "2025-04-28T11:31:35.589Z",
+    "updatedAt": "2025-04-28T11:31:35.589Z"
+  },
+  {
+    "title": "Innovative Frontend Solutions",
+    "link": "https://example.com/frontend-100",
+    "description": "Explore the latest trends and best practices in Frontend development.",
+    "category": "programming",
+    "tags": [
+      "research"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 0,
+    "lovedBy": [],
+    "createdBy": "curator",
+    "id": "eb84acd1-ef3a-4119-bb79-abe04555e99c",
+    "createdAt": "2025-04-24T11:31:35.589Z",
+    "updatedAt": "2025-04-24T11:31:35.589Z"
+  },
+  {
+    "title": "Artificial Intelligence Fundamentals",
+    "link": "https://example.com/ai-fundamentals",
+    "description": "A beginner's guide to understanding artificial intelligence concepts and applications.",
+    "category": "research",
+    "tags": [
+      "ai",
+      "data",
+      "algorithm"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 3,
+    "lovedBy": [
+      1,
+      2,
+      3
+    ],
+    "createdBy": "curator",
+    "id": "d8f1e631-5f85-4f8c-a7a6-b293a9c7e6d7",
+    "createdAt": "2025-05-09T10:04:48.908Z",
+    "updatedAt": "2025-05-09T10:04:48.908Z"
+  },
+  {
+    "title": "React Performance Optimization",
+    "link": "https://example.com/react-performance",
+    "description": "Advanced techniques for optimizing React application performance and reducing bundle size.",
+    "category": "programming",
+    "tags": [
+      "javascript",
+      "frontend",
+      "performance"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 5,
+    "lovedBy": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "createdBy": "curator",
+    "id": "7a91b3e2-8c01-4f3e-9d6a-db12c52e3f8f",
+    "createdAt": "2025-05-08T14:30:48.908Z",
+    "updatedAt": "2025-05-08T14:30:48.908Z"
+  },
+  {
+    "title": "Cloud Architecture Patterns",
+    "link": "https://example.com/cloud-architecture",
+    "description": "Best practices and design patterns for building resilient and scalable cloud applications.",
+    "category": "programming",
+    "tags": [
+      "backend",
+      "development",
+      "tools"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 2,
+    "lovedBy": [
+      2,
+      3
+    ],
+    "createdBy": "admin",
+    "id": "e5f2d9a1-7b6c-4c3d-8e7f-2a15b3c54d9e",
+    "createdAt": "2025-05-07T09:15:48.908Z",
+    "updatedAt": "2025-05-07T09:15:48.908Z"
+  },
+  {
+    "title": "Typography in Web Design",
+    "link": "https://example.com/web-typography",
+    "description": "Principles and techniques for effective typography in modern web design projects.",
+    "category": "design",
+    "tags": [
+      "design",
+      "ui/ux",
+      "frontend"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1561647784-2f9c43b07a0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 7,
+    "lovedBy": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "createdBy": "curator",
+    "id": "c3e7d8a6-5b4f-4a2e-9d8c-1f7e6b5a4c3b",
+    "createdAt": "2025-05-06T16:45:48.908Z",
+    "updatedAt": "2025-05-06T16:45:48.908Z"
+  },
+  {
+    "title": "Blockchain Development Guide",
+    "link": "https://example.com/blockchain-guide",
+    "description": "Comprehensive tutorial on developing applications using blockchain technology.",
+    "category": "programming",
+    "tags": [
+      "blockchain",
+      "backend",
+      "security"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 4,
+    "lovedBy": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "createdBy": "admin",
+    "id": "b2a1c7d6-4e3f-5a8b-9c7d-6e5f4a3b2c1d",
+    "createdAt": "2025-05-05T11:20:48.908Z",
+    "updatedAt": "2025-05-05T11:20:48.908Z"
+  },
+  {
+    "title": "User Research Methods",
+    "link": "https://example.com/user-research",
+    "description": "Effective methods for conducting user research to inform product design decisions.",
+    "category": "research",
+    "tags": [
+      "ui/ux",
+      "design",
+      "research"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 6,
+    "lovedBy": [
+      1,
+      2,
+      3,
+      5,
+      6,
+      7
+    ],
+    "createdBy": "curator",
+    "id": "a9b8c7d6-5e4f-3a2b-1c9d-8e7f6a5b4c3d",
+    "createdAt": "2025-05-04T13:10:48.908Z",
+    "updatedAt": "2025-05-04T13:10:48.908Z"
+  },
+  {
+    "title": "Modern JavaScript Techniques",
+    "link": "https://example.com/javascript-techniques",
+    "description": "A comprehensive guide to advanced JavaScript patterns and performance optimization techniques.",
+    "category": "programming",
+    "tags": [
+      "javascript",
+      "frontend",
+      "performance"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 0,
+    "lovedBy": [],
+    "createdBy": "admin",
+    "id": "c92510cd-5990-49b8-a3ea-1fb68941c9c3",
+    "createdAt": "2025-05-10T10:04:48.908Z",
+    "updatedAt": "2025-05-10T10:04:48.908Z"
+  },
+  {
+    "title": "UI/UX Design Principles",
+    "link": "https://example.com/uiux-design",
+    "description": "Essential principles for creating intuitive and aesthetically pleasing user interfaces.",
+    "category": "design",
+    "tags": [
+      "ui/ux",
+      "design",
+      "frontend"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1516031190212-da133013de50?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 0,
+    "lovedBy": [],
+    "createdBy": "admin",
+    "id": "afe9082f-2548-4ff9-9a21-eb1062d73297",
+    "createdAt": "2025-05-10T10:04:48.909Z",
+    "updatedAt": "2025-05-10T10:04:48.909Z"
+  },
+  {
+    "title": "Data Visualization Techniques",
+    "link": "https://example.com/data-viz",
+    "description": "Methods for effectively visualizing complex data sets to derive meaningful insights.",
+    "category": "research",
+    "tags": [
+      "algorithm",
+      "data",
+      "visualization"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 0,
+    "lovedBy": [],
+    "createdBy": "admin",
+    "id": "ab71a857-bea4-467c-bf70-e70501150916",
+    "createdAt": "2025-05-10T10:04:48.909Z",
+    "updatedAt": "2025-05-10T10:04:48.909Z"
+  },
+  {
+    "title": "Essential Developer Tools",
+    "link": "https://example.com/dev-tools",
+    "description": "A collection of must-have tools and utilities for modern software development workflows.",
+    "category": "tools",
+    "tags": [
+      "productivity",
+      "tools",
+      "development"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 0,
+    "lovedBy": [],
+    "createdBy": "admin",
+    "id": "518f8e71-4867-4591-9124-f5a8102123bc",
+    "createdAt": "2025-05-10T10:04:48.909Z",
+    "updatedAt": "2025-05-10T10:04:48.909Z"
+  },
+  {
+    "title": "Database Optimization Patterns",
+    "link": "https://example.com/db-optimization",
+    "description": "Strategies and techniques for optimizing database performance in high-scale applications.",
+    "category": "programming",
+    "tags": [
+      "database",
+      "backend",
+      "performance"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 0,
+    "lovedBy": [],
+    "createdBy": "admin",
+    "id": "54c1e1fe-03b9-4595-b953-42852d161012",
+    "createdAt": "2025-05-10T10:04:48.909Z",
+    "updatedAt": "2025-05-10T10:04:48.909Z"
+  },
+  {
+    "title": "Mobile UX Design Patterns",
+    "link": "https://example.com/mobile-ux",
+    "description": "Best practices for creating intuitive and engaging user experiences for mobile applications.",
+    "category": "design",
+    "tags": [
+      "mobile",
+      "ui/ux",
+      "frontend"
+    ],
+    "thumbnail": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+    "loveCount": 0,
+    "lovedBy": [],
+    "createdBy": "admin",
+    "id": "4930b812-d3f7-4ea2-b52b-aca302cb9365",
+    "createdAt": "2025-05-10T10:04:48.910Z",
+    "updatedAt": "2025-05-10T10:04:48.910Z"
+  },
+  {
+    "title": "XXX",
+    "link": "https://solace.com/integration-hub/mqtt-bridge-connector/",
+    "description": "XXX",
+    "category": "design",
+    "tags": [
+      "security",
+      "research"
+    ],
+    "thumbnail": "https://iad.microlink.io/Q6qL8DDFKe0xEWwBomIRRylicZ-bskbXhGaJwoy9d8c5JAyiCAv4MQW7JCgthMxWg8I8SDdoPYsbM4kJeoZLVg.png",
+    "lovedBy": [],
+    "createdBy": "admin",
+    "id": "0b925bc4-f9e5-48f9-9830-1673962bdcfc",
+    "loveCount": 0,
+    "createdAt": "2025-05-10T14:22:15.426Z",
+    "updatedAt": "2025-05-10T14:22:41.398Z"
+  }
+]
