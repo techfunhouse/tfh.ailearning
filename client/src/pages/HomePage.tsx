@@ -66,6 +66,8 @@ export default function HomePage() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [showScrollToTop, setShowScrollToTop] = useState(false);
+  const [isAtStart, setIsAtStart] = useState(true);
+  const [isAtEnd, setIsAtEnd] = useState(false);
   const itemsPerPage = 12;
   const { ref, inView } = useInView({
     threshold: 0.5,
@@ -192,7 +194,7 @@ export default function HomePage() {
     }
   };
   
-  // Add scroll event listener for scroll to top button
+  // Add scroll event listener for scroll to top button and category scrolling
   useEffect(() => {
     const handleScroll = () => {
       // Show button when scrolled down 300px
@@ -216,6 +218,32 @@ export default function HomePage() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+  
+  // Effect to track horizontal scroll position of categories container
+  useEffect(() => {
+    const container = document.getElementById('category-scroll-container');
+    if (!container) return;
+    
+    const handleCategoryScroll = () => {
+      const isStart = container.scrollLeft <= 5;
+      const isEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 5;
+      
+      setIsAtStart(isStart);
+      setIsAtEnd(isEnd);
+    };
+    
+    // Initial check
+    handleCategoryScroll();
+    
+    // Add event listeners
+    container.addEventListener('scroll', handleCategoryScroll);
+    window.addEventListener('resize', handleCategoryScroll);
+    
+    return () => {
+      container.removeEventListener('scroll', handleCategoryScroll);
+      window.removeEventListener('resize', handleCategoryScroll);
     };
   }, []);
   
@@ -443,34 +471,38 @@ export default function HomePage() {
               {/* Category summary cards - Horizontal layout */}
               <div className="relative mb-6">
                 {/* Left scroll button */}
-                <Button 
-                  variant="outline" 
-                  size="icon" 
-                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background/80 backdrop-blur-sm shadow-md"
-                  onClick={() => {
-                    const container = document.getElementById('category-scroll-container');
-                    if (container) {
-                      container.scrollBy({ left: -300, behavior: 'smooth' });
-                    }
-                  }}
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
+                {!isAtStart && (
+                  <Button 
+                    variant="outline" 
+                    size="icon" 
+                    className="absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background/80 backdrop-blur-sm shadow-md animate-in fade-in"
+                    onClick={() => {
+                      const container = document.getElementById('category-scroll-container');
+                      if (container) {
+                        container.scrollBy({ left: -300, behavior: 'smooth' });
+                      }
+                    }}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                )}
                 
                 {/* Right scroll button */}
-                <Button 
-                  variant="outline" 
-                  size="icon" 
-                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background/80 backdrop-blur-sm shadow-md"
-                  onClick={() => {
-                    const container = document.getElementById('category-scroll-container');
-                    if (container) {
-                      container.scrollBy({ left: 300, behavior: 'smooth' });
-                    }
-                  }}
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
+                {!isAtEnd && (
+                  <Button 
+                    variant="outline" 
+                    size="icon" 
+                    className="absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background/80 backdrop-blur-sm shadow-md animate-in fade-in"
+                    onClick={() => {
+                      const container = document.getElementById('category-scroll-container');
+                      if (container) {
+                        container.scrollBy({ left: 300, behavior: 'smooth' });
+                      }
+                    }}
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                )}
                 
                 {/* Scrollable container */}
                 <div 
