@@ -129,38 +129,25 @@ jobs:
           # Make sure data directory exists in deploy
           mkdir -p deploy/data
           
-          # Ensure data files are copied from the correct locations
+          # Process JSON data files for deployment using our dedicated script
           if [ -d "data" ]; then
-            echo "Copying JSON data files for deployment..."
-            # Run the export script again to ensure fresh data
-            node export-static-data.js
+            echo "Processing JSON data files for deployment..."
             
-            # Show what files are in the data directory
-            echo "Data files in source directory:"
-            ls -la data/
+            # Use our dedicated script to properly format JSON files
+            node fix-json-for-deployment.js
             
+            # Show what files were created
             echo "Data files in deployment directory:"
-            ls -la deploy/data/ || echo "No files found in deploy/data"
-          fi
-          
-          # Manually copy data files if they aren't already there
-          if [ ! "$(ls -A deploy/data 2>/dev/null)" ]; then
-            echo "No data files found in deploy/data. Manually copying..."
+            ls -la deploy/data/
+          else
+            echo "No data directory found, creating an empty one"
+            mkdir -p data
+            mkdir -p deploy/data
             
-            for file in references.json categories.json tags.json; do
-              if [ -f "data/$file" ]; then
-                # Extract the data array from lowdb format
-                echo "Extracting content from data/$file to deploy/data/$file"
-                node -e "
-                  const fs = require('fs');
-                  const file = '$file';
-                  const data = JSON.parse(fs.readFileSync('data/' + file, 'utf8'));
-                  const key = file.replace('.json', '');
-                  const content = data[key] || [];
-                  fs.writeFileSync('deploy/data/' + file, JSON.stringify(content));
-                "
-              fi
-            done
+            # Create minimal placeholder files if needed
+            echo "[]" > deploy/data/references.json
+            echo "[]" > deploy/data/categories.json
+            echo "[]" > deploy/data/tags.json
           fi
           
           # Create CNAME file if custom domain is specified
