@@ -21,11 +21,7 @@ import {
   PlusCircle,
   Save,
   Loader2,
-  Pencil as PencilIcon,
-  GitBranchPlus,
-  AlertCircle,
-  Github,
-  GitPullRequest
+  Pencil as PencilIcon
 } from 'lucide-react';
 import { getTagColor } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -653,32 +649,6 @@ export default function Sidebar({
               )}
             </CollapsibleContent>
           </Collapsible>
-          
-          {/* GitHub Sync Section - Only show to admins */}
-          {isAdmin && (
-            <>
-              <Separator className="my-6" />
-              
-              <div className="mt-6">
-                <div className="flex items-center mb-4">
-                  <Github className="h-5 w-5 text-primary mr-2" />
-                  <h3 className="text-sm font-medium">GitHub Sync</h3>
-                </div>
-                
-                <div className="space-y-2 ml-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full flex items-center justify-start"
-                    onClick={() => setIsGitHubSyncDialogOpen(true)}
-                  >
-                    <GitBranchPlus className="h-4 w-4 mr-2" />
-                    Sync Data to GitHub
-                  </Button>
-                </div>
-              </div>
-            </>
-          )}
         </div>
       </ScrollArea>
 
@@ -870,165 +840,7 @@ export default function Sidebar({
         </DialogContent>
       </Dialog>
       
-      {/* GitHub Sync Dialog */}
-      <Dialog open={isGitHubSyncDialogOpen} onOpenChange={setIsGitHubSyncDialogOpen}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Github className="h-5 w-5 text-primary" />
-              GitHub Data Sync
-            </DialogTitle>
-            <DialogDescription>
-              Sync your data changes to the GitHub repository by creating a pull request.
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="space-y-4 py-4">
-            {/* GitHub Configuration Status */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium">Configuration Status</h3>
-              
-              <div className="rounded-md border p-4">
-                {isSyncing ? (
-                  <div className="flex items-center justify-center space-x-2">
-                    <Loader2 className="h-5 w-5 animate-spin text-primary" />
-                    <span>Checking GitHub configuration...</span>
-                  </div>
-                ) : syncResult ? (
-                  <div>
-                    {syncResult.configured ? (
-                      <div className="text-sm space-y-2">
-                        <div className="flex items-center text-green-600">
-                          <span className="font-medium">✓ GitHub is configured correctly</span>
-                        </div>
-                        <div className="space-y-1 mt-2">
-                          <div className="text-xs text-muted-foreground">Repository: {syncResult.owner}/{syncResult.repo}</div>
-                          <div className="text-xs text-muted-foreground">Branch: {syncResult.baseBranch}</div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex items-center text-amber-600">
-                        <AlertCircle className="h-4 w-4 mr-2" />
-                        <span className="text-sm">{syncResult.message}</span>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="flex items-center text-muted-foreground text-sm">
-                    <AlertCircle className="h-4 w-4 mr-2" />
-                    <span>Click "Check Configuration" to verify GitHub setup</span>
-                  </div>
-                )}
-              </div>
-            </div>
-            
-            {/* Sync Changes Section */}
-            {syncResult && syncResult.configured && (
-              <div className="space-y-2">
-                <h3 className="text-sm font-medium">Sync Changes</h3>
-                <div className="rounded-md border p-4 space-y-4">
-                  {syncResult.syncCheckResult ? (
-                    <div>
-                      {syncResult.syncCheckResult.needsSync ? (
-                        <div className="space-y-2">
-                          <div className="flex items-center text-amber-600">
-                            <span className="text-sm">Changes detected. {syncResult.syncCheckResult.changedFiles.length} file(s) need to be synced.</span>
-                          </div>
-                          <div className="space-y-1 mt-2">
-                            <div className="text-xs font-medium">Files to sync:</div>
-                            <ul className="text-xs text-muted-foreground list-disc pl-4">
-                              {syncResult.syncCheckResult.changedFiles.map((file: string, index: number) => (
-                                <li key={index}>{file}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="flex items-center text-green-600">
-                          <span className="text-sm">✓ Data is already in sync with GitHub</span>
-                        </div>
-                      )}
-                    </div>
-                  ) : syncResult.syncResult ? (
-                    <div className="space-y-2">
-                      {syncResult.syncResult.prUrl ? (
-                        <div>
-                          <div className="flex items-center text-green-600 mb-2">
-                            <span className="text-sm">✓ Pull request created successfully!</span>
-                          </div>
-                          <div className="space-y-1">
-                            <div className="text-xs">PR #{syncResult.syncResult.prNumber}</div>
-                            <a 
-                              href={syncResult.syncResult.prUrl} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="text-xs text-primary hover:underline flex items-center"
-                            >
-                              <GitPullRequest className="h-3 w-3 mr-1" />
-                              View Pull Request
-                            </a>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="flex items-center text-amber-600">
-                          <AlertCircle className="h-4 w-4 mr-2" />
-                          <span className="text-sm">{syncResult.syncResult.message}</span>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="flex items-center text-muted-foreground text-sm">
-                      <AlertCircle className="h-4 w-4 mr-2" />
-                      <span>Click "Check for Changes" to see what needs to be synced</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-          
-          <DialogFooter className="flex justify-between">
-            <div className="space-x-2">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                disabled={isSyncing}
-                onClick={checkGitHubConfig}
-              >
-                {isSyncing && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                Check Configuration
-              </Button>
-              
-              {syncResult && syncResult.configured && !syncResult.syncResult && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  disabled={isSyncing}
-                  onClick={checkSyncStatus}
-                >
-                  {isSyncing && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                  Check for Changes
-                </Button>
-              )}
-            </div>
-            
-            {syncResult && syncResult.configured && syncResult.syncCheckResult && syncResult.syncCheckResult.needsSync && !syncResult.syncResult && (
-              <Button
-                type="button"
-                variant="default"
-                size="sm"
-                disabled={isSyncing}
-                onClick={createPullRequest}
-              >
-                {isSyncing && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                Create Pull Request
-              </Button>
-            )}
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+
     </aside>
   );
 }
