@@ -222,7 +222,6 @@ console.log('✅ .nojekyll file created');
 
 // Step 6: Create CNAME file if using a custom domain
 // Create CNAME file for custom domain if specified
-const customDomain = process.env.CUSTOM_DOMAIN;
 if (customDomain) {
   console.log(`\n🌐 Creating CNAME file for custom domain: ${customDomain}`);
   fs.writeFileSync(path.join(DEPLOY_DIR, 'CNAME'), customDomain);
@@ -445,12 +444,16 @@ console.log(`\nYour files are ready in: ${DEPLOY_DIR}`);
 console.log('\nNext steps:');
 console.log('1. Commit and push the contents of the deployment directory to the gh-pages branch of your repository');
 console.log('2. Configure GitHub Pages in your repository settings to use the gh-pages branch');
-console.log(`3. Access your deployed app at: https://${username}.github.io/ReferenceViewer/`);
+customDomain ? 
+  console.log(`3. Access your deployed app at: https://${customDomain}`) :
+  console.log(`3. Access your deployed app at: https://${username}.github.io/ReferenceViewer/`);
 console.log('\nTo deploy manually:');
 console.log(`cd ${DEPLOY_DIR}`);
 console.log('git init');
 console.log('git checkout -b gh-pages');
 console.log('git add .');
 console.log('git commit -m "Deploy to GitHub Pages"');
-console.log(`git remote add origin https://github.com/${username}/ReferenceViewer.git`);
+customDomain ?
+  console.log(`git remote add origin https://github.${customDomain}`) :
+  console.log(`git remote add origin https://github.com/${username}/ReferenceViewer.git`);
 console.log('git push -f origin gh-pages');
