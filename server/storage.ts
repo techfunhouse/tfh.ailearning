@@ -26,7 +26,7 @@ export interface IStorage {
   // Reference methods
   getReferences(): Promise<Reference[]>;
   getReference(id: string): Promise<Reference | undefined>;
-  createReference(reference: InsertReference): Promise<Reference>;
+  createReference(reference: InsertReference, createdBy: string): Promise<Reference>;
   updateReference(id: string, reference: Partial<InsertReference>): Promise<Reference | undefined>;
   deleteReference(id: string): Promise<boolean>;
   toggleLoveReference(id: string, userId: number): Promise<Reference | undefined>;
@@ -144,11 +144,8 @@ export class JsonDbStorage implements IStorage {
       description: "A comprehensive guide to advanced JavaScript patterns and performance optimization techniques.",
       category: "programming",
       tags: ["javascript", "frontend", "performance"],
-      thumbnail: "https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
-      loveCount: 0,
-      lovedBy: [],
-      createdBy: "admin",
-    });
+      thumbnail: "https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80"
+    }, "admin");
     
     await this.createReference({
       title: "UI/UX Design Principles",
@@ -271,13 +268,14 @@ export class JsonDbStorage implements IStorage {
     return this.referencesDb.data.references.find(ref => ref.id === id);
   }
 
-  async createReference(reference: InsertReference): Promise<Reference> {
+  async createReference(reference: InsertReference, createdBy: string): Promise<Reference> {
     const id = uuid();
     const now = new Date().toISOString();
     
     const newReference: Reference = {
       ...reference,
       id,
+      createdBy,
       loveCount: 0,
       lovedBy: [],
       createdAt: now,
