@@ -15,6 +15,12 @@ import type {
   InsertTag 
 } from '@shared/schema';
 
+// Define environment mode for logging
+const isDev = import.meta.env.DEV;
+const isGitHubPages = import.meta.env.VITE_GITHUB_PAGES === 'true';
+const customDomainFlag = import.meta.env.VITE_USE_CUSTOM_DOMAIN === 'true';
+const basePath = import.meta.env.VITE_BASE_PATH || '/';
+
 // API Base URL - automatically detects environment
 const getApiBaseUrl = (): string => {
   // For development with separate client/server
@@ -28,8 +34,16 @@ const getApiBaseUrl = (): string => {
 
 const API_BASE_URL = getApiBaseUrl();
 
-// Log the API base URL on initialization
-console.log(`API Service initialized with base URL: ${API_BASE_URL || '(same origin)'}`);
+// Log environment details for debugging
+console.log('RefHub App Starting:');
+console.log('- Environment mode:', isDev ? 'development' : 'production');
+console.log('- GitHub Pages mode:', isGitHubPages ? 'Yes' : 'No');
+console.log('- Custom domain:', window.location.hostname.includes('replit.dev') || 
+                              window.location.hostname.includes('replit.app') ? 
+                              'Yes' : 'No');
+console.log('- Custom domain flag:', customDomainFlag ? 'true' : 'Not set');
+console.log('- Domain:', window.location.hostname);
+console.log('- Base path:', basePath !== '/' ? basePath : 'Default (/)');
 
 // ----- References API -----
 

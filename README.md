@@ -1,98 +1,136 @@
-# RefHub - Reference Management System
+# RefHub: Reference Management System
 
-A dynamic reference management system designed to simplify data organization through modern web technologies and intuitive user experiences.
+RefHub is a dynamic reference management system built with modern web technologies. It enables researchers and knowledge workers to organize, filter, and manage references efficiently.
 
-## Project Structure
+## 🌟 Features
 
-The project is organized into separate client and server components:
+- **Dynamic Reference Management**: Browse, filter, and search reference materials
+- **Category & Tag System**: Organize references with customizable categories and tags
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Authentication System**: Secure user authentication with role-based permissions
+- **GitHub Integration**: Sync data changes with GitHub repositories
+- **Static Deployment**: Support for GitHub Pages with automatic data handling
 
-```
-refhub/
-├── client/          # Frontend React application
-│   ├── public/      # Static assets
-│   ├── src/         # Client source code
-│   └── ...          # Client-specific configuration files
-├── server/          # Backend Express application  
-│   ├── src/         # Server source code
-│   └── ...          # Server-specific configuration files
-└── shared/          # Shared types and utilities
-```
+## 🛠️ Technology Stack
 
-## Features
+- **Frontend**: React, TypeScript, Tailwind CSS, shadcn/ui
+- **Backend**: Express.js, Node.js
+- **Data Storage**: JSON-based storage using lowdb
+- **Authentication**: Session-based with bcrypt password hashing
+- **State Management**: React Query with optimistic updates
+- **Deployment**: GitHub Pages (frontend) with optional backend hosting
 
-- User authentication with admin roles
-- Reference management (create, read, update, delete)
-- Category and tag organization
-- Responsive design for all devices
-- GitHub integration for syncing data
+## 🚀 Getting Started
 
-## Getting Started
+### Local Development
 
-### Prerequisites
+1. **Clone the repository**
 
-- Node.js 20 or higher
-- npm 9 or higher
-- PostgreSQL (optional, configured via DATABASE_URL)
-
-### Installation
-
-1. Clone the repository:
-   ```
+   ```bash
    git clone https://github.com/yourusername/refhub.git
    cd refhub
    ```
 
-2. Install dependencies for all components:
-   ```
+2. **Install dependencies**
+
+   ```bash
+   # Install all dependencies (root, client, server)
    npm run install:all
    ```
 
-3. Configure environment variables:
-   - Create `.env` files in client and server directories based on the provided examples
+3. **Run the application**
 
-### Development
+   ```bash
+   # Start both client and server
+   npm run dev
+   
+   # OR start them separately
+   npm run client  # Starts client on port 3000
+   npm run server  # Starts server on port 5000
+   ```
 
-You can run the client and server components separately or together:
+4. **Access the application**
 
-- Run both together:
-  ```
-  npm run dev
-  ```
+   - Frontend: [http://localhost:3000](http://localhost:3000)
+   - Backend API: [http://localhost:5000](http://localhost:5000)
 
-- Run only the client:
-  ```
-  npm run client
-  ```
+### GitHub Pages Deployment
 
-- Run only the server:
-  ```
-  npm run server
-  ```
+RefHub supports automatic deployment to GitHub Pages via GitHub Actions:
 
-The client runs on http://localhost:3000 and the server on http://localhost:5000.
+1. **Enable GitHub Pages** for your repository (Settings > Pages)
 
-### Building for Production
+2. **Configure secrets** (if needed):
+   - `CUSTOM_DOMAIN`: Your custom domain (optional)
+   - `GITHUB_TOKEN`: For GitHub API access (optional, for GitHub sync feature)
+
+3. **Push to main branch** to trigger deployment
+
+4. **Access your deployed application** at:
+   - Custom domain: https://yourdomain.com
+   - GitHub Pages: https://yourusername.github.io/refhub/
+
+## 🔧 Configuration
+
+### Environment Variables
+
+The project uses environment configuration files for different environments:
+
+- **Client**: `.env`, `.env.production`
+- **Server**: `.env`, `.env.production`
+
+See [LOCAL_SETUP.md](./LOCAL_SETUP.md) for detailed configuration options.
+
+## 📂 Project Structure
 
 ```
-npm run build
+refhub/
+├── client/            # Frontend React application
+│   ├── public/        # Static assets
+│   └── src/           # Source code
+│       ├── components/# UI components
+│       ├── hooks/     # Custom hooks
+│       ├── lib/       # Utility functions
+│       ├── pages/     # Page components
+│       └── types/     # TypeScript type definitions
+├── server/            # Backend Express server
+│   ├── data/          # Data storage directory
+│   ├── services/      # Server services
+│   └── src/           # Source code
+├── shared/            # Shared code between client and server
+│   └── schema.ts      # Data schemas and types
+└── .github/           # GitHub configuration
+    └── workflows/     # GitHub Actions workflows
 ```
 
-This builds both client and server components for production.
+## 🧪 Development Guidelines
 
-## Deployment
+- All data schemas are defined in `shared/schema.ts`
+- Follow the client-server architecture for clean separation of concerns
+- Use React Query for data fetching and state management
+- Implement proper error handling and loading states
+- Keep components modular and reusable
 
-The application can be deployed in several ways:
+## 🔐 Authentication
 
-1. **Combined Deployment**: Deploy both client and server to a platform like Replit that supports Node.js applications.
+The application supports the following user roles:
 
-2. **Separate Deployment**:
-   - Deploy the server to a Node.js hosting platform (Replit, Render, Railway, etc.)
-   - Deploy the client as a static site to GitHub Pages or any static hosting
+- **Anonymous**: View-only access to references
+- **Authenticated**: Can add references, categories, and tags
+- **Admin**: Full management capabilities (edit/delete)
 
-3. **Static Only Mode**:
-   - The client can operate in a static-only mode with limited functionality
-   - Suitable for demo or read-only versions
+Default admin credentials:
+- Username: `admin`
+- Password: `password`
 
-## License
+## 📄 License
 
-MIT
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgements
+
+- Built with [React](https://reactjs.org/)
+- UI components from [shadcn/ui](https://ui.shadcn.com/)
+- Styling with [Tailwind CSS](https://tailwindcss.com/)
+- Icons from [Lucide React](https://lucide.dev/)
+- Authentication with [Passport.js](http://www.passportjs.org/)
