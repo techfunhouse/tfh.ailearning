@@ -1,0 +1,16 @@
+{
+  "users": [
+    {
+      "username": "admin",
+      "password": "$2b$10$HZ0gmIVOjEqShv8Y42Ln9.qSc8lUTQzSmCMS5o9qIBVSNr3z36PiC",
+      "isAdmin": true,
+      "id": 1
+    },
+    {
+      "username": "curator",
+      "password": "$2b$10$5qro3TCd8SrGeYbPMdrJYO9OnBP.ixMMQfiK9pE6krW2C9E.rN/Oy",
+      "isAdmin": false,
+      "id": 2
+    }
+  ]
+}

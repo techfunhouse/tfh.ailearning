@@ -1,0 +1,106 @@
+{
+  "references": [
+    {
+      "title": "Modern JavaScript Techniques",
+      "link": "https://example.com/javascript-techniques",
+      "description": "A comprehensive guide to advanced JavaScript patterns and performance optimization techniques.",
+      "category": "programming",
+      "tags": [
+        "javascript",
+        "frontend",
+        "performance"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "id": "8f6b7f37-af9a-410f-8aae-2771510f3beb",
+      "createdBy": "admin",
+      "loveCount": 0,
+      "createdAt": "2025-05-13T18:44:51.187Z",
+      "updatedAt": "2025-05-13T18:44:51.187Z"
+    },
+    {
+      "title": "UI/UX Design Principles",
+      "link": "https://example.com/uiux-design",
+      "description": "Essential principles for creating intuitive and aesthetically pleasing user interfaces.",
+      "category": "design",
+      "tags": [
+        "ui/ux",
+        "design",
+        "frontend"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1516031190212-da133013de50?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "id": "b5c180f6-fd63-4456-9794-3582c4ba0d28",
+      "createdBy": "admin",
+      "loveCount": 0,
+      "createdAt": "2025-05-13T18:44:51.188Z",
+      "updatedAt": "2025-05-13T18:44:51.188Z"
+    },
+    {
+      "title": "Data Visualization Techniques",
+      "link": "https://example.com/data-viz",
+      "description": "Methods for effectively visualizing complex data sets to derive meaningful insights.",
+      "category": "research",
+      "tags": [
+        "algorithm",
+        "data",
+        "visualization"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "id": "bdf1a841-cb8e-492a-afec-e6fb7227deb5",
+      "createdBy": "admin",
+      "loveCount": 0,
+      "createdAt": "2025-05-13T18:44:51.188Z",
+      "updatedAt": "2025-05-13T18:44:51.188Z"
+    },
+    {
+      "title": "Essential Developer Tools",
+      "link": "https://example.com/dev-tools",
+      "description": "A collection of must-have tools and utilities for modern software development workflows.",
+      "category": "tools",
+      "tags": [
+        "productivity",
+        "tools",
+        "development"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "id": "f06dda79-6c10-4fed-bd99-6757c5d44323",
+      "createdBy": "admin",
+      "loveCount": 0,
+      "createdAt": "2025-05-13T18:44:51.188Z",
+      "updatedAt": "2025-05-13T18:44:51.188Z"
+    },
+    {
+      "title": "Database Optimization Patterns",
+      "link": "https://example.com/db-optimization",
+      "description": "Strategies and techniques for optimizing database performance in high-scale applications.",
+      "category": "programming",
+      "tags": [
+        "database",
+        "backend",
+        "performance"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "id": "eda87095-38b8-4f4a-862c-d234fcc7f67f",
+      "createdBy": "admin",
+      "loveCount": 0,
+      "createdAt": "2025-05-13T18:44:51.189Z",
+      "updatedAt": "2025-05-13T18:44:51.189Z"
+    },
+    {
+      "title": "Mobile UX Design Patterns",
+      "link": "https://example.com/mobile-ux",
+      "description": "Best practices for creating intuitive and engaging user experiences for mobile applications.",
+      "category": "design",
+      "tags": [
+        "mobile",
+        "ui/ux",
+        "frontend"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
+      "id": "cbe80a1a-89ca-45df-a8c3-88ed00539b7c",
+      "createdBy": "admin",
+      "loveCount": 0,
+      "createdAt": "2025-05-13T18:44:51.190Z",
+      "updatedAt": "2025-05-13T18:44:51.190Z"
+    }
+  ]
+}

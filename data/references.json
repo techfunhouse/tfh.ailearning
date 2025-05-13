@@ -1,7 +1,7 @@
 {
   "references": [
     {
-      "title": "1234 Data Visualization Implementation",
+      "title": "AAAA Data Visualization Implementation",
       "link": "https://example.com/data-visualization-1",
       "description": "Discover effective strategies for implementing Data Visualization in production environments.",
       "category": "research",
@@ -21,7 +21,7 @@
       "createdBy": "curator",
       "id": "9f1bb253-9604-4821-8488-cabe2347f4f4",
       "createdAt": "2025-04-30T11:31:35.586Z",
-      "updatedAt": "2025-05-13T17:21:34.906Z"
+      "updatedAt": "2025-05-13T18:27:13.341Z"
     },
     {
       "title": "Practical GraphQL Implementation",
@@ -172,7 +172,7 @@
         "algorithm"
       ],
       "thumbnail": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
-      "loveCount": 8,
+      "loveCount": 9,
       "lovedBy": [
         7,
         2,

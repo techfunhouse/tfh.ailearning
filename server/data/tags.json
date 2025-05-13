@@ -1,0 +1,60 @@
+{
+  "tags": [
+    {
+      "name": "javascript",
+      "id": "ae81095d-dafe-4cc4-9336-ff9f9be1a742"
+    },
+    {
+      "name": "ui/ux",
+      "id": "d83a9684-376c-4ce3-8105-8b1b38f771f9"
+    },
+    {
+      "name": "algorithm",
+      "id": "907926ea-bbc4-431f-b575-d25ea747d769"
+    },
+    {
+      "name": "database",
+      "id": "31645674-0ba2-44dc-b1aa-9cba1d20c711"
+    },
+    {
+      "name": "frontend",
+      "id": "861f6534-cd46-475b-b45e-697486cf5a18"
+    },
+    {
+      "name": "backend",
+      "id": "5e4d6346-d91c-43ad-8086-bffd08274836"
+    },
+    {
+      "name": "mobile",
+      "id": "d01bdf04-17d4-40d5-9608-5d79cfff9c9f"
+    },
+    {
+      "name": "productivity",
+      "id": "b963a9dc-bd4e-4b9d-ab42-fba233305421"
+    },
+    {
+      "name": "tools",
+      "id": "df81a971-cf2f-4029-a7f9-f45154953be9"
+    },
+    {
+      "name": "data",
+      "id": "515fa614-6168-4a92-94a7-c6b5a2209544"
+    },
+    {
+      "name": "visualization",
+      "id": "7f45677f-45db-47ff-adea-7a5c04f35a2e"
+    },
+    {
+      "name": "design",
+      "id": "3168ffe3-4de4-471c-bb80-1a3af147fdaa"
+    },
+    {
+      "name": "development",
+      "id": "35cef224-e88b-4ef8-96b0-5f7edacc6fa1"
+    },
+    {
+      "name": "performance",
+      "id": "14f9b5da-a5ae-48fb-8911-e0dbd9e24f24"
+    }
+  ]
+}

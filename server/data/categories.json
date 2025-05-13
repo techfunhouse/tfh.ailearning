@@ -1,0 +1,20 @@
+{
+  "categories": [
+    {
+      "name": "Programming",
+      "id": "03e8e195-227a-48d9-b3cb-d92f04fe1332"
+    },
+    {
+      "name": "Design",
+      "id": "13de55a9-8e7b-4c03-859a-a31f16264fd7"
+    },
+    {
+      "name": "Research",
+      "id": "0f32f6ff-6bf8-4cb1-9e1c-30524cb56285"
+    },
+    {
+      "name": "Tools",
+      "id": "ac7357fb-e06f-44a2-88a1-4ebbd987b141"
+    }
+  ]
+}
