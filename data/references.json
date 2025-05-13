@@ -1,14 +1,15 @@
 {
   "references": [
     {
-      "title": "YY Data Visualization Implementation",
+      "title": "1234 Data Visualization Implementation",
       "link": "https://example.com/data-visualization-1",
       "description": "Discover effective strategies for implementing Data Visualization in production environments.",
       "category": "research",
       "tags": [
         "tools",
         "python",
-        "angular"
+        "angular",
+        "security"
       ],
       "thumbnail": "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
       "loveCount": 4,
@@ -20,7 +21,7 @@
       "createdBy": "curator",
       "id": "9f1bb253-9604-4821-8488-cabe2347f4f4",
       "createdAt": "2025-04-30T11:31:35.586Z",
-      "updatedAt": "2025-05-13T17:08:04.436Z"
+      "updatedAt": "2025-05-13T17:21:34.906Z"
     },
     {
       "title": "Practical GraphQL Implementation",
