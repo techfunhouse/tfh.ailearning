@@ -71,14 +71,36 @@ For Windows users, you might encounter issues with the environment variable synt
    npm install --save-dev cross-env
    ```
 
-2. Update your scripts:
+2. Update your scripts in `server/package.json`:
    ```json
-   "dev": "cross-env NODE_ENV=development tsx index.ts"
+   "dev": "cross-env NODE_ENV=development tsx index.ts",
+   "dev:standalone": "cross-env NODE_ENV=development tsx src/standalone-server.ts",
+   "dev:local": "cross-env NODE_ENV=development tsx local-entry.ts"
    ```
+
+### Running with Setup Scripts
+
+The project includes setup scripts for both Unix/Linux/Mac and Windows:
+
+For Unix/Linux/Mac:
+```bash
+# Make the script executable
+chmod +x setup.sh
+
+# Run the setup script
+./setup.sh
+```
+
+For Windows:
+```
+setup.bat
+```
+
+These scripts will install all dependencies and guide you through the setup process.
 
 ### Alternative: Using Make
 
-For a simpler approach, use the provided Makefile:
+For a simpler approach on Unix/Linux/Mac, use the provided Makefile:
 
 ```bash
 # Install dependencies
@@ -93,6 +115,24 @@ make client
 # Run only server
 make server
 ```
+
+### Manual Startup
+
+If scripts aren't working, you can manually start the application:
+
+1. Start the server:
+   ```bash
+   # Unix/Linux/Mac
+   cd server && NODE_ENV=development npx tsx index.ts
+   
+   # Windows
+   cd server && set NODE_ENV=development && npx tsx index.ts
+   ```
+
+2. Start the client (in a separate terminal):
+   ```bash
+   cd client && npm run dev
+   ```
 
 ## Specific Environment Issues
 

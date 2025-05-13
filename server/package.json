@@ -4,11 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "NODE_ENV=development tsx index.ts",
-    "dev:standalone": "NODE_ENV=development tsx src/standalone-server.ts",
-    "dev:local": "NODE_ENV=development tsx local-entry.ts",
+    "dev": "cross-env NODE_ENV=development tsx index.ts",
+    "dev:standalone": "cross-env NODE_ENV=development tsx src/standalone-server.ts",
+    "dev:local": "cross-env NODE_ENV=development tsx local-entry.ts",
     "build": "esbuild src/standalone-server.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
-    "start": "NODE_ENV=production node dist/standalone-server.js"
+    "start": "cross-env NODE_ENV=production node dist/standalone-server.js"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",
