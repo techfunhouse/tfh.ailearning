@@ -1,0 +1,39 @@
+0 info it worked if it ends with ok
+1 verbose cli [
+1 verbose cli   '/Users/vengatagirivenkatesan/.nvm/versions/node/v14.16.1/bin/node',
+1 verbose cli   '/Users/vengatagirivenkatesan/.nvm/versions/node/v14.16.1/bin/npm',
+1 verbose cli   'run',
+1 verbose cli   'server'
+1 verbose cli ]
+2 info using npm@6.14.12
+3 info using node@v14.16.1
+4 verbose run-script [ 'preserver', 'server', 'postserver' ]
+5 info lifecycle rest-express@1.0.0~preserver: rest-express@1.0.0
+6 info lifecycle rest-express@1.0.0~server: rest-express@1.0.0
+7 verbose lifecycle rest-express@1.0.0~server: unsafe-perm in lifecycle true
+8 verbose lifecycle rest-express@1.0.0~server: PATH: /Users/vengatagirivenkatesan/.nvm/versions/node/v14.16.1/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer/node_modules/.bin:/Users/vengatagirivenkatesan/.pyenv/shims:/Users/vengatagirivenkatesan/google-cloud-sdk/bin:/Users/vengatagirivenkatesan/.sdkman/candidates/java/current/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Users/vengatagirivenkatesan/.gem/bin:/usr/local/opt/ruby/bin:/Users/vengatagirivenkatesan/.nvm/versions/node/v14.16.1/bin:/Users/vengatagirivenkatesan/.gobrew/current/bin:/Users/vengatagirivenkatesan/.gobrew/bin:/Users/vengatagirivenkatesan/.gobrew/current/bin:/Users/vengatagirivenkatesan/.gobrew/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/usr/local/go/bin:/Applications/iTerm.app/Contents/Resources/utilities:/usr/local/bin
+9 verbose lifecycle rest-express@1.0.0~server: CWD: /Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer
+10 silly lifecycle rest-express@1.0.0~server: Args: [ '-c', 'cd server && npm run dev' ]
+11 silly lifecycle rest-express@1.0.0~server: Returned: code: 1  signal: null
+12 info lifecycle rest-express@1.0.0~server: Failed to exec server script
+13 verbose stack Error: rest-express@1.0.0 server: `cd server && npm run dev`
+13 verbose stack Exit status 1
+13 verbose stack     at EventEmitter.<anonymous> (/Users/vengatagirivenkatesan/.nvm/versions/node/v14.16.1/lib/node_modules/npm/node_modules/npm-lifecycle/index.js:332:16)
+13 verbose stack     at EventEmitter.emit (events.js:315:20)
+13 verbose stack     at ChildProcess.<anonymous> (/Users/vengatagirivenkatesan/.nvm/versions/node/v14.16.1/lib/node_modules/npm/node_modules/npm-lifecycle/lib/spawn.js:55:14)
+13 verbose stack     at ChildProcess.emit (events.js:315:20)
+13 verbose stack     at maybeClose (internal/child_process.js:1048:16)
+13 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:288:5)
+14 verbose pkgid rest-express@1.0.0
+15 verbose cwd /Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer
+16 verbose Darwin 24.4.0
+17 verbose argv "/Users/vengatagirivenkatesan/.nvm/versions/node/v14.16.1/bin/node" "/Users/vengatagirivenkatesan/.nvm/versions/node/v14.16.1/bin/npm" "run" "server"
+18 verbose node v14.16.1
+19 verbose npm  v6.14.12
+20 error code ELIFECYCLE
+21 error errno 1
+22 error rest-express@1.0.0 server: `cd server && npm run dev`
+22 error Exit status 1
+23 error Failed at the rest-express@1.0.0 server script.
+23 error This is probably not a problem with npm. There is likely additional logging output above.
+24 verbose exit [ 1, true ]
