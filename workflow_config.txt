@@ -1,20 +1,30 @@
-# Workflow Configuration for Replit
+Suggested Workflow Configuration:
 
-## Primary Workflows
+[[workflow]]
+name = "Project"
+run = "npm run dev"
+port = 5000
 
-- Start application: npm run dev
-  Starts the current Express server (will be replaced with client-server setup)
+[[workflow]]
+name = "Start application"
+run = "npm run dev"
+port = 5000
 
-## Recommended Workflows (for client-server architecture)
+[[workflow]]
+name = "Start server"
+run = "npm run server"
+port = 5000
 
-- Start server: cd server && npm run dev
-  Starts the Express server standalone
+[[workflow]]
+name = "Start client"
+run = "npm run client"
+port = 3000
 
-- Start client: cd client && npm run dev
-  Starts the Vite client standalone
+Add these port configurations:
+[[ports]]
+localPort = 5000
+externalPort = 80
 
-- Start full app: concurrently "cd server && npm run dev" "cd client && npm run dev"
-  Starts both client and server concurrently
-
-- Install all: npm install && cd client && npm install && cd ../server && npm install
-  Installs dependencies for root, client, and server
+[[ports]]
+localPort = 3000
+externalPort = 3000

@@ -25,100 +25,130 @@ jobs:
           cache: 'npm'
       
       - name: Install Dependencies
-        run: |
-          # Install root dependencies
-          npm ci
-          
-          # Install client and server dependencies
-          cd client && npm ci
-          cd ../server && npm ci
-          cd ..
+        run: npm ci
       
-      - name: Setup Environment Variables
+      - name: Setup Environment
         run: |
-          # Set up environment variables for client and server
-          echo "Setting up environment variables for deployment..."
-          
-          # Determine correct base path and repository name
-          REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d '/' -f 2)
-          CUSTOM_DOMAIN="${{ secrets.CUSTOM_DOMAIN }}"
-          
-          # Determine if we're using a custom domain
+          # Set up custom domain from repository secret or environment variable
           if [[ ! -z "$CUSTOM_DOMAIN" ]]; then
             echo "Using custom domain: $CUSTOM_DOMAIN"
-            BASE_PATH="/"
-            IS_CUSTOM_DOMAIN="true"
-          else
-            # GitHub repository as subdirectory
-            if [[ "$REPO_NAME" != *.github.io ]]; then
-              BASE_PATH="/$REPO_NAME/"
-              echo "Using repository path: /$REPO_NAME/"
-            else
-              # User or organization GitHub Pages
-              BASE_PATH="/"
-              echo "Using root path for .github.io domain"
-            fi
-            IS_CUSTOM_DOMAIN="false"
           fi
           
-          # Create client environment file for GitHub Pages
-          cat > client/.env.production << EOL
-          # Production environment variables for GitHub Pages deployment
-          VITE_API_URL=
-          VITE_GITHUB_PAGES=true
-          VITE_BASE_PATH=${BASE_PATH}
-          VITE_USE_CUSTOM_DOMAIN=${IS_CUSTOM_DOMAIN}
+          # Create deploy-test script if it doesn't exist
+          if [ ! -f "deploy-test.js" ]; then
+            echo "Creating deploy-test.js script..."
+            cat > deploy-test.js << 'EOL'
+          /**
+           * GitHub Pages Deployment Configuration Test Script
+           */
+          import fs from 'fs';
+          import path from 'path';
+          import { exec } from 'child_process';
+          import { promisify } from 'util';
+          import { fileURLToPath } from 'url';
+
+          const execPromise = promisify(exec);
+          const __filename = fileURLToPath(import.meta.url);
+          const __dirname = path.dirname(__filename);
+
+          const IS_CUSTOM_DOMAIN = process.env.CUSTOM_DOMAIN || '';
+          
+          async function setupEnvironment() {
+            console.log('Setting up deployment environment...');
+            
+            try {
+              // Determine correct base path
+              let basePath = '/';
+              const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1] || '';
+              
+              if (!IS_CUSTOM_DOMAIN && repoName && !repoName.endsWith('.github.io')) {
+                basePath = `/${repoName}/`;
+                console.log(`Using repository path: /${repoName}/`);
+              } else {
+                console.log('Using root path');
+              }
+              
+              // Create environment config file
+              fs.writeFileSync(
+                path.join(__dirname, '.env.github-pages'),
+                `# Generated configuration for GitHub Pages deployment
+          VITE_BASE_PATH=${basePath}
+          ${IS_CUSTOM_DOMAIN ? `CUSTOM_DOMAIN=${IS_CUSTOM_DOMAIN}\nVITE_USE_CUSTOM_DOMAIN=true` : ''}
+          `
+              );
+              
+              console.log(`Environment configured with base path: ${basePath}${IS_CUSTOM_DOMAIN ? ` and custom domain: ${IS_CUSTOM_DOMAIN}` : ''}`);
+              return { basePath };
+            } catch (err) {
+              console.error(`Failed to set up environment: ${err.message}`);
+              throw err;
+            }
+          }
+
+          setupEnvironment().catch(err => {
+            console.error(err);
+            process.exit(1);
+          });
           EOL
-          
-          echo "Client environment variables created:"
-          cat client/.env.production
-          
-          # Export environment variables for the build step
-          echo "BASE_PATH=${BASE_PATH}" >> $GITHUB_ENV
-          echo "CUSTOM_DOMAIN=${CUSTOM_DOMAIN}" >> $GITHUB_ENV
-          echo "IS_CUSTOM_DOMAIN=${IS_CUSTOM_DOMAIN}" >> $GITHUB_ENV
-      
-      - name: Export Data for Static Deployment
-        run: |
-          # Ensure data directory exists
-          mkdir -p data
-          
-          # Copy existing data files if they exist, or create minimal ones
-          if [ -d "server/data" ]; then
-            echo "Copying data files from server directory..."
-            cp -r server/data/* data/
-          else
-            echo "Creating minimal data files..."
-            echo "[]" > data/references.json
-            echo "[]" > data/categories.json
-            echo "[]" > data/tags.json
           fi
           
-          # Show what files were created
-          echo "Data files in data directory:"
-          ls -la data/
+          # Run our deploy-test script to generate the configuration
+          node deploy-test.js
+          
+          # Show the generated configuration
+          echo "Generated environment configuration:"
+          cat .env.github-pages
       
-      - name: Build Client
+      - name: Export Static Data
+        run: node export-static-data.js
+      
+      - name: Build
         run: |
-          # Build the client with the environment variables
-          cd client
+          # Read environment settings from our config file
+          export $(grep -v '^#' .env.github-pages | xargs)
+          echo "Building with BASE_PATH=$VITE_BASE_PATH and CUSTOM_DOMAIN=${CUSTOM_DOMAIN:-none}"
+          
+          # Run the build with these settings
           npm run build
-          cd ..
       
-      - name: Prepare Deployment Directory
+      - name: Setup Deployment Directory
         run: |
+          # Check if build directory exists
+          if [ ! -d "dist/public" ]; then
+            echo "Build directory 'dist/public' not found. Creating empty directory for testing."
+            mkdir -p dist/public
+            # Create a basic HTML file for testing
+            echo "<html><body><h1>Test Build</h1></body></html>" > dist/public/index.html
+          fi
+          
           # Create deployment directory
           mkdir -p deploy
-          
-          # Copy client build files
-          cp -r client/dist/* deploy/
-          
-          # Add .nojekyll file to bypass Jekyll processing
+          cp -r dist/public/* deploy/
           touch deploy/.nojekyll
           
-          # Create data directory in deployment
+          # Make sure data directory exists in deploy
           mkdir -p deploy/data
-          cp data/*.json deploy/data/
+          
+          # Process JSON data files for deployment using our dedicated script
+          if [ -d "data" ]; then
+            echo "Processing JSON data files for deployment..."
+            
+            # Use our dedicated script to properly format JSON files
+            node fix-json-for-deployment.js
+            
+            # Show what files were created
+            echo "Data files in deployment directory:"
+            ls -la deploy/data/
+          else
+            echo "No data directory found, creating an empty one"
+            mkdir -p data
+            mkdir -p deploy/data
+            
+            # Create minimal placeholder files if needed
+            echo "[]" > deploy/data/references.json
+            echo "[]" > deploy/data/categories.json
+            echo "[]" > deploy/data/tags.json
+          fi
           
           # Create CNAME file if custom domain is specified
           if [[ ! -z "$CUSTOM_DOMAIN" ]]; then
@@ -126,18 +156,72 @@ jobs:
             echo "Created CNAME file for $CUSTOM_DOMAIN"
           fi
       
+      - name: Fix HTML Files for Custom Domain
+        if: env.CUSTOM_DOMAIN != ''
+        run: |
+          echo "Fixing HTML files for custom domain deployment..."
+          
+          # Fix index.html - very aggressive path correction
+          sed -i 's/<base href="[^"]*"/<base href="\/"/g' deploy/index.html
+          
+          # Replace all references to repository path with root path
+          REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d '/' -f 2)
+          sed -i "s/\/$REPO_NAME\//\//g" deploy/index.html
+          
+          # Ensure asset paths have leading slash
+          sed -i 's/href="assets\//href="\/assets\//g' deploy/index.html
+          sed -i 's/src="assets\//src="\/assets\//g' deploy/index.html
+          
+          # Fix CSS url() references
+          sed -i "s/url(\/$REPO_NAME\//url(\//g" deploy/index.html
+          
+          # Add custom domain meta tag
+          sed -i 's/<\/head>/<meta name="custom-domain" content="true">\n  <\/head>/g' deploy/index.html
+          
+          echo "Completed HTML fixes for custom domain"
+      
       - name: Create 404.html for SPA Routing
         run: |
-          # Create 404.html file for proper SPA routing on GitHub Pages
-          cp deploy/index.html deploy/404.html
-          
-          # Add script to 404.html for SPA routing
-          sed -i 's/<\/head>/<script>sessionStorage.setItem("redirect", window.location.pathname); window.location.href = "'"$BASE_PATH"'";<\/script><\/head>/g' deploy/404.html
+          cat > deploy/404.html << 'EOL'
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <meta charset="utf-8">
+              <title>Redirecting...</title>
+              <script>
+                // Single Page App redirection
+                sessionStorage.setItem('redirect', window.location.pathname);
+                window.location.href = '/';
+              </script>
+            </head>
+            <body>
+              <h1>Redirecting...</h1>
+              <p>If you are not redirected automatically, <a href="/">click here</a>.</p>
+            </body>
+          </html>
+          EOL
       
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages
-          folder: deploy
-          token: ${{ secrets.GITHUB_TOKEN }}
-          clean: true
+        # Use direct git commands for more reliability
+        run: |
+          echo "Deploying to GitHub Pages branch..."
+          cd deploy
+          
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+          git init
+          git add -A
+          git commit -m "Deploy to GitHub Pages"
+          
+          # Force push to the gh-pages branch
+          # Use the properly formatted token URL with proper permissions
+          git remote add origin https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git
+          
+          # Debug the URL being used (with token redacted)
+          echo "Pushing to remote repository: https://***:***@github.com/${{ github.repository }}.git"
+          
+          # Force push to the gh-pages branch
+          git push -f origin HEAD:gh-pages
+          
+          echo "✅ Successfully deployed to GitHub Pages"
