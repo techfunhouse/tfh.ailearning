@@ -16,9 +16,7 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000, // Different port than the server
-    // In standalone mode, we're not proxying to the backend
-    // Client will make direct API calls to the server
+    port: 3000 // Different port than the server
   },
   base: './', // Use relative paths for assets
   build: {
