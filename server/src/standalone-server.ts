@@ -205,6 +205,10 @@ function registerApiRoutes(app: express.Express): Server {
   app.post("/api/references", isAuthenticated, async (req, res) => {
     try {
       const validatedData = insertReferenceSchema.parse(req.body);
+      // Ensure user exists in session (TypeScript safety)
+      if (!req.session || !req.session.user) {
+        return res.status(401).json({ message: "User not authenticated" });
+      }
       const reference = await storage.createReference(validatedData, req.session.user.username);
       res.status(201).json(reference);
     } catch (error) {
