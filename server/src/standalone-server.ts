@@ -6,6 +6,9 @@ import { fileURLToPath } from "url";
 import session from "express-session";
 import createMemoryStore from "memorystore";
 import { createServer, type Server } from "http";
+import { storage } from "./storage.js";
+import { insertReferenceSchema, insertCategorySchema, insertTagSchema } from "../../shared/schema.js";
+import { z } from "zod";
 
 // Get current file and directory name
 const __filename = fileURLToPath(import.meta.url);
@@ -40,11 +43,6 @@ const isAdmin = (req: Request, res: Response, next: Function) => {
   }
   next();
 };
-
-// Import storage
-import { storage } from "./storage.js";
-import { insertReferenceSchema, insertCategorySchema, insertTagSchema } from "../../shared/schema.js";
-import { z } from "zod";
 
 // Import GitHub sync if available
 let syncWithGitHub: (dryRun?: boolean) => Promise<any>;

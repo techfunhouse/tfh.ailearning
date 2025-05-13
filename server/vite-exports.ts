@@ -7,4 +7,4 @@
 export { createServer, createLogger } from "vite";
 
 // Re-export everything else from server/vite.ts
-export { log, setupVite, serveStatic } from "./vite";
+export { log, setupVite, serveStatic } from "./vite.js";

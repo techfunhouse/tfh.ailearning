@@ -1,0 +1,36 @@
+    ~/gitm/techf/ReferenceViewer    main !2 ?2  npm run server              ✔  4s   01:29:47 AM 
+
+> rest-express@1.0.0 server /Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer
+> cd server && npm run dev
+
+
+> refhub-server@1.0.0 dev /Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer/server
+> NODE_ENV=development tsx src/standalone-server.ts
+
+file:///Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer/server/node_modules/tsx/dist/cli.mjs:18
+`)),u)return{id:"examples",type:"section",data:{title:"Examples:",body:u}}}a(ti,"F");function ui(t){if(!("alias"in t)||!t.alias)return;const{alias:e}=t;return{id:"aliases",type:"section",data:{title:"Aliases:",body:Array.isArray(e)?e.join(", "):e}}}a(ui,"H");const si=a(t=>[Xr,Qr,Zr,Jr,ei,ti,ui].map(e=>e(t)).filter(Boolean),"U"),ni=Tn.WriteStream.prototype.hasColors();class ri{static{a(this,"M")}text(e){return e}bold(e){return ni?`\x1B[1m${e}\x1B[22m`:e.toLocaleUpperCase()}indentText({text:e,spaces:u}){return e.replace(/^/gm," ".repeat(u))}heading(e){return this.bold(e)}section({title:e,body:u,indentBody:s=2}){return`${(e?`${this.heading(e)}
+                                                                                                                                                                                                                                                                                                                                                                                                 ^
+
+SyntaxError: Unexpected token '{'
+    at Loader.moduleStrategy (internal/modules/esm/translators.js:145:18)
+    at async link (internal/modules/esm/module_job.js:47:21)
+npm ERR! code ELIFECYCLE
+npm ERR! errno 1
+npm ERR! refhub-server@1.0.0 dev: `NODE_ENV=development tsx src/standalone-server.ts`
+npm ERR! Exit status 1
+npm ERR!
+npm ERR! Failed at the refhub-server@1.0.0 dev script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /Users/vengatagirivenkatesan/.npm/_logs/2025-05-13T19_59_51_651Z-debug.log
+npm ERR! code ELIFECYCLE
+npm ERR! errno 1
+npm ERR! rest-express@1.0.0 server: `cd server && npm run dev`
+npm ERR! Exit status 1
+npm ERR!
+npm ERR! Failed at the rest-express@1.0.0 server script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /Users/vengatagirivenkatesan/.npm/_logs/2025-05-13T19_59_51_693Z-debug.log
