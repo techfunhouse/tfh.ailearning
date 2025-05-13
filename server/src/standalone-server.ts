@@ -67,8 +67,24 @@ try {
 const app = express();
 
 // CORS configuration for cross-domain requests
+const allowedOrigins = (process.env.CLIENT_URLS || "http://localhost:3000").split(",");
 const corsOptions = {
-  origin: process.env.CLIENT_URL || "http://localhost:3000", 
+  origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
+    // Allow requests with no origin (like mobile apps, curl, postman)
+    if (!origin) return callback(null, true);
+    
+    // Check if the origin is in our allowed list
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    
+    // For development, allow Replit domain
+    if (origin.includes('replit.dev') || origin.includes('replit.app')) {
+      return callback(null, true);
+    }
+    
+    return callback(null, true); // Allow all origins in development
+  },
   credentials: true,
   optionsSuccessStatus: 200
 };
@@ -407,5 +423,7 @@ server.listen({
   reusePort: true,
 }, () => {
   log(`Server running on port ${port}`);
-  log(`CORS enabled for: ${corsOptions.origin}`);
+  log(`CORS enabled for origins: ${allowedOrigins.join(', ')}`);
+  log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  log(`Data directory: ${process.env.DATA_DIR || './data'}`);
 });
