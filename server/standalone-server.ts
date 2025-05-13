@@ -1,8 +1,13 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { log } from "./vite";
 import cors from "cors";
 import dotenv from "dotenv";
+
+// Simple logging function since we're not using the vite logger
+const log = (message: string, source = "express") => {
+  const timestamp = new Date().toLocaleTimeString();
+  console.log(`${timestamp} [${source}] ${message}`);
+};
 
 // Load environment variables
 dotenv.config();
