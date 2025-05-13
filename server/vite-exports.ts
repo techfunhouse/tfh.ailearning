@@ -1,7 +1,10 @@
 /**
- * This file provides exports that are needed for the build process.
- * It re-exports functions from the vite package to work around build issues.
+ * This module provides explicit exports needed for the build process.
+ * It serves as a replacement for direct imports from server/vite.ts that were causing build errors.
  */
 
-// Re-export these from vite since other modules need them during build
+// Export the functions needed from the vite package
 export { createServer, createLogger } from "vite";
+
+// Re-export everything else from server/vite.ts
+export { log, setupVite, serveStatic } from "./vite";

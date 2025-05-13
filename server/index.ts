@@ -1,6 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+// Import from our new module that provides all the needed exports
+import { setupVite, serveStatic, log } from "./vite-exports";
 
 const app = express();
 app.use(express.json());
