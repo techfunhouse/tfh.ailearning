@@ -186,18 +186,8 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  // Check if we're using a separate API URL from environment
-  const apiBaseUrl = import.meta.env.VITE_API_URL || '';
-  
-  // If API_URL is set and URL doesn't already include it, add it
-  let fullUrl = url;
-  if (apiBaseUrl && !url.startsWith(apiBaseUrl) && !url.startsWith('http')) {
-    fullUrl = `${apiBaseUrl}${url}`;
-    console.log(`Using API base URL: ${apiBaseUrl} for request: ${url}`);
-  }
-  
   // Adjust URL for static deployment if needed
-  const adjustedUrl = getAdjustedUrl(fullUrl);
+  const adjustedUrl = getAdjustedUrl(url);
   
   // In static deployment mode:
   // 1. Use GET for data fetching regardless of the original method
@@ -251,19 +241,8 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    // Check if we're using a separate API URL from environment
-    const apiBaseUrl = import.meta.env.VITE_API_URL || '';
-    const originalUrl = queryKey[0] as string;
-    
-    // If API_URL is set and URL doesn't already include it, add it
-    let fullUrl = originalUrl;
-    if (apiBaseUrl && !originalUrl.startsWith(apiBaseUrl) && !originalUrl.startsWith('http')) {
-      fullUrl = `${apiBaseUrl}${originalUrl}`;
-      console.log(`Using API base URL: ${apiBaseUrl} for query: ${originalUrl}`);
-    }
-    
     // Adjust URL for static deployment if needed
-    const url = getAdjustedUrl(fullUrl);
+    const url = getAdjustedUrl(queryKey[0] as string);
     const isStaticMode = isStaticDeployment();
     
     // Log the query request
