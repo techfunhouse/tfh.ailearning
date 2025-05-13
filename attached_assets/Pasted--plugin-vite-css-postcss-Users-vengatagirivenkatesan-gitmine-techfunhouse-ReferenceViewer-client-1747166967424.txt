@@ -1,0 +1,19 @@
+[plugin:vite:css] [postcss] /Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer/client/src/index.css:1:1: The `bg-background` class does not exist. If `bg-background` is a custom class, make sure it is defined within a `@layer` directive.
+/Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer/client/src/index.css:1:0
+1  |  @tailwind base;
+   |  ^
+2  |  @tailwind components;
+3  |  @tailwind utilities;
+    at Input.error (/Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer/client/node_modules/postcss/lib/input.js:113:16)
+    at AtRule.error (/Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer/client/node_modules/postcss/lib/node.js:149:32)
+    at processApply (/Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer/node_modules/tailwindcss/lib/lib/expandApplyAtRules.js:380:29)
+    at /Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer/node_modules/tailwindcss/lib/lib/expandApplyAtRules.js:551:9
+    at /Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer/node_modules/tailwindcss/lib/processTailwindFeatures.js:55:50
+    at async plugins (/Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer/node_modules/tailwindcss/lib/plugin.js:38:17)
+    at async LazyResult.runAsync (/Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer/client/node_modules/postcss/lib/lazy-result.js:293:11)
+    at async compileCSS (file:///Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer/client/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:36898:21)
+    at async TransformPluginContext.transform (file:///Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer/client/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:36171:11)
+    at async PluginContainer.transform (file:///Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer/client/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49099:18)
+    at async loadAndTransform (file:///Users/vengatagirivenkatesan/gitmine/techfunhouse/ReferenceViewer/client/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:51977:27
+Click outside, press Esc key, or fix the code to dismiss.
+You can also disable this overlay by setting server.hmr.overlay to false in vite.config.ts.
