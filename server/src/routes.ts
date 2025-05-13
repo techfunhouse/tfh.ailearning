@@ -1,11 +1,11 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
-import { insertReferenceSchema, insertCategorySchema, insertTagSchema } from "@shared/schema";
+import { storage } from "./storage.js";
+import { insertReferenceSchema, insertCategorySchema, insertTagSchema } from "../../shared/schema.js";
 import { z } from "zod";
 import session from "express-session";
 import createMemoryStore from "memorystore";
-import { syncWithGitHub, validateGitHubConfig } from './services/github-sync';
+import { syncWithGitHub, validateGitHubConfig } from './services/github-sync.js';
 
 // Create memory store for sessions
 const MemoryStore = createMemoryStore(session);

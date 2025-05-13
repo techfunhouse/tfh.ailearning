@@ -1,6 +1,6 @@
 import { Octokit } from '@octokit/rest';
 import { Base64 } from 'js-base64';
-import { storage } from '../storage';
+import { storage } from '../storage.js';
 import path from 'path';
 import * as fs from 'fs';
 
