@@ -50,24 +50,19 @@ import { z } from "zod";
 let syncWithGitHub: (dryRun?: boolean) => Promise<any>;
 let validateGitHubConfig: () => any;
 
-// Initialize with dummy implementations
-syncWithGitHub = async (dryRun = false) => ({ 
-  message: "GitHub sync not available in this environment",
-  dryRun
-});
-validateGitHubConfig = () => null;
-
-// Try to import GitHub sync module (without top-level await)
-import("./services/github-sync.js")
-  .then((githubSync) => {
-    syncWithGitHub = githubSync.syncWithGitHub;
-    validateGitHubConfig = githubSync.validateGitHubConfig;
-    log("GitHub sync module loaded successfully", "server");
-  })
-  .catch((error) => {
-    log("GitHub sync module not available", "server");
-    console.error("Error loading GitHub sync:", error);
+try {
+  const githubSync = await import("./services/github-sync.js");
+  syncWithGitHub = githubSync.syncWithGitHub;
+  validateGitHubConfig = githubSync.validateGitHubConfig;
+} catch (error) {
+  log("GitHub sync module not available", "server");
+  // Provide dummy implementations if the module is not available
+  syncWithGitHub = async (dryRun = false) => ({ 
+    message: "GitHub sync not available in this environment",
+    dryRun
   });
+  validateGitHubConfig = () => null;
+}
 
 const app = express();
 
@@ -228,9 +223,7 @@ function registerApiRoutes(app: express.Express): Server {
   app.post("/api/references", isAuthenticated, async (req, res) => {
     try {
       const validatedData = insertReferenceSchema.parse(req.body);
-      // Safely access session user with null check
-      const username = req.session?.user?.username || 'anonymous';
-      const reference = await storage.createReference(validatedData, username);
+      const reference = await storage.createReference(validatedData, req.session.user.username);
       res.status(201).json(reference);
     } catch (error) {
       if (error instanceof z.ZodError) {

@@ -17,31 +17,9 @@ This document provides instructions for setting up and running the RefHub applic
    cd refhub
    ```
 
-2. **Run the Setup Script**
+2. **Install Dependencies**
 
-   For Unix/Linux/Mac:
-   ```bash
-   # Make the script executable
-   chmod +x setup.sh
-   
-   # Run the setup script
-   ./setup.sh
-   ```
-
-   For Windows:
-   ```
-   setup.bat
-   ```
-
-   The setup script will:
-   - Install all dependencies
-   - Set up necessary directories
-   - Configure environment files
-   - Guide you through optional global installations
-
-3. **Alternative: Manual Installation**
-
-   If you prefer to install manually:
+   Install dependencies for the root, client, and server:
 
    ```bash
    # Install root dependencies
@@ -56,10 +34,6 @@ This document provides instructions for setting up and running the RefHub applic
    cd server
    npm install
    cd ..
-   
-   # Create necessary data directories
-   mkdir -p data
-   mkdir -p server/data
    ```
 
 ## Environment Configuration
