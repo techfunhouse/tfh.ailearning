@@ -1,94 +1,98 @@
-# RefHub: Reference Collection Management System
+# RefHub - Reference Management System
 
-Your personal reference management system for organizing, searching, and sharing your favorite resources.
+A dynamic reference management system designed to simplify data organization through modern web technologies and intuitive user experiences.
+
+## Project Structure
+
+The project is organized into separate client and server components:
+
+```
+refhub/
+├── client/          # Frontend React application
+│   ├── public/      # Static assets
+│   ├── src/         # Client source code
+│   └── ...          # Client-specific configuration files
+├── server/          # Backend Express application  
+│   ├── src/         # Server source code
+│   └── ...          # Server-specific configuration files
+└── shared/          # Shared types and utilities
+```
 
 ## Features
 
-- Card-based interface for references with thumbnails
-- Categorization and tagging
-- Full-text search and filtering
-- Role-based access control
-- GitHub integration for data synchronization
+- User authentication with admin roles
+- Reference management (create, read, update, delete)
+- Category and tag organization
+- Responsive design for all devices
+- GitHub integration for syncing data
 
 ## Getting Started
 
+### Prerequisites
+
+- Node.js 20 or higher
+- npm 9 or higher
+- PostgreSQL (optional, configured via DATABASE_URL)
+
+### Installation
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/refhub.git
+   cd refhub
+   ```
+
+2. Install dependencies for all components:
+   ```
+   npm run install:all
+   ```
+
+3. Configure environment variables:
+   - Create `.env` files in client and server directories based on the provided examples
+
 ### Development
 
-1. Clone this repository
-2. Install dependencies: `npm install`
-3. Start the development server: `npm run dev`
-4. Access the application at `http://localhost:5000`
+You can run the client and server components separately or together:
 
-### Default Credentials
+- Run both together:
+  ```
+  npm run dev
+  ```
 
-- Admin: `admin` / `admin123`
-- Curator: `curator` / `curator123`
+- Run only the client:
+  ```
+  npm run client
+  ```
 
-## Deployment to GitHub Pages
+- Run only the server:
+  ```
+  npm run server
+  ```
 
-This project provides a specialized script for GitHub Pages deployment that handles all necessary adjustments for proper asset paths and routing.
+The client runs on http://localhost:3000 and the server on http://localhost:5000.
 
-### Using the Deployment Script (Recommended)
+### Building for Production
 
-The easiest way to deploy is using our deployment script:
+```
+npm run build
+```
 
-1. Set your GitHub username in an environment variable (optional):
-   ```bash
-   export GITHUB_USERNAME=yourusername
-   ```
+This builds both client and server components for production.
 
-2. Run the deployment script:
-   ```bash
-   node deploy-to-gh-pages.js
-   ```
+## Deployment
 
-3. The script will:
-   - Export the data files for static hosting
-   - Build the application
-   - Prepare a deployment directory with all necessary files
-   - Configure paths correctly for GitHub Pages
-   - Create special 404.html for SPA routing
+The application can be deployed in several ways:
 
-4. Deploy the contents of the `gh-pages-deploy` directory to your GitHub Pages branch:
-   ```bash
-   cd gh-pages-deploy
-   git init
-   git checkout -b gh-pages
-   git add .
-   git commit -m "Deploy to GitHub Pages"
-   git remote add origin https://github.com/yourusername/ReferenceViewer.git
-   git push -f origin gh-pages
-   ```
+1. **Combined Deployment**: Deploy both client and server to a platform like Replit that supports Node.js applications.
 
-5. Access your deployed app at: `https://yourusername.github.io/ReferenceViewer/`
+2. **Separate Deployment**:
+   - Deploy the server to a Node.js hosting platform (Replit, Render, Railway, etc.)
+   - Deploy the client as a static site to GitHub Pages or any static hosting
 
-### Troubleshooting GitHub Pages Deployment
+3. **Static Only Mode**:
+   - The client can operate in a static-only mode with limited functionality
+   - Suitable for demo or read-only versions
 
-If you encounter issues with paths or resources not loading:
+## License
 
-1. **404 Errors for Data Files**: Make sure the data files are correctly exported to the `data` directory and the paths don't have leading slashes.
-
-2. **Asset Paths**: Verify that asset paths in the HTML use relative paths without leading slashes.
-
-3. **SPA Routing**: The 404.html file should be properly configured to redirect to the main application with the correct path segments.
-
-4. **Base Path**: The `<base>` tag in the HTML head should point to the correct repository name without a trailing slash.
-
-## GitHub Sync Feature
-
-To use the GitHub data synchronization feature:
-
-1. Log in as an admin user
-2. Configure the following environment variables:
-   - `GITHUB_TOKEN`: Your GitHub personal access token
-   - `GITHUB_USERNAME`: Your GitHub username
-   - `GITHUB_EMAIL`: Your email for commits
-   - `GITHUB_REPO`: The repository for data syncing
-3. Access the GitHub Sync feature from the sidebar
-
-## Learn More
-
-For more detailed information about this project, see:
-
-- [ABOUT.md](ABOUT.md) - Complete project overview
-- [PROMPT.md](PROMPT.md) - Original development prompt and requirements
+MIT
