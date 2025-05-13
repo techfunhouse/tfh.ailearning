@@ -5,10 +5,10 @@
 # this script adds the missing exports to vite.js in the dist folder
 
 echo "Building client..."
-vite build
+npx vite build
 
 echo "Running initial server build..."
-esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+npx esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
 
 # Create a file with the missing exports
 echo "Fixing vite.js in dist folder..."
