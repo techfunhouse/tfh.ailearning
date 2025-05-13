@@ -1,6 +1,7 @@
 import * as React from "react"
 import { createRoot } from "react-dom/client";
 import App from "./App";
+// Make sure CSS is imported
 import "./index.css";
 
 // Check if we're on a custom domain

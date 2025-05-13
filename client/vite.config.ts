@@ -18,7 +18,7 @@ export default defineConfig({
   server: {
     port: 3000 // Different port than the server
   },
-  base: './', // Use relative paths for assets
+  base: '/', // Use absolute paths for assets to ensure proper loading
   build: {
     outDir: path.resolve(__dirname, "..", "dist", "client"),
     emptyOutDir: true,
