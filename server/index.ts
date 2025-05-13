@@ -7,6 +7,32 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Add CORS headers to allow requests from any origin (including ngrok)
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  // Add Content-Security-Policy header for external resources
+  res.header(
+    'Content-Security-Policy',
+    "default-src 'self' ngrok-free.app *.ngrok-free.app; " +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' replit.com *.replit.com; " +
+    "style-src 'self' 'unsafe-inline' fonts.googleapis.com; " +
+    "font-src 'self' fonts.gstatic.com; " +
+    "img-src 'self' data: https:; " +
+    "connect-src 'self' *.ngrok-free.app ngrok-free.app localhost:*;"
+  );
+  
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  
+  next();
+});
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
