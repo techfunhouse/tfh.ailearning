@@ -73,21 +73,14 @@ export default function Header({ username, isAdmin, onSearch }: HeaderProps) {
             href="https://linkedin.com/in/girivenkatesan"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:flex items-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-          >
-            <span>Created by Giri Venkatesan</span>
-            <SiLinkedin className="h-4 w-4" />
-          </a>
-          
-          {/* Mobile version - just icon */}
-          <a
-            href="https://linkedin.com/in/girivenkatesan"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="sm:hidden flex items-center text-muted-foreground hover:text-primary transition-colors"
+            className="flex items-center hover:opacity-80 transition-opacity"
             title="Created by Giri Venkatesan"
           >
-            <SiLinkedin className="h-4 w-4" />
+            <img 
+              src="/attached_assets/image_1748933531372.png" 
+              alt="By Giri Venkatesan - LinkedIn" 
+              className="h-8 w-auto"
+            />
           </a>
 
           {isLoggedIn && (
