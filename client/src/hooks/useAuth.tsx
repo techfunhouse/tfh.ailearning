@@ -104,24 +104,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         
         navigate('/');
       }
-        // Redirect to home page
-        navigate('/');
-      } catch (error) {
-        console.error('Login error:', error);
-        toast({
-          variant: 'destructive',
-          title: 'Login Failed',
-          description: 'Invalid username or password',
-        });
-      }
+    } catch (error) {
+      console.error('Login error:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Login Failed',
+        description: 'Invalid username or password',
+      });
     } finally {
       setLoading(false);
     }
   };
 
   const logout = () => {
-    // Clear local state
-    localStorage.removeItem('user');
+    const isStatic = isStaticDeployment();
+    
+    if (isStatic) {
+      clearStaticSession();
+    } else {
+      localStorage.removeItem('user');
+    }
+    
     setUser(null);
     
     toast({
