@@ -2533,21 +2533,6 @@
       "loveCount": 0,
       "createdAt": "2025-05-10T14:22:15.426Z",
       "updatedAt": "2025-05-10T14:22:41.398Z"
-    },
-    {
-      "title": "AsyncAPI",
-      "link": "https://the-codegen-project.org/blog/asyncapi-payload-generator/",
-      "description": "AsyncAPI",
-      "category": "programming",
-      "tags": [
-        "design"
-      ],
-      "thumbnail": "https://images.unsplash.com/photo-1590479773265-7464e5d48118",
-      "id": "6adf2137-13ff-4c4b-8436-ef011a3f3d39",
-      "createdBy": "admin",
-      "loveCount": 0,
-      "createdAt": "2025-06-03T15:21:50.557Z",
-      "updatedAt": "2025-06-03T15:21:50.557Z"
     }
   ]
 }

@@ -224,8 +224,15 @@ export async function apiRequest(
       (method === 'POST' || method === 'PUT' || method === 'PATCH' || method === 'DELETE')) {
     console.log(`Mutation operation attempted in static deployment mode: ${method} ${url}`);
     
-    // Throw a user-friendly error for mutations in static mode
-    throw new Error('This is a read-only demonstration. To add, edit, or delete references, please run the application locally or on a server with database access.');
+    // For explicitly handled resources, we could return mock responses
+    if (url.startsWith('/api/')) {
+      const resource = url.replace('/api/', '');
+      
+      // If this is a mutation to one of our core resources, return appropriate response
+      if (resource.startsWith('references') || resource.startsWith('categories') || resource.startsWith('tags')) {
+        console.warn(`Mutation to ${resource} attempted in static mode - operation will fail`);
+      }
+    }
   }
   
   try {
