@@ -95,15 +95,16 @@ jobs:
           exit 1
         fi
         
-        # Copy data files for static deployment
+        # Copy static data files for GitHub Pages
         mkdir -p dist/public/data
-        if [ -d "data" ]; then
-          cp data/*.json dist/public/data/ || echo "No JSON files found in data directory"
+        if [ -d "static-data" ]; then
+          cp static-data/*.json dist/public/data/
+          echo "Copied static data files to deployment"
         else
-          echo "Data directory not found, creating empty data files"
-          echo '{"references":[]}' > dist/public/data/references.json
-          echo '{"categories":[]}' > dist/public/data/categories.json
-          echo '{"tags":[]}' > dist/public/data/tags.json
+          echo "No static data files found, creating empty arrays"
+          echo '[]' > dist/public/data/references.json
+          echo '[]' > dist/public/data/categories.json
+          echo '[]' > dist/public/data/tags.json
         fi
         
     - name: Create static index for GitHub Pages
