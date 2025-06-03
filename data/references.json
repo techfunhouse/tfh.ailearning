@@ -29,7 +29,8 @@
       "description": "Discover effective strategies for implementing GraphQL in production environments.",
       "category": "design",
       "tags": [
-        "ai"
+        "ai",
+        "relational-db"
       ],
       "thumbnail": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80",
       "loveCount": 3,
@@ -40,7 +41,7 @@
       "createdBy": "admin",
       "id": "583abe43-e63c-455a-b83a-94ec9c1aaf91",
       "createdAt": "2025-04-26T11:31:35.588Z",
-      "updatedAt": "2025-04-26T11:31:35.588Z"
+      "updatedAt": "2025-06-03T06:08:48.769Z"
     },
     {
       "title": "Modern Deep Learning Frameworks",

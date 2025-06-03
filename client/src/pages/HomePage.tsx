@@ -275,7 +275,9 @@ export default function HomePage() {
     // Apply category filter if not "all"
     if (selectedCategories.length > 0 && !selectedCategories.includes("all")) {
       result = result.filter((ref) =>
-        selectedCategories.includes(ref.category),
+        selectedCategories.some(selectedCat => 
+          selectedCat.toLowerCase() === ref.category.toLowerCase()
+        ),
       );
     }
 
