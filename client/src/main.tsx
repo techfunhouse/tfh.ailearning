@@ -4,6 +4,24 @@ import App from "./App";
 // Make sure CSS is imported
 import "./index.css";
 
+// Set default environment variables for client if not set
+if (!import.meta.env.VITE_API_URL) {
+  // @ts-ignore
+  import.meta.env.VITE_API_URL = 'http://localhost:5000';
+}
+if (!import.meta.env.VITE_GITHUB_PAGES) {
+  // @ts-ignore
+  import.meta.env.VITE_GITHUB_PAGES = 'false';
+}
+if (!import.meta.env.VITE_BASE_PATH) {
+  // @ts-ignore
+  import.meta.env.VITE_BASE_PATH = '/';
+}
+if (!import.meta.env.VITE_USE_CUSTOM_DOMAIN) {
+  // @ts-ignore
+  import.meta.env.VITE_USE_CUSTOM_DOMAIN = 'false';
+}
+
 // Check if we're on a custom domain
 const isCustomDomain = () => {
   const hostname = window.location.hostname;

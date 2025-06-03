@@ -14,8 +14,16 @@ import { z } from "zod";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load environment variables
+// Load environment variables from .env file if it exists
 dotenv.config();
+
+// Set default environment variables if not already set
+process.env.PORT = process.env.PORT || '5000';
+process.env.SESSION_SECRET = process.env.SESSION_SECRET || 'default-dev-secret-change-in-production';
+process.env.SESSION_MAX_AGE = process.env.SESSION_MAX_AGE || '86400000';
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+process.env.CLIENT_URLS = process.env.CLIENT_URLS || 'http://localhost:3000,http://localhost:5000';
+process.env.DATA_DIR = process.env.DATA_DIR || './data';
 
 // Logger function
 export function log(message: string, source = "express") {
