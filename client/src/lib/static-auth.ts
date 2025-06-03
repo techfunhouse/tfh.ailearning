@@ -9,8 +9,8 @@ interface StaticAuthConfig {
 
 // Get static auth configuration from environment variables
 function getStaticAuthConfig(): StaticAuthConfig | null {
-  const username = import.meta.env?.VITE_ADMIN_USERNAME;
-  const password = import.meta.env?.VITE_ADMIN_PASSWORD;
+  const username = import.meta.env?.VITE_STATIC_USERNAME;
+  const password = import.meta.env?.VITE_STATIC_PASSWORD;
   
   if (!username || !password) {
     return null;
