@@ -172,11 +172,23 @@ async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
     const text = (await res.text()) || res.statusText;
     // Special handling for static deployments
-    if (isStaticDeployment() && (res.status === 404 || res.status === 405)) {
+    if (isStaticDeployment() && res.status === 404) {
       if (res.url.includes('create') || res.url.includes('update') || res.url.includes('delete')) {
         throw new Error(`This feature is not available in read-only mode. Data modifications are disabled in the static deployment.`);
       }
+      
+      // Handle missing data files in static deployment
+      if (res.url.includes('/data/')) {
+        const filename = res.url.split('/').pop();
+        console.log(`Resource not found in static deployment: ${res.url}`);
+        throw new Error(`Failed to load data file: ${filename}. Make sure the file exists in the deployment.`);
+      }
     }
+    
+    if (isStaticDeployment() && res.status === 405) {
+      throw new Error(`This feature is not available in read-only mode. Data modifications are disabled in the static deployment.`);
+    }
+    
     throw new Error(`${res.status}: ${text}`);
   }
 }

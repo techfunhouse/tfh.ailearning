@@ -42,6 +42,42 @@ jobs:
         echo 'VITE_GITHUB_PAGES=true' > .env.production
         echo 'VITE_API_BASE_URL=' >> .env.production
         
+    - name: Generate static data files
+      run: |
+        # Create static-friendly data files with current data
+        mkdir -p static-data
+        
+        # Extract arrays from data files for static deployment
+        if [ -f "data/references.json" ]; then
+          node -e "
+            const fs = require('fs');
+            const data = JSON.parse(fs.readFileSync('data/references.json', 'utf8'));
+            fs.writeFileSync('static-data/references.json', JSON.stringify(data.references || [], null, 2));
+          "
+        else
+          echo '[]' > static-data/references.json
+        fi
+        
+        if [ -f "data/categories.json" ]; then
+          node -e "
+            const fs = require('fs');
+            const data = JSON.parse(fs.readFileSync('data/categories.json', 'utf8'));
+            fs.writeFileSync('static-data/categories.json', JSON.stringify(data.categories || [], null, 2));
+          "
+        else
+          echo '[]' > static-data/categories.json
+        fi
+        
+        if [ -f "data/tags.json" ]; then
+          node -e "
+            const fs = require('fs');
+            const data = JSON.parse(fs.readFileSync('data/tags.json', 'utf8'));
+            fs.writeFileSync('static-data/tags.json', JSON.stringify(data.tags || [], null, 2));
+          "
+        else
+          echo '[]' > static-data/tags.json
+        fi
+        
     - name: Build client application
       run: |
         cd client
@@ -57,6 +93,17 @@ jobs:
         else
           echo "Client build failed - no dist directory found"
           exit 1
+        fi
+        
+        # Copy data files for static deployment
+        mkdir -p dist/public/data
+        if [ -d "data" ]; then
+          cp data/*.json dist/public/data/ || echo "No JSON files found in data directory"
+        else
+          echo "Data directory not found, creating empty data files"
+          echo '{"references":[]}' > dist/public/data/references.json
+          echo '{"categories":[]}' > dist/public/data/categories.json
+          echo '{"tags":[]}' > dist/public/data/tags.json
         fi
         
     - name: Create static index for GitHub Pages

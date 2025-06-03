@@ -1,0 +1,178 @@
+index-DNOu4r8t.js:48 
+            
+            
+           GET https://aireferencehub.techfunhouse.com/data/references.json 404 (Not Found)
+(anonymous) @ index-DNOu4r8t.js:48
+o @ index-DNOu4r8t.js:48
+b @ index-DNOu4r8t.js:48
+start @ index-DNOu4r8t.js:48
+fetch @ index-DNOu4r8t.js:48
+qi @ index-DNOu4r8t.js:48
+onSubscribe @ index-DNOu4r8t.js:48
+subscribe @ index-DNOu4r8t.js:48
+(anonymous) @ index-DNOu4r8t.js:48
+bw @ index-DNOu4r8t.js:38
+cu @ index-DNOu4r8t.js:40
+zo @ index-DNOu4r8t.js:40
+zg @ index-DNOu4r8t.js:40
+Cs @ index-DNOu4r8t.js:38
+AN @ index-DNOu4r8t.js:40
+Rs @ index-DNOu4r8t.js:40
+Jw @ index-DNOu4r8t.js:40
+E @ index-DNOu4r8t.js:25
+O @ index-DNOu4r8t.js:25
+index-DNOu4r8t.js:48 Resource not found in static deployment: /data/references.json
+(anonymous) @ index-DNOu4r8t.js:48
+await in (anonymous)
+o @ index-DNOu4r8t.js:48
+b @ index-DNOu4r8t.js:48
+start @ index-DNOu4r8t.js:48
+fetch @ index-DNOu4r8t.js:48
+qi @ index-DNOu4r8t.js:48
+onSubscribe @ index-DNOu4r8t.js:48
+subscribe @ index-DNOu4r8t.js:48
+(anonymous) @ index-DNOu4r8t.js:48
+bw @ index-DNOu4r8t.js:38
+cu @ index-DNOu4r8t.js:40
+zo @ index-DNOu4r8t.js:40
+zg @ index-DNOu4r8t.js:40
+Cs @ index-DNOu4r8t.js:38
+AN @ index-DNOu4r8t.js:40
+Rs @ index-DNOu4r8t.js:40
+Jw @ index-DNOu4r8t.js:40
+E @ index-DNOu4r8t.js:25
+O @ index-DNOu4r8t.js:25
+index-DNOu4r8t.js:48 Error in static deployment query: Error: Failed to load data file: references.json. Make sure the file exists in the deployment.
+    at index-DNOu4r8t.js:48:46201
+(anonymous) @ index-DNOu4r8t.js:48
+await in (anonymous)
+o @ index-DNOu4r8t.js:48
+b @ index-DNOu4r8t.js:48
+start @ index-DNOu4r8t.js:48
+fetch @ index-DNOu4r8t.js:48
+qi @ index-DNOu4r8t.js:48
+onSubscribe @ index-DNOu4r8t.js:48
+subscribe @ index-DNOu4r8t.js:48
+(anonymous) @ index-DNOu4r8t.js:48
+bw @ index-DNOu4r8t.js:38
+cu @ index-DNOu4r8t.js:40
+zo @ index-DNOu4r8t.js:40
+zg @ index-DNOu4r8t.js:40
+Cs @ index-DNOu4r8t.js:38
+AN @ index-DNOu4r8t.js:40
+Rs @ index-DNOu4r8t.js:40
+Jw @ index-DNOu4r8t.js:40
+E @ index-DNOu4r8t.js:25
+O @ index-DNOu4r8t.js:25
+index-DNOu4r8t.js:48 
+            
+            
+           GET https://aireferencehub.techfunhouse.com/data/categories.json 404 (Not Found)
+(anonymous) @ index-DNOu4r8t.js:48
+o @ index-DNOu4r8t.js:48
+b @ index-DNOu4r8t.js:48
+start @ index-DNOu4r8t.js:48
+fetch @ index-DNOu4r8t.js:48
+qi @ index-DNOu4r8t.js:48
+onSubscribe @ index-DNOu4r8t.js:48
+subscribe @ index-DNOu4r8t.js:48
+(anonymous) @ index-DNOu4r8t.js:48
+bw @ index-DNOu4r8t.js:38
+cu @ index-DNOu4r8t.js:40
+zo @ index-DNOu4r8t.js:40
+zg @ index-DNOu4r8t.js:40
+Cs @ index-DNOu4r8t.js:38
+AN @ index-DNOu4r8t.js:40
+Rs @ index-DNOu4r8t.js:40
+Jw @ index-DNOu4r8t.js:40
+E @ index-DNOu4r8t.js:25
+O @ index-DNOu4r8t.js:25
+index-DNOu4r8t.js:48 Resource not found in static deployment: /data/categories.json
+(anonymous) @ index-DNOu4r8t.js:48
+await in (anonymous)
+o @ index-DNOu4r8t.js:48
+b @ index-DNOu4r8t.js:48
+start @ index-DNOu4r8t.js:48
+fetch @ index-DNOu4r8t.js:48
+qi @ index-DNOu4r8t.js:48
+onSubscribe @ index-DNOu4r8t.js:48
+subscribe @ index-DNOu4r8t.js:48
+(anonymous) @ index-DNOu4r8t.js:48
+bw @ index-DNOu4r8t.js:38
+cu @ index-DNOu4r8t.js:40
+zo @ index-DNOu4r8t.js:40
+zg @ index-DNOu4r8t.js:40
+Cs @ index-DNOu4r8t.js:38
+AN @ index-DNOu4r8t.js:40
+Rs @ index-DNOu4r8t.js:40
+Jw @ index-DNOu4r8t.js:40
+E @ index-DNOu4r8t.js:25
+O @ index-DNOu4r8t.js:25
+index-DNOu4r8t.js:48 Error in static deployment query: Error: Failed to load data file: categories.json. Make sure the file exists in the deployment.
+    at index-DNOu4r8t.js:48:46201
+(anonymous) @ index-DNOu4r8t.js:48
+await in (anonymous)
+o @ index-DNOu4r8t.js:48
+b @ index-DNOu4r8t.js:48
+start @ index-DNOu4r8t.js:48
+fetch @ index-DNOu4r8t.js:48
+qi @ index-DNOu4r8t.js:48
+onSubscribe @ index-DNOu4r8t.js:48
+subscribe @ index-DNOu4r8t.js:48
+(anonymous) @ index-DNOu4r8t.js:48
+bw @ index-DNOu4r8t.js:38
+cu @ index-DNOu4r8t.js:40
+zo @ index-DNOu4r8t.js:40
+zg @ index-DNOu4r8t.js:40
+Cs @ index-DNOu4r8t.js:38
+AN @ index-DNOu4r8t.js:40
+Rs @ index-DNOu4r8t.js:40
+Jw @ index-DNOu4r8t.js:40
+E @ index-DNOu4r8t.js:25
+O @ index-DNOu4r8t.js:25
+index-DNOu4r8t.js:48 
+            
+            
+           GET https://aireferencehub.techfunhouse.com/data/tags.json 404 (Not Found)
+(anonymous) @ index-DNOu4r8t.js:48
+o @ index-DNOu4r8t.js:48
+b @ index-DNOu4r8t.js:48
+start @ index-DNOu4r8t.js:48
+fetch @ index-DNOu4r8t.js:48
+qi @ index-DNOu4r8t.js:48
+onSubscribe @ index-DNOu4r8t.js:48
+subscribe @ index-DNOu4r8t.js:48
+(anonymous) @ index-DNOu4r8t.js:48
+bw @ index-DNOu4r8t.js:38
+cu @ index-DNOu4r8t.js:40
+zo @ index-DNOu4r8t.js:40
+zg @ index-DNOu4r8t.js:40
+Cs @ index-DNOu4r8t.js:38
+AN @ index-DNOu4r8t.js:40
+Rs @ index-DNOu4r8t.js:40
+Jw @ index-DNOu4r8t.js:40
+E @ index-DNOu4r8t.js:25
+O @ index-DNOu4r8t.js:25
+index-DNOu4r8t.js:48 Resource not found in static deployment: /data/tags.json
+(anonymous) @ index-DNOu4r8t.js:48
+await in (anonymous)
+o @ index-DNOu4r8t.js:48
+b @ index-DNOu4r8t.js:48
+start @ index-DNOu4r8t.js:48
+fetch @ index-DNOu4r8t.js:48
+qi @ index-DNOu4r8t.js:48
+onSubscribe @ index-DNOu4r8t.js:48
+subscribe @ index-DNOu4r8t.js:48
+(anonymous) @ index-DNOu4r8t.js:48
+bw @ index-DNOu4r8t.js:38
+cu @ index-DNOu4r8t.js:40
+zo @ index-DNOu4r8t.js:40
+zg @ index-DNOu4r8t.js:40
+Cs @ index-DNOu4r8t.js:38
+AN @ index-DNOu4r8t.js:40
+Rs @ index-DNOu4r8t.js:40
+Jw @ index-DNOu4r8t.js:40
+E @ index-DNOu4r8t.js:25
+O @ index-DNOu4r8t.js:25
+index-DNOu4r8t.js:48 Error in static deployment query: Error: Failed to load data file: tags.json. Make sure the file exists in the deployment.
+    at index-DNOu4r8t.js:48:46201
