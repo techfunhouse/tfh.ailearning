@@ -629,11 +629,11 @@ export default function Sidebar({
                     <Badge 
                       key={tag.id} 
                       variant={selectedTags.includes(tag.name) ? "default" : "outline"}
-                      className={`cursor-pointer ${selectedTags.includes(tag.name) ? '' : 'hover:bg-muted'}`}
+                      className={`cursor-pointer ${selectedTags.includes(tag.name) ? 'text-white' : 'hover:bg-muted'}`}
                       style={{
                         backgroundColor: selectedTags.includes(tag.name) ? getTagColor(tag.name) : 'transparent',
                         borderColor: getTagColor(tag.name),
-                        color: selectedTags.includes(tag.name) ? 'white' : getTagColor(tag.name),
+                        color: selectedTags.includes(tag.name) ? 'white' : 'hsl(var(--foreground))',
                       }}
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent event bubbling
