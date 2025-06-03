@@ -65,6 +65,8 @@ interface SidebarProps {
   isAdmin: boolean;
   onCategoryChange: (categories: string[]) => void;
   onTagSelect: (tag: string) => void;
+  isCollapsed?: boolean;
+  onToggleCollapsed?: () => void;
 }
 
 export default function Sidebar({
@@ -75,6 +77,8 @@ export default function Sidebar({
   isAdmin,
   onCategoryChange,
   onTagSelect,
+  isCollapsed = false,
+  onToggleCollapsed,
 }: SidebarProps) {
   const { toast } = useToast();
   const [categoriesOpen, setCategoriesOpen] = useState(true);
@@ -430,19 +434,19 @@ export default function Sidebar({
 
   return (
     <>
-      <aside className="bg-card shadow-sm lg:w-72 lg:flex-shrink-0 border-r border-border/50">
+      <aside className={`bg-card shadow-sm lg:flex-shrink-0 border-r border-border/50 transition-all duration-300 ${isCollapsed ? 'lg:w-16' : 'lg:w-72'}`}>
         <ScrollArea className="h-[calc(100vh-4rem)]">
-          <div className="px-4 py-6">
-            <div className="flex items-center justify-between mb-6">
+          <div className={`px-4 py-6 ${isCollapsed ? 'px-2' : ''}`}>
+            <div className={`flex items-center justify-between mb-6 ${isCollapsed ? 'justify-center' : ''}`}>
               <div className="flex items-center">
                 <Filter className="h-5 w-5 text-primary mr-2" />
-                <h2 className="text-lg font-medium">Filters</h2>
+                {!isCollapsed && <h2 className="text-lg font-medium">Filters</h2>}
               </div>
             </div>
 
             {/* Clear all filters button */}
-            {(selectedCategories.length > 0 && !selectedCategories.includes('all')) || 
-             selectedTags.length > 0 ? (
+            {!isCollapsed && ((selectedCategories.length > 0 && !selectedCategories.includes('all')) || 
+             selectedTags.length > 0) ? (
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -459,34 +463,47 @@ export default function Sidebar({
             ) : null}
             
             {/* Category Filters */}
-            <Collapsible open={categoriesOpen} onOpenChange={setCategoriesOpen} className="mb-4">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center">
-                  <CollapsibleTrigger asChild>
-                    <Button variant="ghost" size="sm" className="p-0 hover:bg-transparent">
-                      {categoriesOpen ? (
-                        <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                      ) : (
-                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                      )}
-                    </Button>
-                  </CollapsibleTrigger>
-                  <div className="flex items-center">
-                    <Book className="h-4 w-4 text-primary mr-1.5" />
-                    <h3 className="text-sm font-medium">Categories</h3>
-                  </div>
-                </div>
-                
+            {isCollapsed ? (
+              <div className="mb-4 flex justify-center">
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="h-7 w-7 p-0" 
-                  onClick={() => setIsAddCategoryOpen(true)}
-                  title="Add New Category"
+                  className="h-8 w-8 p-0" 
+                  title="Categories"
+                  onClick={() => setIsSidebarCollapsed && setIsSidebarCollapsed(false)}
                 >
-                  <PlusCircle className="h-4 w-4 text-muted-foreground hover:text-primary" />
+                  <Book className="h-4 w-4 text-primary" />
                 </Button>
               </div>
+            ) : (
+              <Collapsible open={categoriesOpen} onOpenChange={setCategoriesOpen} className="mb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center">
+                    <CollapsibleTrigger asChild>
+                      <Button variant="ghost" size="sm" className="p-0 hover:bg-transparent">
+                        {categoriesOpen ? (
+                          <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                        )}
+                      </Button>
+                    </CollapsibleTrigger>
+                    <div className="flex items-center">
+                      <Book className="h-4 w-4 text-primary mr-1.5" />
+                      <h3 className="text-sm font-medium">Categories</h3>
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-7 w-7 p-0" 
+                    onClick={() => setIsAddCategoryOpen(true)}
+                    title="Add New Category"
+                  >
+                    <PlusCircle className="h-4 w-4 text-muted-foreground hover:text-primary" />
+                  </Button>
+                </div>
 
               <CollapsibleContent className="space-y-1 ml-6">
                 <div className="flex items-center px-2 py-1.5 rounded-md hover:bg-muted/50">
@@ -552,37 +569,51 @@ export default function Sidebar({
                   </div>
                 ))}
               </CollapsibleContent>
-            </Collapsible>
+              </Collapsible>
+            )}
             
             {/* Tags Filter */}
-            <Collapsible open={tagsOpen} onOpenChange={setTagsOpen} className="mb-4">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center">
-                  <CollapsibleTrigger asChild>
-                    <Button variant="ghost" size="sm" className="p-0 hover:bg-transparent">
-                      {tagsOpen ? (
-                        <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                      ) : (
-                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                      )}
-                    </Button>
-                  </CollapsibleTrigger>
-                  <div className="flex items-center">
-                    <TagIcon className="h-4 w-4 text-primary mr-1.5" />
-                    <h3 className="text-sm font-medium">Tags</h3>
-                  </div>
-                </div>
-                
+            {isCollapsed ? (
+              <div className="mb-4 flex justify-center">
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="h-7 w-7 p-0" 
-                  onClick={() => setIsAddTagOpen(true)}
-                  title="Add New Tag"
+                  className="h-8 w-8 p-0" 
+                  title="Tags"
+                  onClick={() => onToggleCollapsed && onToggleCollapsed()}
                 >
-                  <PlusCircle className="h-4 w-4 text-muted-foreground hover:text-primary" />
+                  <TagIcon className="h-4 w-4 text-primary" />
                 </Button>
               </div>
+            ) : (
+              <Collapsible open={tagsOpen} onOpenChange={setTagsOpen} className="mb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center">
+                    <CollapsibleTrigger asChild>
+                      <Button variant="ghost" size="sm" className="p-0 hover:bg-transparent">
+                        {tagsOpen ? (
+                          <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                        )}
+                      </Button>
+                    </CollapsibleTrigger>
+                    <div className="flex items-center">
+                      <TagIcon className="h-4 w-4 text-primary mr-1.5" />
+                      <h3 className="text-sm font-medium">Tags</h3>
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-7 w-7 p-0" 
+                    onClick={() => setIsAddTagOpen(true)}
+                    title="Add New Tag"
+                  >
+                    <PlusCircle className="h-4 w-4 text-muted-foreground hover:text-primary" />
+                  </Button>
+                </div>
               
               <CollapsibleContent className="ml-6">
                 <div className="mb-2">

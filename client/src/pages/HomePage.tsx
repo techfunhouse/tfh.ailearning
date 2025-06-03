@@ -58,6 +58,7 @@ export default function HomePage() {
     null,
   );
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isGitHubSyncDialogOpen, setIsGitHubSyncDialogOpen] = useState(false);
   const [syncResult, setSyncResult] = useState<any>(null);
   const [isSyncing, setIsSyncing] = useState(false);
@@ -428,16 +429,30 @@ export default function HomePage() {
 
       <div className="flex-1 flex flex-col lg:flex-row">
         {/* Desktop sidebar */}
-        <div className="hidden lg:block">
-          <Sidebar
-            categories={categories}
-            tags={tags}
-            selectedCategories={selectedCategories}
-            selectedTags={selectedTags}
-            isAdmin={isAdmin}
-            onCategoryChange={handleCategoryChange}
-            onTagSelect={handleTagSelect}
-          />
+        <div className={`hidden lg:block transition-all duration-300 ${isSidebarCollapsed ? 'w-16' : 'w-80'}`}>
+          <div className="relative h-full">
+            {/* Collapse toggle button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+              className="absolute top-4 -right-3 z-10 bg-background border rounded-full shadow-sm hover:shadow-md"
+            >
+              {isSidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+            </Button>
+            
+            <Sidebar
+              categories={categories}
+              tags={tags}
+              selectedCategories={selectedCategories}
+              selectedTags={selectedTags}
+              isAdmin={isAdmin}
+              onCategoryChange={handleCategoryChange}
+              onTagSelect={handleTagSelect}
+              isCollapsed={isSidebarCollapsed}
+              onToggleCollapsed={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+            />
+          </div>
         </div>
 
         {/* Mobile sidebar toggle and filters summary */}
