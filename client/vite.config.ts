@@ -18,9 +18,15 @@ export default defineConfig({
   server: {
     port: 3000 // Different port than the server
   },
-  base: '/', // Use absolute paths for assets to ensure proper loading
+  base: './', // Use relative paths for GitHub Pages
   build: {
-    outDir: path.resolve(__dirname, "..", "dist", "client"),
+    outDir: 'dist',
     emptyOutDir: true,
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
   },
 });
