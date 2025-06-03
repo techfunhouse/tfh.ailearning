@@ -261,12 +261,28 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    // Adjust URL for static deployment if needed
-    const url = getAdjustedUrl(queryKey[0] as string);
+    const originalUrl = queryKey[0] as string;
     const isStaticMode = isStaticDeployment();
     
-    // Log the query request
-    console.log(`Query request to: ${url}`, isStaticMode ? '(Static deployment mode)' : '');
+    // Handle static deployment data loading
+    if (isStaticMode) {
+      console.log(`Static query request for: ${originalUrl}`);
+      
+      if (originalUrl === '/api/references') {
+        return StaticDataLoader.loadReferences() as Promise<T>;
+      } else if (originalUrl === '/api/categories') {
+        return StaticDataLoader.loadCategories() as Promise<T>;
+      } else if (originalUrl === '/api/tags') {
+        return StaticDataLoader.loadTags() as Promise<T>;
+      }
+      
+      // For other endpoints in static mode, return appropriate response
+      throw new Error(`Static deployment: endpoint ${originalUrl} not supported`);
+    }
+    
+    // Regular API request for development mode
+    const url = getAdjustedUrl(originalUrl);
+    console.log(`Query request to: ${url}`, "");
     
     try {
       const res = await fetch(url, {
