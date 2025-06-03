@@ -41,8 +41,8 @@ jobs:
         cd client
         echo 'VITE_GITHUB_PAGES=true' > .env.production
         echo 'VITE_API_BASE_URL=' >> .env.production
-        echo 'VITE_ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}' >> .env.production
-        echo 'VITE_ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}' >> .env.production
+        echo 'VITE_STATIC_USERNAME=${{ secrets.VITE_STATIC_USERNAME }}' >> .env.production
+        echo 'VITE_STATIC_PASSWORD=${{ secrets.VITE_STATIC_PASSWORD }}' >> .env.production
         
     - name: Generate static data files
       run: |
@@ -86,6 +86,9 @@ jobs:
         npx vite build --mode production --base='./'
       env:
         NODE_ENV: production
+        VITE_GITHUB_PAGES: true
+        VITE_STATIC_USERNAME: ${{ secrets.VITE_STATIC_USERNAME }}
+        VITE_STATIC_PASSWORD: ${{ secrets.VITE_STATIC_PASSWORD }}
         
     - name: Prepare GitHub Pages deployment
       run: |
@@ -112,9 +115,21 @@ jobs:
     - name: Create static index for GitHub Pages
       run: |
         cd dist/public
-        if [ ! -f "index.html" ] || [ "$(wc -l < index.html)" -lt 10 ]; then
-          echo "Creating fallback static index.html"
+        # Add GitHub Pages detection meta tag to the built index.html
+        if [ -f "index.html" ]; then
+          # Add GitHub Pages meta tag if not already present
+          if ! grep -q "github-pages-deployment" index.html; then
+            sed -i 's/<head>/<head>\n    <meta name="github-pages-deployment" content="true" \/>/' index.html
+          fi
+          echo "Updated index.html with GitHub Pages detection"
+          
+          # Create 404.html for proper SPA routing on GitHub Pages
+          cp index.html 404.html
+          echo "Created 404.html for SPA routing"
+        else
+          echo "No index.html found, using static fallback"
           cp ../../client/index-static.html index.html
+          cp index.html 404.html
         fi
         
     - name: Verify build output

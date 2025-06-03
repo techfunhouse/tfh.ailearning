@@ -1,4 +1,5 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { StaticDataLoader } from './static-data';
 
 // This helper determines if we're running on GitHub Pages or as a static deployment
 export function isStaticDeployment(): boolean {
@@ -25,6 +26,13 @@ export function isStaticDeployment(): boolean {
   // Check if we're on GitHub Pages domain
   if (window.location.hostname.includes('github.io')) {
     console.log('Detected GitHub Pages domain');
+    return true;
+  }
+  
+  // Check for GitHub Pages deployment meta tag
+  const githubPagesMeta = document.querySelector('meta[name="github-pages-deployment"]');
+  if (githubPagesMeta) {
+    console.log('Detected GitHub Pages deployment meta tag');
     return true;
   }
   
