@@ -36,17 +36,36 @@ jobs:
         cd client
         npm ci
         
-    - name: Build client for production
+    - name: Create production environment file
       run: |
         cd client
-        npx vite build --mode production
+        echo 'VITE_GITHUB_PAGES=true' > .env.production
+        echo 'VITE_API_BASE_URL=' >> .env.production
+        
+    - name: Build client application
+      run: |
+        cd client
+        npx vite build --mode production --base='./'
       env:
         NODE_ENV: production
         
-    - name: Copy build output
+    - name: Prepare GitHub Pages deployment
       run: |
         mkdir -p dist/public
-        cp -r client/dist/* dist/public/
+        if [ -d "client/dist" ]; then
+          cp -r client/dist/* dist/public/
+        else
+          echo "Client build failed - no dist directory found"
+          exit 1
+        fi
+        
+    - name: Create static index for GitHub Pages
+      run: |
+        cd dist/public
+        if [ ! -f "index.html" ] || [ "$(wc -l < index.html)" -lt 10 ]; then
+          echo "Creating fallback static index.html"
+          cp ../../client/index-static.html index.html
+        fi
         
     - name: Verify build output
       run: |
