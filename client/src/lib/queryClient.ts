@@ -1,7 +1,7 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
 // This helper determines if we're running on GitHub Pages or as a static deployment
-function isStaticDeployment(): boolean {
+export function isStaticDeployment(): boolean {
   // If we're in development mode, check for forced static mode for testing
   if (import.meta.env.DEV) {
     // Use localStorage to allow toggling static mode for testing

@@ -3,7 +3,14 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { useLocation } from 'wouter';
 import { User, LoginCredentials } from '@/types';
 import { useToast } from '@/hooks/use-toast';
-import { apiRequest } from '@/lib/queryClient';
+import { apiRequest, isStaticDeployment } from '@/lib/queryClient';
+import { 
+  validateStaticCredentials, 
+  hasStaticAuthConfig, 
+  createStaticSession, 
+  getStaticSession, 
+  clearStaticSession 
+} from '@/lib/static-auth';
 
 interface AuthContextType {
   user: User | null;
@@ -33,16 +40,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [, navigate] = useLocation();
   const { toast } = useToast();
 
-  // Check if user is already logged in from localStorage
+  // Check if user is already logged in
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
-      } catch (error) {
-        console.error('Failed to parse user from localStorage:', error);
-        localStorage.removeItem('user');
+    const isStatic = isStaticDeployment();
+    
+    if (isStatic) {
+      // Check for static session
+      const staticUser = getStaticSession();
+      if (staticUser) {
+        setUser(staticUser);
+      }
+    } else {
+      // Check localStorage for development mode
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          setUser(parsedUser);
+        } catch (error) {
+          console.error('Failed to parse user from localStorage:', error);
+          localStorage.removeItem('user');
+        }
       }
     }
     setLoading(false);
@@ -51,12 +69,31 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = async (credentials: LoginCredentials) => {
     try {
       setLoading(true);
-      // In a real app, we would make an API call here
-      try {
+      
+      const isStatic = isStaticDeployment();
+      
+      if (isStatic) {
+        // Use static authentication for GitHub Pages
+        const staticUser = validateStaticCredentials(credentials.username, credentials.password);
+        
+        if (staticUser) {
+          createStaticSession(staticUser);
+          setUser(staticUser);
+          
+          toast({
+            title: 'Success',
+            description: 'Login successful!',
+          });
+          
+          navigate('/');
+        } else {
+          throw new Error('Invalid credentials');
+        }
+      } else {
+        // Use API authentication for development
         const response = await apiRequest('POST', '/api/login', credentials);
         const data = await response.json();
         
-        // Store user data in localStorage and state
         localStorage.setItem('user', JSON.stringify(data.user));
         setUser(data.user);
         
@@ -65,6 +102,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           description: 'Login successful!',
         });
         
+        navigate('/');
+      }
         // Redirect to home page
         navigate('/');
       } catch (error) {
