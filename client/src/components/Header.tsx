@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/useAuth';
 import { Badge } from '@/components/ui/badge';
 import { Search, BookOpen, LogOut, User as UserIcon, LogIn } from 'lucide-react';
+import { SiLinkedin } from 'react-icons/si';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -66,7 +67,29 @@ export default function Header({ username, isAdmin, onSearch }: HeaderProps) {
           </div>
         </div>
         
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-4">
+          {/* Created by section */}
+          <a
+            href="https://linkedin.com/in/girivenkatesan"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:flex items-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+          >
+            <span>Created by Giri Venkatesan</span>
+            <SiLinkedin className="h-4 w-4" />
+          </a>
+          
+          {/* Mobile version - just icon */}
+          <a
+            href="https://linkedin.com/in/girivenkatesan"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="sm:hidden flex items-center text-muted-foreground hover:text-primary transition-colors"
+            title="Created by Giri Venkatesan"
+          >
+            <SiLinkedin className="h-4 w-4" />
+          </a>
+
           {isLoggedIn && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
