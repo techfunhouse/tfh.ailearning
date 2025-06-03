@@ -128,71 +128,87 @@ export default function AddEditReferenceDialog({
   }, [reference, form]);
 
   // Function to set appropriate default thumbnail based on category
-  const setDefaultThumbnail = (category: string) => {
-    const categoryThumbnails = {
+  const setDefaultThumbnail = (selectedCategory?: string) => {
+    const categoryThumbnails: Record<string, string> = {
       'Programming': 'https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80',
       'Design': 'https://images.unsplash.com/photo-1516031190212-da133013de50?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80',
       'Research': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80',
       'Tools': 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80',
     };
     
-    const currentCategory = form.getValues('category');
+    const currentCategory = selectedCategory || form.getValues('category');
     const thumbnailUrl = categoryThumbnails[currentCategory] || DEFAULT_THUMBNAIL;
     form.setValue("thumbnail", thumbnailUrl);
     setThumbnailFetched(true);
   };
 
   // Function to fetch thumbnail from microlink.io with proper error handling
-  const fetchThumbnailFromUrl = async (url: string) => {
+  const fetchThumbnailFromUrl = (url: string) => {
     if (!url || url.trim() === "") return;
 
-    try {
-      setIsFetchingThumbnail(true);
-      setThumbnailError(false);
+    // Wrap the async operation to prevent unhandled promise rejections
+    const performFetch = async () => {
+      try {
+        setIsFetchingThumbnail(true);
+        setThumbnailError(false);
 
-      // Try microlink.io API for thumbnail generation
-      const response = await fetch(
-        `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true`,
-        {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-          },
+        // Try microlink.io API for thumbnail generation
+        const response = await fetch(
+          `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true`,
+          {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`API responded with status: ${response.status}`);
         }
-      );
 
-      if (!response.ok) {
-        throw new Error(`API responded with status: ${response.status}`);
-      }
+        const data = await response.json();
 
-      const data = await response.json();
-
-      if (data.status === "success" && data.data?.screenshot?.url) {
-        form.setValue("thumbnail", data.data.screenshot.url);
-        setThumbnailFetched(true);
+        if (data.status === "success" && data.data?.screenshot?.url) {
+          form.setValue("thumbnail", data.data.screenshot.url);
+          setThumbnailFetched(true);
+          toast({
+            title: "Thumbnail generated",
+            description: "A thumbnail image has been automatically generated.",
+            duration: 3000,
+          });
+        } else {
+          throw new Error("Failed to generate thumbnail from API");
+        }
+      } catch (error) {
+        console.error("Error fetching thumbnail:", error);
+        setThumbnailError(true);
+        
+        // Use category-based default thumbnail instead
+        setDefaultThumbnail(form.getValues('category'));
+        
         toast({
-          title: "Thumbnail generated",
-          description: "A thumbnail image has been automatically generated.",
+          title: "Using default thumbnail",
+          description: "Automatic thumbnail generation is not available. Using category-based default.",
           duration: 3000,
         });
-      } else {
-        throw new Error("Failed to generate thumbnail from API");
+      } finally {
+        setIsFetchingThumbnail(false);
       }
-    } catch (error) {
-      console.error("Error fetching thumbnail:", error);
+    };
+
+    // Execute the async operation and catch any unhandled rejections
+    performFetch().catch((error) => {
+      console.error("Unhandled error in thumbnail fetch:", error);
       setThumbnailError(true);
-      
-      // Use category-based default thumbnail instead
       setDefaultThumbnail(form.getValues('category'));
-      
+      setIsFetchingThumbnail(false);
       toast({
         title: "Using default thumbnail",
-        description: "Automatic thumbnail generation is not available. Using category-based default.",
+        description: "Thumbnail generation failed. Using category-based default.",
         duration: 3000,
       });
-    } finally {
-      setIsFetchingThumbnail(false);
-    }
+    });
   };
 
   // Create mutation for adding a reference
