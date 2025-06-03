@@ -470,7 +470,7 @@ export default function Sidebar({
                   size="sm" 
                   className="h-8 w-8 p-0" 
                   title="Categories"
-                  onClick={() => setIsSidebarCollapsed && setIsSidebarCollapsed(false)}
+                  onClick={() => onToggleCollapsed && onToggleCollapsed()}
                 >
                   <Book className="h-4 w-4 text-primary" />
                 </Button>
@@ -675,10 +675,11 @@ export default function Sidebar({
                   )}
                 </div>
               </CollapsibleContent>
-            </Collapsible>
+              </Collapsible>
+            )}
             
             {/* GitHub sync button for admin users */}
-            {isAdmin && (
+            {!isCollapsed && isAdmin && (
               <>
                 <Separator className="my-4" />
                 <Button 
@@ -697,8 +698,9 @@ export default function Sidebar({
             )}
           </div>
         </ScrollArea>
+      </aside>
         
-        {/* Add Category Dialog */}
+      {/* Add Category Dialog */}
         <Dialog open={isAddCategoryOpen} onOpenChange={setIsAddCategoryOpen}>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
@@ -936,7 +938,6 @@ export default function Sidebar({
             </div>
           </DialogContent>
         </Dialog>
-      </aside>
       
       {/* Category delete confirmation dialog */}
       <ConfirmationDialog
