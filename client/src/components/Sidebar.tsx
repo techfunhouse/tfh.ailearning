@@ -432,6 +432,43 @@ export default function Sidebar({
     }
   };
 
+  // Handle dataset download
+  const handleDownloadDataset = async () => {
+    try {
+      const response = await fetch('/api/download-dataset', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to download dataset');
+      }
+
+      // Get the blob and create download link
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'refhub-dataset.zip';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      toast({
+        title: "Dataset Downloaded",
+        description: "The dataset has been successfully downloaded as a zip file.",
+      });
+    } catch (error) {
+      console.error('Download error:', error);
+      toast({
+        title: "Download Failed",
+        description: "Failed to download the dataset. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <>
       <aside className={`bg-card shadow-sm lg:flex-shrink-0 border-r border-border/50 transition-all duration-300 ${isCollapsed ? 'lg:w-16' : 'lg:w-72'}`}>
@@ -678,7 +715,7 @@ export default function Sidebar({
               </Collapsible>
             )}
             
-            {/* GitHub sync button for admin users */}
+            {/* Download dataset button for admin users */}
             {!isCollapsed && isAdmin && (
               <>
                 <Separator className="my-4" />
@@ -686,13 +723,10 @@ export default function Sidebar({
                   variant="outline" 
                   size="sm" 
                   className="w-full" 
-                  onClick={() => {
-                    setIsGitHubSyncDialogOpen(true);
-                    checkGitHubConfig();
-                  }}
+                  onClick={handleDownloadDataset}
                 >
                   <Save className="h-4 w-4 mr-2" />
-                  GitHub Sync
+                  Download Dataset
                 </Button>
               </>
             )}

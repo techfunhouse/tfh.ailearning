@@ -6,6 +6,9 @@ import { z } from "zod";
 import session from "express-session";
 import createMemoryStore from "memorystore";
 import { syncWithGitHub, validateGitHubConfig } from './services/github-sync';
+import archiver from "archiver";
+import path from "path";
+import fs from "fs";
 
 // Create memory store for sessions
 const MemoryStore = createMemoryStore(session);
@@ -412,6 +415,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: "Failed to sync with GitHub", 
         error: error instanceof Error ? error.message : String(error)
       });
+    }
+  });
+
+  // Download dataset endpoint
+  app.get("/api/download-dataset", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const dataDir = process.env.DATA_DIR || './data';
+      
+      // Check if data directory exists
+      if (!fs.existsSync(dataDir)) {
+        return res.status(404).json({ message: "Data directory not found" });
+      }
+
+      // Set headers for zip download
+      res.setHeader('Content-Type', 'application/zip');
+      res.setHeader('Content-Disposition', 'attachment; filename="refhub-dataset.zip"');
+
+      // Create archiver instance
+      const archive = archiver('zip', {
+        zlib: { level: 9 } // Sets the compression level
+      });
+
+      // Handle archiver errors
+      archive.on('error', (err) => {
+        console.error('Archive error:', err);
+        res.status(500).json({ message: "Error creating archive" });
+      });
+
+      // Pipe archive data to response
+      archive.pipe(res);
+
+      // Add the entire data directory to the zip, preserving the folder structure
+      archive.directory(dataDir, 'data');
+
+      // Finalize the archive
+      await archive.finalize();
+
+    } catch (error) {
+      console.error("Error creating dataset download:", error);
+      return res.status(500).json({ message: "Internal server error" });
     }
   });
 
