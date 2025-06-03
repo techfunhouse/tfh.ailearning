@@ -76,11 +76,47 @@ export default function Header({ username, isAdmin, onSearch }: HeaderProps) {
             className="flex items-center hover:opacity-80 transition-opacity"
             title="Created by Giri Venkatesan"
           >
-            <img 
-              src="/attached_assets/image_1748933531372.png" 
-              alt="By Giri Venkatesan - LinkedIn" 
+            <svg 
+              width="120" 
+              height="32" 
+              viewBox="0 0 120 32" 
               className="h-8 w-auto"
-            />
+            >
+              {/* "By" text in elegant script */}
+              <text x="8" y="20" fontSize="16" fontFamily="serif" fontStyle="italic" fill="#2563eb" fontWeight="300">
+                By
+              </text>
+              
+              {/* LinkedIn "in" circle */}
+              <circle cx="48" cy="16" r="12" fill="#0077b5"/>
+              <text x="42" y="21" fontSize="12" fontFamily="Arial, sans-serif" fontWeight="bold" fill="white">
+                in
+              </text>
+              
+              {/* "GVENKRN" text in pixelated style */}
+              <g fill="#2563eb">
+                <rect x="8" y="26" width="2" height="2"/>
+                <rect x="12" y="26" width="2" height="2"/>
+                <rect x="16" y="26" width="2" height="2"/>
+                <rect x="20" y="26" width="2" height="2"/>
+                <rect x="24" y="26" width="2" height="2"/>
+                <rect x="28" y="26" width="2" height="2"/>
+                <rect x="32" y="26" width="2" height="2"/>
+                
+                <rect x="8" y="28" width="2" height="2"/>
+                <rect x="12" y="28" width="2" height="2"/>
+                <rect x="16" y="28" width="2" height="2"/>
+                <rect x="20" y="28" width="2" height="2"/>
+                <rect x="24" y="28" width="2" height="2"/>
+                <rect x="28" y="28" width="2" height="2"/>
+                <rect x="32" y="28" width="2" height="2"/>
+              </g>
+              
+              {/* Simplified GVENKRN text */}
+              <text x="8" y="30" fontSize="8" fontFamily="monospace" fill="#2563eb" fontWeight="bold">
+                GVENKRN
+              </text>
+            </svg>
           </a>
 
           {isLoggedIn && (
