@@ -43,7 +43,7 @@ export default function Header({ username, isAdmin, onSearch }: HeaderProps) {
 
   return (
     <header className="bg-card border-b sticky top-0 z-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex justify-between items-center">
+      <div className="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <div className="icon-container h-9 w-9">
             <BookOpen className="h-5 w-5 text-primary" />
