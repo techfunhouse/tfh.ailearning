@@ -73,50 +73,21 @@ export default function Header({ username, isAdmin, onSearch }: HeaderProps) {
             href="https://linkedin.com/in/girivenkatesan"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center hover:opacity-80 transition-opacity"
+            className="hidden sm:flex items-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+          >
+            <span>Created by Giri Venkatesan</span>
+            <SiLinkedin className="h-4 w-4" />
+          </a>
+          
+          {/* Mobile version - just icon */}
+          <a
+            href="https://linkedin.com/in/girivenkatesan"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="sm:hidden flex items-center text-muted-foreground hover:text-primary transition-colors"
             title="Created by Giri Venkatesan"
           >
-            <svg 
-              width="120" 
-              height="32" 
-              viewBox="0 0 120 32" 
-              className="h-8 w-auto"
-            >
-              {/* "By" text in elegant script */}
-              <text x="8" y="20" fontSize="16" fontFamily="serif" fontStyle="italic" fill="#2563eb" fontWeight="300">
-                By
-              </text>
-              
-              {/* LinkedIn "in" circle */}
-              <circle cx="48" cy="16" r="12" fill="#0077b5"/>
-              <text x="42" y="21" fontSize="12" fontFamily="Arial, sans-serif" fontWeight="bold" fill="white">
-                in
-              </text>
-              
-              {/* "GVENKRN" text in pixelated style */}
-              <g fill="#2563eb">
-                <rect x="8" y="26" width="2" height="2"/>
-                <rect x="12" y="26" width="2" height="2"/>
-                <rect x="16" y="26" width="2" height="2"/>
-                <rect x="20" y="26" width="2" height="2"/>
-                <rect x="24" y="26" width="2" height="2"/>
-                <rect x="28" y="26" width="2" height="2"/>
-                <rect x="32" y="26" width="2" height="2"/>
-                
-                <rect x="8" y="28" width="2" height="2"/>
-                <rect x="12" y="28" width="2" height="2"/>
-                <rect x="16" y="28" width="2" height="2"/>
-                <rect x="20" y="28" width="2" height="2"/>
-                <rect x="24" y="28" width="2" height="2"/>
-                <rect x="28" y="28" width="2" height="2"/>
-                <rect x="32" y="28" width="2" height="2"/>
-              </g>
-              
-              {/* Simplified GVENKRN text */}
-              <text x="8" y="30" fontSize="8" fontFamily="monospace" fill="#2563eb" fontWeight="bold">
-                GVENKRN
-              </text>
-            </svg>
+            <SiLinkedin className="h-4 w-4" />
           </a>
 
           {isLoggedIn && (
