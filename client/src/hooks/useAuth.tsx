@@ -1,12 +1,10 @@
-import * as React from "react"
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useLocation } from 'wouter';
 import { User, LoginCredentials } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest, isStaticDeployment } from '@/lib/queryClient';
 import { 
-  validateStaticCredentials, 
-  hasStaticAuthConfig, 
+  validateStaticCredentials,
   createStaticSession, 
   getStaticSession, 
   clearStaticSession 

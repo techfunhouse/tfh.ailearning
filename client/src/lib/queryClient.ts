@@ -269,11 +269,11 @@ export const getQueryFn: <T>(options: {
       console.log(`Static query request for: ${originalUrl}`);
       
       if (originalUrl === '/api/references') {
-        return StaticDataLoader.loadReferences() as Promise<T>;
+        return StaticDataLoader.loadReferences() as any;
       } else if (originalUrl === '/api/categories') {
-        return StaticDataLoader.loadCategories() as Promise<T>;
+        return StaticDataLoader.loadCategories() as any;
       } else if (originalUrl === '/api/tags') {
-        return StaticDataLoader.loadTags() as Promise<T>;
+        return StaticDataLoader.loadTags() as any;
       }
       
       // For other endpoints in static mode, return appropriate response
