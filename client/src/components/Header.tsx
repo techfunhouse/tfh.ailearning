@@ -73,8 +73,11 @@ export default function Header({ onSearch }: HeaderProps) {
             rel="noopener noreferrer"
             className="hidden sm:flex items-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
           >
-            <span>Created by Giri Venkatesan</span>
-            <SiLinkedin className="h-4 w-4" />
+            <img 
+              src="/bygvensan.jpg" 
+              alt="Created by Giri Venkatesan - LinkedIn" 
+              className="h-8 w-auto rounded"
+            />
           </a>
           
           {/* Mobile version - just icon */}
