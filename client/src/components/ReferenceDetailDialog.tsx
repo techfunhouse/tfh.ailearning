@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Heart, ExternalLink, Calendar, User } from 'lucide-react';
+import { Heart, ExternalLink, Calendar, User, ChevronLeft, ChevronRight } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { getCategoryColor, getTagColor } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -21,12 +21,16 @@ interface ReferenceDetailDialogProps {
   reference: Reference | null;
   isOpen: boolean;
   onClose: () => void;
+  allReferences?: Reference[];
+  onNavigate?: (direction: 'prev' | 'next') => void;
 }
 
 export default function ReferenceDetailDialog({ 
   reference,
   isOpen, 
-  onClose 
+  onClose,
+  allReferences = [],
+  onNavigate
 }: ReferenceDetailDialogProps) {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -40,6 +44,23 @@ export default function ReferenceDetailDialog({
   
   const [isLoved, setIsLoved] = React.useState(false);
   const [localLoveCount, setLocalLoveCount] = React.useState(loveCount);
+  
+  // Navigation logic
+  const currentIndex = allReferences.findIndex(ref => ref.id === id);
+  const hasPrevious = currentIndex > 0;
+  const hasNext = currentIndex < allReferences.length - 1;
+  
+  const handlePrevious = () => {
+    if (hasPrevious && onNavigate) {
+      onNavigate('prev');
+    }
+  };
+  
+  const handleNext = () => {
+    if (hasNext && onNavigate) {
+      onNavigate('next');
+    }
+  };
   
   // Format the date
   const formattedDate = formatDistanceToNow(new Date(updatedAt), { addSuffix: true });
@@ -92,6 +113,34 @@ export default function ReferenceDetailDialog({
             <Badge variant="outline" className={`${getCategoryColor(category)}`}>
               {category.charAt(0).toUpperCase() + category.slice(1)}
             </Badge>
+            
+            {/* Navigation buttons */}
+            {allReferences.length > 1 && (
+              <div className="flex items-center gap-1 ml-auto">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handlePrevious}
+                  disabled={!hasPrevious}
+                  className="h-8 w-8 p-0"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <span className="text-xs text-muted-foreground px-2">
+                  {currentIndex + 1} of {allReferences.length}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleNext}
+                  disabled={!hasNext}
+                  className="h-8 w-8 p-0"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
+            
             {isAdmin && (
               <div className="flex gap-1 text-xs text-muted-foreground ml-auto">
                 <div className="flex items-center">

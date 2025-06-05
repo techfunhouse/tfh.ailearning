@@ -215,11 +215,11 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete }: 
             </div>
           )}
           
-          <div className="flex flex-col xs:flex-row gap-2 items-stretch xs:items-center">
+          <div className="flex gap-2 items-center">
             <Button
               variant={isLoved ? "default" : "outline"}
               size="sm"
-              className={`flex-none justify-center xs:justify-start ${isLoved ? 'bg-pink-500 hover:bg-pink-600 text-white border-none' : 'hover:text-pink-500 hover:border-pink-500'}`}
+              className={`flex-none ${isLoved ? 'bg-pink-500 hover:bg-pink-600 text-white border-none' : 'hover:text-pink-500 hover:border-pink-500'}`}
               onClick={handleLoveClick}
               disabled={loveMutation.isPending}
               title={isLoved ? "Unlike" : "Love this reference"}
@@ -231,12 +231,12 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete }: 
             <Button 
               variant="outline" 
               size="sm" 
-              className="flex-1 justify-center xs:justify-start"
+              className="flex-1"
               onClick={handleExternalLinkClick}
             >
               <ExternalLink className="h-3 w-3 mr-1" />
-              <span className="hidden xs:inline">View Reference</span>
-              <span className="xs:hidden">View</span>
+              <span className="hidden sm:inline">View Reference</span>
+              <span className="sm:hidden">View</span>
             </Button>
           </div>
         </CardFooter>
