@@ -3,8 +3,7 @@ import { Reference } from '@/types';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Edit, ExternalLink, Calendar, User, Heart, Trash2 } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
+import { Edit, ExternalLink, Heart, Trash2 } from 'lucide-react';
 import { getTagColor, getCategoryColor } from '@/lib/utils';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
@@ -29,7 +28,7 @@ interface ReferenceCardProps {
 }
 
 export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, onView }: ReferenceCardProps) {
-  const { id, title, link, description, tags, category, thumbnail, createdBy, updatedAt } = reference;
+  const { id, title, link, description, tags, category, thumbnail } = reference;
   // Handle potentially undefined love count by providing default
   const loveCount = reference.loveCount || 0;
   
@@ -39,9 +38,7 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
   const [localLoveCount, setLocalLoveCount] = useState(loveCount);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  
-  // Format the date
-  const formattedDate = formatDistanceToNow(new Date(updatedAt), { addSuffix: true });
+
   
   // Love mutation
   const loveMutation = useMutation({
@@ -208,20 +205,7 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
         </CardContent>
         
         <CardFooter className="bg-muted/30 p-2 sm:p-3 flex flex-col space-y-2 border-t">
-          {isAdmin && (
-            <div className="flex flex-col xs:flex-row justify-between items-start xs:items-center w-full gap-1 xs:gap-0">
-              <div className="flex items-center text-xs text-muted-foreground">
-                <Calendar className="h-3 w-3 mr-1" />
-                <span className="truncate">{formattedDate}</span>
-              </div>
-              <div className="flex items-center text-xs text-muted-foreground">
-                <User className="h-3 w-3 mr-1" />
-                <span className="truncate">{createdBy}</span>
-              </div>
-            </div>
-          )}
-          
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center w-full">
             <Button
               variant={isLoved ? "default" : "outline"}
               size="sm"
@@ -256,18 +240,6 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
               <Badge variant="outline" className={`${getCategoryColor(category)}`}>
                 {category.charAt(0).toUpperCase() + category.slice(1)}
               </Badge>
-              {isAdmin && (
-                <div className="flex gap-1 text-xs text-muted-foreground ml-auto">
-                  <div className="flex items-center">
-                    <Calendar className="h-3 w-3 mr-1" />
-                    <span>{formattedDate}</span>
-                  </div>
-                  <div className="flex items-center ml-3">
-                    <User className="h-3 w-3 mr-1" />
-                    <span>{createdBy}</span>
-                  </div>
-                </div>
-              )}
             </div>
             <DialogTitle className="text-2xl font-bold">{title}</DialogTitle>
           </DialogHeader>
