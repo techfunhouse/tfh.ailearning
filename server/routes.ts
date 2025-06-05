@@ -224,6 +224,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.delete("/api/references/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const deleted = await storage.deleteReference(id);
+      
+      if (!deleted) {
+        return res.status(404).json({ message: "Reference not found" });
+      }
+      
+      return res.status(200).json({ success: true, message: "Reference deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting reference:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
   // Categories routes
   app.get("/api/categories", async (req, res) => {
     try {

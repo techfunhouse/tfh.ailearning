@@ -310,11 +310,12 @@ export class JsonDbStorage implements IStorage {
           ThumbnailService.deleteThumbnail(existingReference.thumbnail);
         }
         
-        // Generate new thumbnail
+        // Generate new thumbnail with cleanup of old one
         const thumbnailResult = await ThumbnailService.generateThumbnail(
           reference.link,
           reference.title || existingReference.title,
-          reference.category || existingReference.category
+          reference.category || existingReference.category,
+          existingReference.thumbnail
         );
         
         if (thumbnailResult.success) {

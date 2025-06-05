@@ -129,7 +129,12 @@ export class ThumbnailService {
     `;
   }
 
-  static async generateThumbnail(url: string, title: string, category: string): Promise<ThumbnailResult> {
+  static async generateThumbnail(url: string, title: string, category: string, existingThumbnail?: string): Promise<ThumbnailResult> {
+    // Clean up existing thumbnail if provided
+    if (existingThumbnail && existingThumbnail.startsWith('/thumbnails/')) {
+      this.deleteThumbnail(existingThumbnail);
+    }
+    
     const filename = `${uuidv4()}.jpg`;
     const filePath = path.join(thumbnailsDir, filename);
     const thumbnailPath = `/thumbnails/${filename}`;
