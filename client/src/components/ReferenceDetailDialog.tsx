@@ -85,8 +85,9 @@ export default function ReferenceDetailDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="max-w-3xl h-[90vh] flex flex-col p-0">
+        {/* Fixed Header */}
+        <DialogHeader className="px-6 py-4 border-b flex-shrink-0">
           <div className="flex items-center gap-2 mb-2">
             <Badge variant="outline" className={`${getCategoryColor(category)}`}>
               {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -107,49 +108,55 @@ export default function ReferenceDetailDialog({
           <DialogTitle className="text-2xl font-bold">{title}</DialogTitle>
         </DialogHeader>
         
-        <div className="relative h-64 md:h-80 mt-2 mb-6 rounded-lg overflow-hidden">
-          <img 
-            src={thumbnail} 
-            alt={title} 
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              // Fallback if image fails to load
-              e.currentTarget.src = `https://via.placeholder.com/1200x600?text=${encodeURIComponent(title)}`;
-            }}
-          />
-        </div>
-        
-        <DialogDescription className="text-base text-foreground whitespace-pre-line mb-6">
-          {description}
-        </DialogDescription>
-        
-        <div className="flex flex-wrap gap-2 mb-6">
-          {tags.map((tag, index) => (
-            <Badge key={`${id}-detail-tag-${index}`} variant="secondary" className={getTagColor(tag)}>
-              {tag}
-            </Badge>
-          ))}
-        </div>
-        
-        <div className="flex gap-4 mt-3">
-          <Button
-            variant={isLoved ? "default" : "outline"}
-            className={`${isLoved ? 'bg-pink-500 hover:bg-pink-600 text-white border-none' : 'hover:text-pink-500 hover:border-pink-500'}`}
-            onClick={handleLoveClick}
-            disabled={loveMutation.isPending}
-          >
-            <Heart className={`h-4 w-4 mr-2 ${isLoved ? 'fill-current' : ''}`} />
-            <span>{localLoveCount} {localLoveCount === 1 ? 'Love' : 'Loves'}</span>
-          </Button>
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto px-6 py-4">
+          <div className="relative h-64 md:h-80 mb-6 rounded-lg overflow-hidden">
+            <img 
+              src={thumbnail} 
+              alt={title} 
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                // Fallback if image fails to load
+                e.currentTarget.src = `https://via.placeholder.com/1200x600?text=${encodeURIComponent(title)}`;
+              }}
+            />
+          </div>
           
-          <Button 
-            variant="default" 
-            className="flex-1"
-            onClick={() => window.open(link, '_blank', 'noopener,noreferrer')}
-          >
-            <ExternalLink className="h-4 w-4 mr-2" />
-            Visit Reference
-          </Button>
+          <DialogDescription className="text-base text-foreground whitespace-pre-line mb-6">
+            {description}
+          </DialogDescription>
+          
+          <div className="flex flex-wrap gap-2 mb-6">
+            {tags.map((tag, index) => (
+              <Badge key={`${id}-detail-tag-${index}`} variant="secondary" className={getTagColor(tag)}>
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        </div>
+        
+        {/* Fixed Footer */}
+        <div className="px-6 py-4 border-t flex-shrink-0">
+          <div className="flex gap-4">
+            <Button
+              variant={isLoved ? "default" : "outline"}
+              className={`${isLoved ? 'bg-pink-500 hover:bg-pink-600 text-white border-none' : 'hover:text-pink-500 hover:border-pink-500'}`}
+              onClick={handleLoveClick}
+              disabled={loveMutation.isPending}
+            >
+              <Heart className={`h-4 w-4 mr-2 ${isLoved ? 'fill-current' : ''}`} />
+              <span>{localLoveCount} {localLoveCount === 1 ? 'Love' : 'Loves'}</span>
+            </Button>
+            
+            <Button 
+              variant="default" 
+              className="flex-1"
+              onClick={() => window.open(link, '_blank', 'noopener,noreferrer')}
+            >
+              <ExternalLink className="h-4 w-4 mr-2" />
+              Visit Reference
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
