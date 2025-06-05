@@ -36,6 +36,11 @@ jobs:
           cd client
           npm ci
           npm run build:github
+          
+      - name: Copy current data to build
+        run: |
+          cp -r ./client/public/data ./client/dist/
+          cp -r ./client/public/thumbnails ./client/dist/ 2>/dev/null || echo "No thumbnails directory found"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
