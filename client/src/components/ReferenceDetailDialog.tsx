@@ -34,6 +34,9 @@ export default function ReferenceDetailDialog({
 }: ReferenceDetailDialogProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const [isLoved, setIsLoved] = React.useState(false);
+  const [localLoveCount, setLocalLoveCount] = React.useState(0);
+  
   const isAdmin = user?.isAdmin || false;
   
   // If no reference is provided, don't render the dialog content
@@ -42,8 +45,10 @@ export default function ReferenceDetailDialog({
   const { id, title, link, description, tags, category, thumbnail, createdBy, updatedAt } = reference;
   const loveCount = reference.loveCount || 0;
   
-  const [isLoved, setIsLoved] = React.useState(false);
-  const [localLoveCount, setLocalLoveCount] = React.useState(loveCount);
+  // Update local love count when reference changes
+  React.useEffect(() => {
+    setLocalLoveCount(loveCount);
+  }, [loveCount]);
   
   // Navigation logic
   const currentIndex = allReferences.findIndex(ref => ref.id === id);
