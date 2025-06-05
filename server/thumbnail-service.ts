@@ -1,5 +1,4 @@
 import puppeteer from 'puppeteer';
-import { createCanvas, loadImage } from 'canvas';
 import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
@@ -21,7 +20,6 @@ export interface ThumbnailResult {
 export class ThumbnailService {
   private static browser: puppeteer.Browser | null = null;
 
-  // Initialize browser instance
   private static async getBrowser(): Promise<puppeteer.Browser> {
     if (!this.browser) {
       this.browser = await puppeteer.launch({
@@ -41,7 +39,6 @@ export class ThumbnailService {
     return this.browser;
   }
 
-  // Generate thumbnail using Puppeteer screenshot
   private static async generateScreenshot(url: string): Promise<Buffer | null> {
     try {
       const browser = await this.getBrowser();
@@ -49,13 +46,13 @@ export class ThumbnailService {
       
       await page.setViewport({ width: 1200, height: 630 });
       await page.goto(url, { 
-        waitUntil: 'networkidle2', 
+        waitUntil: 'networkidle2',
         timeout: 10000 
       });
       
-      const screenshot = await page.screenshot({ 
+      const screenshot = await page.screenshot({
         type: 'png',
-        fullPage: false
+        clip: { x: 0, y: 0, width: 1200, height: 630 }
       });
       
       await page.close();
@@ -66,162 +63,120 @@ export class ThumbnailService {
     }
   }
 
-  // Generate thumbnail using Canvas with site info
-  private static async generateCanvasThumbnail(url: string, title: string, category: string): Promise<Buffer> {
-    const canvas = createCanvas(1200, 630);
-    const ctx = canvas.getContext('2d');
-
+  private static generateSVGThumbnail(url: string, title: string, category: string): string {
     // Category colors
     const categoryColors: Record<string, string> = {
-      'Programming': '#3b82f6',
-      'Design': '#f59e0b',
-      'Research': '#10b981',
-      'Tools': '#8b5cf6',
-      'default': '#6b7280'
+      'AI & Machine Learning': '#8B5CF6',
+      'Web Development': '#3B82F6',
+      'Design': '#EC4899',
+      'Productivity': '#10B981',
+      'Marketing': '#F59E0B',
+      'Business': '#EF4444',
+      'Education': '#06B6D4',
+      'Technology': '#6366F1',
+      'default': '#6B7280'
     };
 
-    const bgColor = categoryColors[category] || categoryColors.default;
-    
-    // Create gradient background
-    const gradient = ctx.createLinearGradient(0, 0, 1200, 630);
-    gradient.addColorStop(0, bgColor);
-    gradient.addColorStop(1, '#1f2937');
-    
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 1200, 630);
-    
-    // Add overlay pattern
-    ctx.globalAlpha = 0.1;
-    ctx.fillStyle = '#ffffff';
-    for (let i = 0; i < 1200; i += 60) {
-      for (let j = 0; j < 630; j += 60) {
-        if ((i + j) % 120 === 0) {
-          ctx.fillRect(i, j, 30, 30);
-        }
-      }
-    }
-    ctx.globalAlpha = 1;
-    
-    // Add title
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 48px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    
-    // Wrap text if too long
-    const maxWidth = 1000;
-    const words = title.split(' ');
-    const lines: string[] = [];
-    let currentLine = '';
-    
-    for (const word of words) {
-      const testLine = currentLine + (currentLine ? ' ' : '') + word;
-      const metrics = ctx.measureText(testLine);
-      if (metrics.width > maxWidth && currentLine) {
-        lines.push(currentLine);
-        currentLine = word;
-      } else {
-        currentLine = testLine;
-      }
-    }
-    lines.push(currentLine);
-    
-    // Draw title lines
-    const lineHeight = 60;
-    const startY = 315 - ((lines.length - 1) * lineHeight) / 2;
-    
-    lines.forEach((line, index) => {
-      ctx.fillText(line, 600, startY + index * lineHeight);
-    });
-    
-    // Add category badge
-    ctx.font = 'bold 24px Arial';
-    ctx.fillStyle = '#ffffff';
-    ctx.fillText(category, 600, 520);
-    
-    // Add domain
+    const color = categoryColors[category] || categoryColors.default;
+    let domain = '';
     try {
-      const domain = new URL(url).hostname;
-      ctx.font = '20px Arial';
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-      ctx.fillText(domain, 600, 560);
-    } catch (error) {
-      // Invalid URL, skip domain
+      domain = new URL(url).hostname;
+    } catch {
+      domain = 'Unknown';
     }
     
-    return canvas.toBuffer('image/png');
+    // Truncate title if too long
+    const truncatedTitle = title.length > 50 ? title.substring(0, 47) + '...' : title;
+
+    return `
+      <svg width="320" height="180" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:${color};stop-opacity:1" />
+            <stop offset="100%" style="stop-color:${color};stop-opacity:0.8" />
+          </linearGradient>
+          <pattern id="dots" patternUnits="userSpaceOnUse" width="20" height="20">
+            <circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.1)"/>
+          </pattern>
+        </defs>
+        
+        <!-- Background -->
+        <rect width="320" height="180" fill="url(#bg)"/>
+        <rect width="320" height="180" fill="url(#dots)"/>
+        
+        <!-- Category badge -->
+        <rect x="10" y="10" width="${Math.min(category.length * 8 + 20, 150)}" height="25" rx="4" fill="rgba(0,0,0,0.3)"/>
+        <text x="20" y="27" font-family="Arial, sans-serif" font-size="12" fill="white">${category}</text>
+        
+        <!-- Title -->
+        <text x="160" y="90" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">
+          <tspan x="160" dy="0">${truncatedTitle}</tspan>
+        </text>
+        
+        <!-- Domain -->
+        <text x="160" y="160" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)" text-anchor="middle">${domain}</text>
+      </svg>
+    `;
   }
 
-  // Main thumbnail generation function
   static async generateThumbnail(url: string, title: string, category: string): Promise<ThumbnailResult> {
-    const thumbnailId = uuidv4();
-    const filename = `${thumbnailId}.png`;
+    const filename = `${uuidv4()}.png`;
     const filePath = path.join(thumbnailsDir, filename);
-    const relativePath = `/thumbnails/${filename}`;
+    const thumbnailPath = `/thumbnails/${filename}`;
 
     try {
-      // First, try screenshot generation
+      // Try screenshot first
       const screenshot = await this.generateScreenshot(url);
       
       if (screenshot) {
-        // Resize and optimize screenshot
-        const optimizedImage = await sharp(screenshot)
-          .resize(1200, 630, { fit: 'cover' })
-          .png({ quality: 80 })
+        // Resize screenshot to thumbnail size
+        const resizedScreenshot = await sharp(screenshot)
+          .resize(320, 180, { fit: 'cover', position: 'top' })
+          .png()
           .toBuffer();
         
-        fs.writeFileSync(filePath, optimizedImage);
+        fs.writeFileSync(filePath, resizedScreenshot);
         
         return {
           success: true,
-          thumbnailPath: relativePath,
+          thumbnailPath,
           method: 'screenshot'
-        };
-      } else {
-        // Fallback to canvas generation
-        const canvasImage = await this.generateCanvasThumbnail(url, title, category);
-        
-        const optimizedImage = await sharp(canvasImage)
-          .png({ quality: 80 })
-          .toBuffer();
-        
-        fs.writeFileSync(filePath, optimizedImage);
-        
-        return {
-          success: true,
-          thumbnailPath: relativePath,
-          method: 'generated'
         };
       }
     } catch (error) {
-      console.error('Thumbnail generation failed:', error);
+      console.error('Screenshot method failed:', error);
+    }
+
+    try {
+      // Fallback to SVG generation
+      const svg = this.generateSVGThumbnail(url, title, category);
+      const pngBuffer = await sharp(Buffer.from(svg))
+        .png()
+        .toBuffer();
       
-      // Final fallback - create simple branded thumbnail
-      try {
-        const fallbackImage = await this.generateCanvasThumbnail(url, title, category);
-        fs.writeFileSync(filePath, fallbackImage);
-        
-        return {
-          success: true,
-          thumbnailPath: relativePath,
-          method: 'fallback'
-        };
-      } catch (fallbackError) {
-        return {
-          success: false,
-          thumbnailPath: '',
-          method: 'fallback',
-          error: `Failed to generate thumbnail: ${fallbackError}`
-        };
-      }
+      fs.writeFileSync(filePath, pngBuffer);
+      
+      return {
+        success: true,
+        thumbnailPath,
+        method: 'generated'
+      };
+    } catch (error) {
+      console.error('SVG generation failed:', error);
+      
+      return {
+        success: false,
+        thumbnailPath: '/api/placeholder/320/180',
+        method: 'fallback',
+        error: `Failed to generate thumbnail: ${error instanceof Error ? error.message : 'Unknown error'}`
+      };
     }
   }
 
-  // Delete thumbnail file
   static deleteThumbnail(thumbnailPath: string): void {
     try {
       if (thumbnailPath.startsWith('/thumbnails/')) {
-        const filename = path.basename(thumbnailPath);
+        const filename = thumbnailPath.replace('/thumbnails/', '');
         const filePath = path.join(thumbnailsDir, filename);
         
         if (fs.existsSync(filePath)) {
@@ -234,8 +189,7 @@ export class ThumbnailService {
     }
   }
 
-  // Cleanup browser on shutdown
-  static async cleanup(): void {
+  static async cleanup(): Promise<void> {
     if (this.browser) {
       await this.browser.close();
       this.browser = null;
@@ -243,13 +197,7 @@ export class ThumbnailService {
   }
 }
 
-// Graceful shutdown
-process.on('SIGINT', async () => {
-  await ThumbnailService.cleanup();
-  process.exit(0);
-});
-
-process.on('SIGTERM', async () => {
-  await ThumbnailService.cleanup();
-  process.exit(0);
+// Cleanup on process exit
+process.on('exit', () => {
+  ThumbnailService.cleanup();
 });
