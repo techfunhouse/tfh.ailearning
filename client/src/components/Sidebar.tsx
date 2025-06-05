@@ -1,9 +1,9 @@
-import * as React from "react"
+
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
@@ -93,96 +93,13 @@ export default function Sidebar({
   const [editingTagId, setEditingTagId] = useState<string>('');
   const [editCategoryName, setEditCategoryName] = useState('');
   const [editTagName, setEditTagName] = useState('');
-  const [isGitHubSyncDialogOpen, setIsGitHubSyncDialogOpen] = useState(false);
-  const [syncResult, setSyncResult] = useState<any>(null);
-  const [isSyncing, setIsSyncing] = useState(false);
+
   const [isDeleteCategoryDialogOpen, setIsDeleteCategoryDialogOpen] = useState(false);
   const [isDeleteTagDialogOpen, setIsDeleteTagDialogOpen] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState<{id: string, name: string} | null>(null);
   const [tagToDelete, setTagToDelete] = useState<{id: string, name: string} | null>(null);
   
-  // GitHub sync functionality
-  const checkGitHubConfig = async () => {
-    try {
-      setIsSyncing(true);
-      setSyncResult(null);
-      
-      const response = await apiRequest('GET', '/api/admin/github-status');
-      const data = await response.json();
-      
-      setSyncResult({
-        ...data,
-        syncCheckResult: null,
-        syncResult: null
-      });
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: `Failed to check GitHub configuration: ${error}`,
-      });
-    } finally {
-      setIsSyncing(false);
-    }
-  };
-  
-  const checkSyncStatus = async () => {
-    try {
-      setIsSyncing(true);
-      
-      const response = await apiRequest('GET', '/api/admin/github-sync/check');
-      const data = await response.json();
-      
-      setSyncResult({
-        ...syncResult,
-        syncCheckResult: data,
-        syncResult: null
-      });
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: `Failed to check sync status: ${error}`,
-      });
-    } finally {
-      setIsSyncing(false);
-    }
-  };
-  
-  const createPullRequest = async () => {
-    try {
-      setIsSyncing(true);
-      
-      const response = await apiRequest('POST', '/api/admin/github-sync');
-      const data = await response.json();
-      
-      setSyncResult({
-        ...syncResult,
-        syncResult: data
-      });
-      
-      if (data.prUrl) {
-        toast({
-          title: 'Success',
-          description: 'Pull request created successfully',
-        });
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Error',
-          description: data.message,
-        });
-      }
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: `Failed to create pull request: ${error}`,
-      });
-    } finally {
-      setIsSyncing(false);
-    }
-  };
+
 
   // Form setup for adding a new category
   const categoryForm = useForm<{ name: string }>({
@@ -830,104 +747,7 @@ export default function Sidebar({
           </DialogContent>
         </Dialog>
         
-        {/* GitHub Sync Dialog */}
-        <Dialog open={isGitHubSyncDialogOpen} onOpenChange={setIsGitHubSyncDialogOpen}>
-          <DialogContent className="sm:max-w-[525px]">
-            <DialogHeader>
-              <DialogTitle>GitHub Repository Sync</DialogTitle>
-              <DialogDescription>
-                Sync reference data with a GitHub repository.
-              </DialogDescription>
-            </DialogHeader>
-            
-            <div className="space-y-4">
-              {/* GitHub Config Status */}
-              {syncResult && (
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium">Configuration Status:</h3>
-                  <div className="text-sm bg-muted p-2 rounded">
-                    <div className="grid grid-cols-2 gap-2">
-                      <span className="text-muted-foreground">GitHub Token:</span>
-                      <span>{syncResult.isTokenConfigured ? '✅ Configured' : '❌ Missing'}</span>
-                      
-                      <span className="text-muted-foreground">Repository:</span>
-                      <span>{syncResult.repo ? '✅ ' + syncResult.repo : '❌ Not configured'}</span>
-                      
-                      <span className="text-muted-foreground">Owner:</span>
-                      <span>{syncResult.owner ? '✅ ' + syncResult.owner : '❌ Not configured'}</span>
-                      
-                      <span className="text-muted-foreground">Branch:</span>
-                      <span>{syncResult.branch ? '✅ ' + syncResult.branch : '❌ Not configured'}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              {/* Sync Check Results */}
-              {syncResult?.syncCheckResult && (
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium">Sync Status:</h3>
-                  <div className="text-sm bg-muted p-2 rounded">
-                    {syncResult.syncCheckResult.needsSync ? (
-                      <>
-                        <p className="font-medium text-amber-500">Changes detected!</p>
-                        <p className="mt-1">The following files have changes:</p>
-                        <ul className="list-disc list-inside mt-1">
-                          {syncResult.syncCheckResult.changedFiles.map((file: string, index: number) => (
-                            <li key={index}>{file}</li>
-                          ))}
-                        </ul>
-                      </>
-                    ) : (
-                      <p className="font-medium text-green-500">All data is in sync with repository.</p>
-                    )}
-                  </div>
-                </div>
-              )}
-              
-              {/* PR Creation Result */}
-              {syncResult?.syncResult && (
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium">Pull Request Status:</h3>
-                  <div className="text-sm bg-muted p-2 rounded">
-                    <p>{syncResult.syncResult.message}</p>
-                    {syncResult.syncResult.prUrl && (
-                      <div className="mt-2">
-                        <a 
-                          href={syncResult.syncResult.prUrl} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-primary hover:underline"
-                        >
-                          View Pull Request #{syncResult.syncResult.prNumber}
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-              
-              <div className="flex justify-between">
-                <Button 
-                  variant="outline" 
-                  onClick={checkSyncStatus} 
-                  disabled={isSyncing || !syncResult?.isTokenConfigured}
-                >
-                  {isSyncing ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                  Check Status
-                </Button>
-                
-                <Button 
-                  onClick={createPullRequest} 
-                  disabled={isSyncing || !syncResult?.isTokenConfigured || (syncResult?.syncCheckResult && !syncResult.syncCheckResult.needsSync)}
-                >
-                  {isSyncing ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                  Create Pull Request
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+
       
       {/* Category delete confirmation dialog */}
       <ConfirmationDialog
