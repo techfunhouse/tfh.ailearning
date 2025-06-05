@@ -87,8 +87,9 @@ export default function ReferenceDetailDialog({
           : "Resource added to your favorites",
       });
       
-      // Invalidate and refetch references
+      // Invalidate and refetch all reference-related queries
       queryClient.invalidateQueries({ queryKey: ['/api/references'] });
+      queryClient.refetchQueries({ queryKey: ['/api/references'] });
     },
     onError: (error) => {
       console.error('Error toggling love:', error);

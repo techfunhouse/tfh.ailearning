@@ -1,3 +1,12 @@
 {
-  "tags": []
+  "tags": [
+    {
+      "name": "vibe-coding",
+      "id": "d296ae4d-84f5-4583-a251-cb87b007d44a"
+    },
+    {
+      "name": "starter-templates",
+      "id": "f6d6b263-0104-4fa6-8d4c-883eb07e1bcf"
+    }
+  ]
 }

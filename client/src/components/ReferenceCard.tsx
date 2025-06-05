@@ -56,8 +56,9 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
       setIsLoved(true); // Set to loved after clicking
       setLocalLoveCount(responseLoveCount);
       
-      // Invalidate cache to update references
+      // Force immediate refetch to sync all components
       queryClient.invalidateQueries({ queryKey: ['/api/references'] });
+      queryClient.refetchQueries({ queryKey: ['/api/references'] });
     },
     onError: (error) => {
       toast({

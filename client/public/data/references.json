@@ -1,3 +1,20 @@
 {
-  "references": []
+  "references": [
+    {
+      "title": "Replit Starter Apps",
+      "link": "https://replit.com/templates/starter-apps",
+      "description": "A collection of templates for building applications using technologies like OpenAI's GPT-4, TailwindCSS, and more. These templates provide a foundation for developing AI-powered apps, personal portfolios, and other projects.",
+      "category": "Workshops",
+      "tags": [
+        "vibe-coding",
+        "starter-templates"
+      ],
+      "thumbnail": "/thumbnails/b182495c-90e0-40fc-9f54-85e9cee6164c.jpg",
+      "id": "b5e05108-51df-40bb-92e3-8566c02c6641",
+      "createdBy": "admin",
+      "loveCount": 1,
+      "createdAt": "2025-06-05T15:46:11.186Z",
+      "updatedAt": "2025-06-05T15:46:11.186Z"
+    }
+  ]
 }
