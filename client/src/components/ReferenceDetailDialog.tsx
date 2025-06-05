@@ -128,7 +128,7 @@ export default function ReferenceDetailDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader className="pb-4">
           <div className="space-y-3">
             <DialogTitle className="text-2xl font-bold gradient-text line-clamp-2">
@@ -241,17 +241,7 @@ export default function ReferenceDetailDialog({
                     </div>
                   )}
 
-                  {/* Meta Information */}
-                  <div className="flex items-center gap-6 text-sm text-muted-foreground pt-2 border-t">
-                    <div className="flex items-center gap-2">
-                      <User className="h-4 w-4" />
-                      <span>Created by {createdBy}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4" />
-                      <span>Updated {formattedDate}</span>
-                    </div>
-                  </div>
+
                 </div>
               </div>
             </CardContent>
