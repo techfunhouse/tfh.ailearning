@@ -130,14 +130,14 @@ export default function ReferenceDetailDialog({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader className="pb-4">
-          <div className="space-y-3">
-            <DialogTitle className="text-2xl font-bold gradient-text line-clamp-2">
+          <div className="flex items-start justify-between">
+            <DialogTitle className="text-2xl font-bold gradient-text line-clamp-2 flex-1 pr-4">
               {title}
             </DialogTitle>
             
-            {/* Navigation Controls - on separate line for mobile */}
+            {/* Navigation Controls - top right */}
             {allReferences.length > 1 && (
-              <div className="flex items-center justify-center gap-2">
+              <div className="flex items-center gap-2 flex-shrink-0">
                 <Button
                   variant="outline"
                   size="sm"
@@ -148,7 +148,7 @@ export default function ReferenceDetailDialog({
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
                 
-                <span className="text-sm text-muted-foreground px-3">
+                <span className="text-sm text-muted-foreground px-2 whitespace-nowrap">
                   {currentIndex + 1} of {allReferences.length}
                 </span>
                 
@@ -196,20 +196,9 @@ export default function ReferenceDetailDialog({
                 <div className="md:col-span-1 space-y-4">
                   {/* Category */}
                   <div>
-                    <div className="hidden md:block">
-                      <h3 className="font-semibold mb-2">Category</h3>
-                      <Badge 
-                        variant="secondary" 
-                        className={`${getCategoryColor(category)} text-white border-none text-lg font-bold px-4 py-2 shadow-md`}
-                      >
-                        {category.toUpperCase()}
-                      </Badge>
-                    </div>
-                    <div className="md:hidden">
-                      <p className="text-sm text-muted-foreground">
-                        <span className="font-semibold">Category:</span> {category}
-                      </p>
-                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      <span className="font-semibold">Category:</span> {category}
+                    </p>
                   </div>
 
                   {/* Description */}
