@@ -44,18 +44,25 @@ export class ThumbnailService {
       const browser = await this.getBrowser();
       const page = await browser.newPage();
       
-      await page.setViewport({ width: 1200, height: 630 });
+      // Set higher resolution viewport for better quality
+      await page.setViewport({ 
+        width: 1920, 
+        height: 1008,
+        deviceScaleFactor: 2 // Higher DPI for crisp images
+      });
+      
       await page.goto(url, { 
         waitUntil: 'domcontentloaded',
         timeout: 5000 
       });
       
       // Wait a bit for content to load
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
       const screenshot = await page.screenshot({
-        type: 'png',
-        clip: { x: 0, y: 0, width: 1200, height: 630 }
+        type: 'jpeg',
+        quality: 85, // Good balance between quality and file size
+        clip: { x: 0, y: 0, width: 1920, height: 1008 }
       });
       
       await page.close();
@@ -123,7 +130,7 @@ export class ThumbnailService {
   }
 
   static async generateThumbnail(url: string, title: string, category: string): Promise<ThumbnailResult> {
-    const filename = `${uuidv4()}.png`;
+    const filename = `${uuidv4()}.jpg`;
     const filePath = path.join(thumbnailsDir, filename);
     const thumbnailPath = `/thumbnails/${filename}`;
 
@@ -132,10 +139,10 @@ export class ThumbnailService {
       const screenshot = await this.generateScreenshot(url);
       
       if (screenshot) {
-        // Resize screenshot to thumbnail size
+        // Resize screenshot to thumbnail size with high quality JPEG
         const resizedScreenshot = await sharp(screenshot)
           .resize(320, 180, { fit: 'cover', position: 'top' })
-          .png()
+          .jpeg({ quality: 90, progressive: true })
           .toBuffer();
         
         fs.writeFileSync(filePath, resizedScreenshot);
@@ -153,11 +160,11 @@ export class ThumbnailService {
     try {
       // Fallback to SVG generation
       const svg = this.generateSVGThumbnail(url, title, category);
-      const pngBuffer = await sharp(Buffer.from(svg))
-        .png()
+      const jpegBuffer = await sharp(Buffer.from(svg))
+        .jpeg({ quality: 90, progressive: true })
         .toBuffer();
       
-      fs.writeFileSync(filePath, pngBuffer);
+      fs.writeFileSync(filePath, jpegBuffer);
       
       return {
         success: true,
