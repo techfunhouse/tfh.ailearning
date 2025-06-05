@@ -39,8 +39,18 @@ export default function ReferenceDetailDialog({
   
   const isAdmin = user?.isAdmin || false;
   
-  // If no reference is provided, don't render the dialog content
-  if (!reference) return null;
+  // If no reference is provided, render an empty dialog
+  if (!reference) {
+    return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>No Resource Selected</DialogTitle>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    );
+  }
   
   const { id, title, link, description, tags, category, thumbnail, createdBy, updatedAt } = reference;
   const loveCount = reference.loveCount || 0;
@@ -208,7 +218,7 @@ export default function ReferenceDetailDialog({
               onClick={() => window.open(link, '_blank', 'noopener,noreferrer')}
             >
               <ExternalLink className="h-4 w-4 mr-2" />
-              Visit Reference
+              Visit Resource
             </Button>
           </div>
         </div>

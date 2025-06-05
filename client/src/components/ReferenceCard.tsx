@@ -227,7 +227,7 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
               className={`flex-none ${isLoved ? 'bg-pink-500 hover:bg-pink-600 text-white border-none' : 'hover:text-pink-500 hover:border-pink-500'}`}
               onClick={handleLoveClick}
               disabled={loveMutation.isPending}
-              title={isLoved ? "Unlike" : "Love this reference"}
+              title={isLoved ? "Unlike" : "Love this resource"}
             >
               <Heart className={`h-3.5 w-3.5 mr-1 ${isLoved ? 'fill-current' : ''}`} />
               <span>{localLoveCount}</span>
@@ -240,7 +240,7 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
               onClick={handleExternalLinkClick}
             >
               <ExternalLink className="h-3 w-3 mr-1" />
-              <span className="hidden sm:inline">View Reference</span>
+              <span className="hidden sm:inline">View Resource</span>
               <span className="sm:hidden">View</span>
             </Button>
           </div>
@@ -321,7 +321,7 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
       {/* Confirmation Dialog for Delete */}
       <ConfirmationDialog
         isOpen={isDeleteDialogOpen}
-        title="Delete Reference"
+        title="Delete Resource"
         description={`Are you sure you want to delete "${title}"? This action cannot be undone.`}
         confirmText="Delete"
         cancelText="Cancel"

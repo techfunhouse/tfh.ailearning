@@ -650,8 +650,8 @@ export default function HomePage() {
                 {searchQuery
                   ? `Search Results for "${searchQuery}"`
                   : !selectedCategories.includes("all")
-                    ? `${selectedCategories.map((c) => c.charAt(0).toUpperCase() + c.slice(1)).join(", ")} References`
-                    : "All References"}
+                    ? `${selectedCategories.map((c) => c.charAt(0).toUpperCase() + c.slice(1)).join(", ")} Resources`
+                    : "All Resources"}
               </h2>
             </div>
 
@@ -692,7 +692,7 @@ export default function HomePage() {
                         className="col-span-full flex items-center justify-center p-4"
                       >
                         <Loader2 className="h-6 w-6 animate-spin text-primary" />
-                        <span className="ml-2">Loading more references...</span>
+                        <span className="ml-2">Loading more resources...</span>
                       </div>
                     )}
                   </div>
@@ -703,12 +703,12 @@ export default function HomePage() {
                         <FileSearch className="h-6 w-6 text-muted-foreground" />
                       </div>
                       <h3 className="text-lg font-medium mb-2">
-                        No References Found
+                        No Resources Found
                       </h3>
                       <p className="text-muted-foreground mb-4 max-w-md">
                         {searchQuery
                           ? `No results match your search query "${searchQuery}".`
-                          : "No references matched your current filter selections."}
+                          : "No resources matched your current filter selections."}
                       </p>
                       <Button
                         variant="outline"
