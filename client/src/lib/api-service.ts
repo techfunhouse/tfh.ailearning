@@ -17,11 +17,6 @@ import type {
 
 // API Base URL - automatically detects environment
 const getApiBaseUrl = (): string => {
-  // For development with separate client/server
-  if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
-  }
-  
   // Default for combined dev setup
   return '';
 };
