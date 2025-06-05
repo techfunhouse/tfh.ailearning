@@ -38,6 +38,7 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
   const [localLoveCount, setLocalLoveCount] = useState(loveCount);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   
   // Love mutation
@@ -144,15 +145,23 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
         onClick={handleCardClick}
       >
         <div className="relative h-48">
-          <img 
-            src={thumbnail} 
-            alt={title} 
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              // Fallback if image fails to load
-              e.currentTarget.src = `https://via.placeholder.com/800x400?text=${encodeURIComponent(title)}`;
-            }}
-          />
+          {imageError ? (
+            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center text-gray-600">
+              <div className="text-center p-4">
+                <div className="text-2xl mb-2">📚</div>
+                <div className="text-sm font-medium">{title}</div>
+              </div>
+            </div>
+          ) : (
+            <img 
+              src={thumbnail} 
+              alt={title} 
+              className="w-full h-full object-cover"
+              onError={() => {
+                setImageError(true);
+              }}
+            />
+          )}
           
           {/* Admin edit and delete buttons */}
           {isAdmin && (
