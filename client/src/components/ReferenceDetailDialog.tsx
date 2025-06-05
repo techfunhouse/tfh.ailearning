@@ -130,41 +130,39 @@ export default function ReferenceDetailDialog({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
         <DialogHeader className="pb-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <DialogTitle className="text-2xl font-bold gradient-text line-clamp-1">
-                {title}
-              </DialogTitle>
-              
-              {/* Navigation Controls */}
-              {allReferences.length > 1 && (
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handlePrevious}
-                    disabled={!hasPrevious}
-                    className="h-8 w-8 p-0"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </Button>
-                  
-                  <span className="text-sm text-muted-foreground px-2">
-                    {currentIndex + 1} of {allReferences.length}
-                  </span>
-                  
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleNext}
-                    disabled={!hasNext}
-                    className="h-8 w-8 p-0"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </div>
-              )}
-            </div>
+          <div className="space-y-3">
+            <DialogTitle className="text-2xl font-bold gradient-text line-clamp-2">
+              {title}
+            </DialogTitle>
+            
+            {/* Navigation Controls - on separate line for mobile */}
+            {allReferences.length > 1 && (
+              <div className="flex items-center justify-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handlePrevious}
+                  disabled={!hasPrevious}
+                  className="h-8 w-8 p-0"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                
+                <span className="text-sm text-muted-foreground px-3">
+                  {currentIndex + 1} of {allReferences.length}
+                </span>
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleNext}
+                  disabled={!hasNext}
+                  className="h-8 w-8 p-0"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
           </div>
         </DialogHeader>
 
