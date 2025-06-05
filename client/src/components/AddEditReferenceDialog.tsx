@@ -344,54 +344,52 @@ export default function AddEditReferenceDialog({
               />
 
               {/* Thumbnail Preview Section - Moved after URL */}
-              {!isEditing && (
-                <div className="space-y-2">
-                  <FormLabel className="flex items-center gap-2">
-                    <Image className="h-4 w-4" />
-                    Thumbnail Preview
-                    {isGeneratingThumbnail && (
-                      <span className="text-sm text-muted-foreground">(Generating...)</span>
-                    )}
-                    {thumbnailGenerated && !thumbnailError && (
-                      <span className="text-sm text-green-600">(Ready)</span>
-                    )}
-                    {thumbnailError && (
-                      <span className="text-sm text-orange-600">(Will generate automatically)</span>
-                    )}
-                  </FormLabel>
-                  <div className="flex items-center gap-3">
-                    {isGeneratingThumbnail ? (
-                      <div className="w-40 h-24 bg-muted rounded-lg flex flex-col items-center justify-center">
-                        <Loader2 className="h-6 w-6 animate-spin mb-2" />
-                        <span className="text-xs text-muted-foreground">Generating thumbnail...</span>
-                      </div>
-                    ) : thumbnailPreview ? (
-                      <img
-                        src={thumbnailPreview}
-                        alt="Thumbnail preview"
-                        className="w-40 h-24 object-cover rounded-lg border"
-                      />
-                    ) : (
-                      <div className="w-40 h-24 bg-muted rounded-lg flex items-center justify-center">
-                        <span className="text-xs text-muted-foreground text-center">
-                          Fill in title, URL, and category to generate thumbnail
-                        </span>
-                      </div>
-                    )}
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={generateThumbnail}
-                      disabled={isGeneratingThumbnail || !form.watch("title") || !form.watch("link") || !form.watch("category")}
-                      className="flex items-center gap-2"
-                    >
-                      <RefreshCw className={`h-4 w-4 ${isGeneratingThumbnail ? "animate-spin" : ""}`} />
-                      {isGeneratingThumbnail ? "Generating..." : "Regenerate"}
-                    </Button>
-                  </div>
+              <div className="space-y-2">
+                <FormLabel className="flex items-center gap-2">
+                  <Image className="h-4 w-4" />
+                  Thumbnail Preview
+                  {isGeneratingThumbnail && (
+                    <span className="text-sm text-muted-foreground">(Generating...)</span>
+                  )}
+                  {thumbnailGenerated && !thumbnailError && (
+                    <span className="text-sm text-green-600">(Ready)</span>
+                  )}
+                  {thumbnailError && (
+                    <span className="text-sm text-orange-600">(Will generate automatically)</span>
+                  )}
+                </FormLabel>
+                <div className="flex items-center gap-3">
+                  {isGeneratingThumbnail ? (
+                    <div className="w-40 h-24 bg-muted rounded-lg flex flex-col items-center justify-center">
+                      <Loader2 className="h-6 w-6 animate-spin mb-2" />
+                      <span className="text-xs text-muted-foreground">Generating thumbnail...</span>
+                    </div>
+                  ) : thumbnailPreview ? (
+                    <img
+                      src={thumbnailPreview}
+                      alt="Thumbnail preview"
+                      className="w-40 h-24 object-cover rounded-lg border"
+                    />
+                  ) : (
+                    <div className="w-40 h-24 bg-muted rounded-lg flex items-center justify-center">
+                      <span className="text-xs text-muted-foreground text-center">
+                        {isEditing ? "Click regenerate to update thumbnail" : "Fill in title, URL, and category to generate thumbnail"}
+                      </span>
+                    </div>
+                  )}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={generateThumbnail}
+                    disabled={isGeneratingThumbnail || !form.watch("title") || !form.watch("link") || !form.watch("category")}
+                    className="flex items-center gap-2"
+                  >
+                    <RefreshCw className={`h-4 w-4 ${isGeneratingThumbnail ? "animate-spin" : ""}`} />
+                    {isGeneratingThumbnail ? "Generating..." : (isEditing ? "Regenerate" : "Generate")}
+                  </Button>
                 </div>
-              )}
+              </div>
 
               {/* Description Field */}
               <FormField
