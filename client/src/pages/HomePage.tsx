@@ -1,6 +1,4 @@
-import * as React from "react"
-import { useEffect, useState, useCallback } from "react";
-import { useLocation } from "wouter";
+import { useEffect, useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Fuse from "fuse.js";
 import { useInView } from "react-intersection-observer";
@@ -14,32 +12,20 @@ import ReferenceDetailDialog from "@/components/ReferenceDetailDialog";
 import { Reference, Category, Tag } from "@/types";
 import { Button } from "@/components/ui/button";
 import {
-  PlusIcon,
+  Search,
+  Plus,
   LayoutGrid,
-  BookOpen,
-  Filter,
   FileSearch,
   Loader2,
-  X,
-  ChevronLeft,
-  ChevronRight,
+  SidebarIcon,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
+
 
 export default function HomePage() {
   const { user, isAdmin } = useAuth();
-  const { toast } = useToast();
-  const [, navigate] = useLocation();
   const [references, setReferences] = useState<Reference[]>([]);
   const [filteredReferences, setFilteredReferences] = useState<Reference[]>([]);
   const [displayReferences, setDisplayReferences] = useState<Reference[]>([]);

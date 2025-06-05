@@ -1,14 +1,7 @@
-import * as React from "react"
 import { createRoot } from "react-dom/client";
 import App from "./App";
 // Make sure CSS is imported
 import "./index.css";
-
-// Set default environment variables for client if not set
-if (!import.meta.env.VITE_API_URL) {
-  // @ts-ignore
-  import.meta.env.VITE_API_URL = 'http://localhost:5000';
-}
 if (!import.meta.env.VITE_GITHUB_PAGES) {
   // @ts-ignore
   import.meta.env.VITE_GITHUB_PAGES = 'false';
