@@ -23,7 +23,8 @@ export class StaticDataLoader {
       const data = await response.json();
       console.log('References data loaded:', data);
       // Handle both direct array and wrapped object formats
-      this.cache.references = Array.isArray(data) ? data : (data.references || []);
+      const references: Reference[] = Array.isArray(data) ? data : (data?.references || []);
+      this.cache.references = references;
       return this.cache.references;
     } catch (error) {
       console.error('Error loading static references:', error);
@@ -32,7 +33,8 @@ export class StaticDataLoader {
         const altResponse = await fetch('./data/references.json');
         if (altResponse.ok) {
           const altData = await altResponse.json();
-          this.cache.references = Array.isArray(altData) ? altData : (altData?.references || []);
+          const altReferences: Reference[] = Array.isArray(altData) ? altData : (altData?.references || []);
+          this.cache.references = altReferences;
           return this.cache.references;
         }
       } catch (altError) {
@@ -57,7 +59,8 @@ export class StaticDataLoader {
       const data = await response.json();
       console.log('Categories data loaded:', data);
       // Handle both direct array and wrapped object formats
-      this.cache.categories = Array.isArray(data) ? data : (data?.categories || []);
+      const categories: Category[] = Array.isArray(data) ? data : (data?.categories || []);
+      this.cache.categories = categories;
       return this.cache.categories;
     } catch (error) {
       console.error('Error loading static categories:', error);
@@ -65,7 +68,8 @@ export class StaticDataLoader {
         const altResponse = await fetch('./data/categories.json');
         if (altResponse.ok) {
           const altData = await altResponse.json();
-          this.cache.categories = Array.isArray(altData) ? altData : (altData?.categories || []);
+          const altCategories: Category[] = Array.isArray(altData) ? altData : (altData?.categories || []);
+          this.cache.categories = altCategories;
           return this.cache.categories;
         }
       } catch (altError) {
@@ -90,7 +94,8 @@ export class StaticDataLoader {
       const data = await response.json();
       console.log('Tags data loaded:', data);
       // Handle both direct array and wrapped object formats
-      this.cache.tags = Array.isArray(data) ? data : (data?.tags || []);
+      const tags: Tag[] = Array.isArray(data) ? data : (data?.tags || []);
+      this.cache.tags = tags;
       return this.cache.tags;
     } catch (error) {
       console.error('Error loading static tags:', error);
@@ -98,7 +103,8 @@ export class StaticDataLoader {
         const altResponse = await fetch('./data/tags.json');
         if (altResponse.ok) {
           const altData = await altResponse.json();
-          this.cache.tags = Array.isArray(altData) ? altData : (altData?.tags || []);
+          const altTags: Tag[] = Array.isArray(altData) ? altData : (altData?.tags || []);
+          this.cache.tags = altTags;
           return this.cache.tags;
         }
       } catch (altError) {
