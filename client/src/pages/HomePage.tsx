@@ -535,7 +535,7 @@ export default function HomePage() {
                   >
                     <PlusIcon className="h-4 w-4" />
                     <span className="hidden xs:inline">Add Reference</span>
-                    <span className="xs:hidden">Add</span>
+                    <span className="xs:hidden">Add Ref</span>
                   </Button>
                 )}
               </div>
