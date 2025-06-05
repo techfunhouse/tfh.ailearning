@@ -1,4 +1,3 @@
-import * as React from "react"
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -40,7 +39,6 @@ import { apiRequest } from "@/lib/queryClient";
 import { queryClient } from "@/lib/queryClient";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { getTagColor } from "@/lib/utils";
 import {
   BookmarkPlus,
@@ -52,6 +50,7 @@ import {
   FileText,
   Check,
   AlertCircle,
+  RefreshCw,
 } from "lucide-react";
 
 interface AddEditReferenceDialogProps {
@@ -68,7 +67,7 @@ const formSchema = z.object({
   description: z.string().min(1, "Description is required"),
   category: z.string().min(1, "Category is required"),
   tags: z.string().array().min(1, "At least one tag is required"),
-  thumbnail: z.string().url("Valid thumbnail URL is required"),
+  thumbnail: z.string().optional(),
 });
 
 export default function AddEditReferenceDialog({
@@ -83,11 +82,8 @@ export default function AddEditReferenceDialog({
   const [, navigate] = useLocation();
   const isEditing = !!reference;
   const [tagFilter, setTagFilter] = useState("");
-  const [isFetchingThumbnail, setIsFetchingThumbnail] = useState(false);
-  const [thumbnailFetched, setThumbnailFetched] = useState(false);
-  const [thumbnailError, setThumbnailError] = useState(false);
-  const DEFAULT_THUMBNAIL = 
-    "https://images.unsplash.com/photo-1590479773265-7464e5d48118";
+  const [isGeneratingThumbnail, setIsGeneratingThumbnail] = useState(false);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
 
   const form = useForm<ReferenceFormData>({
     resolver: zodResolver(formSchema),
@@ -97,7 +93,7 @@ export default function AddEditReferenceDialog({
       description: "",
       category: "",
       tags: [],
-      thumbnail: "https://images.unsplash.com/photo-1590479773265-7464e5d48118",
+      thumbnail: "",
     },
   });
 
@@ -112,7 +108,7 @@ export default function AddEditReferenceDialog({
         tags: reference.tags,
         thumbnail: reference.thumbnail,
       });
-      setThumbnailFetched(true); // Mark as fetched for existing references
+      setThumbnailPreview(reference.thumbnail || "");
     } else {
       form.reset({
         title: "",
@@ -120,515 +116,380 @@ export default function AddEditReferenceDialog({
         description: "",
         category: "",
         tags: [],
-        thumbnail: "https://images.unsplash.com/photo-1590479773265-7464e5d48118",
+        thumbnail: "",
       });
-      setThumbnailFetched(false);
-      setThumbnailError(false);
+      setThumbnailPreview("");
     }
   }, [reference, form]);
 
-  // Function to set appropriate default thumbnail based on category
-  const setDefaultThumbnail = (selectedCategory?: string) => {
-    const categoryThumbnails: Record<string, string> = {
-      'Programming': 'https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80',
-      'Design': 'https://images.unsplash.com/photo-1516031190212-da133013de50?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80',
-      'Research': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80',
-      'Tools': 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=300&q=80',
-    };
-    
-    const currentCategory = selectedCategory || form.getValues('category');
-    const thumbnailUrl = categoryThumbnails[currentCategory] || DEFAULT_THUMBNAIL;
-    form.setValue("thumbnail", thumbnailUrl);
-    setThumbnailFetched(true);
-  };
-
-  // Function to fetch thumbnail from microlink.io with proper error handling
-  const fetchThumbnailFromUrl = (url: string) => {
-    if (!url || url.trim() === "") return;
-
-    // Wrap the async operation to prevent unhandled promise rejections
-    const performFetch = async () => {
-      try {
-        setIsFetchingThumbnail(true);
-        setThumbnailError(false);
-
-        // Try microlink.io API for thumbnail generation
-        const response = await fetch(
-          `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true`,
-          {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`API responded with status: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (data.status === "success" && data.data?.screenshot?.url) {
-          form.setValue("thumbnail", data.data.screenshot.url);
-          setThumbnailFetched(true);
-          toast({
-            title: "Thumbnail generated",
-            description: "A thumbnail image has been automatically generated.",
-            duration: 3000,
-          });
-        } else {
-          throw new Error("Failed to generate thumbnail from API");
-        }
-      } catch (error) {
-        console.error("Error fetching thumbnail:", error);
-        setThumbnailError(true);
-        
-        // Use category-based default thumbnail instead
-        setDefaultThumbnail(form.getValues('category'));
-        
-        toast({
-          title: "Using default thumbnail",
-          description: "Automatic thumbnail generation is not available. Using category-based default.",
-          duration: 3000,
-        });
-      } finally {
-        setIsFetchingThumbnail(false);
-      }
-    };
-
-    // Execute the async operation and catch any unhandled rejections
-    performFetch().catch((error) => {
-      console.error("Unhandled error in thumbnail fetch:", error);
-      setThumbnailError(true);
-      setDefaultThumbnail(form.getValues('category'));
-      setIsFetchingThumbnail(false);
+  // Function to generate thumbnail using the new local system
+  const generateThumbnail = async () => {
+    const formData = form.getValues();
+    if (!formData.link || !formData.title || !formData.category) {
       toast({
-        title: "Using default thumbnail",
-        description: "Thumbnail generation failed. Using category-based default.",
-        duration: 3000,
+        title: "Missing Information",
+        description: "Please fill in URL, title, and category before generating thumbnail.",
+        variant: "destructive",
       });
-    });
+      return;
+    }
+
+    setIsGeneratingThumbnail(true);
+    try {
+      const response = await apiRequest("/api/thumbnails/generate", {
+        method: "POST",
+        body: JSON.stringify({
+          url: formData.link,
+          title: formData.title,
+          category: formData.category,
+        }),
+      });
+
+      if (response.success) {
+        setThumbnailPreview(response.thumbnailPath);
+        form.setValue("thumbnail", response.thumbnailPath);
+        toast({
+          title: "Thumbnail Generated",
+          description: `Generated using ${response.method} method.`,
+        });
+      }
+    } catch (error) {
+      console.error("Thumbnail generation failed:", error);
+      toast({
+        title: "Generation Failed",
+        description: "Could not generate thumbnail. The system will create one automatically when saving.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingThumbnail(false);
+    }
   };
 
-  // Create mutation for adding a reference
-  const addMutation = useMutation({
+  const createMutation = useMutation({
     mutationFn: async (data: ReferenceFormData) => {
-      const response = await apiRequest("POST", "/api/references", data);
-      return response.json();
+      return await apiRequest("/api/references", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
     },
     onSuccess: () => {
-      toast({
-        title: "Success",
-        description: "Reference added successfully",
-        variant: "default",
-      });
       queryClient.invalidateQueries({ queryKey: ["/api/references"] });
       onClose();
-    },
-    onError: (error) => {
+      form.reset();
       toast({
+        title: "Reference added",
+        description: "Your reference has been successfully added.",
+      });
+    },
+    onError: (error: any) => {
+      console.error("Error creating reference:", error);
+      toast({
+        title: "Error adding reference",
+        description: error.message || "Something went wrong. Please try again.",
         variant: "destructive",
-        title: "Error",
-        description: `Failed to add reference: ${error}`,
       });
     },
   });
 
-  // Update mutation for editing a reference
   const updateMutation = useMutation({
     mutationFn: async (data: ReferenceFormData) => {
-      const response = await apiRequest(
-        "PUT",
-        `/api/references/${reference?.id}`,
-        data,
-      );
-      return response.json();
+      return await apiRequest(`/api/references/${reference?.id}`, {
+        method: "PATCH",
+        body: JSON.stringify(data),
+      });
     },
     onSuccess: () => {
-      toast({
-        title: "Success",
-        description: "Reference updated successfully",
-      });
       queryClient.invalidateQueries({ queryKey: ["/api/references"] });
       onClose();
-    },
-    onError: (error) => {
+      form.reset();
       toast({
+        title: "Reference updated",
+        description: "Your reference has been successfully updated.",
+      });
+    },
+    onError: (error: any) => {
+      console.error("Error updating reference:", error);
+      toast({
+        title: "Error updating reference",
+        description: error.message || "Something went wrong. Please try again.",
         variant: "destructive",
-        title: "Error",
-        description: `Failed to update reference: ${error}`,
       });
     },
   });
 
   const onSubmit = async (data: ReferenceFormData) => {
-    // Check if user is authenticated
     if (!user) {
       toast({
-        variant: 'destructive',
-        title: 'Authentication Required',
-        description: 'You need to log in to add references. Redirecting to login page...',
-        duration: 3000,
+        title: "Authentication required",
+        description: "Please log in to add or edit references.",
+        variant: "destructive",
       });
-      // Close the dialog and redirect to login
-      onClose();
-      setTimeout(() => navigate('/login'), 1000);
+      navigate("/login");
       return;
     }
-    
-    // Check if user has admin privileges for adding/editing references
-    if (!isAdmin) {
-      toast({
-        variant: 'destructive',
-        title: 'Admin Access Required',
-        description: 'You need admin privileges to add or edit references.',
-        duration: 3000,
-      });
-      return;
-    }
-    
+
     if (isEditing) {
       updateMutation.mutate(data);
     } else {
-      addMutation.mutate(data);
+      createMutation.mutate(data);
     }
   };
 
-  // Consider a form "pending" if it's submitting OR if it's actively fetching a thumbnail
-  const isPending =
-    addMutation.isPending || updateMutation.isPending || isFetchingThumbnail;
+  const isLoading = createMutation.isPending || updateMutation.isPending;
 
-  // Filter tags based on search input
-  const filteredTags = tagFilter
-    ? tags.filter((tag) =>
-        tag.name.toLowerCase().includes(tagFilter.toLowerCase()),
-      )
-    : tags;
+  const filteredTags = tags.filter((tag) =>
+    tag.name.toLowerCase().includes(tagFilter.toLowerCase())
+  );
+
+  const selectedTags = form.watch("tags") || [];
+
+  const toggleTag = (tagName: string) => {
+    const currentTags = form.getValues("tags") || [];
+    const newTags = currentTags.includes(tagName)
+      ? currentTags.filter((t) => t !== tagName)
+      : [...currentTags, tagName];
+    form.setValue("tags", newTags);
+  };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[650px] max-h-[90vh]">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-xl">
-            {isEditing ? (
-              <>
-                <Save className="h-5 w-5 text-primary" />
-                Edit Reference
-              </>
-            ) : (
-              <>
-                <BookmarkPlus className="h-5 w-5 text-primary" />
-                Add New Reference
-              </>
-            )}
+          <DialogTitle className="flex items-center gap-2">
+            <BookmarkPlus className="h-5 w-5" />
+            {isEditing ? "Edit Reference" : "Add New Reference"}
           </DialogTitle>
           <DialogDescription>
             {isEditing
-              ? "Update the details of your reference below."
-              : "Add a new reference to your collection."}
+              ? "Update the reference information below."
+              : "Add a new reference to your collection. The system will automatically generate a thumbnail for you."}
           </DialogDescription>
         </DialogHeader>
 
-        <ScrollArea className="max-h-[calc(80vh-10rem)] pr-4">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center gap-1.5">
-                      <BookmarkPlus className="h-4 w-4 text-primary" />
-                      Title
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter a descriptive title"
-                        {...field}
-                        className="focus-visible:ring-primary"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="link"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center gap-1.5">
-                      <LinkIcon className="h-4 w-4 text-primary" />
-                      URL
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="https://example.com/resource"
-                        {...field}
-                        className="focus-visible:ring-primary"
-                        onBlur={(e) => {
-                          field.onBlur(); // Call the original onBlur
-                          const url = e.target.value;
-                          if (
-                            url &&
-                            !isEditing &&
-                            !thumbnailFetched &&
-                            !isFetchingThumbnail
-                          ) {
-                            // Only fetch thumbnail if URL is valid
-                            const urlRegex =
-                              /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
-                            if (urlRegex.test(url)) {
-                              fetchThumbnailFromUrl(url);
-                            }
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      {isFetchingThumbnail ? (
-                        <span className="flex items-center text-amber-500">
-                          <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-                          Generating thumbnail...
-                        </span>
-                      ) : thumbnailFetched ? (
-                        <span className="flex items-center text-green-500">
-                          <Check className="h-3 w-3 mr-1" />
-                          Thumbnail generated
-                        </span>
-                      ) : thumbnailError ? (
-                        <span className="flex items-center text-red-500">
-                          <AlertCircle className="h-3 w-3 mr-1" />
-                          Using default thumbnail
-                        </span>
-                      ) : (
-                        "The direct link to the reference resource"
-                      )}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center gap-1.5">
-                      <FileText className="h-4 w-4 text-primary" />
-                      Description
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Provide a brief summary of this reference"
-                        {...field}
-                        className="min-h-24 focus-visible:ring-primary"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid sm:grid-cols-2 gap-5">
-                <FormField
-                  control={form.control}
-                  name="category"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="flex items-center gap-1.5">
-                        <TagIcon className="h-4 w-4 text-primary" />
-                        Category
-                      </FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="focus:ring-primary">
-                            <SelectValue placeholder="Select a category" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {categories.map((category) => (
-                            <SelectItem
-                              key={category.id}
-                              value={category.name.toLowerCase()}
-                            >
-                              {category.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="thumbnail"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="flex items-center gap-1.5">
-                        <Image className="h-4 w-4 text-primary" />
-                        Thumbnail
-                      </FormLabel>
-                      <FormControl>
-                        <div className="space-y-2">
-                          <Input
-                            placeholder="https://example.com/image.jpg"
-                            {...field}
-                            className="focus-visible:ring-primary"
-                            disabled={isFetchingThumbnail}
-                          />
-                          {field.value && (
-                            <div className="relative h-32 w-full overflow-hidden rounded-md border">
-                              <img
-                                src={field.value}
-                                alt="Thumbnail preview"
-                                className="h-full w-full object-cover"
-                                onError={(e) => {
-                                  e.currentTarget.src = DEFAULT_THUMBNAIL;
-                                  setThumbnailError(true);
-                                }}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <FormField
-                control={form.control}
-                name="tags"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center gap-1.5">
-                      <TagIcon className="h-4 w-4 text-primary" />
-                      Tags
-                    </FormLabel>
-                    <Input
-                      placeholder="Filter tags..."
-                      value={tagFilter}
-                      onChange={(e) => setTagFilter(e.target.value)}
-                      className="mb-3 h-8 text-sm focus-visible:ring-primary"
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* Thumbnail Preview Section */}
+            {(thumbnailPreview || isGeneratingThumbnail) && (
+              <div className="space-y-2">
+                <FormLabel className="flex items-center gap-2">
+                  <Image className="h-4 w-4" />
+                  Thumbnail Preview
+                </FormLabel>
+                <div className="flex items-center gap-3">
+                  {isGeneratingThumbnail ? (
+                    <div className="w-40 h-24 bg-muted rounded-lg flex items-center justify-center">
+                      <Loader2 className="h-6 w-6 animate-spin" />
+                    </div>
+                  ) : thumbnailPreview ? (
+                    <img
+                      src={thumbnailPreview}
+                      alt="Thumbnail preview"
+                      className="w-40 h-24 object-cover rounded-lg border"
                     />
+                  ) : null}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={generateThumbnail}
+                    disabled={isGeneratingThumbnail}
+                    className="flex items-center gap-2"
+                  >
+                    <RefreshCw className={`h-4 w-4 ${isGeneratingThumbnail ? "animate-spin" : ""}`} />
+                    {isGeneratingThumbnail ? "Generating..." : "Generate Thumbnail"}
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Title Field */}
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="flex items-center gap-2">
+                    <FileText className="h-4 w-4" />
+                    Title
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter reference title"
+                      {...field}
+                      disabled={isLoading}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Link Field */}
+            <FormField
+              control={form.control}
+              name="link"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="flex items-center gap-2">
+                    <LinkIcon className="h-4 w-4" />
+                    URL
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="https://example.com"
+                      {...field}
+                      disabled={isLoading}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Description Field */}
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Describe this reference..."
+                      className="min-h-[100px]"
+                      {...field}
+                      disabled={isLoading}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Category Field */}
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={isLoading}
+                  >
                     <FormControl>
-                      <div className="flex flex-wrap gap-1.5 p-2 border rounded-md min-h-12 bg-muted/20">
-                        {filteredTags.map((tag) => (
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.name}>
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Tags Field */}
+            <FormField
+              control={form.control}
+              name="tags"
+              render={() => (
+                <FormItem>
+                  <FormLabel className="flex items-center gap-2">
+                    <TagIcon className="h-4 w-4" />
+                    Tags
+                  </FormLabel>
+                  <FormDescription>
+                    Search and select tags for this reference.
+                  </FormDescription>
+                  <div className="space-y-3">
+                    {/* Selected Tags */}
+                    {selectedTags.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {selectedTags.map((tagName) => (
                           <Badge
-                            key={tag.id}
-                            variant={
-                              field.value.includes(tag.name.toLowerCase())
-                                ? "default"
-                                : "outline"
-                            }
-                            className={`cursor-pointer transition-all ${
-                              field.value.includes(tag.name.toLowerCase())
-                                ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                                : `hover:bg-muted ${getTagColor(tag.name)}`
-                            }`}
-                            onClick={() => {
-                              const tagName = tag.name.toLowerCase();
-                              const newTags = field.value.includes(tagName)
-                                ? field.value.filter((t) => t !== tagName)
-                                : [...field.value, tagName];
-                              field.onChange(newTags);
-                            }}
+                            key={tagName}
+                            variant="secondary"
+                            className="cursor-pointer hover:bg-destructive hover:text-destructive-foreground"
+                            style={{ backgroundColor: getTagColor(tagName) }}
+                            onClick={() => toggleTag(tagName)}
                           >
-                            {field.value.includes(tag.name.toLowerCase()) && (
-                              <Check className="mr-1 h-3 w-3" />
-                            )}
-                            {tag.name}
+                            {tagName}
+                            <Check className="ml-1 h-3 w-3" />
                           </Badge>
                         ))}
-                        {filteredTags.length === 0 && (
-                          <div className="text-sm text-muted-foreground p-1">
-                            No matching tags
-                          </div>
-                        )}
-                      </div>
-                    </FormControl>
-                    {field.value.length > 0 && (
-                      <div className="mt-2">
-                        <p className="text-xs text-muted-foreground mb-1">
-                          Selected tags:
-                        </p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {field.value.map((tag) => (
-                            <Badge
-                              key={`selected-${tag}`}
-                              className="bg-primary text-primary-foreground"
-                            >
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
                       </div>
                     )}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
-        </ScrollArea>
 
-        <DialogFooter className="flex flex-col gap-2 pt-2">
-          {!user ? (
-            <div className="text-xs text-amber-500 pb-2 flex items-center">
-              <AlertCircle className="h-3.5 w-3.5 mr-1" />
-              You need to log in with admin credentials to add references.
-            </div>
-          ) : !isAdmin ? (
-            <div className="text-xs text-amber-500 pb-2 flex items-center">
-              <AlertCircle className="h-3.5 w-3.5 mr-1" />
-              You need admin privileges to add references.
-            </div>
-          ) : null}
-          
-          <div className="flex gap-2">
-            <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-            {!user ? (
-              <Button 
-                onClick={() => navigate('/login')}
-                className="gap-2"
-              >
-                <LinkIcon className="h-4 w-4" />
-                Login First
-              </Button>
-            ) : (
+                    {/* Tag Search */}
+                    <Input
+                      placeholder="Search tags..."
+                      value={tagFilter}
+                      onChange={(e) => setTagFilter(e.target.value)}
+                      disabled={isLoading}
+                    />
+
+                    {/* Available Tags */}
+                    <ScrollArea className="h-32 w-full border rounded-md p-2">
+                      <div className="flex flex-wrap gap-2">
+                        {filteredTags.map((tag) => {
+                          const isSelected = selectedTags.includes(tag.name);
+                          return (
+                            <Badge
+                              key={tag.id}
+                              variant={isSelected ? "default" : "outline"}
+                              className="cursor-pointer"
+                              style={
+                                isSelected
+                                  ? { backgroundColor: getTagColor(tag.name) }
+                                  : {}
+                              }
+                              onClick={() => toggleTag(tag.name)}
+                            >
+                              {tag.name}
+                              {isSelected && <Check className="ml-1 h-3 w-3" />}
+                            </Badge>
+                          );
+                        })}
+                      </div>
+                    </ScrollArea>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <DialogFooter>
               <Button
-                onClick={form.handleSubmit(onSubmit)}
-                disabled={isPending || !isAdmin}
-                className="gap-2"
+                type="button"
+                variant="outline"
+                onClick={onClose}
+                disabled={isLoading}
               >
-                {isPending ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    {isEditing ? "Updating..." : "Adding..."}
-                  </>
-                ) : (
-                  <>
-                    <Save className="h-4 w-4" />
-                    {isEditing ? "Update Reference" : "Add Reference"}
-                  </>
-                )}
+                Cancel
               </Button>
-            )}
-          </div>
-        </DialogFooter>
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="flex items-center gap-2"
+              >
+                {isLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Save className="h-4 w-4" />
+                )}
+                {isEditing ? "Update Reference" : "Add Reference"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
