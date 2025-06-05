@@ -2,19 +2,48 @@
   "references": [
     {
       "title": "Replit Starter Apps",
-      "link": "https://replit.com/templates/starter-apps",
-      "description": "A collection of templates for building applications using technologies like OpenAI's GPT-4, TailwindCSS, and more. These templates provide a foundation for developing AI-powered apps, personal portfolios, and other projects.\n\nA collection of templates for building applications using technologies like OpenAI's GPT-4, TailwindCSS, and more. These templates provide a foundation for developing AI-powered apps, personal portfolios, and other projects.\n\nA collection of templates for building applications using technologies like OpenAI's GPT-4, TailwindCSS, and more. These templates provide a foundation for developing AI-powered apps, personal portfolios, and other projects.",
+      "link": "https://the-codegen-project.org/blog/asyncapi-payload-generator/",
+      "description": "Replit Starter Apps",
       "category": "Workshops",
       "tags": [
-        "vibe-coding",
+        "vibe-coding"
+      ],
+      "thumbnail": "/thumbnails/c43397a5-930c-4782-aad1-721d7c77f90a.jpg",
+      "id": "7ee51c91-bd15-43a3-8731-eeae8e729bae",
+      "createdBy": "admin",
+      "loveCount": 3,
+      "createdAt": "2025-06-05T16:29:45.850Z",
+      "updatedAt": "2025-06-05T16:34:29.037Z"
+    },
+    {
+      "title": "Meetup",
+      "link": "https://www.meetup.com/home/",
+      "description": "Meetup",
+      "category": "Tutorials & Blogs",
+      "tags": [
         "starter-templates"
       ],
-      "thumbnail": "/thumbnails/b182495c-90e0-40fc-9f54-85e9cee6164c.jpg",
-      "id": "b5e05108-51df-40bb-92e3-8566c02c6641",
+      "thumbnail": "/thumbnails/f855ebbb-dd58-40b7-814e-881ab920bbd1.jpg",
+      "id": "2fc7fb22-75aa-47ab-8af3-329260155f23",
       "createdBy": "admin",
       "loveCount": 1,
-      "createdAt": "2025-06-05T15:46:11.186Z",
-      "updatedAt": "2025-06-05T15:59:27.286Z"
+      "createdAt": "2025-06-05T16:35:31.325Z",
+      "updatedAt": "2025-06-05T16:35:31.325Z"
+    },
+    {
+      "title": "Event-Driven Decision Making: Turning Events Into Action",
+      "link": "https://www.linkedin.com/pulse/event-driven-decision-making-turning-events-action-giri-venkatesan-ul7oc/?trackingId=zPQRUS%2B0RJuIGivAeMeOXg%3D%3D",
+      "description": "Event-Driven Decision Making: Turning Events Into Action\n",
+      "category": "Online Learning",
+      "tags": [
+        "blog"
+      ],
+      "thumbnail": "/thumbnails/05a3522f-cfb0-4076-b1aa-534af15d8342.jpg",
+      "id": "29ba2ee7-336f-405c-ba73-cb2c89ebe73b",
+      "createdBy": "admin",
+      "loveCount": 2,
+      "createdAt": "2025-06-05T16:36:56.208Z",
+      "updatedAt": "2025-06-05T16:36:56.208Z"
     }
   ]
 }
