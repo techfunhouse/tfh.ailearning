@@ -6,8 +6,6 @@ import Fuse from "fuse.js";
 import { useInView } from "react-intersection-observer";
 
 import { useAuth } from "@/hooks/useAuth";
-import { useToast } from "@/hooks/use-toast";
-import { apiRequest, queryClient } from "@/lib/queryClient";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import ReferenceCard from "@/components/ReferenceCard";

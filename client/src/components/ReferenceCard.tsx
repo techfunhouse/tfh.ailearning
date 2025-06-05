@@ -33,7 +33,7 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
   // Handle potentially undefined love count by providing default
   const loveCount = reference.loveCount || 0;
   
-  const { user } = useAuth();
+
   const { toast } = useToast();
   const [isLoved, setIsLoved] = useState(false); // Always start as not loved
   const [localLoveCount, setLocalLoveCount] = useState(loveCount);

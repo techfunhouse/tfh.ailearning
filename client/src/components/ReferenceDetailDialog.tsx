@@ -8,18 +8,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { 
   ExternalLink, 
   Heart, 
-  User, 
-  Calendar, 
   Tag, 
   ChevronLeft, 
-  ChevronRight,
-  X
+  ChevronRight
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Reference } from "@/types";
-import { getCategoryColor, getTagColor } from "@/lib/utils";
+import { getTagColor } from "@/lib/utils";
 
 interface ReferenceDetailDialogProps {
   reference: Reference | null;
@@ -40,8 +37,6 @@ export default function ReferenceDetailDialog({
   const { toast } = useToast();
   const [isLoved, setIsLoved] = React.useState(false);
   const [localLoveCount, setLocalLoveCount] = React.useState(0);
-  
-  const isAdmin = user?.isAdmin || false;
   
   // Update local state when reference changes
   React.useEffect(() => {
@@ -123,8 +118,7 @@ export default function ReferenceDetailDialog({
     return null;
   }
 
-  const { id, title, link, description, tags, category, thumbnail, createdBy, updatedAt } = reference;
-  const formattedDate = formatDistanceToNow(new Date(updatedAt), { addSuffix: true });
+  const { title, link, description, tags, category, thumbnail } = reference;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
