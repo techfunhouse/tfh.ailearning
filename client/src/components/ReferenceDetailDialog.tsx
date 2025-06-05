@@ -172,10 +172,10 @@ export default function ReferenceDetailDialog({
           {/* Resource Details Card */}
           <Card>
             <CardContent className="p-6">
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-2 gap-8">
                 {/* Thumbnail */}
                 <div className="md:col-span-1">
-                  <div className="aspect-video rounded-lg overflow-hidden border-2 border-border bg-muted/30">
+                  <div className="aspect-[4/3] rounded-lg overflow-hidden border-2 border-border bg-muted/30">
                     {thumbnail ? (
                       <img 
                         src={thumbnail} 
@@ -195,12 +195,12 @@ export default function ReferenceDetailDialog({
                 </div>
 
                 {/* Details */}
-                <div className="md:col-span-2 space-y-4">
+                <div className="md:col-span-1 space-y-4">
                   {/* Category */}
                   <div>
                     <Badge 
                       variant="secondary" 
-                      className={`${getCategoryColor(category)} text-white border-none text-sm px-3 py-1`}
+                      className={`${getCategoryColor(category)} text-white border-none text-base font-semibold px-4 py-2`}
                     >
                       {category}
                     </Badge>
