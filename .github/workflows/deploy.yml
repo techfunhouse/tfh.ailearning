@@ -39,8 +39,14 @@ jobs:
           
       - name: Copy current data to build
         run: |
-          cp -r ./client/public/data ./client/dist/
-          cp -r ./client/public/thumbnails ./client/dist/ 2>/dev/null || echo "No thumbnails directory found"
+          mkdir -p ./client/dist/data
+          mkdir -p ./client/dist/thumbnails
+          cp ./client/public/data/*.json ./client/dist/data/
+          cp -r ./client/public/thumbnails/* ./client/dist/thumbnails/ 2>/dev/null || echo "No thumbnails directory found"
+          echo "Data files copied:"
+          ls -la ./client/dist/data/
+          echo "Build structure:"
+          ls -la ./client/dist/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

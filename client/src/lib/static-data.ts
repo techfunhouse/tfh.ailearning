@@ -14,15 +14,29 @@ export class StaticDataLoader {
     }
 
     try {
+      console.log('Loading static references from /data/references.json');
       const response = await fetch('/data/references.json');
+      console.log('References fetch response:', response.status, response.statusText);
       if (!response.ok) {
-        throw new Error(`Failed to load references: ${response.status}`);
+        throw new Error(`Failed to load references: ${response.status} ${response.statusText}`);
       }
       const data = await response.json();
+      console.log('References data loaded:', data);
       this.cache.references = Array.isArray(data) ? data : [];
       return this.cache.references;
     } catch (error) {
       console.error('Error loading static references:', error);
+      console.log('Attempting to load from alternative path...');
+      try {
+        const altResponse = await fetch('./data/references.json');
+        if (altResponse.ok) {
+          const altData = await altResponse.json();
+          this.cache.references = Array.isArray(altData) ? altData : [];
+          return this.cache.references;
+        }
+      } catch (altError) {
+        console.error('Alternative path also failed:', altError);
+      }
       return [];
     }
   }
@@ -33,15 +47,28 @@ export class StaticDataLoader {
     }
 
     try {
+      console.log('Loading static categories from /data/categories.json');
       const response = await fetch('/data/categories.json');
+      console.log('Categories fetch response:', response.status, response.statusText);
       if (!response.ok) {
-        throw new Error(`Failed to load categories: ${response.status}`);
+        throw new Error(`Failed to load categories: ${response.status} ${response.statusText}`);
       }
       const data = await response.json();
+      console.log('Categories data loaded:', data);
       this.cache.categories = Array.isArray(data) ? data : [];
       return this.cache.categories;
     } catch (error) {
       console.error('Error loading static categories:', error);
+      try {
+        const altResponse = await fetch('./data/categories.json');
+        if (altResponse.ok) {
+          const altData = await altResponse.json();
+          this.cache.categories = Array.isArray(altData) ? altData : [];
+          return this.cache.categories;
+        }
+      } catch (altError) {
+        console.error('Alternative path also failed:', altError);
+      }
       return [];
     }
   }
@@ -52,15 +79,28 @@ export class StaticDataLoader {
     }
 
     try {
+      console.log('Loading static tags from /data/tags.json');
       const response = await fetch('/data/tags.json');
+      console.log('Tags fetch response:', response.status, response.statusText);
       if (!response.ok) {
-        throw new Error(`Failed to load tags: ${response.status}`);
+        throw new Error(`Failed to load tags: ${response.status} ${response.statusText}`);
       }
       const data = await response.json();
+      console.log('Tags data loaded:', data);
       this.cache.tags = Array.isArray(data) ? data : [];
       return this.cache.tags;
     } catch (error) {
       console.error('Error loading static tags:', error);
+      try {
+        const altResponse = await fetch('./data/tags.json');
+        if (altResponse.ok) {
+          const altData = await altResponse.json();
+          this.cache.tags = Array.isArray(altData) ? altData : [];
+          return this.cache.tags;
+        }
+      } catch (altError) {
+        console.error('Alternative path also failed:', altError);
+      }
       return [];
     }
   }
