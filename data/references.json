@@ -2549,6 +2549,21 @@
       "loveCount": 0,
       "createdAt": "2025-06-05T11:39:12.779Z",
       "updatedAt": "2025-06-05T11:39:12.779Z"
+    },
+    {
+      "title": "Commudle",
+      "link": "https://www.commudle.com/",
+      "description": "Commudle",
+      "category": "Programming",
+      "tags": [
+        "blockchain"
+      ],
+      "thumbnail": "/thumbnails/6246c4d3-558d-4200-8c5a-13115486055c.png",
+      "id": "c42bb6e0-18a9-4e53-9509-ba7a11e2265e",
+      "createdBy": "admin",
+      "loveCount": 0,
+      "createdAt": "2025-06-05T12:12:15.580Z",
+      "updatedAt": "2025-06-05T12:12:15.580Z"
     }
   ]
 }

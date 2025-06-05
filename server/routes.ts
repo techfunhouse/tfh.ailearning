@@ -424,7 +424,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Thumbnail generation endpoint
-  app.post("/api/thumbnails/generate", isAuthenticated, async (req, res) => {
+  app.post("/api/thumbnails/generate", async (req, res) => {
     try {
       const { url, title, category } = req.body;
       

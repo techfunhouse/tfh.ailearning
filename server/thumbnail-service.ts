@@ -46,9 +46,12 @@ export class ThumbnailService {
       
       await page.setViewport({ width: 1200, height: 630 });
       await page.goto(url, { 
-        waitUntil: 'networkidle2',
-        timeout: 10000 
+        waitUntil: 'domcontentloaded',
+        timeout: 5000 
       });
+      
+      // Wait a bit for content to load
+      await page.waitForTimeout(1000);
       
       const screenshot = await page.screenshot({
         type: 'png',
