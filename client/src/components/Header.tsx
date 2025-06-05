@@ -1,11 +1,11 @@
-import * as React from "react"
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useAuth } from '@/hooks/useAuth';
-import { Badge } from '@/components/ui/badge';
-import { Search, BookOpen, LogOut } from 'lucide-react';
-import { SiLinkedin } from 'react-icons/si';
+import * as React from "react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@/hooks/useAuth";
+import { Badge } from "@/components/ui/badge";
+import { Search, BookOpen, LogOut } from "lucide-react";
+import { SiLinkedin } from "react-icons/si";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 interface HeaderProps {
   username?: string;
@@ -24,8 +24,8 @@ interface HeaderProps {
 
 export default function Header({ onSearch }: HeaderProps) {
   const { logout, user } = useAuth();
-  const [searchQuery, setSearchQuery] = useState('');
-  
+  const [searchQuery, setSearchQuery] = useState("");
+
   // Check if user is logged in
   const isLoggedIn = !!user;
 
@@ -36,7 +36,7 @@ export default function Header({ onSearch }: HeaderProps) {
   };
 
   const getInitials = (name?: string) => {
-    if (!name) return '?';
+    if (!name) return "?";
     return name.charAt(0).toUpperCase();
   };
 
@@ -49,10 +49,10 @@ export default function Header({ onSearch }: HeaderProps) {
           </div>
           <h1 className="text-lg sm:text-xl font-bold gradient-text">
             <span className="hidden sm:inline">AI Learning Resources</span>
-            <span className="sm:hidden">AI Resources</span>
+            <span className="sm:hidden sm:inline">AI Learning Resources</span>
           </h1>
         </div>
-        
+
         {/* Desktop search bar */}
         <div className="hidden md:block max-w-3xl w-full mx-8">
           <div className="relative">
@@ -67,7 +67,7 @@ export default function Header({ onSearch }: HeaderProps) {
             />
           </div>
         </div>
-        
+
         <div className="flex items-center space-x-4">
           {/* Created by section */}
           <a
@@ -76,13 +76,13 @@ export default function Header({ onSearch }: HeaderProps) {
             rel="noopener noreferrer"
             className="hidden sm:flex items-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
           >
-            <img 
-              src="/bygvensan.jpg" 
-              alt="Created by Giri Venkatesan - LinkedIn" 
+            <img
+              src="/bygvensan.jpg"
+              alt="Created by Giri Venkatesan - LinkedIn"
               className="h-8 w-auto rounded"
             />
           </a>
-          
+
           {/* Mobile version - just icon */}
           <a
             href="https://linkedin.com/in/girivenkatesan"
@@ -97,7 +97,10 @@ export default function Header({ onSearch }: HeaderProps) {
           {isLoggedIn && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-9 w-9 rounded-full">
+                <Button
+                  variant="ghost"
+                  className="relative h-9 w-9 rounded-full"
+                >
                   <Avatar className="h-9 w-9">
                     <AvatarFallback className="bg-primary/10 text-primary">
                       {getInitials(user?.username)}
@@ -108,20 +111,27 @@ export default function Header({ onSearch }: HeaderProps) {
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel>
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{user?.username}</p>
+                    <p className="text-sm font-medium leading-none">
+                      {user?.username}
+                    </p>
                     <p className="text-xs leading-none text-muted-foreground">
-                      {user?.isAdmin ? 'Administrator' : 'Curator'}
+                      {user?.isAdmin ? "Administrator" : "Curator"}
                     </p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {user?.isAdmin && (
                   <DropdownMenuItem className="flex items-center">
-                    <Badge className="mr-2 bg-accent text-accent-foreground">Admin</Badge>
+                    <Badge className="mr-2 bg-accent text-accent-foreground">
+                      Admin
+                    </Badge>
                     Administrator Access
                   </DropdownMenuItem>
                 )}
-                <DropdownMenuItem className="flex items-center" onClick={logout}>
+                <DropdownMenuItem
+                  className="flex items-center"
+                  onClick={logout}
+                >
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
                 </DropdownMenuItem>
@@ -130,7 +140,7 @@ export default function Header({ onSearch }: HeaderProps) {
           )}
         </div>
       </div>
-      
+
       {/* Mobile search bar */}
       <div className="md:hidden px-4 pb-4">
         <div className="relative">
