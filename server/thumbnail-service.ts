@@ -139,10 +139,10 @@ export class ThumbnailService {
       const screenshot = await this.generateScreenshot(url);
       
       if (screenshot) {
-        // Resize screenshot to thumbnail size with high quality JPEG
+        // Resize screenshot to larger thumbnail size with high quality JPEG
         const resizedScreenshot = await sharp(screenshot)
-          .resize(320, 180, { fit: 'cover', position: 'top' })
-          .jpeg({ quality: 90, progressive: true })
+          .resize(640, 360, { fit: 'cover', position: 'top' })
+          .jpeg({ quality: 95, progressive: true })
           .toBuffer();
         
         fs.writeFileSync(filePath, resizedScreenshot);

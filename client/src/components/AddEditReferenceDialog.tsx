@@ -185,7 +185,9 @@ export default function AddEditReferenceDialog({
 
       const result = await response.json();
       if (result.success) {
-        setThumbnailPreview(result.thumbnailPath);
+        // Ensure the thumbnail path works for the frontend
+        const thumbnailUrl = result.thumbnailPath.startsWith('/') ? result.thumbnailPath : `/${result.thumbnailPath}`;
+        setThumbnailPreview(thumbnailUrl);
         form.setValue("thumbnail", result.thumbnailPath);
         setThumbnailGenerated(true);
         toast({
