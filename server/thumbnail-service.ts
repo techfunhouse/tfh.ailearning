@@ -95,11 +95,22 @@ export class ThumbnailService {
       domain = 'Unknown';
     }
     
-    // Truncate title if too long
-    const truncatedTitle = title.length > 50 ? title.substring(0, 47) + '...' : title;
+    // Escape XML entities properly
+    const escapeXml = (text: string) => {
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+    };
+    
+    // Truncate title if too long and escape XML entities
+    const safeTruncatedTitle = escapeXml(title.length > 50 ? title.substring(0, 47) + '...' : title);
+    const safeCategory = escapeXml(category);
+    const safeDomain = escapeXml(domain);
 
-    return `
-      <svg width="320" height="180" xmlns="http://www.w3.org/2000/svg">
+    return `<svg width="320" height="180" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" style="stop-color:${color};stop-opacity:1" />
@@ -109,24 +120,15 @@ export class ThumbnailService {
             <circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.1)"/>
           </pattern>
         </defs>
-        
-        <!-- Background -->
         <rect width="320" height="180" fill="url(#bg)"/>
         <rect width="320" height="180" fill="url(#dots)"/>
-        
-        <!-- Category badge -->
-        <rect x="10" y="10" width="${Math.min(category.length * 8 + 20, 150)}" height="25" rx="4" fill="rgba(0,0,0,0.3)"/>
-        <text x="20" y="27" font-family="Arial, sans-serif" font-size="12" fill="white">${category}</text>
-        
-        <!-- Title -->
+        <rect x="10" y="10" width="${Math.min(safeCategory.length * 8 + 20, 150)}" height="25" rx="4" fill="rgba(0,0,0,0.3)"/>
+        <text x="20" y="27" font-family="Arial, sans-serif" font-size="12" fill="white">${safeCategory}</text>
         <text x="160" y="90" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">
-          <tspan x="160" dy="0">${truncatedTitle}</tspan>
+          <tspan x="160" dy="0">${safeTruncatedTitle}</tspan>
         </text>
-        
-        <!-- Domain -->
-        <text x="160" y="160" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)" text-anchor="middle">${domain}</text>
-      </svg>
-    `;
+        <text x="160" y="160" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)" text-anchor="middle">${safeDomain}</text>
+      </svg>`;
   }
 
   static async generateThumbnail(url: string, title: string, category: string, existingThumbnail?: string): Promise<ThumbnailResult> {
