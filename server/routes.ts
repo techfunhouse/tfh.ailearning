@@ -399,6 +399,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
 
 
+  // GitHub sync endpoints
+  app.get("/api/admin/github-status", async (req, res) => {
+    try {
+      const { githubService } = await import("./github-service");
+      const status = githubService.getStatus();
+      return res.status(200).json(status);
+    } catch (error) {
+      console.error("Error checking GitHub status:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.get("/api/admin/github-sync/check", async (req, res) => {
+    try {
+      const { githubService } = await import("./github-service");
+      const syncStatus = await githubService.checkSyncStatus();
+      return res.status(200).json(syncStatus);
+    } catch (error) {
+      console.error("Error checking sync status:", error);
+      return res.status(500).json({ message: error instanceof Error ? error.message : "Internal server error" });
+    }
+  });
+
+  app.post("/api/admin/github-sync", async (req, res) => {
+    try {
+      const { githubService } = await import("./github-service");
+      const { dryRun = false } = req.body;
+      
+      const result = await githubService.syncToGitHub(dryRun);
+      return res.status(200).json(result);
+    } catch (error) {
+      console.error("Error syncing with GitHub:", error);
+      return res.status(500).json({ message: error instanceof Error ? error.message : "Internal server error" });
+    }
+  });
+
   // Thumbnail generation endpoint
   app.post("/api/thumbnails/generate", async (req, res) => {
     try {
