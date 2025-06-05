@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Fuse from "fuse.js";
 import { useInView } from "react-intersection-observer";
@@ -12,12 +12,15 @@ import ReferenceDetailDialog from "@/components/ReferenceDetailDialog";
 import { Reference, Category, Tag } from "@/types";
 import { Button } from "@/components/ui/button";
 import {
-  Search,
-  Plus,
   LayoutGrid,
   FileSearch,
   Loader2,
-  SidebarIcon,
+  Filter,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  BookOpen,
+  PlusIcon
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

@@ -14,18 +14,15 @@ import HomePage from "@/pages/HomePage";
 const useHashQueryRouter = () => {
   const [location, setLocation] = useLocation();
   
-  // Using React namespace since we removed the import
-  (window as any).React?.useEffect(() => {
-    // Check if we're on GitHub Pages with the query parameter format
-    if (location.includes('/?/')) {
-      // Convert /?/path to /path
-      const realPath = location.replace('/?/', '/');
-      if (realPath !== location) {
-        console.log(`GitHub Pages routing: Redirecting from ${location} to ${realPath}`);
-        setLocation(realPath);
-      }
+  // Check if we're on GitHub Pages with the query parameter format
+  if (typeof window !== 'undefined' && location.includes('/?/')) {
+    // Convert /?/path to /path
+    const realPath = location.replace('/?/', '/');
+    if (realPath !== location) {
+      console.log(`GitHub Pages routing: Redirecting from ${location} to ${realPath}`);
+      setLocation(realPath);
     }
-  }, [location, setLocation]);
+  }
 
   return { location, setLocation };
 };
@@ -49,7 +46,7 @@ function App() {
       <AuthProvider>
         <TooltipProvider>
           <Toaster />
-          <Notification />
+  
           <Router />
         </TooltipProvider>
       </AuthProvider>
