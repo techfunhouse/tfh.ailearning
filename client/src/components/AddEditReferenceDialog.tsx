@@ -58,7 +58,7 @@ const formSchema = z.object({
   link: z.string().url("Valid URL is required"),
   description: z.string().min(1, "Description is required"),
   category: z.string().min(1, "Category is required"),
-  tags: z.string().array().min(1, "At least one tag is required"),
+  tags: z.string().array().optional(),
   thumbnail: z.string().optional(),
 });
 
@@ -84,7 +84,7 @@ export default function AddEditReferenceDialog({
       link: "",
       description: "",
       category: "",
-      tags: [],
+      tags: undefined,
       thumbnail: "",
     },
   });
