@@ -196,11 +196,12 @@ export default function ReferenceDetailDialog({
                 <div className="md:col-span-1 space-y-4">
                   {/* Category */}
                   <div>
+                    <h3 className="font-semibold mb-2">Category</h3>
                     <Badge 
                       variant="secondary" 
-                      className={`${getCategoryColor(category)} text-white border-none text-base font-semibold px-4 py-2`}
+                      className={`${getCategoryColor(category)} text-white border-none text-lg font-bold px-4 py-2 shadow-md`}
                     >
-                      {category}
+                      {category.toUpperCase()}
                     </Badge>
                   </div>
 
@@ -251,21 +252,21 @@ export default function ReferenceDetailDialog({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-3 pt-4 border-t">
+        <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
           <Button
             variant="outline" 
             size="sm"
-            className={`flex-none ${isLoved ? 'bg-pink-500 hover:bg-pink-600 text-white border-none' : 'hover:text-pink-500 hover:border-pink-500'}`}
+            className={`flex-none w-full sm:w-auto ${isLoved ? 'bg-pink-500 hover:bg-pink-600 text-white border-none' : 'hover:text-pink-500 hover:border-pink-500'}`}
             onClick={handleLoveClick}
             disabled={loveMutation.isPending}
           >
             <Heart className={`h-4 w-4 mr-2 ${isLoved ? 'fill-current' : ''}`} />
-            {localLoveCount}
+            {localLoveCount} Love{localLoveCount !== 1 ? 's' : ''}
           </Button>
           
           <Button 
             variant="default" 
-            className="flex-1"
+            className="flex-1 w-full sm:w-auto"
             onClick={() => window.open(link, '_blank', 'noopener,noreferrer')}
           >
             <ExternalLink className="h-4 w-4 mr-2" />
