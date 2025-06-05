@@ -84,6 +84,8 @@ export default function AddEditReferenceDialog({
   const [tagFilter, setTagFilter] = useState("");
   const [isGeneratingThumbnail, setIsGeneratingThumbnail] = useState(false);
   const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
+  const [thumbnailGenerated, setThumbnailGenerated] = useState(false);
+  const [thumbnailError, setThumbnailError] = useState(false);
 
   const form = useForm<ReferenceFormData>({
     resolver: zodResolver(formSchema),
@@ -109,6 +111,8 @@ export default function AddEditReferenceDialog({
         thumbnail: reference.thumbnail,
       });
       setThumbnailPreview(reference.thumbnail || "");
+      setThumbnailGenerated(true); // Existing references already have thumbnails
+      setThumbnailError(false);
     } else {
       form.reset({
         title: "",
@@ -119,22 +123,41 @@ export default function AddEditReferenceDialog({
         thumbnail: "",
       });
       setThumbnailPreview("");
+      setThumbnailGenerated(false);
+      setThumbnailError(false);
     }
   }, [reference, form]);
+
+  // Auto-generate thumbnail when required fields are filled
+  useEffect(() => {
+    const subscription = form.watch((values) => {
+      // Only auto-generate for new references (not editing)
+      if (!isEditing && values.title && values.link && values.category && !thumbnailGenerated && !isGeneratingThumbnail) {
+        generateThumbnail();
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form, isEditing, thumbnailGenerated, isGeneratingThumbnail]);
 
   // Function to generate thumbnail using the new local system
   const generateThumbnail = async () => {
     const formData = form.getValues();
     if (!formData.link || !formData.title || !formData.category) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in URL, title, and category before generating thumbnail.",
-        variant: "destructive",
-      });
+      if (!isEditing) {
+        // Only show error for manual generation, not auto-generation
+        toast({
+          title: "Missing Information",
+          description: "Please fill in URL, title, and category before generating thumbnail.",
+          variant: "destructive",
+        });
+      }
       return;
     }
 
     setIsGeneratingThumbnail(true);
+    setThumbnailError(false);
+    setThumbnailGenerated(false);
+
     try {
       const response = await apiRequest("POST", "/api/thumbnails/generate", {
         url: formData.link,
@@ -146,13 +169,19 @@ export default function AddEditReferenceDialog({
       if (result.success) {
         setThumbnailPreview(result.thumbnailPath);
         form.setValue("thumbnail", result.thumbnailPath);
+        setThumbnailGenerated(true);
         toast({
           title: "Thumbnail Generated",
           description: `Generated using ${result.method} method.`,
         });
+      } else {
+        throw new Error("Thumbnail generation failed");
       }
     } catch (error) {
       console.error("Thumbnail generation failed:", error);
+      setThumbnailError(true);
+      setThumbnailGenerated(true); // Allow submission even if thumbnail fails
+      
       toast({
         title: "Generation Failed",
         description: "Could not generate thumbnail. The system will create one automatically when saving.",
@@ -228,6 +257,10 @@ export default function AddEditReferenceDialog({
   };
 
   const isLoading = createMutation.isPending || updateMutation.isPending;
+  
+  // Determine if form can be submitted
+  const canSubmit = isEditing || thumbnailGenerated;
+  const submitDisabled = isLoading || isGeneratingThumbnail || (!isEditing && !thumbnailGenerated);
 
   const filteredTags = tags.filter((tag) =>
     tag.name.toLowerCase().includes(tagFilter.toLowerCase())
@@ -261,16 +294,26 @@ export default function AddEditReferenceDialog({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Thumbnail Preview Section */}
-            {(thumbnailPreview || isGeneratingThumbnail) && (
+            {!isEditing && (
               <div className="space-y-2">
                 <FormLabel className="flex items-center gap-2">
                   <Image className="h-4 w-4" />
                   Thumbnail Preview
+                  {isGeneratingThumbnail && (
+                    <span className="text-sm text-muted-foreground">(Generating...)</span>
+                  )}
+                  {thumbnailGenerated && !thumbnailError && (
+                    <span className="text-sm text-green-600">(Ready)</span>
+                  )}
+                  {thumbnailError && (
+                    <span className="text-sm text-orange-600">(Will generate automatically)</span>
+                  )}
                 </FormLabel>
                 <div className="flex items-center gap-3">
                   {isGeneratingThumbnail ? (
-                    <div className="w-40 h-24 bg-muted rounded-lg flex items-center justify-center">
-                      <Loader2 className="h-6 w-6 animate-spin" />
+                    <div className="w-40 h-24 bg-muted rounded-lg flex flex-col items-center justify-center">
+                      <Loader2 className="h-6 w-6 animate-spin mb-2" />
+                      <span className="text-xs text-muted-foreground">Generating thumbnail...</span>
                     </div>
                   ) : thumbnailPreview ? (
                     <img
@@ -278,17 +321,23 @@ export default function AddEditReferenceDialog({
                       alt="Thumbnail preview"
                       className="w-40 h-24 object-cover rounded-lg border"
                     />
-                  ) : null}
+                  ) : (
+                    <div className="w-40 h-24 bg-muted rounded-lg flex items-center justify-center">
+                      <span className="text-xs text-muted-foreground text-center">
+                        Fill in title, URL, and category to generate thumbnail
+                      </span>
+                    </div>
+                  )}
                   <Button
                     type="button"
                     variant="outline"
                     size="sm"
                     onClick={generateThumbnail}
-                    disabled={isGeneratingThumbnail}
+                    disabled={isGeneratingThumbnail || !form.watch("title") || !form.watch("link") || !form.watch("category")}
                     className="flex items-center gap-2"
                   >
                     <RefreshCw className={`h-4 w-4 ${isGeneratingThumbnail ? "animate-spin" : ""}`} />
-                    {isGeneratingThumbnail ? "Generating..." : "Generate Thumbnail"}
+                    {isGeneratingThumbnail ? "Generating..." : "Regenerate"}
                   </Button>
                 </div>
               </div>
@@ -469,15 +518,22 @@ export default function AddEditReferenceDialog({
               </Button>
               <Button
                 type="submit"
-                disabled={isLoading}
+                disabled={submitDisabled}
                 className="flex items-center gap-2"
               >
                 {isLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
+                ) : isGeneratingThumbnail ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   <Save className="h-4 w-4" />
                 )}
-                {isEditing ? "Update Reference" : "Add Reference"}
+                {isLoading 
+                  ? (isEditing ? "Updating..." : "Adding...") 
+                  : isGeneratingThumbnail 
+                    ? "Generating Thumbnail..." 
+                    : (isEditing ? "Update Reference" : "Add Reference")
+                }
               </Button>
             </DialogFooter>
           </form>
