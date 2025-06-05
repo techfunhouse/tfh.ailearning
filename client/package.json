@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "build:github": "VITE_GITHUB_PAGES=true VITE_BASE_PATH=./ VITE_USE_CUSTOM_DOMAIN=true vite build && cp dist/index.html dist/404.html",
+    "build:github": "VITE_GITHUB_PAGES=true VITE_BASE_PATH=./ VITE_USE_CUSTOM_DOMAIN=true vite build --mode production --minify false && cp dist/index.html dist/404.html",
     "preview": "vite preview"
   },
   "dependencies": {

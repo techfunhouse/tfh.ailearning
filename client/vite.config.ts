@@ -23,10 +23,17 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     sourcemap: false,
+    target: 'es2015',
+    minify: false,
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks: undefined,
       },
     },
+  },
+  esbuild: {
+    target: 'es2015',
+    keepNames: true,
   },
 });
