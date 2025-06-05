@@ -128,14 +128,17 @@ export default function ReferenceDetailDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl h-[90vh] flex flex-col p-0">
-        {/* Fixed Header */}
-        <DialogHeader className="px-6 py-4 border-b flex-shrink-0">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
+        <DialogHeader className="pb-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
+              <DialogTitle className="text-2xl font-bold gradient-text line-clamp-1">
+                {title}
+              </DialogTitle>
+              
               {/* Navigation Controls */}
               {allReferences.length > 1 && (
-                <div className="flex items-center gap-2 mr-4">
+                <div className="flex items-center gap-2">
                   <Button
                     variant="outline"
                     size="sm"
@@ -161,128 +164,115 @@ export default function ReferenceDetailDialog({
                   </Button>
                 </div>
               )}
-              
-              <DialogTitle className="text-xl font-semibold line-clamp-2">
-                {title}
-              </DialogTitle>
             </div>
-            
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClose}
-              className="h-8 w-8 p-0"
-            >
-              <X className="h-4 w-4" />
-            </Button>
           </div>
         </DialogHeader>
 
-        {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto">
-          <div className="p-6 space-y-6">
-            {/* Thumbnail and Basic Info */}
-            <div className="flex gap-6">
-              {/* Thumbnail */}
-              <div className="flex-shrink-0">
-                <div className="w-32 h-24 rounded-lg overflow-hidden border bg-muted">
-                  {thumbnail ? (
-                    <img 
-                      src={thumbnail} 
-                      alt={title}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                        target.nextElementSibling?.classList.remove('hidden');
-                      }}
-                    />
-                  ) : null}
-                  <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                    <ExternalLink className="h-8 w-8" />
+        <div className="space-y-6 overflow-y-auto max-h-[calc(90vh-200px)]">
+          {/* Resource Details Card */}
+          <Card>
+            <CardContent className="p-6">
+              <div className="grid md:grid-cols-3 gap-6">
+                {/* Thumbnail */}
+                <div className="md:col-span-1">
+                  <div className="aspect-video rounded-lg overflow-hidden border-2 border-border bg-muted/30">
+                    {thumbnail ? (
+                      <img 
+                        src={thumbnail} 
+                        alt={title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          target.nextElementSibling?.classList.remove('hidden');
+                        }}
+                      />
+                    ) : null}
+                    <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                      <ExternalLink className="h-12 w-12" />
+                    </div>
                   </div>
                 </div>
-              </div>
-              
-              {/* Basic Info */}
-              <div className="flex-1 space-y-3">
-                {/* Category Badge */}
-                <div>
-                  <Badge 
-                    variant="secondary" 
-                    className={`${getCategoryColor(category)} text-white border-none`}
-                  >
-                    {category}
-                  </Badge>
-                </div>
-                
-                {/* Tags */}
-                {tags && tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {tags.map((tag) => (
-                      <Badge 
-                        key={tag} 
-                        variant="outline"
-                        className={`${getTagColor(tag)} border-current`}
-                      >
-                        <Tag className="h-3 w-3 mr-1" />
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-                
-                {/* Meta Info */}
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <User className="h-4 w-4" />
-                    <span>{createdBy}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Calendar className="h-4 w-4" />
-                    <span>{formattedDate}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            {/* Description */}
-            {description && (
-              <Card>
-                <CardContent className="p-4">
-                  <h3 className="font-medium mb-2">Description</h3>
-                  <p className="text-muted-foreground whitespace-pre-wrap leading-relaxed">
-                    {description}
-                  </p>
-                </CardContent>
-              </Card>
-            )}
-          </div>
+                {/* Details */}
+                <div className="md:col-span-2 space-y-4">
+                  {/* Category */}
+                  <div>
+                    <Badge 
+                      variant="secondary" 
+                      className={`${getCategoryColor(category)} text-white border-none text-sm px-3 py-1`}
+                    >
+                      {category}
+                    </Badge>
+                  </div>
+
+                  {/* Description */}
+                  {description && (
+                    <div>
+                      <h3 className="font-semibold mb-2">Description</h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {description}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Tags */}
+                  {tags && tags.length > 0 && (
+                    <div>
+                      <h3 className="font-semibold mb-2">Tags</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {tags.map((tag) => (
+                          <Badge 
+                            key={tag} 
+                            variant="outline"
+                            className={`${getTagColor(tag)} border-current`}
+                          >
+                            <Tag className="h-3 w-3 mr-1" />
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Meta Information */}
+                  <div className="flex items-center gap-6 text-sm text-muted-foreground pt-2 border-t">
+                    <div className="flex items-center gap-2">
+                      <User className="h-4 w-4" />
+                      <span>Created by {createdBy}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      <span>Updated {formattedDate}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Fixed Footer */}
-        <div className="border-t p-6 flex-shrink-0">
-          <div className="flex gap-3">
-            <Button
-              variant="outline" 
-              size="sm"
-              className={`flex-none ${isLoved ? 'bg-pink-500 hover:bg-pink-600 text-white border-none' : 'hover:text-pink-500 hover:border-pink-500'}`}
-              onClick={handleLoveClick}
-              disabled={loveMutation.isPending}
-            >
-              <Heart className={`h-4 w-4 mr-2 ${isLoved ? 'fill-current' : ''}`} />
-              {localLoveCount}
-            </Button>
-            
-            <Button 
-              variant="default" 
-              className="flex-1"
-              onClick={() => window.open(link, '_blank', 'noopener,noreferrer')}
-            >
-              <ExternalLink className="h-4 w-4 mr-2" />
-              Visit Resource
-            </Button>
-          </div>
+        {/* Action Buttons */}
+        <div className="flex gap-3 pt-4 border-t">
+          <Button
+            variant="outline" 
+            size="sm"
+            className={`flex-none ${isLoved ? 'bg-pink-500 hover:bg-pink-600 text-white border-none' : 'hover:text-pink-500 hover:border-pink-500'}`}
+            onClick={handleLoveClick}
+            disabled={loveMutation.isPending}
+          >
+            <Heart className={`h-4 w-4 mr-2 ${isLoved ? 'fill-current' : ''}`} />
+            {localLoveCount}
+          </Button>
+          
+          <Button 
+            variant="default" 
+            className="flex-1"
+            onClick={() => window.open(link, '_blank', 'noopener,noreferrer')}
+          >
+            <ExternalLink className="h-4 w-4 mr-2" />
+            Visit Resource
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
