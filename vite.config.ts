@@ -8,10 +8,11 @@ const __dirname = path.dirname(__filename)
 
 export default defineConfig({
   plugins: [react()],
+  root: path.resolve(__dirname, 'client'),
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './client/src'),
-      '@shared': path.resolve(__dirname, './shared'),
+      '@': path.resolve(__dirname, 'client/src'),
+      '@shared': path.resolve(__dirname, 'shared'),
     },
   },
   server: {
@@ -20,6 +21,6 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: './client/dist',
+    outDir: 'dist',
   },
 })
