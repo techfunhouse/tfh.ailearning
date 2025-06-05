@@ -14,6 +14,7 @@ import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
 import path from "path";
 import fs from "fs";
+import { ThumbnailService } from "./thumbnail-service";
 
 // Storage interface
 export interface IStorage {
@@ -257,11 +258,30 @@ export class JsonDbStorage implements IStorage {
     const id = uuid();
     const now = new Date().toISOString();
     
+    // Generate thumbnail for the new reference
+    let thumbnailPath = reference.thumbnail;
+    try {
+      const thumbnailResult = await ThumbnailService.generateThumbnail(
+        reference.link,
+        reference.title,
+        reference.category
+      );
+      
+      if (thumbnailResult.success) {
+        thumbnailPath = thumbnailResult.thumbnailPath;
+        console.log(`Generated thumbnail using ${thumbnailResult.method} for: ${reference.title}`);
+      }
+    } catch (error) {
+      console.error('Failed to generate thumbnail for new reference:', error);
+      // Keep the original thumbnail URL as fallback
+    }
+    
     const newReference: Reference = {
       ...reference,
       id,
       createdBy,
       loveCount: 0,
+      thumbnail: thumbnailPath,
       createdAt: now,
       updatedAt: now,
     };
@@ -280,9 +300,37 @@ export class JsonDbStorage implements IStorage {
     }
     
     const existingReference = this.referencesDb.data.references[index];
+    
+    // Check if URL changed - if so, regenerate thumbnail
+    let thumbnailPath = reference.thumbnail || existingReference.thumbnail;
+    if (reference.link && reference.link !== existingReference.link) {
+      try {
+        // Delete old thumbnail if it's a local file
+        if (existingReference.thumbnail && existingReference.thumbnail.startsWith('/thumbnails/')) {
+          ThumbnailService.deleteThumbnail(existingReference.thumbnail);
+        }
+        
+        // Generate new thumbnail
+        const thumbnailResult = await ThumbnailService.generateThumbnail(
+          reference.link,
+          reference.title || existingReference.title,
+          reference.category || existingReference.category
+        );
+        
+        if (thumbnailResult.success) {
+          thumbnailPath = thumbnailResult.thumbnailPath;
+          console.log(`Regenerated thumbnail using ${thumbnailResult.method} for: ${existingReference.title}`);
+        }
+      } catch (error) {
+        console.error('Failed to regenerate thumbnail for updated reference:', error);
+        // Keep existing thumbnail as fallback
+      }
+    }
+    
     const updatedReference: Reference = {
       ...existingReference,
       ...reference,
+      thumbnail: thumbnailPath,
       updatedAt: new Date().toISOString(),
     };
     
@@ -293,12 +341,24 @@ export class JsonDbStorage implements IStorage {
   }
 
   async deleteReference(id: string): Promise<boolean> {
+    const referenceToDelete = this.referencesDb.data.references.find(ref => ref.id === id);
+    
+    if (!referenceToDelete) {
+      return false;
+    }
+    
+    // Clean up thumbnail file if it's a local file
+    if (referenceToDelete.thumbnail && referenceToDelete.thumbnail.startsWith('/thumbnails/')) {
+      ThumbnailService.deleteThumbnail(referenceToDelete.thumbnail);
+    }
+    
     const initialLength = this.referencesDb.data.references.length;
     this.referencesDb.data.references = this.referencesDb.data.references.filter(ref => ref.id !== id);
     
     const deleted = initialLength > this.referencesDb.data.references.length;
     if (deleted) {
       this.saveReferenceData();
+      console.log(`Deleted reference and cleaned up thumbnail: ${referenceToDelete.title}`);
     }
     
     return deleted;

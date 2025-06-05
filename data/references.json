@@ -2533,6 +2533,22 @@
       "loveCount": 0,
       "createdAt": "2025-05-10T14:22:15.426Z",
       "updatedAt": "2025-05-10T14:22:41.398Z"
+    },
+    {
+      "title": "Edureka",
+      "link": "https://www.youtube.com/@edurekaIN",
+      "description": "Edureka",
+      "category": "design",
+      "tags": [
+        "security",
+        "javascript"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1590479773265-7464e5d48118",
+      "id": "8f1ac288-4e09-49bd-951e-ea6a85f5012d",
+      "createdBy": "admin",
+      "loveCount": 0,
+      "createdAt": "2025-06-05T11:39:12.779Z",
+      "updatedAt": "2025-06-05T11:39:12.779Z"
     }
   ]
 }
