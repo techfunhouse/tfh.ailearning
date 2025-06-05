@@ -1,21 +1,25 @@
-import * as React from "react";
-import { Reference } from '@/types';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle,
-  DialogDescription
-} from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Heart, ExternalLink, Calendar, User, ChevronLeft, ChevronRight } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
-import { getCategoryColor, getTagColor } from '@/lib/utils';
-import { useAuth } from '@/hooks/useAuth';
+import React from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { apiRequest, queryClient } from '@/lib/queryClient';
-import { useToast } from '@/hooks/use-toast';
+import { formatDistanceToNow } from 'date-fns';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { 
+  ExternalLink, 
+  Heart, 
+  User, 
+  Calendar, 
+  Tag, 
+  ChevronLeft, 
+  ChevronRight,
+  X
+} from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { Reference } from "@/types";
+import { getCategoryColor, getTagColor } from "@/lib/utils";
 
 interface ReferenceDetailDialogProps {
   reference: Reference | null;
@@ -26,7 +30,7 @@ interface ReferenceDetailDialogProps {
 }
 
 export default function ReferenceDetailDialog({ 
-  reference,
+  reference, 
   isOpen, 
   onClose,
   allReferences = [],
@@ -39,31 +43,23 @@ export default function ReferenceDetailDialog({
   
   const isAdmin = user?.isAdmin || false;
   
-  // If no reference is provided, render an empty dialog
-  if (!reference) {
-    return (
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>No Resource Selected</DialogTitle>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-    );
-  }
-  
-  const { id, title, link, description, tags, category, thumbnail, createdBy, updatedAt } = reference;
-  const loveCount = reference.loveCount || 0;
-  
-  // Update local love count when reference changes
+  // Update local state when reference changes
   React.useEffect(() => {
-    setLocalLoveCount(loveCount);
-  }, [loveCount]);
+    if (reference) {
+      setLocalLoveCount(reference.loveCount || 0);
+      // Check if current user has loved this reference
+      setIsLoved(false); // Reset for simplicity
+    }
+  }, [reference]);
   
-  // Navigation logic
-  const currentIndex = allReferences.findIndex(ref => ref.id === id);
+  // Navigation logic - only calculate if reference exists
+  const currentIndex = React.useMemo(() => {
+    if (!reference || !allReferences.length) return -1;
+    return allReferences.findIndex(ref => ref.id === reference.id);
+  }, [reference, allReferences]);
+  
   const hasPrevious = currentIndex > 0;
-  const hasNext = currentIndex < allReferences.length - 1;
+  const hasNext = currentIndex >= 0 && currentIndex < allReferences.length - 1;
   
   const handlePrevious = () => {
     if (hasPrevious && onNavigate) {
@@ -77,31 +73,34 @@ export default function ReferenceDetailDialog({
     }
   };
   
-  // Format the date
-  const formattedDate = formatDistanceToNow(new Date(updatedAt), { addSuffix: true });
-  
   // Love mutation
   const loveMutation = useMutation({
     mutationFn: async () => {
-      const response = await apiRequest('POST', `/api/references/${id}/love`);
+      if (!reference) throw new Error('No reference selected');
+      const response = await apiRequest('POST', `/api/references/${reference.id}/love`);
       return response.json();
     },
     onSuccess: (data) => {
-      // Update local state with defaults in case data is incomplete
-      const responseLovedBy = data.lovedBy || [];
       const responseLoveCount = data.loveCount || 0;
-      
-      setIsLoved(user ? responseLovedBy.includes(user.id) : false);
       setLocalLoveCount(responseLoveCount);
+      setIsLoved(!isLoved);
       
-      // Invalidate cache to update references
+      toast({
+        title: isLoved ? "Removed from favorites" : "Added to favorites",
+        description: isLoved 
+          ? "Resource removed from your favorites" 
+          : "Resource added to your favorites",
+      });
+      
+      // Invalidate and refetch references
       queryClient.invalidateQueries({ queryKey: ['/api/references'] });
     },
     onError: (error) => {
+      console.error('Error toggling love:', error);
       toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: `Failed to update love status: ${error}`
+        title: "Error",
+        description: "Failed to update favorites. Please try again.",
+        variant: "destructive",
       });
     }
   });
@@ -109,9 +108,9 @@ export default function ReferenceDetailDialog({
   const handleLoveClick = () => {
     if (!user) {
       toast({
-        variant: 'destructive',
-        title: 'Authentication Required',
-        description: 'Please login to love references'
+        title: "Authentication Required",
+        description: "Please log in to add resources to favorites.",
+        variant: "destructive",
       });
       return;
     }
@@ -119,97 +118,160 @@ export default function ReferenceDetailDialog({
     loveMutation.mutate();
   };
 
+  // If no reference is provided, don't render anything
+  if (!reference) {
+    return null;
+  }
+
+  const { id, title, link, description, tags, category, thumbnail, createdBy, updatedAt } = reference;
+  const formattedDate = formatDistanceToNow(new Date(updatedAt), { addSuffix: true });
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl h-[90vh] flex flex-col p-0">
         {/* Fixed Header */}
         <DialogHeader className="px-6 py-4 border-b flex-shrink-0">
-          <div className="flex items-center gap-2 mb-2">
-            <Badge variant="outline" className={`${getCategoryColor(category)}`}>
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-            </Badge>
-            
-            {/* Navigation buttons */}
-            {allReferences.length > 1 && (
-              <div className="flex items-center gap-1 ml-auto">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handlePrevious}
-                  disabled={!hasPrevious}
-                  className="h-8 w-8 p-0"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-                <span className="text-xs text-muted-foreground px-2">
-                  {currentIndex + 1} of {allReferences.length}
-                </span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleNext}
-                  disabled={!hasNext}
-                  className="h-8 w-8 p-0"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-            )}
-            
-            {isAdmin && (
-              <div className="flex gap-1 text-xs text-muted-foreground ml-auto">
-                <div className="flex items-center">
-                  <Calendar className="h-3 w-3 mr-1" />
-                  <span>{formattedDate}</span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {/* Navigation Controls */}
+              {allReferences.length > 1 && (
+                <div className="flex items-center gap-2 mr-4">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handlePrevious}
+                    disabled={!hasPrevious}
+                    className="h-8 w-8 p-0"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  
+                  <span className="text-sm text-muted-foreground px-2">
+                    {currentIndex + 1} of {allReferences.length}
+                  </span>
+                  
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleNext}
+                    disabled={!hasNext}
+                    className="h-8 w-8 p-0"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
                 </div>
-                <div className="flex items-center ml-3">
-                  <User className="h-3 w-3 mr-1" />
-                  <span>{createdBy}</span>
-                </div>
-              </div>
-            )}
+              )}
+              
+              <DialogTitle className="text-xl font-semibold line-clamp-2">
+                {title}
+              </DialogTitle>
+            </div>
+            
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              className="h-8 w-8 p-0"
+            >
+              <X className="h-4 w-4" />
+            </Button>
           </div>
-          <DialogTitle className="text-2xl font-bold">{title}</DialogTitle>
         </DialogHeader>
-        
+
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto px-6 py-4">
-          <div className="relative h-64 md:h-80 mb-6 rounded-lg overflow-hidden">
-            <img 
-              src={thumbnail} 
-              alt={title} 
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                // Fallback if image fails to load
-                e.currentTarget.src = `https://via.placeholder.com/1200x600?text=${encodeURIComponent(title)}`;
-              }}
-            />
-          </div>
-          
-          <DialogDescription className="text-base text-foreground whitespace-pre-line mb-6">
-            {description}
-          </DialogDescription>
-          
-          <div className="flex flex-wrap gap-2 mb-6">
-            {tags.map((tag, index) => (
-              <Badge key={`${id}-detail-tag-${index}`} variant="secondary" className={getTagColor(tag)}>
-                {tag}
-              </Badge>
-            ))}
+        <div className="flex-1 overflow-y-auto">
+          <div className="p-6 space-y-6">
+            {/* Thumbnail and Basic Info */}
+            <div className="flex gap-6">
+              {/* Thumbnail */}
+              <div className="flex-shrink-0">
+                <div className="w-32 h-24 rounded-lg overflow-hidden border bg-muted">
+                  {thumbnail ? (
+                    <img 
+                      src={thumbnail} 
+                      alt={title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        target.nextElementSibling?.classList.remove('hidden');
+                      }}
+                    />
+                  ) : null}
+                  <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                    <ExternalLink className="h-8 w-8" />
+                  </div>
+                </div>
+              </div>
+              
+              {/* Basic Info */}
+              <div className="flex-1 space-y-3">
+                {/* Category Badge */}
+                <div>
+                  <Badge 
+                    variant="secondary" 
+                    className={`${getCategoryColor(category)} text-white border-none`}
+                  >
+                    {category}
+                  </Badge>
+                </div>
+                
+                {/* Tags */}
+                {tags && tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {tags.map((tag) => (
+                      <Badge 
+                        key={tag} 
+                        variant="outline"
+                        className={`${getTagColor(tag)} border-current`}
+                      >
+                        <Tag className="h-3 w-3 mr-1" />
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+                
+                {/* Meta Info */}
+                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <User className="h-4 w-4" />
+                    <span>{createdBy}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Calendar className="h-4 w-4" />
+                    <span>{formattedDate}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Description */}
+            {description && (
+              <Card>
+                <CardContent className="p-4">
+                  <h3 className="font-medium mb-2">Description</h3>
+                  <p className="text-muted-foreground whitespace-pre-wrap leading-relaxed">
+                    {description}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
-        
+
         {/* Fixed Footer */}
-        <div className="px-6 py-4 border-t flex-shrink-0">
-          <div className="flex gap-4">
+        <div className="border-t p-6 flex-shrink-0">
+          <div className="flex gap-3">
             <Button
-              variant={isLoved ? "default" : "outline"}
-              className={`${isLoved ? 'bg-pink-500 hover:bg-pink-600 text-white border-none' : 'hover:text-pink-500 hover:border-pink-500'}`}
+              variant="outline" 
+              size="sm"
+              className={`flex-none ${isLoved ? 'bg-pink-500 hover:bg-pink-600 text-white border-none' : 'hover:text-pink-500 hover:border-pink-500'}`}
               onClick={handleLoveClick}
               disabled={loveMutation.isPending}
             >
               <Heart className={`h-4 w-4 mr-2 ${isLoved ? 'fill-current' : ''}`} />
-              <span>{localLoveCount} {localLoveCount === 1 ? 'Love' : 'Loves'}</span>
+              {localLoveCount}
             </Button>
             
             <Button 
