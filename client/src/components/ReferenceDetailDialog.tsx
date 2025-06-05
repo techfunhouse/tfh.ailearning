@@ -129,9 +129,9 @@ export default function ReferenceDetailDialog({
               {title}
             </DialogTitle>
             
-            {/* Navigation Controls - top right */}
+            {/* Navigation Controls - top right with margin to avoid close button */}
             {allReferences.length > 1 && (
-              <div className="flex items-center gap-2 flex-shrink-0">
+              <div className="flex items-center gap-2 flex-shrink-0 mr-8">
                 <Button
                   variant="outline"
                   size="sm"
