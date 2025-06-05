@@ -47,7 +47,10 @@ export default function Header({ onSearch }: HeaderProps) {
           <div className="icon-container h-9 w-9">
             <BookOpen className="h-5 w-5 text-primary" />
           </div>
-          <h1 className="text-xl font-bold gradient-text hidden sm:inline-block">AI Learning Resources</h1>
+          <h1 className="text-lg sm:text-xl font-bold gradient-text">
+            <span className="hidden sm:inline">AI Learning Resources</span>
+            <span className="sm:hidden">AI Resources</span>
+          </h1>
         </div>
         
         {/* Desktop search bar */}

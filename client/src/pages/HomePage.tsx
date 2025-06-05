@@ -538,10 +538,10 @@ export default function HomePage() {
                 </div>
               )}
               
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-                <div>
-                  <h1 className="text-2xl font-bold mb-1">Learning Sources</h1>
-                  <p className="text-muted-foreground">
+              <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4">
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-xl sm:text-2xl font-bold mb-1">Learning Sources</h1>
+                  <p className="text-sm sm:text-base text-muted-foreground">
                     {filteredReferences.length} references available
                     {(selectedCategories.length > 0 &&
                       !selectedCategories.includes("all")) ||
@@ -552,23 +552,25 @@ export default function HomePage() {
                 </div>
 
                 {isAdmin && (
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                     <Button
                       onClick={handleDownloadDataset}
                       variant="outline"
-                      className="flex items-center gap-1 shadow-sm"
+                      className="flex items-center justify-center gap-1 shadow-sm w-full sm:w-auto"
                       size="sm"
                     >
                       <Save className="h-4 w-4" />
-                      Download Dataset
+                      <span className="hidden xs:inline">Download Dataset</span>
+                      <span className="xs:hidden">Download</span>
                     </Button>
                     <Button
                       onClick={handleAddReference}
-                      className="flex items-center gap-1 shadow-sm"
+                      className="flex items-center justify-center gap-1 shadow-sm w-full sm:w-auto"
                       size="sm"
                     >
                       <PlusIcon className="h-4 w-4" />
-                      Add Reference
+                      <span className="hidden xs:inline">Add Reference</span>
+                      <span className="xs:hidden">Add</span>
                     </Button>
                   </div>
                 )}
@@ -677,7 +679,7 @@ export default function HomePage() {
             </div>
 
             {loadingReferences ? (
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
                 {[1, 2, 3, 4, 5, 6].map((item) => (
                   <Card
                     key={item}
@@ -694,7 +696,7 @@ export default function HomePage() {
             ) : (
               <>
                 {filteredReferences.length > 0 ? (
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
                     {displayReferences.map((reference) => (
                       <ReferenceCard
                         key={reference.id}

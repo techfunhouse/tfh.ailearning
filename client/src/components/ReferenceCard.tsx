@@ -183,43 +183,43 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete }: 
           </div>
         </div>
         
-        <CardContent className="flex-1 p-4">
-          <h3 className="text-lg font-semibold mb-2">{title}</h3>
-          <p className="text-sm text-muted-foreground line-clamp-2 mb-4">{description}</p>
+        <CardContent className="flex-1 p-3 sm:p-4">
+          <h3 className="text-base sm:text-lg font-semibold mb-2 line-clamp-2">{title}</h3>
+          <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-3 sm:mb-4">{description}</p>
           
           <div className="flex flex-wrap gap-1 mb-3">
             {tags.slice(0, 3).map((tag, index) => (
-              <Badge key={`${id}-tag-${index}`} variant="secondary" className={getTagColor(tag)}>
+              <Badge key={`${id}-tag-${index}`} variant="secondary" className={`text-xs ${getTagColor(tag)}`}>
                 {tag}
               </Badge>
             ))}
             {tags.length > 3 && (
-              <Badge variant="outline" className="text-muted-foreground border-muted">
+              <Badge variant="outline" className="text-xs text-muted-foreground border-muted">
                 +{tags.length - 3} more
               </Badge>
             )}
           </div>
         </CardContent>
         
-        <CardFooter className="bg-muted/30 p-3 flex flex-col space-y-2 border-t">
+        <CardFooter className="bg-muted/30 p-2 sm:p-3 flex flex-col space-y-2 border-t">
           {isAdmin && (
-            <div className="flex justify-between items-center w-full">
+            <div className="flex flex-col xs:flex-row justify-between items-start xs:items-center w-full gap-1 xs:gap-0">
               <div className="flex items-center text-xs text-muted-foreground">
                 <Calendar className="h-3 w-3 mr-1" />
-                <span>{formattedDate}</span>
+                <span className="truncate">{formattedDate}</span>
               </div>
               <div className="flex items-center text-xs text-muted-foreground">
                 <User className="h-3 w-3 mr-1" />
-                <span>{createdBy}</span>
+                <span className="truncate">{createdBy}</span>
               </div>
             </div>
           )}
           
-          <div className="flex gap-2 items-center">
+          <div className="flex flex-col xs:flex-row gap-2 items-stretch xs:items-center">
             <Button
               variant={isLoved ? "default" : "outline"}
               size="sm"
-              className={`flex-none ${isLoved ? 'bg-pink-500 hover:bg-pink-600 text-white border-none' : 'hover:text-pink-500 hover:border-pink-500'}`}
+              className={`flex-none justify-center xs:justify-start ${isLoved ? 'bg-pink-500 hover:bg-pink-600 text-white border-none' : 'hover:text-pink-500 hover:border-pink-500'}`}
               onClick={handleLoveClick}
               disabled={loveMutation.isPending}
               title={isLoved ? "Unlike" : "Love this reference"}
@@ -231,11 +231,12 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete }: 
             <Button 
               variant="outline" 
               size="sm" 
-              className="flex-1"
+              className="flex-1 justify-center xs:justify-start"
               onClick={handleExternalLinkClick}
             >
               <ExternalLink className="h-3 w-3 mr-1" />
-              View Reference
+              <span className="hidden xs:inline">View Reference</span>
+              <span className="xs:hidden">View</span>
             </Button>
           </div>
         </CardFooter>

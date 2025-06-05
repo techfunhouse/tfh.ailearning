@@ -32,7 +32,7 @@ const isCustomDomain = () => {
 };
 
 // Help debug GitHub Pages deployment
-console.log('RefHub App Starting:');
+console.log('AI Learning Resources App Starting:');
 console.log('- Environment mode:', import.meta.env.MODE);
 console.log('- GitHub Pages mode:', import.meta.env.VITE_GITHUB_PAGES ? 'Yes' : 'No');
 console.log('- Custom domain:', isCustomDomain() ? 'Yes' : 'No');
