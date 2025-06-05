@@ -188,7 +188,7 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
         
         <CardContent className="flex-1 p-3 sm:p-4">
           <h3 className="text-base sm:text-lg font-semibold mb-2 line-clamp-2">{title}</h3>
-          <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-3 sm:mb-4">{description}</p>
+          <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-3 sm:mb-4 whitespace-pre-line">{description}</p>
           
           <div className="flex flex-wrap gap-1 mb-3">
             {tags.slice(0, 3).map((tag, index) => (
