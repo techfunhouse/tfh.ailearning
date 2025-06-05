@@ -193,9 +193,13 @@ export default function AddEditReferenceDialog({
       tags: parseTagsFromInput(tagInput),
     };
 
+    console.log('Submitting form data:', processedData);
+    
     if (isEditing) {
+      console.log('Updating reference:', reference?.id);
       updateMutation.mutate(processedData);
     } else {
+      console.log('Creating new reference');
       createMutation.mutate(processedData);
     }
   };

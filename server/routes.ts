@@ -192,15 +192,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/references/:id", isAuthenticated, isAdmin, async (req, res) => {
+  app.patch("/api/references/:id", isAuthenticated, isAdmin, async (req, res) => {
     try {
       const { id } = req.params;
+      console.log(`PATCH request for reference ${id}:`, req.body);
       
       // Partial validation for update
       const updateSchema = insertReferenceSchema.partial();
       const validationResult = updateSchema.safeParse(req.body);
       
       if (!validationResult.success) {
+        console.error("Validation failed:", validationResult.error.errors);
         return res.status(400).json({ 
           message: "Invalid reference data",
           errors: validationResult.error.errors
@@ -208,13 +210,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       const referenceData = validationResult.data;
+      console.log("Validated reference data:", referenceData);
       
       const updatedReference = await storage.updateReference(id, referenceData);
       
       if (!updatedReference) {
+        console.log(`Reference ${id} not found`);
         return res.status(404).json({ message: "Reference not found" });
       }
       
+      console.log("Returning updated reference:", updatedReference);
       return res.status(200).json(updatedReference);
     } catch (error) {
       console.error("Error updating reference:", error);
