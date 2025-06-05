@@ -136,21 +136,19 @@ export default function AddEditReferenceDialog({
 
     setIsGeneratingThumbnail(true);
     try {
-      const response = await apiRequest("/api/thumbnails/generate", {
-        method: "POST",
-        body: JSON.stringify({
-          url: formData.link,
-          title: formData.title,
-          category: formData.category,
-        }),
+      const response = await apiRequest("POST", "/api/thumbnails/generate", {
+        url: formData.link,
+        title: formData.title,
+        category: formData.category,
       });
 
-      if (response.success) {
-        setThumbnailPreview(response.thumbnailPath);
-        form.setValue("thumbnail", response.thumbnailPath);
+      const result = await response.json();
+      if (result.success) {
+        setThumbnailPreview(result.thumbnailPath);
+        form.setValue("thumbnail", result.thumbnailPath);
         toast({
           title: "Thumbnail Generated",
-          description: `Generated using ${response.method} method.`,
+          description: `Generated using ${result.method} method.`,
         });
       }
     } catch (error) {
@@ -167,10 +165,7 @@ export default function AddEditReferenceDialog({
 
   const createMutation = useMutation({
     mutationFn: async (data: ReferenceFormData) => {
-      return await apiRequest("/api/references", {
-        method: "POST",
-        body: JSON.stringify(data),
-      });
+      return await apiRequest("POST", "/api/references", data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/references"] });
@@ -193,10 +188,7 @@ export default function AddEditReferenceDialog({
 
   const updateMutation = useMutation({
     mutationFn: async (data: ReferenceFormData) => {
-      return await apiRequest(`/api/references/${reference?.id}`, {
-        method: "PATCH",
-        body: JSON.stringify(data),
-      });
+      return await apiRequest("PATCH", `/api/references/${reference?.id}`, data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/references"] });
