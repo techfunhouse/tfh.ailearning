@@ -227,6 +227,7 @@ export class JsonDbStorage implements IStorage {
 
   private saveReferenceData(): void {
     this.referencesDb.write();
+    console.log('Reference data saved to file');
   }
 
   private saveCategoryData(): void {
@@ -357,6 +358,7 @@ export class JsonDbStorage implements IStorage {
     const updatedReference: Reference = {
       ...existingReference,
       ...reference,
+      id: existingReference.id,
       thumbnail: thumbnailPath,
       updatedAt: new Date().toISOString(),
     };
@@ -364,6 +366,11 @@ export class JsonDbStorage implements IStorage {
     this.referencesDb.data.references[index] = updatedReference;
     this.saveReferenceData();
     
+    console.log(`Updated reference: ${id}`, { 
+      title: updatedReference.title, 
+      description: updatedReference.description?.substring(0, 50) + '...',
+      updatedAt: updatedReference.updatedAt 
+    });
     return updatedReference;
   }
 

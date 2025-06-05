@@ -166,8 +166,9 @@ export default function AddEditReferenceDialog({
     mutationFn: async (data: ReferenceFormData) => {
       return await apiRequest("PATCH", `/api/references/${reference!.id}`, data);
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["/api/references"] });
+      queryClient.refetchQueries({ queryKey: ["/api/references"] });
       onClose();
       form.reset();
       setTagInput("");
@@ -175,6 +176,7 @@ export default function AddEditReferenceDialog({
         title: "Reference Updated",
         description: "Reference has been updated successfully. Thumbnail will be regenerated if URL changed.",
       });
+      console.log('Reference updated successfully:', data);
     },
     onError: (error: any) => {
       toast({
