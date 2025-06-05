@@ -103,7 +103,7 @@ export class StaticDataLoader {
         const altResponse = await fetch('./data/tags.json');
         if (altResponse.ok) {
           const altData = await altResponse.json();
-          const altTags: Tag[] = Array.isArray(altData) ? altData : (altData?.tags || []);
+          const altTags: Tag[] = Array.isArray(altData) ? altData : (altData?.tags ?? []);
           this.cache.tags = altTags;
           return this.cache.tags;
         }
