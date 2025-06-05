@@ -38,8 +38,6 @@ import { Reference, Category, Tag, ReferenceFormData } from "@/types";
 import { apiRequest } from "@/lib/queryClient";
 import { queryClient } from "@/lib/queryClient";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { getTagColor } from "@/lib/utils";
 import {
   BookmarkPlus,
   Link as LinkIcon,
@@ -48,8 +46,6 @@ import {
   Tag as TagIcon,
   Image,
   FileText,
-  Check,
-  AlertCircle,
   RefreshCw,
 } from "lucide-react";
 
@@ -78,10 +74,10 @@ export default function AddEditReferenceDialog({
   onClose,
 }: AddEditReferenceDialogProps) {
   const { toast } = useToast();
-  const { user, isAdmin } = useAuth();
+  const { user } = useAuth();
   const [, navigate] = useLocation();
   const isEditing = !!reference;
-  const [tagFilter, setTagFilter] = useState("");
+  const [tagInput, setTagInput] = useState("");
   const [isGeneratingThumbnail, setIsGeneratingThumbnail] = useState(false);
   const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
   const [thumbnailGenerated, setThumbnailGenerated] = useState(false);
@@ -111,8 +107,9 @@ export default function AddEditReferenceDialog({
         thumbnail: reference.thumbnail,
       });
       setThumbnailPreview(reference.thumbnail || "");
-      setThumbnailGenerated(true); // Existing references already have thumbnails
+      setThumbnailGenerated(true);
       setThumbnailError(false);
+      setTagInput(reference.tags.join(", "));
     } else {
       form.reset({
         title: "",
@@ -125,13 +122,13 @@ export default function AddEditReferenceDialog({
       setThumbnailPreview("");
       setThumbnailGenerated(false);
       setThumbnailError(false);
+      setTagInput("");
     }
   }, [reference, form]);
 
   // Auto-generate thumbnail when required fields are filled
   useEffect(() => {
     const subscription = form.watch((values) => {
-      // Only auto-generate for new references (not editing)
       if (!isEditing && values.title && values.link && values.category && !thumbnailGenerated && !isGeneratingThumbnail) {
         generateThumbnail();
       }
@@ -139,18 +136,39 @@ export default function AddEditReferenceDialog({
     return () => subscription.unsubscribe();
   }, [form, isEditing, thumbnailGenerated, isGeneratingThumbnail]);
 
-  // Function to generate thumbnail using the new local system
+  // Parse tags from comma-separated input
+  const parseTagsFromInput = (input: string): string[] => {
+    return input
+      .split(',')
+      .map(tag => tag.trim())
+      .filter(tag => tag.length > 0);
+  };
+
+  // Handle tag input changes
+  const handleTagInputChange = (value: string) => {
+    setTagInput(value);
+    const parsedTags = parseTagsFromInput(value);
+    form.setValue("tags", parsedTags);
+  };
+
+  // Get tag suggestions for autocomplete
+  const getTagSuggestions = () => {
+    if (!tagInput) return [];
+    const currentTags = parseTagsFromInput(tagInput);
+    const lastTag = currentTags[currentTags.length - 1] || '';
+    
+    return tags
+      .filter(tag => 
+        tag.name.toLowerCase().includes(lastTag.toLowerCase()) &&
+        !currentTags.includes(tag.name)
+      )
+      .slice(0, 5);
+  };
+
+  // Function to generate thumbnail
   const generateThumbnail = async () => {
     const formData = form.getValues();
     if (!formData.link || !formData.title || !formData.category) {
-      if (!isEditing) {
-        // Only show error for manual generation, not auto-generation
-        toast({
-          title: "Missing Information",
-          description: "Please fill in URL, title, and category before generating thumbnail.",
-          variant: "destructive",
-        });
-      }
       return;
     }
 
@@ -180,7 +198,7 @@ export default function AddEditReferenceDialog({
     } catch (error) {
       console.error("Thumbnail generation failed:", error);
       setThumbnailError(true);
-      setThumbnailGenerated(true); // Allow submission even if thumbnail fails
+      setThumbnailGenerated(true);
       
       toast({
         title: "Generation Failed",
@@ -257,29 +275,15 @@ export default function AddEditReferenceDialog({
   };
 
   const isLoading = createMutation.isPending || updateMutation.isPending;
-  
-  // Determine if form can be submitted
-  const canSubmit = isEditing || thumbnailGenerated;
   const submitDisabled = isLoading || isGeneratingThumbnail || (!isEditing && !thumbnailGenerated);
 
-  const filteredTags = tags.filter((tag) =>
-    tag.name.toLowerCase().includes(tagFilter.toLowerCase())
-  );
-
-  const selectedTags = form.watch("tags") || [];
-
-  const toggleTag = (tagName: string) => {
-    const currentTags = form.getValues("tags") || [];
-    const newTags = currentTags.includes(tagName)
-      ? currentTags.filter((t) => t !== tagName)
-      : [...currentTags, tagName];
-    form.setValue("tags", newTags);
-  };
+  const tagSuggestions = getTagSuggestions();
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-[600px] h-[90vh] flex flex-col">
+        {/* Fixed Header */}
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle className="flex items-center gap-2">
             <BookmarkPlus className="h-5 w-5" />
             {isEditing ? "Edit Reference" : "Add New Reference"}
@@ -291,253 +295,255 @@ export default function AddEditReferenceDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Thumbnail Preview Section */}
-            {!isEditing && (
-              <div className="space-y-2">
-                <FormLabel className="flex items-center gap-2">
-                  <Image className="h-4 w-4" />
-                  Thumbnail Preview
-                  {isGeneratingThumbnail && (
-                    <span className="text-sm text-muted-foreground">(Generating...)</span>
-                  )}
-                  {thumbnailGenerated && !thumbnailError && (
-                    <span className="text-sm text-green-600">(Ready)</span>
-                  )}
-                  {thumbnailError && (
-                    <span className="text-sm text-orange-600">(Will generate automatically)</span>
-                  )}
-                </FormLabel>
-                <div className="flex items-center gap-3">
-                  {isGeneratingThumbnail ? (
-                    <div className="w-40 h-24 bg-muted rounded-lg flex flex-col items-center justify-center">
-                      <Loader2 className="h-6 w-6 animate-spin mb-2" />
-                      <span className="text-xs text-muted-foreground">Generating thumbnail...</span>
-                    </div>
-                  ) : thumbnailPreview ? (
-                    <img
-                      src={thumbnailPreview}
-                      alt="Thumbnail preview"
-                      className="w-40 h-24 object-cover rounded-lg border"
-                    />
-                  ) : (
-                    <div className="w-40 h-24 bg-muted rounded-lg flex items-center justify-center">
-                      <span className="text-xs text-muted-foreground text-center">
-                        Fill in title, URL, and category to generate thumbnail
-                      </span>
-                    </div>
-                  )}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={generateThumbnail}
-                    disabled={isGeneratingThumbnail || !form.watch("title") || !form.watch("link") || !form.watch("category")}
-                    className="flex items-center gap-2"
-                  >
-                    <RefreshCw className={`h-4 w-4 ${isGeneratingThumbnail ? "animate-spin" : ""}`} />
-                    {isGeneratingThumbnail ? "Generating..." : "Regenerate"}
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {/* Title Field */}
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center gap-2">
-                    <FileText className="h-4 w-4" />
-                    Title
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter reference title"
-                      {...field}
-                      disabled={isLoading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Link Field */}
-            <FormField
-              control={form.control}
-              name="link"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center gap-2">
-                    <LinkIcon className="h-4 w-4" />
-                    URL
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="https://example.com"
-                      {...field}
-                      disabled={isLoading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Description Field */}
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Describe this reference..."
-                      className="min-h-[100px]"
-                      {...field}
-                      disabled={isLoading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Category Field */}
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    disabled={isLoading}
-                  >
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto px-1">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              {/* Title Field */}
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <FileText className="h-4 w-4" />
+                      Title
+                    </FormLabel>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a category" />
-                      </SelectTrigger>
+                      <Input
+                        placeholder="Enter reference title"
+                        {...field}
+                        disabled={isLoading}
+                      />
                     </FormControl>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.name}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            {/* Tags Field */}
-            <FormField
-              control={form.control}
-              name="tags"
-              render={() => (
-                <FormItem>
+              {/* Link Field */}
+              <FormField
+                control={form.control}
+                name="link"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <LinkIcon className="h-4 w-4" />
+                      URL
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="https://example.com"
+                        {...field}
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Thumbnail Preview Section - Moved after URL */}
+              {!isEditing && (
+                <div className="space-y-2">
                   <FormLabel className="flex items-center gap-2">
-                    <TagIcon className="h-4 w-4" />
-                    Tags
+                    <Image className="h-4 w-4" />
+                    Thumbnail Preview
+                    {isGeneratingThumbnail && (
+                      <span className="text-sm text-muted-foreground">(Generating...)</span>
+                    )}
+                    {thumbnailGenerated && !thumbnailError && (
+                      <span className="text-sm text-green-600">(Ready)</span>
+                    )}
+                    {thumbnailError && (
+                      <span className="text-sm text-orange-600">(Will generate automatically)</span>
+                    )}
                   </FormLabel>
-                  <FormDescription>
-                    Search and select tags for this reference.
-                  </FormDescription>
-                  <div className="space-y-3">
-                    {/* Selected Tags */}
-                    {selectedTags.length > 0 && (
-                      <div className="flex flex-wrap gap-2">
-                        {selectedTags.map((tagName) => (
-                          <Badge
-                            key={tagName}
-                            variant="secondary"
-                            className="cursor-pointer hover:bg-destructive hover:text-destructive-foreground"
-                            style={{ backgroundColor: getTagColor(tagName) }}
-                            onClick={() => toggleTag(tagName)}
-                          >
-                            {tagName}
-                            <Check className="ml-1 h-3 w-3" />
-                          </Badge>
-                        ))}
+                  <div className="flex items-center gap-3">
+                    {isGeneratingThumbnail ? (
+                      <div className="w-40 h-24 bg-muted rounded-lg flex flex-col items-center justify-center">
+                        <Loader2 className="h-6 w-6 animate-spin mb-2" />
+                        <span className="text-xs text-muted-foreground">Generating thumbnail...</span>
+                      </div>
+                    ) : thumbnailPreview ? (
+                      <img
+                        src={thumbnailPreview}
+                        alt="Thumbnail preview"
+                        className="w-40 h-24 object-cover rounded-lg border"
+                      />
+                    ) : (
+                      <div className="w-40 h-24 bg-muted rounded-lg flex items-center justify-center">
+                        <span className="text-xs text-muted-foreground text-center">
+                          Fill in title, URL, and category to generate thumbnail
+                        </span>
                       </div>
                     )}
-
-                    {/* Tag Search */}
-                    <Input
-                      placeholder="Search tags..."
-                      value={tagFilter}
-                      onChange={(e) => setTagFilter(e.target.value)}
-                      disabled={isLoading}
-                    />
-
-                    {/* Available Tags */}
-                    <ScrollArea className="h-32 w-full border rounded-md p-2">
-                      <div className="flex flex-wrap gap-2">
-                        {filteredTags.map((tag) => {
-                          const isSelected = selectedTags.includes(tag.name);
-                          return (
-                            <Badge
-                              key={tag.id}
-                              variant={isSelected ? "default" : "outline"}
-                              className="cursor-pointer"
-                              style={
-                                isSelected
-                                  ? { backgroundColor: getTagColor(tag.name) }
-                                  : {}
-                              }
-                              onClick={() => toggleTag(tag.name)}
-                            >
-                              {tag.name}
-                              {isSelected && <Check className="ml-1 h-3 w-3" />}
-                            </Badge>
-                          );
-                        })}
-                      </div>
-                    </ScrollArea>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={generateThumbnail}
+                      disabled={isGeneratingThumbnail || !form.watch("title") || !form.watch("link") || !form.watch("category")}
+                      className="flex items-center gap-2"
+                    >
+                      <RefreshCw className={`h-4 w-4 ${isGeneratingThumbnail ? "animate-spin" : ""}`} />
+                      {isGeneratingThumbnail ? "Generating..." : "Regenerate"}
+                    </Button>
                   </div>
-                  <FormMessage />
-                </FormItem>
+                </div>
               )}
-            />
 
-            <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onClose}
-                disabled={isLoading}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                disabled={submitDisabled}
-                className="flex items-center gap-2"
-              >
-                {isLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : isGeneratingThumbnail ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <Save className="h-4 w-4" />
+              {/* Description Field */}
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Describe this reference..."
+                        className="min-h-[100px]"
+                        {...field}
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-                {isLoading 
-                  ? (isEditing ? "Updating..." : "Adding...") 
-                  : isGeneratingThumbnail 
-                    ? "Generating Thumbnail..." 
-                    : (isEditing ? "Update Reference" : "Add Reference")
-                }
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+              />
+
+              {/* Category Field */}
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      disabled={isLoading}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a category" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {categories.map((category) => (
+                          <SelectItem key={category.id} value={category.name}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Tags Field - Free Flow with Autocomplete */}
+              <FormField
+                control={form.control}
+                name="tags"
+                render={() => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <TagIcon className="h-4 w-4" />
+                      Tags
+                    </FormLabel>
+                    <FormDescription>
+                      Enter tags separated by commas. New tags will be created automatically.
+                    </FormDescription>
+                    <div className="space-y-3">
+                      {/* Tag Input */}
+                      <FormControl>
+                        <Input
+                          placeholder="Enter tags separated by commas (e.g., react, javascript, tutorial)"
+                          value={tagInput}
+                          onChange={(e) => handleTagInputChange(e.target.value)}
+                          disabled={isLoading}
+                        />
+                      </FormControl>
+
+                      {/* Tag Suggestions */}
+                      {tagSuggestions.length > 0 && (
+                        <div className="space-y-2">
+                          <div className="text-sm text-muted-foreground">Suggestions:</div>
+                          <div className="flex flex-wrap gap-2">
+                            {tagSuggestions.map((tag) => (
+                              <Badge
+                                key={tag.id}
+                                variant="outline"
+                                className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                                onClick={() => {
+                                  const currentTags = parseTagsFromInput(tagInput);
+                                  currentTags[currentTags.length - 1] = tag.name;
+                                  const newInput = currentTags.join(", ");
+                                  handleTagInputChange(newInput);
+                                }}
+                              >
+                                {tag.name}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Current Tags Preview */}
+                      {tagInput && (
+                        <div className="space-y-2">
+                          <div className="text-sm text-muted-foreground">Current tags:</div>
+                          <div className="flex flex-wrap gap-2">
+                            {parseTagsFromInput(tagInput).map((tag, index) => (
+                              <Badge key={index} variant="secondary">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </form>
+          </Form>
+        </div>
+
+        {/* Fixed Footer */}
+        <DialogFooter className="flex-shrink-0">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onClose}
+            disabled={isLoading}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            disabled={submitDisabled}
+            onClick={form.handleSubmit(onSubmit)}
+            className="flex items-center gap-2"
+          >
+            {isLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : isGeneratingThumbnail ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Save className="h-4 w-4" />
+            )}
+            {isLoading 
+              ? (isEditing ? "Updating..." : "Adding...") 
+              : isGeneratingThumbnail 
+                ? "Generating Thumbnail..." 
+                : (isEditing ? "Update Reference" : "Add Reference")
+            }
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

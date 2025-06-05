@@ -168,6 +168,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const referenceData = validationResult.data;
       
+      // Auto-create any new tags that don't exist
+      const existingTags = await storage.getTags();
+      const existingTagNames = existingTags.map(tag => tag.name);
+      
+      for (const tagName of referenceData.tags) {
+        if (!existingTagNames.includes(tagName)) {
+          try {
+            await storage.createTag({ name: tagName });
+            console.log(`Auto-created new tag: ${tagName}`);
+          } catch (error) {
+            console.error(`Failed to create tag ${tagName}:`, error);
+          }
+        }
+      }
+      
       // For create, we'll pass the user's username separately since it's omitted from the schema
       const createdBy = req.session!.user!.username;
       
