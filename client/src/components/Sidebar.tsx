@@ -19,13 +19,12 @@ import {
   Tag as TagIcon, 
   Book, 
   PlusCircle,
-  Save,
   Loader2,
   Pencil as PencilIcon
 } from 'lucide-react';
 import { getTagColor } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
+
 import {
   Dialog,
   DialogContent,
