@@ -22,7 +22,6 @@ import {
   FileSearch,
   Loader2,
   X,
-  Save,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -164,42 +163,7 @@ export default function HomePage() {
     }
   }, [tagsData]);
   
-  // Download dataset functionality
-  const handleDownloadDataset = async () => {
-    try {
-      const response = await fetch('/api/download-dataset', {
-        method: 'GET',
-        credentials: 'include',
-      });
 
-      if (!response.ok) {
-        throw new Error('Failed to download dataset');
-      }
-
-      // Get the blob and create download link
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'refhub-dataset.zip';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-
-      toast({
-        title: "Dataset Downloaded",
-        description: "The dataset has been successfully downloaded as a zip file.",
-      });
-    } catch (error) {
-      console.error('Download error:', error);
-      toast({
-        title: "Download Failed",
-        description: "Failed to download the dataset. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
   
   // Add scroll event listener for scroll to top button and category scrolling
   useEffect(() => {
@@ -552,27 +516,15 @@ export default function HomePage() {
                 </div>
 
                 {isAdmin && (
-                  <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                    <Button
-                      onClick={handleDownloadDataset}
-                      variant="outline"
-                      className="flex items-center justify-center gap-1 shadow-sm w-full sm:w-auto"
-                      size="sm"
-                    >
-                      <Save className="h-4 w-4" />
-                      <span className="hidden xs:inline">Download Dataset</span>
-                      <span className="xs:hidden">Download</span>
-                    </Button>
-                    <Button
-                      onClick={handleAddReference}
-                      className="flex items-center justify-center gap-1 shadow-sm w-full sm:w-auto"
-                      size="sm"
-                    >
-                      <PlusIcon className="h-4 w-4" />
-                      <span className="hidden xs:inline">Add Reference</span>
-                      <span className="xs:hidden">Add</span>
-                    </Button>
-                  </div>
+                  <Button
+                    onClick={handleAddReference}
+                    className="flex items-center justify-center gap-1 shadow-sm w-full sm:w-auto"
+                    size="sm"
+                  >
+                    <PlusIcon className="h-4 w-4" />
+                    <span className="hidden xs:inline">Add Reference</span>
+                    <span className="xs:hidden">Add</span>
+                  </Button>
                 )}
               </div>
 
