@@ -69,6 +69,7 @@ export class JsonDbStorage implements IStorage {
   private categoriesDb: LowSync<CategoriesDB>;
   private tagsDb: LowSync<TagsDB>;
   private initialized: boolean = false;
+  private thumbnailGenerationMap: Map<string, Promise<any>> = new Map();
 
   constructor() {
     // Set up the JSON file adapters for each entity type
@@ -76,6 +77,12 @@ export class JsonDbStorage implements IStorage {
     const referencesFile = path.join(dataDir, "references.json");
     const categoriesFile = path.join(dataDir, "categories.json");
     const tagsFile = path.join(dataDir, "tags.json");
+    
+    // Ensure JSON files exist with proper structure
+    this.ensureFileExists(usersFile, { users: [] });
+    this.ensureFileExists(referencesFile, { references: [] });
+    this.ensureFileExists(categoriesFile, { categories: [] });
+    this.ensureFileExists(tagsFile, { tags: [] });
     
     // Create the database instances
     this.usersDb = new LowSync<UsersDB>(new JSONFileSync<UsersDB>(usersFile), { users: [] });
@@ -94,6 +101,25 @@ export class JsonDbStorage implements IStorage {
         (!this.usersDb.data.users || this.usersDb.data.users.length === 0)) {
       this.initializeDefaultData();
       this.initialized = true;
+    }
+  }
+
+  private ensureFileExists(filePath: string, defaultData: any): void {
+    try {
+      if (!fs.existsSync(filePath)) {
+        fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
+      } else {
+        // Validate existing file is valid JSON
+        const content = fs.readFileSync(filePath, 'utf8');
+        if (!content.trim() || content.trim() === '') {
+          fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
+        } else {
+          JSON.parse(content); // This will throw if invalid JSON
+        }
+      }
+    } catch (error) {
+      console.warn(`Invalid JSON in ${filePath}, reinitializing with default data`);
+      fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
     }
   }
 
