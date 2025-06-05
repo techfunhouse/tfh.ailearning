@@ -50,8 +50,8 @@ export interface IStorage {
   searchReferences(query: string): Promise<Reference[]>;
 }
 
-// Create data directory if it doesn't exist
-const dataDir = path.join(process.cwd(), "data");
+// Create data directory if it doesn't exist - using client/public/data for GitHub Pages compatibility
+const dataDir = path.join(process.cwd(), "client", "public", "data");
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
