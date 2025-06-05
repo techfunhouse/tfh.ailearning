@@ -1,9 +1,10 @@
-name: Build and Deploy to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [ main, master ]
-  workflow_dispatch:
+  pull_request:
+    branches: [ main, master ]
 
 permissions:
   contents: read
@@ -17,143 +18,40 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-        
-    - name: Install root dependencies
-      run: npm ci
-      
-    - name: Install client dependencies
-      run: |
-        cd client
-        npm ci
-        
-    - name: Create production environment file
-      run: |
-        cd client
-        echo 'VITE_GITHUB_PAGES=true' > .env.production
-        echo 'VITE_API_BASE_URL=' >> .env.production
-        echo 'VITE_STATIC_USERNAME=${{ secrets.VITE_STATIC_USERNAME }}' >> .env.production
-        echo 'VITE_STATIC_PASSWORD=${{ secrets.VITE_STATIC_PASSWORD }}' >> .env.production
-        
-    - name: Generate static data files
-      run: |
-        # Create static-friendly data files with current data
-        mkdir -p static-data
-        
-        # Extract arrays from data files for static deployment
-        if [ -f "data/references.json" ]; then
-          node -e "
-            const fs = require('fs');
-            const data = JSON.parse(fs.readFileSync('data/references.json', 'utf8'));
-            fs.writeFileSync('static-data/references.json', JSON.stringify(data.references || [], null, 2));
-          "
-        else
-          echo '[]' > static-data/references.json
-        fi
-        
-        if [ -f "data/categories.json" ]; then
-          node -e "
-            const fs = require('fs');
-            const data = JSON.parse(fs.readFileSync('data/categories.json', 'utf8'));
-            fs.writeFileSync('static-data/categories.json', JSON.stringify(data.categories || [], null, 2));
-          "
-        else
-          echo '[]' > static-data/categories.json
-        fi
-        
-        if [ -f "data/tags.json" ]; then
-          node -e "
-            const fs = require('fs');
-            const data = JSON.parse(fs.readFileSync('data/tags.json', 'utf8'));
-            fs.writeFileSync('static-data/tags.json', JSON.stringify(data.tags || [], null, 2));
-          "
-        else
-          echo '[]' > static-data/tags.json
-        fi
-        
-    - name: Build client application
-      run: |
-        cd client
-        npx vite build --mode production --base='./'
-      env:
-        NODE_ENV: production
-        VITE_GITHUB_PAGES: true
-        VITE_STATIC_USERNAME: ${{ secrets.VITE_STATIC_USERNAME }}
-        VITE_STATIC_PASSWORD: ${{ secrets.VITE_STATIC_PASSWORD }}
-        
-    - name: Prepare GitHub Pages deployment
-      run: |
-        mkdir -p dist/public
-        if [ -d "client/dist" ]; then
-          cp -r client/dist/* dist/public/
-        else
-          echo "Client build failed - no dist directory found"
-          exit 1
-        fi
-        
-        # Copy static data files for GitHub Pages
-        mkdir -p dist/public/data
-        if [ -d "static-data" ]; then
-          cp static-data/*.json dist/public/data/
-          echo "Copied static data files to deployment"
-        else
-          echo "No static data files found, creating empty arrays"
-          echo '[]' > dist/public/data/references.json
-          echo '[]' > dist/public/data/categories.json
-          echo '[]' > dist/public/data/tags.json
-        fi
-        
-    - name: Create static index for GitHub Pages
-      run: |
-        cd dist/public
-        # Add GitHub Pages detection meta tag to the built index.html
-        if [ -f "index.html" ]; then
-          # Add GitHub Pages meta tag if not already present
-          if ! grep -q "github-pages-deployment" index.html; then
-            sed -i 's/<head>/<head>\n    <meta name="github-pages-deployment" content="true" \/>/' index.html
-          fi
-          echo "Updated index.html with GitHub Pages detection"
-          
-          # Create 404.html for proper SPA routing on GitHub Pages
-          cp index.html 404.html
-          echo "Created 404.html for SPA routing"
-        else
-          echo "No index.html found, using static fallback"
-          cp ../../client/index-static.html index.html
-          cp index.html 404.html
-        fi
-        
-    - name: Verify build output
-      run: |
-        ls -la dist/public/
-        echo "Build completed successfully"
-        
-    - name: Setup GitHub Pages
-      uses: actions/configure-pages@v4
-      
-    - name: Upload build artifacts
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: ./dist/public
-        
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build client
+        run: |
+          cd client
+          npm ci
+          npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './client/dist'
+
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-    
     steps:
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
