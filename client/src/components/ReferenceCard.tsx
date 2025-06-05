@@ -9,7 +9,7 @@ import { getTagColor, getCategoryColor } from '@/lib/utils';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { apiRequest, queryClient } from '@/lib/queryClient';
-import { useAuth } from '@/hooks/useAuth';
+// // import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import {
   Dialog,

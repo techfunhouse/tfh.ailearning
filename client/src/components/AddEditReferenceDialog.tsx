@@ -73,7 +73,7 @@ export default function AddEditReferenceDialog({
 }: AddEditReferenceDialogProps) {
   const { toast } = useToast();
   const { user } = useAuth();
-  const [, navigate] = useLocation();
+  // const [, navigate] = useLocation();
   const isEditing = !!reference;
   const [tagInput, setTagInput] = useState("");
 

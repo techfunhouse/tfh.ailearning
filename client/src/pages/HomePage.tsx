@@ -338,7 +338,7 @@ export default function HomePage() {
     // Now safely reduce the array
     return safeCategories.reduce<Record<string, number>>((acc, category) => {
       // Ensure category has a name property
-      const categoryName = category && category.name ? category.name.toLowerCase() : 'unknown';
+      const categoryName = (category as any)?.name ? (category as any).name.toLowerCase() : 'unknown';
       acc[categoryName] = safeReferences.filter(
         (ref) => ref.category && ref.category.toLowerCase() === categoryName,
       ).length;
