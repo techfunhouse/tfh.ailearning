@@ -5,6 +5,7 @@ import { insertReferenceSchema, insertCategorySchema, insertTagSchema } from "@s
 import { z } from "zod";
 import session from "express-session";
 import createMemoryStore from "memorystore";
+import { ThumbnailService } from "./thumbnail-service";
 
 import archiver from "archiver";
 import path from "path";
@@ -404,6 +405,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error creating dataset download:", error);
       return res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Thumbnail generation endpoint
+  app.post("/api/thumbnails/generate", isAuthenticated, async (req, res) => {
+    try {
+      const { url, title, category } = req.body;
+      
+      if (!url || !title || !category) {
+        return res.status(400).json({ 
+          message: "Missing required fields: url, title, category" 
+        });
+      }
+      
+      const result = await ThumbnailService.generateThumbnail(url, title, category);
+      
+      return res.status(200).json(result);
+    } catch (error) {
+      console.error("Error generating thumbnail:", error);
+      return res.status(500).json({ 
+        message: "Failed to generate thumbnail",
+        error: error instanceof Error ? error.message : "Unknown error"
+      });
     }
   });
 
