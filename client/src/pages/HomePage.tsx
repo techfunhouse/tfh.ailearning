@@ -12,6 +12,7 @@ import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import ReferenceCard from "@/components/ReferenceCard";
 import AddEditReferenceDialog from "@/components/AddEditReferenceDialog";
+import ReferenceDetailDialog from "@/components/ReferenceDetailDialog";
 import { Reference, Category, Tag } from "@/types";
 import { Button } from "@/components/ui/button";
 import {
@@ -55,6 +56,8 @@ export default function HomePage() {
   );
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [selectedReference, setSelectedReference] = useState<Reference | null>(null);
+  const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
 
   
   // Pagination and infinite scroll
@@ -303,6 +306,28 @@ export default function HomePage() {
   const handleEditReference = (reference: Reference) => {
     setEditingReference(reference);
     setIsAddDialogOpen(true);
+  };
+
+  const handleViewReference = (reference: Reference) => {
+    setSelectedReference(reference);
+    setIsDetailDialogOpen(true);
+  };
+
+  const handleNavigateReference = (direction: 'prev' | 'next') => {
+    if (!selectedReference) return;
+    
+    const currentIndex = filteredReferences.findIndex(ref => ref.id === selectedReference.id);
+    let nextIndex = currentIndex;
+    
+    if (direction === 'prev' && currentIndex > 0) {
+      nextIndex = currentIndex - 1;
+    } else if (direction === 'next' && currentIndex < filteredReferences.length - 1) {
+      nextIndex = currentIndex + 1;
+    }
+    
+    if (nextIndex !== currentIndex) {
+      setSelectedReference(filteredReferences[nextIndex]);
+    }
   };
 
   const handleCloseDialog = () => {
@@ -656,6 +681,7 @@ export default function HomePage() {
                         isAdmin={isAdmin}
                         onEdit={() => handleEditReference(reference)}
                         onDelete={(id) => console.log("Reference deleted:", id)}
+                        onView={handleViewReference}
                       />
                     ))}
                     
@@ -709,6 +735,14 @@ export default function HomePage() {
         categories={categoriesData || []}
         tags={tagsData || []}
         onClose={handleCloseDialog}
+      />
+
+      <ReferenceDetailDialog
+        reference={selectedReference}
+        isOpen={isDetailDialogOpen}
+        onClose={() => setIsDetailDialogOpen(false)}
+        allReferences={filteredReferences}
+        onNavigate={handleNavigateReference}
       />
       
       {/* Scroll to Top Button */}

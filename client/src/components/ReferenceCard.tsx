@@ -25,9 +25,10 @@ interface ReferenceCardProps {
   isAdmin: boolean;
   onEdit: () => void;
   onDelete?: (id: string) => void;
+  onView?: (reference: Reference) => void;
 }
 
-export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete }: ReferenceCardProps) {
+export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, onView }: ReferenceCardProps) {
   const { id, title, link, description, tags, category, thumbnail, createdBy, updatedAt } = reference;
   // Handle potentially undefined love count by providing default
   const loveCount = reference.loveCount || 0;
@@ -81,7 +82,11 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete }: 
     ) {
       return;
     }
-    setIsDetailOpen(true);
+    if (onView) {
+      onView(reference);
+    } else {
+      setIsDetailOpen(true);
+    }
   };
   
   const handleExternalLinkClick = (e: React.MouseEvent) => {
