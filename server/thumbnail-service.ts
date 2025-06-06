@@ -174,12 +174,8 @@ export class ThumbnailService {
       </text>
     </svg>`;
     
-    // Convert SVG to PNG and save to thumbnails directory
-    const sharp = await import('sharp');
-    const pngBuffer = await sharp.default(Buffer.from(loadingSvg))
-      .png()
-      .resize(320, 180)
-      .toBuffer();
+    // Save SVG directly as loading thumbnail
+    const svgBuffer = Buffer.from(loadingSvg);
     
     const fs = await import('fs');
     const path = await import('path');
@@ -269,18 +265,14 @@ export class ThumbnailService {
       </text>
     </svg>`;
     
-    const sharp = await import('sharp');
-    const pngBuffer = await sharp.default(Buffer.from(failureSvg))
-      .png()
-      .resize(320, 180)
-      .toBuffer();
+    const svgBuffer = Buffer.from(failureSvg);
     
     const fs = await import('fs');
     const path = await import('path');
     
     const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
-    const filepath = path.join(thumbnailsDir, filename);
-    await fs.promises.writeFile(filepath, pngBuffer);
+    const filepath = path.join(thumbnailsDir, filename.replace('.jpg', '.svg'));
+    await fs.promises.writeFile(filepath, svgBuffer);
     
     console.log(`Created failure thumbnail: ${filename}`);
   }
