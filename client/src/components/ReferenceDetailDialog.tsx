@@ -8,7 +8,8 @@ import {
   ExternalLink, 
   Tag, 
   ChevronLeft, 
-  ChevronRight
+  ChevronRight,
+  Folder
 } from "lucide-react";
 import { Reference } from "@/types";
 import { getTagColor } from "@/lib/utils";
@@ -99,75 +100,70 @@ export default function ReferenceDetailDialog({
           </div>
         </DialogHeader>
 
-        <div className="space-y-6 overflow-y-auto max-h-[calc(90vh-200px)]">
-          {/* Resource Details Card */}
-          <Card>
-            <CardContent className="p-6">
-              <div className="grid md:grid-cols-2 gap-8">
-                {/* Thumbnail */}
-                <div className="md:col-span-1">
-                  <div className="aspect-[4/3] rounded-lg overflow-hidden border-2 border-border bg-muted/30">
-                    {thumbnail ? (
-                      <img 
-                        src={thumbnail} 
-                        alt={title}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                          target.nextElementSibling?.classList.remove('hidden');
-                        }}
-                      />
-                    ) : null}
-                    <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                      <ExternalLink className="h-12 w-12" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Details */}
-                <div className="md:col-span-1 space-y-4">
-                  {/* Category */}
-                  <div>
-                    <p className="text-sm text-muted-foreground">
-                      <span className="font-semibold">Category:</span> {category}
-                    </p>
-                  </div>
-
-                  {/* Description */}
-                  {description && (
-                    <div>
-                      <h3 className="font-semibold mb-2">Description</h3>
-                      <p className="text-muted-foreground leading-relaxed">
-                        {description}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Tags */}
-                  {tags && tags.length > 0 && (
-                    <div>
-                      <h3 className="font-semibold mb-2">Tags</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {tags.map((tag) => (
-                          <Badge 
-                            key={tag} 
-                            variant="outline"
-                            className={`${getTagColor(tag)} border-current`}
-                          >
-                            <Tag className="h-3 w-3 mr-1" />
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-
-                </div>
+        <div className="flex-1 overflow-y-auto">
+          <div className="space-y-6">
+            {/* Thumbnail Section */}
+            {thumbnail && (
+              <div className="relative">
+                <img 
+                  src={thumbnail} 
+                  alt={title}
+                  className="w-full h-64 object-cover rounded-lg border shadow-sm"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                  }}
+                />
               </div>
-            </CardContent>
-          </Card>
+            )}
+
+            {/* Content Section */}
+            <div className="space-y-4">
+              {/* Link */}
+              <div className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 break-all">
+                <ExternalLink className="h-4 w-4 flex-shrink-0" />
+                <a href={link} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                  {link}
+                </a>
+              </div>
+
+              {/* Category Badge */}
+              <div>
+                <Badge variant="secondary" className="text-xs">
+                  <Folder className="h-3 w-3 mr-1" />
+                  {category}
+                </Badge>
+              </div>
+
+              {/* Description */}
+              {description && (
+                <div className="prose prose-sm dark:prose-invert max-w-none">
+                  <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                    {description}
+                  </p>
+                </div>
+              )}
+
+              {/* Tags */}
+              {tags && tags.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="text-sm font-medium text-muted-foreground">Tags</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {tags.map((tag) => (
+                      <Badge 
+                        key={tag} 
+                        variant="outline"
+                        className={`text-xs ${getTagColor(tag)}`}
+                      >
+                        <Tag className="h-3 w-3 mr-1" />
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Action Buttons */}
