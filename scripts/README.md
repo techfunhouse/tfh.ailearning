@@ -90,11 +90,30 @@ Fetching existing data...
 
 Processing imports...
 
-[1/15] Created: React Documentation
-[2/15] Created new tag: react
-[3/15] Skipping duplicate: GitHub
-[4/15] Created: Node.js Official Guide
-...
+[1/15] CREATED:
+   Title: React Documentation
+   URL: https://react.dev/
+   Category: Documentation
+   Tags: react, frontend, javascript
+   Thumbnail: Generating screenshot...
+
+[2/15] NEW TAG CREATED: "react"
+
+[3/15] SKIPPED (duplicate):
+   Title: GitHub
+   URL: https://github.com/
+   Tags: git, github, collaboration
+
+[4/15] CREATED:
+   Title: Node.js Official Guide
+   URL: https://nodejs.org/en/docs/
+   Category: Documentation
+   Tags: nodejs, backend, javascript
+   Thumbnail: Generating screenshot...
+
+[5/15] FAILED (invalid URL):
+   Title: Invalid Example
+   URL: not-a-url -> https://not-a-url
 
 Import Summary:
 Successful: 12

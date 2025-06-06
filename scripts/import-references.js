@@ -214,7 +214,10 @@ async function importReferences(csvFilePath, baseUrl = 'http://localhost:5000') 
       try {
         // Validate required fields
         if (!row.title || !row.link) {
-          console.log(`${progress} Skipping: Missing title or link`);
+          console.log(`${progress} FAILED (missing data):`);
+          console.log(`   Title: ${row.title || 'MISSING'}`);
+          console.log(`   URL: ${row.link || 'MISSING'}`);
+          console.log('');
           results.failed++;
           results.errors.push(`Row ${i + 1}: Missing title or link`);
           continue;
@@ -223,7 +226,10 @@ async function importReferences(csvFilePath, baseUrl = 'http://localhost:5000') 
         // Normalize and validate URL
         const normalizedUrl = normalizeUrl(row.link);
         if (!isValidUrl(normalizedUrl)) {
-          console.log(`${progress} Invalid URL: ${row.link}`);
+          console.log(`${progress} FAILED (invalid URL):`);
+          console.log(`   Title: ${row.title}`);
+          console.log(`   URL: ${row.link} -> ${normalizedUrl}`);
+          console.log('');
           results.failed++;
           results.errors.push(`Row ${i + 1}: Invalid URL format`);
           continue;
@@ -231,7 +237,11 @@ async function importReferences(csvFilePath, baseUrl = 'http://localhost:5000') 
 
         // Check for duplicates
         if (existingUrls.has(normalizedUrl)) {
-          console.log(`${progress} Skipping duplicate: ${row.title}`);
+          console.log(`${progress} SKIPPED (duplicate):`);
+          console.log(`   Title: ${row.title}`);
+          console.log(`   URL: ${normalizedUrl}`);
+          console.log(`   Tags: ${row.tags || 'none'}`);
+          console.log('');
           results.skipped++;
           continue;
         }
@@ -253,7 +263,7 @@ async function importReferences(csvFilePath, baseUrl = 'http://localhost:5000') 
             if (newTag) {
               existingTagNames.add(tagName);
               results.newTags.push(tagName);
-              console.log(`${progress} Created new tag: ${tagName}`);
+              console.log(`${progress} NEW TAG CREATED: "${tagName}"`);
             }
           }
           validTags.push(tagName);
@@ -269,7 +279,13 @@ async function importReferences(csvFilePath, baseUrl = 'http://localhost:5000') 
         };
 
         const newReference = await createReference(baseUrl, cookies, referenceData);
-        console.log(`${progress} Created: ${row.title}`);
+        console.log(`${progress} CREATED:`);
+        console.log(`   Title: ${row.title}`);
+        console.log(`   URL: ${normalizedUrl}`);
+        console.log(`   Category: ${referenceData.category}`);
+        console.log(`   Tags: ${validTags.length > 0 ? validTags.join(', ') : 'none'}`);
+        console.log(`   Thumbnail: Generating screenshot...`);
+        console.log('');
         
         existingUrls.add(normalizedUrl);
         results.successful++;
@@ -278,7 +294,11 @@ async function importReferences(csvFilePath, baseUrl = 'http://localhost:5000') 
         await new Promise(resolve => setTimeout(resolve, 100));
 
       } catch (error) {
-        console.log(`${progress} Failed: ${row.title} - ${error.message}`);
+        console.log(`${progress} FAILED (error):`);
+        console.log(`   Title: ${row.title}`);
+        console.log(`   URL: ${row.link}`);
+        console.log(`   Error: ${error.message}`);
+        console.log('');
         results.failed++;
         results.errors.push(`Row ${i + 1} (${row.title}): ${error.message}`);
       }
