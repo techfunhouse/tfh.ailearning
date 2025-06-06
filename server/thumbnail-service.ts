@@ -149,58 +149,134 @@ export class ThumbnailService {
       </svg>`;
   }
 
-  // Background processing methods
-  static queueThumbnailGeneration(referenceId: string, url: string, title: string, category: string): string {
-    const jobId = uuidv4();
-    const job: ThumbnailJob = {
-      id: jobId,
-      referenceId,
-      url,
-      title,
-      category,
-      status: 'pending',
-      createdAt: new Date()
-    };
+  // Create loading thumbnail file that shows generation in progress
+  static async createLoadingThumbnail(filename: string, title: string, category: string): Promise<void> {
+    const loadingSvg = `
+    <svg width="320" height="180" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <rect width="320" height="180" fill="url(#grad)"/>
+      <circle cx="160" cy="70" r="15" fill="none" stroke="white" stroke-width="2">
+        <animateTransform attributeName="transform" type="rotate" values="0 160 70;360 160 70" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <text x="160" y="110" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white" text-anchor="middle">
+        ${title.length > 25 ? title.substring(0, 25) + '...' : title}
+      </text>
+      <text x="160" y="130" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+        Generating thumbnail...
+      </text>
+      <text x="160" y="150" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,255,255,0.6)" text-anchor="middle">
+        ${category}
+      </text>
+    </svg>`;
     
-    this.jobQueue.set(jobId, job);
+    // Convert SVG to PNG and save to thumbnails directory
+    const sharp = await import('sharp');
+    const pngBuffer = await sharp.default(Buffer.from(loadingSvg))
+      .png()
+      .resize(320, 180)
+      .toBuffer();
     
-    // Start processing if not already running
-    if (!this.processingQueue) {
-      this.processQueue();
-    }
+    const fs = await import('fs');
+    const path = await import('path');
     
-    return jobId;
+    const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+    await fs.promises.mkdir(thumbnailsDir, { recursive: true });
+    
+    const filepath = path.join(thumbnailsDir, filename);
+    await fs.promises.writeFile(filepath, pngBuffer);
+    
+    console.log(`Created loading thumbnail: ${filename}`);
   }
 
-  // Enhanced method that registers callback before processing
-  static queueThumbnailGenerationWithCallback(
-    referenceId: string, 
-    url: string, 
-    title: string, 
-    category: string, 
-    callback: (job: ThumbnailJob) => void
-  ): string {
-    const jobId = uuidv4();
-    const job: ThumbnailJob = {
-      id: jobId,
-      referenceId,
-      url,
-      title,
-      category,
-      status: 'pending',
-      createdAt: new Date()
-    };
+  // Generate thumbnail and overwrite the existing file
+  static async generateThumbnailToFile(url: string, title: string, category: string, filename: string): Promise<void> {
+    console.log(`Starting thumbnail generation for ${filename}`);
     
-    // Register callback BEFORE adding to queue
-    this.eventCallbacks.set(jobId, callback);
-    this.jobQueue.set(jobId, job);
+    // Generate in background with timeout
+    setTimeout(async () => {
+      try {
+        const result = await Promise.race([
+          this.generateThumbnailSync(url, title, category),
+          new Promise<ThumbnailResult>((_, reject) => 
+            setTimeout(() => reject(new Error('Thumbnail generation timeout')), 300000) // 5 minutes
+          )
+        ]);
+        
+        const fs = await import('fs');
+        const path = await import('path');
+        const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+        const filepath = path.join(thumbnailsDir, filename);
+        
+        if (result.success && result.thumbnailPath.startsWith('/thumbnails/')) {
+          // Copy the generated file to our target filename
+          const sourcePath = path.join(process.cwd(), 'client/public' + result.thumbnailPath);
+          try {
+            await fs.promises.copyFile(sourcePath, filepath);
+            // Clean up the temporary file
+            await fs.promises.unlink(sourcePath);
+            console.log(`Successfully generated thumbnail: ${filename}`);
+          } catch (copyError) {
+            console.error(`Failed to copy thumbnail file:`, copyError);
+            await this.createFailureThumbnail(filename, title, category, url);
+          }
+        } else {
+          // Generation failed, create failure thumbnail
+          await this.createFailureThumbnail(filename, title, category, url);
+        }
+      } catch (error) {
+        console.error(`Thumbnail generation failed for ${filename}:`, error);
+        await this.createFailureThumbnail(filename, title, category, url);
+      }
+    }, 100); // Small delay to ensure reference is saved first
+  }
+
+  // Create failure thumbnail with title, URL, and category
+  static async createFailureThumbnail(filename: string, title: string, category: string, url: string): Promise<void> {
+    const safeTruncatedTitle = (title || 'Untitled').replace(/[<>&"']/g, ' ').substring(0, 30);
+    const safeDomain = url.replace(/^https?:\/\//, '').split('/')[0].substring(0, 25);
     
-    // Start processing if not already running
-    if (!this.processingQueue) {
-      this.processQueue();
-    }
+    const failureSvg = `
+    <svg width="320" height="180" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="failGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#ee5a52;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <rect width="320" height="180" fill="url(#failGrad)"/>
+      <text x="160" y="60" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white" text-anchor="middle">
+        ${safeTruncatedTitle}
+      </text>
+      <text x="160" y="90" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.9)" text-anchor="middle">
+        ${safeDomain}
+      </text>
+      <text x="160" y="120" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,255,255,0.7)" text-anchor="middle">
+        ${category}
+      </text>
+      <text x="160" y="150" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+        Preview unavailable
+      </text>
+    </svg>`;
     
-    return jobId;
+    const sharp = await import('sharp');
+    const pngBuffer = await sharp.default(Buffer.from(failureSvg))
+      .png()
+      .resize(320, 180)
+      .toBuffer();
+    
+    const fs = await import('fs');
+    const path = await import('path');
+    
+    const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+    const filepath = path.join(thumbnailsDir, filename);
+    await fs.promises.writeFile(filepath, pngBuffer);
+    
+    console.log(`Created failure thumbnail: ${filename}`);
   }
 
   static getJobStatus(jobId: string): ThumbnailJob | undefined {

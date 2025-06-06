@@ -304,17 +304,19 @@ export class JsonDbStorage implements IStorage {
     const id = uuid();
     const now = new Date().toISOString();
     
-    // Generate placeholder thumbnail  
-    const placeholderThumbnail = ThumbnailService.generatePlaceholderThumbnail();
+    // Generate unique thumbnail filename that will be overwritten when generation completes
+    const thumbnailFilename = `${uuid()}.jpg`;
+    const thumbnailPath = `/thumbnails/${thumbnailFilename}`;
+    
+    // Create loading thumbnail file immediately
+    await ThumbnailService.createLoadingThumbnail(thumbnailFilename, reference.title, reference.category);
     
     const newReference: Reference = {
       ...reference,
       id,
       createdBy,
       loveCount: 0,
-      thumbnail: reference.thumbnail || placeholderThumbnail,
-      thumbnailStatus: 'generating',
-      thumbnailId: '',
+      thumbnail: thumbnailPath,
       createdAt: now,
       updatedAt: now,
     };
@@ -322,37 +324,13 @@ export class JsonDbStorage implements IStorage {
     this.referencesDb.data.references.push(newReference);
     this.saveReferenceData();
     
-    // Define callback before queueing generation to ensure proper timing
-    const callbackHandler = async (job: any) => {
-      console.log(`[Storage] Callback triggered for job ${job.id}, status: ${job.status}`);
-      console.log(`[Storage] Job result:`, JSON.stringify(job.result, null, 2));
-      console.log(`[Storage] Checking conditions: status=${job.status}, result.success=${job.result?.success}`);
-      
-      if (job.status === 'completed' && job.result?.success) {
-        console.log(`[Storage] CONDITIONS MET - Updating reference ${id} with completed thumbnail: ${job.result.thumbnailPath}`);
-        await this.updateReferenceThumbnail(id, job.result.thumbnailPath, 'completed');
-      } else if (job.status === 'failed') {
-        console.log(`[Storage] FAILED - Updating reference ${id} with failed status`);
-        await this.updateReferenceThumbnail(id, reference.thumbnail || '/api/placeholder/320/180', 'failed');
-      } else {
-        console.log(`[Storage] CONDITIONS NOT MET - Ignoring job status: ${job.status}, success: ${job.result?.success}`);
-      }
-    };
-    
-    // Queue thumbnail generation with pre-registered callback
-    console.log(`[Storage] Queueing thumbnail generation for reference ${id}`);
-    const thumbnailJobId = ThumbnailService.queueThumbnailGenerationWithCallback(
-      id,
+    // Queue background thumbnail generation that will overwrite the loading image
+    ThumbnailService.generateThumbnailToFile(
       reference.link,
       reference.title,
       reference.category,
-      callbackHandler
+      thumbnailFilename
     );
-    
-    // Update reference with job ID
-    newReference.thumbnailId = thumbnailJobId;
-    this.referencesDb.data.references[this.referencesDb.data.references.length - 1] = newReference;
-    this.saveReferenceData();
     
     return newReference;
   }
