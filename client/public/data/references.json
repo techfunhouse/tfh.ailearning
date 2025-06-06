@@ -1,22 +1,3 @@
 {
-  "references": [
-    {
-      "title": "Geeksforgeeks",
-      "link": "https://www.geeksforgeeks.org/",
-      "description": "Geeksforgeeks",
-      "category": "Tutorials & Blogs",
-      "tags": [
-        "blogs",
-        "tutorials"
-      ],
-      "thumbnail": "/thumbnails/fe8689bb-a4ef-465b-ac75-14c2053beae4.jpg",
-      "id": "9139b9f1-ffbc-41e2-a4f1-74fd5c35cd73",
-      "createdBy": "admin",
-      "loveCount": 0,
-      "thumbnailStatus": "completed",
-      "thumbnailId": "82a96452-db3c-4c23-95a5-4e2b0735ddce",
-      "createdAt": "2025-06-06T07:26:49.452Z",
-      "updatedAt": "2025-06-06T07:31:31.958Z"
-    }
-  ]
+  "references": []
 }

@@ -324,15 +324,18 @@ export class JsonDbStorage implements IStorage {
     
     // Define callback before queueing generation to ensure proper timing
     const callbackHandler = async (job: any) => {
-      console.log(`[Storage] Callback triggered for job ${job.id}, status: ${job.status}, result:`, job.result);
+      console.log(`[Storage] Callback triggered for job ${job.id}, status: ${job.status}`);
+      console.log(`[Storage] Job result:`, JSON.stringify(job.result, null, 2));
+      console.log(`[Storage] Checking conditions: status=${job.status}, result.success=${job.result?.success}`);
+      
       if (job.status === 'completed' && job.result?.success) {
-        console.log(`[Storage] Updating reference ${id} with completed thumbnail: ${job.result.thumbnailPath}`);
+        console.log(`[Storage] CONDITIONS MET - Updating reference ${id} with completed thumbnail: ${job.result.thumbnailPath}`);
         await this.updateReferenceThumbnail(id, job.result.thumbnailPath, 'completed');
       } else if (job.status === 'failed') {
-        console.log(`[Storage] Updating reference ${id} with failed status`);
+        console.log(`[Storage] FAILED - Updating reference ${id} with failed status`);
         await this.updateReferenceThumbnail(id, reference.thumbnail || '/api/placeholder/320/180', 'failed');
       } else {
-        console.log(`[Storage] Ignoring job status: ${job.status}`);
+        console.log(`[Storage] CONDITIONS NOT MET - Ignoring job status: ${job.status}, success: ${job.result?.success}`);
       }
     };
     

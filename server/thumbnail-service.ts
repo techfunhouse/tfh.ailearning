@@ -219,7 +219,12 @@ export class ThumbnailService {
     console.log(`[ThumbnailService] Notifying job update for ${job.id}: ${job.status}`);
     const callback = this.eventCallbacks.get(job.id);
     if (callback) {
-      console.log(`[ThumbnailService] Executing callback for job ${job.id}`);
+      console.log(`[ThumbnailService] Executing callback for job ${job.id}, status: ${job.status}, success: ${job.result?.success}`);
+      console.log(`[ThumbnailService] Job details:`, { 
+        id: job.id, 
+        status: job.status, 
+        result: job.result ? { success: job.result.success, thumbnailPath: job.result.thumbnailPath } : null 
+      });
       callback(job);
     } else {
       console.log(`[ThumbnailService] No callback found for job ${job.id}`);
