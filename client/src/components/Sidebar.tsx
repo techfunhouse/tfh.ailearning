@@ -7,7 +7,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Category, Tag, InsertCategory, InsertTag } from '@/types';
+import { Category, InsertCategory } from '@/types';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Input } from '@/components/ui/input';
@@ -58,7 +58,7 @@ const tagSchema = z.object({
 
 interface SidebarProps {
   categories: Category[];
-  tags: Tag[];
+  tags: string[];
   selectedCategories: string[];
   selectedTags: string[];
   isAdmin: boolean;
@@ -96,7 +96,7 @@ export default function Sidebar({
   const [isDeleteCategoryDialogOpen, setIsDeleteCategoryDialogOpen] = useState(false);
   const [isDeleteTagDialogOpen, setIsDeleteTagDialogOpen] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState<{id: string, name: string} | null>(null);
-  const [tagToDelete, setTagToDelete] = useState<{id: string, name: string} | null>(null);
+  const [tagToDelete, setTagToDelete] = useState<string | null>(null);
   
 
 
@@ -193,8 +193,8 @@ export default function Sidebar({
 
   // Mutation for adding a new tag
   const addTagMutation = useMutation({
-    mutationFn: async (data: InsertTag) => {
-      const response = await apiRequest('POST', '/api/tags', data);
+    mutationFn: async (tagName: string) => {
+      const response = await apiRequest('POST', '/api/tags', { tag: tagName });
       return response.json();
     },
     onSuccess: () => {
@@ -312,7 +312,7 @@ export default function Sidebar({
 
   // Filter tags based on search input
   const filteredTags = tagFilter 
-    ? tags.filter(tag => tag.name.toLowerCase().includes(tagFilter.toLowerCase())) 
+    ? tags.filter(tag => tag.toLowerCase().includes(tagFilter.toLowerCase())) 
     : tags;
 
   const onSubmitCategory = (data: { name: string }) => {
@@ -320,7 +320,7 @@ export default function Sidebar({
   };
 
   const onSubmitTag = (data: { name: string }) => {
-    addTagMutation.mutate({ name: data.name });
+    addTagMutation.mutate(data.name);
   };
   
   const onSubmitEditCategory = (data: { name: string }) => {
@@ -550,39 +550,27 @@ export default function Sidebar({
                 <div className="flex flex-wrap gap-2 mb-2">
                   {filteredTags.map(tag => (
                     <Badge 
-                      key={tag.id} 
-                      variant={selectedTags.includes(tag.name) ? "default" : "outline"}
-                      className={`cursor-pointer ${selectedTags.includes(tag.name) ? 'text-white' : 'hover:bg-muted'}`}
+                      key={tag} 
+                      variant={selectedTags.includes(tag) ? "default" : "outline"}
+                      className={`cursor-pointer ${selectedTags.includes(tag) ? 'text-white' : 'hover:bg-muted'}`}
                       style={{
-                        backgroundColor: selectedTags.includes(tag.name) ? getTagColor(tag.name) : 'transparent',
-                        borderColor: getTagColor(tag.name),
-                        color: selectedTags.includes(tag.name) ? 'white' : 'hsl(var(--foreground))',
+                        backgroundColor: selectedTags.includes(tag) ? getTagColor(tag) : 'transparent',
+                        borderColor: getTagColor(tag),
+                        color: selectedTags.includes(tag) ? 'white' : 'hsl(var(--foreground))',
                       }}
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent event bubbling
-                        onTagSelect(tag.name);
+                        onTagSelect(tag);
                       }}
                     >
-                      {tag.name}
+                      {tag}
                       {isAdmin && (
                         <span className="flex items-center ml-1.5">
-                          <span
-                            className="cursor-pointer hover:text-primary"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setEditingTagId(tag.id);
-                              setEditTagName(tag.name);
-                              setIsEditTagOpen(true);
-                            }}
-                            title="Edit Tag"
-                          >
-                            <PencilIcon className="h-3 w-3 mr-1" />
-                          </span>
                           <span
                             className="cursor-pointer hover:text-destructive"
                             onClick={(e) => {
                               e.stopPropagation();
-                              setTagToDelete({id: tag.id, name: tag.name});
+                              setTagToDelete(tag);
                               setIsDeleteTagDialogOpen(true);
                             }}
                             title="Delete Tag"
