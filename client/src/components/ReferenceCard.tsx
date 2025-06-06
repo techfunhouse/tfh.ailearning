@@ -29,16 +29,8 @@ interface ReferenceCardProps {
 
 export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, onView }: ReferenceCardProps) {
   const { id, title, link, description, tags, category, thumbnail } = reference;
-  // Handle potentially undefined love count by providing default
-  const loveCount = reference.loveCount || 0;
   
-  // Disabled excessive polling hooks that were causing server overload
-  // const isConnectedToThumbnailUpdates = useThumbnailUpdates(reference);
-  // useThumbnailRefresh(reference.thumbnail);
-
   const { toast } = useToast();
-  const [isLoved, setIsLoved] = useState(false); // Always start as not loved
-  const [localLoveCount, setLocalLoveCount] = useState(loveCount);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [imageError, setImageError] = useState(false);

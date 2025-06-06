@@ -27,10 +27,9 @@ export interface IStorage {
   // Reference methods
   getReferences(): Promise<Reference[]>;
   getReference(id: string): Promise<Reference | undefined>;
-  createReference(reference: InsertReference, createdBy: string): Promise<Reference>;
+  createReference(reference: InsertReference): Promise<Reference>;
   updateReference(id: string, reference: Partial<InsertReference>): Promise<Reference | undefined>;
   deleteReference(id: string): Promise<boolean>;
-  toggleLoveReference(id: string, userId: number): Promise<Reference | undefined>;
   
   // Category methods
   getCategories(): Promise<Category[]>;
@@ -300,9 +299,8 @@ export class JsonDbStorage implements IStorage {
     return this.referencesDb.data.references.find(ref => ref.id === id);
   }
 
-  async createReference(reference: InsertReference, createdBy: string): Promise<Reference> {
+  async createReference(reference: InsertReference): Promise<Reference> {
     const id = uuid();
-    const now = new Date().toISOString();
     
     // Generate unique thumbnail filename that will be overwritten when generation completes
     const thumbnailFilename = `${uuid()}.jpg`;
@@ -316,11 +314,7 @@ export class JsonDbStorage implements IStorage {
     const newReference: Reference = {
       ...reference,
       id,
-      createdBy,
-      loveCount: 0,
       thumbnail: thumbnailPath,
-      createdAt: now,
-      updatedAt: now,
     };
     
     this.referencesDb.data.references.push(newReference);
@@ -579,23 +573,7 @@ export class JsonDbStorage implements IStorage {
     );
   }
 
-  async toggleLoveReference(id: string, userId: number): Promise<Reference | undefined> {
-    const index = this.referencesDb.data.references.findIndex(ref => ref.id === id);
-    
-    if (index === -1) {
-      return undefined;
-    }
-    
-    const reference = this.referencesDb.data.references[index];
-    
-    // Simply increment the love count
-    reference.loveCount = reference.loveCount + 1;
-    
-    this.referencesDb.data.references[index] = reference;
-    this.saveReferenceData();
-    
-    return reference;
-  }
+
 
   async searchReferences(query: string): Promise<Reference[]> {
     const normalizedQuery = query.toLowerCase();

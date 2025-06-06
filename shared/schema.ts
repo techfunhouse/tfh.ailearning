@@ -21,18 +21,10 @@ export const referenceSchema = z.object({
   category: z.string(),
   tags: z.array(z.string()),
   thumbnail: z.string(),
-  loveCount: z.number().default(0),
-  createdBy: z.string(),
-  createdAt: z.string(), // ISO timestamp
-  updatedAt: z.string(), // ISO timestamp
 });
 
 export const insertReferenceSchema = referenceSchema.omit({ 
-  id: true,
-  createdBy: true,
-  loveCount: true,
-  createdAt: true,
-  updatedAt: true
+  id: true
 });
 
 // Category Schema
