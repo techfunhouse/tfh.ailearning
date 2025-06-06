@@ -7,11 +7,21 @@ export class SimpleThumbnailService {
       // Create a blue background with text overlay
       const sharp = await import('sharp');
       
-      // Truncate text to fit in thumbnail
+      // Truncate and escape text for XML safety
       const maxTitleLength = 25;
-      const displayTitle = title.length > maxTitleLength ? title.substring(0, maxTitleLength) + '...' : title;
+      const displayTitle = (title.length > maxTitleLength ? title.substring(0, maxTitleLength) + '...' : title)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
       const maxCategoryLength = 20;
-      const displayCategory = category.length > maxCategoryLength ? category.substring(0, maxCategoryLength) + '...' : category;
+      const displayCategory = (category.length > maxCategoryLength ? category.substring(0, maxCategoryLength) + '...' : category)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
       
       // Create SVG with text
       const loadingSvg = `
@@ -88,11 +98,21 @@ export class SimpleThumbnailService {
       // Create a gray background with basic information
       const sharp = await import('sharp');
       
-      // Truncate text to fit in thumbnail
+      // Truncate and escape text for XML safety
       const maxTitleLength = 20;
-      const displayTitle = title.length > maxTitleLength ? title.substring(0, maxTitleLength) + '...' : title;
+      const displayTitle = (title.length > maxTitleLength ? title.substring(0, maxTitleLength) + '...' : title)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
       const maxCategoryLength = 16;
-      const displayCategory = category.length > maxCategoryLength ? category.substring(0, maxCategoryLength) + '...' : category;
+      const displayCategory = (category.length > maxCategoryLength ? category.substring(0, maxCategoryLength) + '...' : category)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
       
       // Create SVG with basic information
       const placeholderSvg = `
@@ -231,13 +251,28 @@ export class SimpleThumbnailService {
       // Create a red background with error information
       const sharp = await import('sharp');
       
-      // Truncate text to fit in thumbnail
+      // Truncate and escape text for XML safety
       const maxTitleLength = 22;
-      const displayTitle = title.length > maxTitleLength ? title.substring(0, maxTitleLength) + '...' : title;
+      const displayTitle = (title.length > maxTitleLength ? title.substring(0, maxTitleLength) + '...' : title)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
       const maxUrlLength = 35;
-      const displayUrl = url.length > maxUrlLength ? url.substring(0, maxUrlLength) + '...' : url;
+      const displayUrl = (url.length > maxUrlLength ? url.substring(0, maxUrlLength) + '...' : url)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
       const maxCategoryLength = 18;
-      const displayCategory = category.length > maxCategoryLength ? category.substring(0, maxCategoryLength) + '...' : category;
+      const displayCategory = (category.length > maxCategoryLength ? category.substring(0, maxCategoryLength) + '...' : category)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
       
       // Create SVG with error information
       const errorSvg = `

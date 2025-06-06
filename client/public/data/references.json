@@ -1,3 +1,19 @@
 {
-  "references": []
+  "references": [
+    {
+      "title": "Codegen",
+      "link": "https://the-codegen-project.org/blog/asyncapi-payload-generator/",
+      "description": "https://the-codegen-project.org/blog/asyncapi-payload-generator/",
+      "category": "Podcasts & Audio",
+      "tags": [
+        "codegen"
+      ],
+      "thumbnail": "/thumbnails/0ad6429c-74b9-49da-ba41-0d6d40bd443f.jpg",
+      "id": "be3f41c5-45a2-4967-9861-492308ce1c30",
+      "createdBy": "admin",
+      "loveCount": 0,
+      "createdAt": "2025-06-06T08:47:17.855Z",
+      "updatedAt": "2025-06-06T08:47:17.855Z"
+    }
+  ]
 }
