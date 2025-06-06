@@ -14,6 +14,21 @@
       "loveCount": 0,
       "createdAt": "2025-06-06T08:17:15.301Z",
       "updatedAt": "2025-06-06T08:21:42.230Z"
+    },
+    {
+      "title": "AsyncAPI Initiative",
+      "link": "https://www.asyncapi.com/",
+      "description": "https://www.asyncapi.com/",
+      "category": "Online Learning",
+      "tags": [
+        "asyncapi"
+      ],
+      "thumbnail": "/thumbnails/25411179-007c-42e3-82ba-4b0d7ec41083.jpg",
+      "id": "44afdaf7-3e15-46f7-ac18-96935994e878",
+      "createdBy": "admin",
+      "loveCount": 0,
+      "createdAt": "2025-06-06T08:23:55.797Z",
+      "updatedAt": "2025-06-06T08:23:55.797Z"
     }
   ]
 }
