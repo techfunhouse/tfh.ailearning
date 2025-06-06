@@ -285,36 +285,38 @@ export class JsonDbStorage implements IStorage {
     const id = uuid();
     const now = new Date().toISOString();
     
-    // Generate thumbnail for the new reference
-    let thumbnailPath = reference.thumbnail;
-    try {
-      const thumbnailResult = await ThumbnailService.generateThumbnail(
-        reference.link,
-        reference.title,
-        reference.category
-      );
-      
-      if (thumbnailResult.success) {
-        thumbnailPath = thumbnailResult.thumbnailPath;
-        console.log(`Generated thumbnail using ${thumbnailResult.method} for: ${reference.title}`);
-      }
-    } catch (error) {
-      console.error('Failed to generate thumbnail for new reference:', error);
-      // Keep the original thumbnail URL as fallback
-    }
+    // Generate placeholder thumbnail and queue background generation
+    const placeholderThumbnail = ThumbnailService.generatePlaceholderThumbnail();
+    const thumbnailJobId = ThumbnailService.queueThumbnailGeneration(
+      id,
+      reference.link,
+      reference.title,
+      reference.category
+    );
     
     const newReference: Reference = {
       ...reference,
       id,
       createdBy,
       loveCount: 0,
-      thumbnail: thumbnailPath,
+      thumbnail: reference.thumbnail || placeholderThumbnail,
+      thumbnailStatus: 'generating',
+      thumbnailId: thumbnailJobId,
       createdAt: now,
       updatedAt: now,
     };
     
     this.referencesDb.data.references.push(newReference);
     this.saveReferenceData();
+    
+    // Set up job completion callback
+    ThumbnailService.onJobUpdate(thumbnailJobId, (job: any) => {
+      if (job.status === 'completed' && job.result?.success) {
+        this.updateReferenceThumbnail(id, job.result.thumbnailPath, 'completed');
+      } else if (job.status === 'failed') {
+        this.updateReferenceThumbnail(id, reference.thumbnail || '/api/placeholder/320/180', 'failed');
+      }
+    });
     
     return newReference;
   }
@@ -328,31 +330,40 @@ export class JsonDbStorage implements IStorage {
     
     const existingReference = this.referencesDb.data.references[index];
     
-    // Check if URL changed - if so, regenerate thumbnail
     let thumbnailPath = reference.thumbnail || existingReference.thumbnail;
+    let thumbnailStatus = existingReference.thumbnailStatus;
+    let thumbnailId = existingReference.thumbnailId;
+    
+    // Check if URL changed - if so, regenerate thumbnail
     if (reference.link && reference.link !== existingReference.link) {
-      try {
-        // Delete old thumbnail if it's a local file
-        if (existingReference.thumbnail && existingReference.thumbnail.startsWith('/thumbnails/')) {
-          ThumbnailService.deleteThumbnail(existingReference.thumbnail);
-        }
-        
-        // Generate new thumbnail with cleanup of old one
-        const thumbnailResult = await ThumbnailService.generateThumbnail(
-          reference.link,
-          reference.title || existingReference.title,
-          reference.category || existingReference.category,
-          existingReference.thumbnail
-        );
-        
-        if (thumbnailResult.success) {
-          thumbnailPath = thumbnailResult.thumbnailPath;
-          console.log(`Regenerated thumbnail using ${thumbnailResult.method} for: ${existingReference.title}`);
-        }
-      } catch (error) {
-        console.error('Failed to regenerate thumbnail for updated reference:', error);
-        // Keep existing thumbnail as fallback
+      // Delete old thumbnail if it's a local file
+      if (existingReference.thumbnail && existingReference.thumbnail.startsWith('/thumbnails/')) {
+        ThumbnailService.deleteThumbnail(existingReference.thumbnail);
       }
+      
+      // Cancel previous thumbnail job if exists
+      if (existingReference.thumbnailId) {
+        ThumbnailService.removeJobListener(existingReference.thumbnailId);
+      }
+      
+      // Generate placeholder and queue new thumbnail generation
+      thumbnailPath = ThumbnailService.generatePlaceholderThumbnail();
+      thumbnailStatus = 'generating';
+      thumbnailId = ThumbnailService.queueThumbnailGeneration(
+        id,
+        reference.link,
+        reference.title || existingReference.title,
+        reference.category || existingReference.category
+      );
+      
+      // Set up job completion callback
+      ThumbnailService.onJobUpdate(thumbnailId, (job: any) => {
+        if (job.status === 'completed' && job.result?.success) {
+          this.updateReferenceThumbnail(id, job.result.thumbnailPath, 'completed');
+        } else if (job.status === 'failed') {
+          this.updateReferenceThumbnail(id, reference.thumbnail || '/api/placeholder/320/180', 'failed');
+        }
+      });
     }
     
     const updatedReference: Reference = {
@@ -360,6 +371,8 @@ export class JsonDbStorage implements IStorage {
       ...reference,
       id: existingReference.id,
       thumbnail: thumbnailPath,
+      thumbnailStatus,
+      thumbnailId,
       updatedAt: new Date().toISOString(),
     };
     
@@ -372,6 +385,20 @@ export class JsonDbStorage implements IStorage {
       updatedAt: updatedReference.updatedAt 
     });
     return updatedReference;
+  }
+
+  // Helper method to update thumbnail when background generation completes
+  private async updateReferenceThumbnail(id: string, thumbnailPath: string, status: 'completed' | 'failed'): Promise<void> {
+    const index = this.referencesDb.data.references.findIndex(ref => ref.id === id);
+    
+    if (index !== -1) {
+      this.referencesDb.data.references[index].thumbnail = thumbnailPath;
+      this.referencesDb.data.references[index].thumbnailStatus = status;
+      this.referencesDb.data.references[index].updatedAt = new Date().toISOString();
+      this.saveReferenceData();
+      
+      console.log(`Updated thumbnail for reference ${id}: ${status}`);
+    }
   }
 
   async deleteReference(id: string): Promise<boolean> {

@@ -406,6 +406,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
 
 
+  // Placeholder thumbnail endpoint
+  app.get("/api/placeholder/generating-thumbnail", (req, res) => {
+    const svg = `<svg width="320" height="180" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#1D4ED8;stop-opacity:1" />
+        </linearGradient>
+        <pattern id="dots" patternUnits="userSpaceOnUse" width="20" height="20">
+          <circle cx="10" cy="10" r="1.5" fill="rgba(255,255,255,0.3)"/>
+        </pattern>
+      </defs>
+      <rect width="320" height="180" fill="url(#grad)"/>
+      <rect width="320" height="180" fill="url(#dots)"/>
+      <circle cx="160" cy="70" r="15" fill="none" stroke="white" stroke-width="2">
+        <animateTransform attributeName="transform" type="rotate" values="0 160 70;360 160 70" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <text x="160" y="110" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">
+        Generating thumbnail...
+      </text>
+      <text x="160" y="130" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+        This may take a moment
+      </text>
+    </svg>`;
+    
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.send(svg);
+  });
+
   // Thumbnail generation endpoint
   app.post("/api/thumbnails/generate", async (req, res) => {
     try {
@@ -427,6 +457,64 @@ export async function registerRoutes(app: Express): Promise<Server> {
         error: error instanceof Error ? error.message : "Unknown error"
       });
     }
+  });
+
+  // Thumbnail job status endpoint
+  app.get("/api/thumbnails/status/:jobId", (req, res) => {
+    const { jobId } = req.params;
+    const job = ThumbnailService.getJobStatus(jobId);
+    
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+    
+    return res.json(job);
+  });
+
+  // Server-Sent Events endpoint for real-time thumbnail updates
+  app.get("/api/thumbnails/stream/:referenceId", async (req, res) => {
+    const { referenceId } = req.params;
+    
+    // Set up SSE headers
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+      'Access-Control-Allow-Origin': '*',
+    });
+
+    const reference = await storage.getReference(referenceId);
+    if (!reference || !reference.thumbnailId) {
+      res.write(`data: ${JSON.stringify({
+        type: 'error',
+        message: 'Reference or thumbnail job not found'
+      })}\n\n`);
+      res.end();
+      return;
+    }
+
+    // Set up job update listener
+    const jobUpdateHandler = (job: any) => {
+      if (job.status === 'completed' || job.status === 'failed') {
+        res.write(`data: ${JSON.stringify({
+          type: 'thumbnail-update',
+          referenceId,
+          status: job.status,
+          thumbnailPath: job.result?.thumbnailPath || reference.thumbnail
+        })}\n\n`);
+        
+        // Clean up listener and close connection
+        ThumbnailService.removeJobListener(reference.thumbnailId!);
+        res.end();
+      }
+    };
+
+    ThumbnailService.onJobUpdate(reference.thumbnailId, jobUpdateHandler);
+
+    // Clean up on client disconnect
+    req.on('close', () => {
+      ThumbnailService.removeJobListener(reference.thumbnailId!);
+    });
   });
 
   const httpServer = createServer(app);
