@@ -51,6 +51,10 @@
     {
       "name": "asyncapi",
       "id": "9272ac1f-863d-4103-bd01-44ec9aab1c8e"
+    },
+    {
+      "name": "github",
+      "id": "c63939a5-ec11-4142-8f57-2fde447b6bd6"
     }
   ]
 }

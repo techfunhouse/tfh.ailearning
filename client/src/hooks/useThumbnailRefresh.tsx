@@ -1,44 +1,54 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 export function useThumbnailRefresh(thumbnailPath: string) {
   const queryClient = useQueryClient();
+  const [lastModified, setLastModified] = useState<string | null>(null);
 
   useEffect(() => {
     if (!thumbnailPath || !thumbnailPath.startsWith('/thumbnails/')) {
       return;
     }
 
-    // Set up periodic checking for thumbnail updates
-    const checkThumbnailUpdate = () => {
-      const img = new Image();
-      const cacheBuster = `?v=${Date.now()}`;
-      
-      img.onload = () => {
-        // If image loads successfully, invalidate cache to refresh UI
-        queryClient.invalidateQueries({ queryKey: ['/api/references'] });
-      };
-      
-      img.onerror = () => {
-        // If image fails to load, it might still be generating
-        // Continue checking
-      };
-      
-      img.src = thumbnailPath + cacheBuster;
+    // Check for thumbnail file changes using HEAD request to get last-modified
+    const checkThumbnailUpdate = async () => {
+      try {
+        const response = await fetch(thumbnailPath, { 
+          method: 'HEAD',
+          cache: 'no-cache'
+        });
+        
+        if (response.ok) {
+          const currentModified = response.headers.get('last-modified');
+          
+          if (currentModified && currentModified !== lastModified) {
+            setLastModified(currentModified);
+            
+            // Only invalidate cache if this is not the first check
+            if (lastModified !== null) {
+              queryClient.invalidateQueries({ queryKey: ['/api/references'] });
+            }
+          }
+        }
+      } catch (error) {
+        // Silently handle errors - file might still be generating
+      }
     };
 
-    // Check immediately and then every 2 seconds for updates
+    // Check immediately
     checkThumbnailUpdate();
-    const interval = setInterval(checkThumbnailUpdate, 2000);
+    
+    // Check every 5 seconds instead of 2 (reduced frequency)
+    const interval = setInterval(checkThumbnailUpdate, 5000);
 
-    // Clean up after 30 seconds (thumbnail should be done by then)
+    // Stop checking after 60 seconds (extended timeout for complex sites)
     const timeout = setTimeout(() => {
       clearInterval(interval);
-    }, 30000);
+    }, 60000);
 
     return () => {
       clearInterval(interval);
       clearTimeout(timeout);
     };
-  }, [thumbnailPath, queryClient]);
+  }, [thumbnailPath, queryClient, lastModified]);
 }

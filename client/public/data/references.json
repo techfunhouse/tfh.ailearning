@@ -29,6 +29,21 @@
       "loveCount": 0,
       "createdAt": "2025-06-06T08:23:55.797Z",
       "updatedAt": "2025-06-06T08:23:55.797Z"
+    },
+    {
+      "title": "GitHub",
+      "link": "https://github.com/",
+      "description": "https://github.com/",
+      "category": "Podcasts & Audio",
+      "tags": [
+        "github"
+      ],
+      "thumbnail": "/thumbnails/45b5d051-be02-4735-bd3a-410804974b67.jpg",
+      "id": "0fdeb223-7adc-41b2-bea8-10fcbee1ce6a",
+      "createdBy": "admin",
+      "loveCount": 0,
+      "createdAt": "2025-06-06T08:25:26.642Z",
+      "updatedAt": "2025-06-06T08:25:26.642Z"
     }
   ]
 }
