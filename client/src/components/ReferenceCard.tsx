@@ -43,8 +43,8 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  // Check if thumbnail is being generated
-  const isThumbnailGenerating = reference.thumbnailStatus === 'generating' || reference.thumbnailStatus === 'pending';
+  // Simple check if thumbnail is a loading placeholder
+  const isThumbnailGenerating = reference.thumbnail.includes('loading') || reference.thumbnail.includes('generating');
 
   
   // Love mutation

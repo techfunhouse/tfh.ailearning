@@ -9,19 +9,8 @@ export function useThumbnailRefresh(thumbnailPath: string) {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (!thumbnailPath || !thumbnailPath.startsWith('/thumbnails/') || isCompleted) {
-      return;
-    }
-
-    // Don't poll for existing thumbnails that are already loaded
-    if (thumbnailPath && !thumbnailPath.includes('loading') && !thumbnailPath.includes('error')) {
-      const img = new Image();
-      img.onload = () => {
-        setIsCompleted(true);
-      };
-      img.src = thumbnailPath;
-      return;
-    }
+    // Disable all polling to prevent server overload
+    return;
 
     // Check for thumbnail file changes using HEAD request to get last-modified
     const checkThumbnailUpdate = async () => {

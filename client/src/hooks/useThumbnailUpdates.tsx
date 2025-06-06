@@ -13,14 +13,8 @@ export function useThumbnailUpdates(reference: Reference) {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    // Only connect if thumbnail generation is actively in progress
-    if (!reference.thumbnailId || 
-        reference.thumbnailStatus === 'completed' || 
-        reference.thumbnailStatus === 'failed' ||
-        !reference.thumbnailStatus || 
-        reference.thumbnailStatus === 'pending') {
-      return;
-    }
+    // Disable SSE connections completely to prevent polling
+    return;
 
     // Set up Server-Sent Events connection for real-time updates
     const baseUrl = window.location.origin;
