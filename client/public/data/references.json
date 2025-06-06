@@ -2,7 +2,7 @@
   "references": [
     {
       "title": "AsyncAPI",
-      "link": "https://the-codegen-project.org/blog/asyncapi-payload-generator/",
+      "link": "https://the-codegen-project.org/blog/asyncapi-payload-generator",
       "description": "https://the-codegen-project.org/blog/asyncapi-payload-generator/",
       "category": "Video Learning",
       "tags": [
@@ -13,7 +13,7 @@
       "createdBy": "admin",
       "loveCount": 0,
       "createdAt": "2025-06-06T08:17:15.301Z",
-      "updatedAt": "2025-06-06T08:17:15.301Z"
+      "updatedAt": "2025-06-06T08:21:42.230Z"
     }
   ]
 }

@@ -137,6 +137,7 @@ export class SimpleThumbnailService {
       
       const browser = await puppeteer.default.launch({
         headless: true,
+        executablePath: '/usr/bin/chromium',
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
