@@ -663,22 +663,19 @@ export default function HomePage() {
                           onClick={() => handleCategoryChange([category.name?.toLowerCase() || 'unknown'])}
                         >
                           <CardContent className="p-3">
-                            <div className="flex flex-col space-y-2">
-                              <div className="flex items-center justify-between">
-                                <div className={`h-8 w-8 rounded-lg ${theme.iconBg} flex items-center justify-center`}>
-                                  <FileSearch className={`h-4 w-4 ${theme.iconColor}`} />
-                                </div>
-                                <Badge variant="secondary" className={`text-xs ${theme.badgeBg}`}>
-                                  {count}
-                                </Badge>
-                              </div>
+                            <div className="flex flex-col space-y-3">
                               <div>
-                                <p className="text-xs text-muted-foreground font-medium capitalize">
+                                <p className="text-xs text-muted-foreground font-medium capitalize mb-1">
                                   {categoryName}
                                 </p>
-                                <p className={`text-lg font-semibold text-foreground ${theme.hoverColor} transition-colors capitalize`}>
-                                  {categoryName}
-                                </p>
+                                <div className="flex items-baseline gap-2">
+                                  <p className={`text-lg font-semibold text-foreground ${theme.hoverColor} transition-colors capitalize`}>
+                                    {categoryName}
+                                  </p>
+                                  <span className={`text-2xl font-bold ${theme.iconColor}`}>
+                                    {count}
+                                  </span>
+                                </div>
                               </div>
                             </div>
                           </CardContent>

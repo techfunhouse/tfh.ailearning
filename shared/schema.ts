@@ -35,20 +35,16 @@ export const categorySchema = z.object({
 
 export const insertCategorySchema = categorySchema.omit({ id: true });
 
-// Tag Schema
-export const tagSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string(),
-});
-
-export const insertTagSchema = tagSchema.omit({ id: true });
+// Tag Schema - simplified to just strings
+export const tagSchema = z.string();
+export const insertTagSchema = z.string();
 
 // Database schema for lowdb
 export const dbSchema = z.object({
   users: z.array(userSchema),
   references: z.array(referenceSchema),
   categories: z.array(categorySchema),
-  tags: z.array(tagSchema),
+  tags: z.array(z.string()),
 });
 
 // Types
@@ -61,7 +57,7 @@ export type InsertReference = z.infer<typeof insertReferenceSchema>;
 export type Category = z.infer<typeof categorySchema>;
 export type InsertCategory = z.infer<typeof insertCategorySchema>;
 
-export type Tag = z.infer<typeof tagSchema>;
-export type InsertTag = z.infer<typeof insertTagSchema>;
+export type Tag = string;
+export type InsertTag = string;
 
 export type Database = z.infer<typeof dbSchema>;

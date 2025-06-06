@@ -38,10 +38,9 @@ export interface IStorage {
   deleteCategory(id: string): Promise<boolean>;
   
   // Tag methods
-  getTags(): Promise<Tag[]>;
-  createTag(tag: InsertTag): Promise<Tag>;
-  updateTag(id: string, name: string): Promise<Tag | undefined>;
-  deleteTag(id: string): Promise<boolean>;
+  getTags(): Promise<string[]>;
+  createTag(tag: string): Promise<string>;
+  deleteTag(tag: string): Promise<boolean>;
   
   // Query methods
   getReferencesByCategory(category: string): Promise<Reference[]>;
@@ -59,7 +58,7 @@ if (!fs.existsSync(dataDir)) {
 type UsersDB = { users: User[] };
 type ReferencesDB = { references: Reference[] };
 type CategoriesDB = { categories: Category[] };
-type TagsDB = { tags: Tag[] };
+type TagsDB = { tags: string[] };
 
 // LowDB implementation
 export class JsonDbStorage implements IStorage {
@@ -499,62 +498,34 @@ export class JsonDbStorage implements IStorage {
   }
 
   // Tag methods
-  async getTags(): Promise<Tag[]> {
+  async getTags(): Promise<string[]> {
     return this.tagsDb.data.tags;
   }
 
-  async createTag(tag: InsertTag): Promise<Tag> {
-    const id = uuid();
-    const newTag: Tag = { ...tag, id };
-    
-    this.tagsDb.data.tags.push(newTag);
-    this.saveTagData();
-    
-    return newTag;
-  }
-  
-  async updateTag(id: string, name: string): Promise<Tag | undefined> {
-    const tagIndex = this.tagsDb.data.tags.findIndex(tag => tag.id === id);
-    
-    if (tagIndex === -1) {
-      return undefined;
+  async createTag(tag: string): Promise<string> {
+    if (!this.tagsDb.data.tags.includes(tag)) {
+      this.tagsDb.data.tags.push(tag);
+      this.saveTagData();
     }
-    
-    const updatedTag = {
-      ...this.tagsDb.data.tags[tagIndex],
-      name
-    };
-    
-    this.tagsDb.data.tags[tagIndex] = updatedTag;
-    this.saveTagData();
-    
-    // Update all references using this tag to use the new name
-    const oldName = this.tagsDb.data.tags[tagIndex].name.toLowerCase();
-    const newName = name.toLowerCase();
-    
-    if (oldName !== newName) {
-      this.referencesDb.data.references = this.referencesDb.data.references.map(ref => {
-        if (ref.tags.includes(oldName)) {
-          return {
-            ...ref,
-            tags: ref.tags.map(tag => tag === oldName ? newName : tag)
-          };
-        }
-        return ref;
-      });
-      this.saveReferenceData();
-    }
-    
-    return updatedTag;
+    return tag;
   }
-  
-  async deleteTag(id: string): Promise<boolean> {
+
+  async deleteTag(tag: string): Promise<boolean> {
     const initialLength = this.tagsDb.data.tags.length;
-    this.tagsDb.data.tags = this.tagsDb.data.tags.filter(tag => tag.id !== id);
+    this.tagsDb.data.tags = this.tagsDb.data.tags.filter(t => t !== tag);
     
     const deleted = initialLength > this.tagsDb.data.tags.length;
     if (deleted) {
       this.saveTagData();
+      
+      // Remove this tag from all references
+      if (this.referencesDb.data.references) {
+        this.referencesDb.data.references = this.referencesDb.data.references.map(ref => ({
+          ...ref,
+          tags: ref.tags.filter(t => t !== tag)
+        }));
+        this.saveReferenceData();
+      }
     }
     
     return deleted;
