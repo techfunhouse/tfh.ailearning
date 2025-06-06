@@ -89,9 +89,7 @@ export default function Sidebar({
   const [isEditCategoryOpen, setIsEditCategoryOpen] = useState(false);
   const [isEditTagOpen, setIsEditTagOpen] = useState(false);
   const [editingCategoryId, setEditingCategoryId] = useState<string>('');
-  const [editingTagId, setEditingTagId] = useState<string>('');
   const [editCategoryName, setEditCategoryName] = useState('');
-  const [editTagName, setEditTagName] = useState('');
 
   const [isDeleteCategoryDialogOpen, setIsDeleteCategoryDialogOpen] = useState(false);
   const [isDeleteTagDialogOpen, setIsDeleteTagDialogOpen] = useState(false);
@@ -129,18 +127,7 @@ export default function Sidebar({
     },
   });
   
-  // Form setup for editing a tag
-  const editTagForm = useForm<{ name: string }>({
-    resolver: zodResolver(tagSchema),
-    defaultValues: {
-      name: editTagName,
-    },
-  });
-  
-  // Update form values when editing tag changes
-  useEffect(() => {
-    editTagForm.setValue('name', editTagName);
-  }, [editTagName, editTagForm]);
+
 
   // Mutation for adding a new category
   const addCategoryMutation = useMutation({
@@ -215,30 +202,7 @@ export default function Sidebar({
     },
   });
   
-  // Mutation for updating a tag
-  const updateTagMutation = useMutation({
-    mutationFn: async ({ id, name }: { id: string; name: string }) => {
-      const response = await apiRequest('PATCH', `/api/tags/${id}`, { name });
-      return response.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: 'Success',
-        description: 'Tag updated successfully',
-      });
-      queryClient.invalidateQueries({ queryKey: ['/api/tags'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/references'] });
-      setIsEditTagOpen(false);
-      editTagForm.reset();
-    },
-    onError: (error) => {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: `Failed to update tag: ${error}`,
-      });
-    },
-  });
+
   
   // Mutation for deleting a category
   const deleteCategoryMutation = useMutation({
@@ -327,9 +291,7 @@ export default function Sidebar({
     updateCategoryMutation.mutate({ id: editingCategoryId, name: data.name });
   };
   
-  const onSubmitEditTag = (data: { name: string }) => {
-    updateTagMutation.mutate({ id: editingTagId, name: data.name });
-  };
+
   
   // Handle category deletion confirmation
   const handleConfirmCategoryDelete = () => {
@@ -343,7 +305,7 @@ export default function Sidebar({
   // Handle tag deletion confirmation
   const handleConfirmTagDelete = () => {
     if (tagToDelete) {
-      deleteTagMutation.mutate(tagToDelete.id);
+      deleteTagMutation.mutate(tagToDelete);
       setIsDeleteTagDialogOpen(false);
       setTagToDelete(null);
     }
