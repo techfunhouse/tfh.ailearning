@@ -582,47 +582,109 @@ export default function HomePage() {
                   className="flex gap-4 overflow-x-auto py-2 px-10 scrollbar-hide"
                 >
                   {/* Total card */}
-                  <Card className="bg-primary/5 border-primary/20 flex-shrink-0 w-[230px]">
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="text-xs text-muted-foreground">Total</p>
-                          <p className="text-2xl font-semibold">
+                  <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-200 dark:border-blue-800/30 flex-shrink-0 w-[180px] group hover:shadow-md transition-all duration-200 cursor-pointer"
+                        onClick={() => handleCategoryChange(["all"])}>
+                    <CardContent className="p-3">
+                      <div className="flex flex-col space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="h-8 w-8 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center">
+                            <BookOpen className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                          </div>
+                          <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
                             {references.length}
+                          </Badge>
+                        </div>
+                        <div>
+                          <p className="text-xs text-muted-foreground font-medium">All Resources</p>
+                          <p className="text-lg font-semibold text-foreground group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
+                            Total Library
                           </p>
                         </div>
-                        <Badge variant="outline" className="h-8 w-8 flex items-center justify-center p-0 rounded-full">
-                          <BookOpen className="h-5 w-5" />
-                        </Badge>
                       </div>
                     </CardContent>
                   </Card>
 
                   {/* Category cards */}
                   {Array.isArray(categoriesData) ? 
-                    categoriesData.map((category) => (
-                      <Card 
-                        key={category.id || `cat-${Math.random()}`} 
-                        className="bg-muted/30 flex-shrink-0 w-[230px] hover:bg-muted/50 transition-colors cursor-pointer"
-                        onClick={() => handleCategoryChange([category.name?.toLowerCase() || 'unknown'])}
-                      >
-                        <CardContent className="p-4">
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <p className="text-xs text-muted-foreground capitalize">
-                                {category.name || 'Uncategorized'}
-                              </p>
-                              <p className="text-2xl font-medium capitalize">
-                                {category.name || 'Uncategorized'}
-                              </p>
+                    categoriesData.map((category, index) => {
+                      const categoryName = category.name || 'Uncategorized';
+                      const count = categoryCounts[category.name?.toLowerCase() || ''] || 0;
+                      
+                      // Color theme for each category
+                      const colorThemes = [
+                        {
+                          gradient: 'from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20',
+                          border: 'border-emerald-200 dark:border-emerald-800/30',
+                          iconBg: 'bg-emerald-100 dark:bg-emerald-900/50',
+                          iconColor: 'text-emerald-600 dark:text-emerald-400',
+                          badgeBg: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300',
+                          hoverColor: 'group-hover:text-emerald-700 dark:group-hover:text-emerald-300'
+                        },
+                        {
+                          gradient: 'from-purple-50 to-violet-50 dark:from-purple-950/20 dark:to-violet-950/20',
+                          border: 'border-purple-200 dark:border-purple-800/30',
+                          iconBg: 'bg-purple-100 dark:bg-purple-900/50',
+                          iconColor: 'text-purple-600 dark:text-purple-400',
+                          badgeBg: 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300',
+                          hoverColor: 'group-hover:text-purple-700 dark:group-hover:text-purple-300'
+                        },
+                        {
+                          gradient: 'from-orange-50 to-red-50 dark:from-orange-950/20 dark:to-red-950/20',
+                          border: 'border-orange-200 dark:border-orange-800/30',
+                          iconBg: 'bg-orange-100 dark:bg-orange-900/50',
+                          iconColor: 'text-orange-600 dark:text-orange-400',
+                          badgeBg: 'bg-orange-100 text-orange-700 dark:bg-orange-900/50 dark:text-orange-300',
+                          hoverColor: 'group-hover:text-orange-700 dark:group-hover:text-orange-300'
+                        },
+                        {
+                          gradient: 'from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20',
+                          border: 'border-cyan-200 dark:border-cyan-800/30',
+                          iconBg: 'bg-cyan-100 dark:bg-cyan-900/50',
+                          iconColor: 'text-cyan-600 dark:text-cyan-400',
+                          badgeBg: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/50 dark:text-cyan-300',
+                          hoverColor: 'group-hover:text-cyan-700 dark:group-hover:text-cyan-300'
+                        },
+                        {
+                          gradient: 'from-pink-50 to-rose-50 dark:from-pink-950/20 dark:to-rose-950/20',
+                          border: 'border-pink-200 dark:border-pink-800/30',
+                          iconBg: 'bg-pink-100 dark:bg-pink-900/50',
+                          iconColor: 'text-pink-600 dark:text-pink-400',
+                          badgeBg: 'bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300',
+                          hoverColor: 'group-hover:text-pink-700 dark:group-hover:text-pink-300'
+                        }
+                      ];
+                      
+                      const theme = colorThemes[index % colorThemes.length];
+                      
+                      return (
+                        <Card 
+                          key={category.id || `cat-${Math.random()}`} 
+                          className={`bg-gradient-to-br ${theme.gradient} ${theme.border} flex-shrink-0 w-[180px] group hover:shadow-md transition-all duration-200 cursor-pointer`}
+                          onClick={() => handleCategoryChange([category.name?.toLowerCase() || 'unknown'])}
+                        >
+                          <CardContent className="p-3">
+                            <div className="flex flex-col space-y-2">
+                              <div className="flex items-center justify-between">
+                                <div className={`h-8 w-8 rounded-lg ${theme.iconBg} flex items-center justify-center`}>
+                                  <FileSearch className={`h-4 w-4 ${theme.iconColor}`} />
+                                </div>
+                                <Badge variant="secondary" className={`text-xs ${theme.badgeBg}`}>
+                                  {count}
+                                </Badge>
+                              </div>
+                              <div>
+                                <p className="text-xs text-muted-foreground font-medium capitalize">
+                                  {categoryName}
+                                </p>
+                                <p className={`text-lg font-semibold text-foreground ${theme.hoverColor} transition-colors capitalize`}>
+                                  {categoryName}
+                                </p>
+                              </div>
                             </div>
-                            <Badge variant="outline" className="px-2 py-1 rounded-full">
-                              {categoryCounts[category.name?.toLowerCase() || ''] || 0}
-                            </Badge>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))
+                          </CardContent>
+                        </Card>
+                      );
+                    })
                   : <div>No categories available</div>}
                 </div>
               </div>
