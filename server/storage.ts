@@ -14,7 +14,7 @@ import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
 import path from "path";
 import fs from "fs";
-import { ThumbnailService } from "./thumbnail-service";
+import { SimpleThumbnailService } from "./simple-thumbnail.js";
 
 // Storage interface
 export interface IStorage {
