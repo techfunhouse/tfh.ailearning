@@ -128,6 +128,46 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
             />
           )}
           
+          {/* Action Icons - Top Right Corner */}
+          <div className="absolute top-2 right-2 flex gap-1">
+            {/* View/Visit Icon */}
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleExternalLinkClick}
+              className="h-8 w-8 p-0 bg-blue-500 hover:bg-blue-600 text-white shadow-md"
+              title="Visit Resource"
+            >
+              <ExternalLink className="h-4 w-4" />
+            </Button>
+            
+            {/* Edit Icon - only show for admins */}
+            {isAdmin && (
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={handleEditClick}
+                className="h-8 w-8 p-0 bg-blue-500 hover:bg-blue-600 text-white shadow-md"
+                title="Edit Reference"
+              >
+                <Edit className="h-4 w-4" />
+              </Button>
+            )}
+            
+            {/* Delete Icon - only show for admins */}
+            {isAdmin && (
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={handleDeleteClick}
+                className="h-8 w-8 p-0 bg-red-500 hover:bg-red-600 text-white shadow-md"
+                title="Delete Reference"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+          
           {/* Thumbnail generation overlay */}
           {isThumbnailGenerating && (
             <div className="absolute inset-0 bg-blue-500/20 backdrop-blur-sm flex items-center justify-center">
@@ -172,44 +212,7 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
           )}
         </CardContent>
         
-        <CardFooter className="p-4 pt-0">
-          <div className="flex gap-2 w-full">
-            {isAdmin && (
-              <>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleEditClick}
-                  className="flex-none"
-                >
-                  <Edit className="h-3 w-3 mr-1" />
-                  Edit
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleDeleteClick}
-                  className="flex-none text-destructive hover:text-destructive"
-                >
-                  <Trash2 className="h-3 w-3 mr-1" />
-                  Delete
-                </Button>
-              </>
-            )}
-            
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="flex-1"
-              onClick={handleExternalLinkClick}
-            >
-              <ExternalLink className="h-3 w-3 mr-1" />
-              <span className="hidden sm:inline">View Resource</span>
-              <span className="sm:hidden">View</span>
-            </Button>
-          </div>
-        </CardFooter>
+
       </Card>
       
       {/* Detail Dialog */}
