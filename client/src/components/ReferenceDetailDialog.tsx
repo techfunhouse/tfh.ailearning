@@ -78,75 +78,7 @@ export default function ReferenceDetailDialog({
               {title}
             </DialogTitle>
             
-            {/* Action Icons - top right */}
-            <div className="flex items-center gap-1 flex-shrink-0 mr-8">
-              {/* View/Visit Icon */}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => window.open(link, '_blank', 'noopener,noreferrer')}
-                className="h-10 w-10 p-0 hover:bg-blue-50 hover:text-blue-600"
-                title="Visit Resource"
-              >
-                <Eye className="h-5 w-5" />
-              </Button>
-              
-              {/* Edit Icon - only show for admins */}
-              {isAdmin && onEdit && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onEdit(reference)}
-                  className="h-10 w-10 p-0 hover:bg-yellow-50 hover:text-yellow-600"
-                  title="Edit Reference"
-                >
-                  <Edit className="h-5 w-5" />
-                </Button>
-              )}
-              
-              {/* Delete Icon - only show for admins */}
-              {isAdmin && onDelete && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onDelete(reference.id)}
-                  className="h-10 w-10 p-0 hover:bg-red-50 hover:text-red-600"
-                  title="Delete Reference"
-                >
-                  <Trash2 className="h-5 w-5" />
-                </Button>
-              )}
-              
-              {/* Navigation Controls */}
-              {allReferences.length > 1 && (
-                <>
-                  <div className="w-px h-6 bg-border mx-2" />
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handlePrevious}
-                    disabled={!hasPrevious}
-                    className="h-8 w-8 p-0"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </Button>
-                  
-                  <span className="text-sm text-muted-foreground px-2 whitespace-nowrap">
-                    {currentIndex + 1} of {allReferences.length}
-                  </span>
-                  
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleNext}
-                    disabled={!hasNext}
-                    className="h-8 w-8 p-0"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </>
-              )}
-            </div>
+
           </div>
         </DialogHeader>
 
