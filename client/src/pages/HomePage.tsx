@@ -19,7 +19,6 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  BookOpen,
   PlusIcon
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -574,24 +573,23 @@ export default function HomePage() {
                   id="category-scroll-container" 
                   className="flex gap-4 overflow-x-auto py-2 px-10 scrollbar-hide"
                 >
-                  {/* Total card */}
-                  <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-200 dark:border-blue-800/30 flex-shrink-0 w-[180px] group hover:shadow-md transition-all duration-200 cursor-pointer"
+                  {/* Total Sources card */}
+                  <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-200 dark:border-blue-800/30 flex-shrink-0 w-[140px] group hover:shadow-md transition-all duration-200 cursor-pointer"
                         onClick={() => handleCategoryChange(["all"])}>
-                    <CardContent className="p-3">
+                    <CardContent className="p-2.5">
                       <div className="flex flex-col space-y-2">
-                        <div className="flex items-center justify-between">
-                          <div className="h-8 w-8 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center">
-                            <BookOpen className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                          </div>
-                          <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
-                            {references.length}
-                          </Badge>
-                        </div>
                         <div>
-                          <p className="text-xs text-muted-foreground font-medium">All Resources</p>
-                          <p className="text-lg font-semibold text-foreground group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
-                            Total Library
+                          <p className="text-xs text-muted-foreground font-medium mb-1">
+                            All Resources
                           </p>
+                          <p className="text-sm font-semibold text-foreground group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
+                            Total Sources
+                          </p>
+                          <div className="mt-2">
+                            <span className="text-3xl font-bold text-gray-800 dark:text-gray-200 block">
+                              {references.length}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </CardContent>
@@ -659,13 +657,13 @@ export default function HomePage() {
                             <div className="flex flex-col space-y-2">
                               <div>
                                 <p className="text-xs text-muted-foreground font-medium capitalize mb-1">
-                                  {categoryName}
+                                  Category
                                 </p>
                                 <p className={`text-sm font-semibold text-foreground ${theme.hoverColor} transition-colors capitalize`}>
                                   {categoryName}
                                 </p>
                                 <div className="mt-2">
-                                  <span className={`text-3xl font-bold ${theme.iconColor} block`}>
+                                  <span className="text-3xl font-bold text-gray-800 dark:text-gray-200 block">
                                     {count}
                                   </span>
                                 </div>
