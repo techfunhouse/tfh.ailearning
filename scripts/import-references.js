@@ -275,7 +275,8 @@ async function importReferences(csvFilePath, baseUrl = 'http://localhost:5000') 
           link: normalizedUrl,
           description: row.description || '',
           category: row.category || categories[0]?.name || 'General',
-          tags: validTags
+          tags: validTags,
+          thumbnail: '' // Empty string as placeholder - will be generated automatically
         };
 
         const newReference = await createReference(baseUrl, cookies, referenceData);
