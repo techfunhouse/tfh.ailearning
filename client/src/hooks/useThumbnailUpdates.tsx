@@ -18,7 +18,8 @@ export function useThumbnailUpdates(reference: Reference) {
     }
 
     // Set up Server-Sent Events connection for real-time updates
-    const eventSource = new EventSource(`/api/thumbnails/stream/${reference.id}`);
+    const baseUrl = window.location.origin;
+    const eventSource = new EventSource(`${baseUrl}/api/thumbnails/stream/${reference.id}`);
     
     eventSource.onopen = () => {
       setIsConnected(true);

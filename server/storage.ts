@@ -124,6 +124,25 @@ export class JsonDbStorage implements IStorage {
   }
 
   private async initializeDefaultData() {
+    // Migrate existing references to include new thumbnail fields
+    let migrationNeeded = false;
+    this.referencesDb.data.references = this.referencesDb.data.references.map(ref => {
+      if (!ref.thumbnailStatus) {
+        migrationNeeded = true;
+        return {
+          ...ref,
+          thumbnailStatus: 'completed' as const,
+          thumbnailId: undefined
+        };
+      }
+      return ref;
+    });
+    
+    if (migrationNeeded) {
+      this.saveReferenceData();
+      console.log('Migrated existing references with thumbnail status fields');
+    }
+
     // Create default admin user
     await this.createUser({
       username: "admin",
