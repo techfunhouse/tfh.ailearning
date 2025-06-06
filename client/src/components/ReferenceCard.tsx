@@ -10,7 +10,6 @@ import { useMutation } from '@tanstack/react-query';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 // // import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
-import { useThumbnailRefresh } from '@/hooks/useThumbnailRefresh';
 import {
   Dialog,
   DialogContent,
@@ -19,7 +18,6 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import ConfirmationDialog from './ConfirmationDialog';
-import { useThumbnailUpdates } from '@/hooks/useThumbnailUpdates';
 
 interface ReferenceCardProps {
   reference: Reference;
@@ -34,11 +32,9 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
   // Handle potentially undefined love count by providing default
   const loveCount = reference.loveCount || 0;
   
-  // Set up real-time thumbnail updates
-  const isConnectedToThumbnailUpdates = useThumbnailUpdates(reference);
-  
-  // Auto-refresh when thumbnail generation completes
-  useThumbnailRefresh(reference.thumbnail);
+  // Disabled excessive polling hooks that were causing server overload
+  // const isConnectedToThumbnailUpdates = useThumbnailUpdates(reference);
+  // useThumbnailRefresh(reference.thumbnail);
 
   const { toast } = useToast();
   const [isLoved, setIsLoved] = useState(false); // Always start as not loved
