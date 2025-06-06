@@ -326,51 +326,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/tags", isAuthenticated, async (req, res) => {
     try {
-      const validationResult = insertTagSchema.safeParse(req.body);
+      const { tag } = req.body;
       
-      if (!validationResult.success) {
-        return res.status(400).json({ 
-          message: "Invalid tag data",
-          errors: validationResult.error.errors
-        });
+      if (!tag || typeof tag !== 'string' || tag.trim() === '') {
+        return res.status(400).json({ message: "Invalid tag name" });
       }
       
-      const tagData = validationResult.data;
-      const tag = await storage.createTag(tagData);
+      const createdTag = await storage.createTag(tag.trim());
       
-      return res.status(201).json(tag);
+      return res.status(201).json(createdTag);
     } catch (error) {
       console.error("Error creating tag:", error);
       return res.status(500).json({ message: "Internal server error" });
     }
   });
   
-  app.patch("/api/tags/:id", isAuthenticated, isAdmin, async (req, res) => {
+  app.delete("/api/tags/:tag", isAuthenticated, isAdmin, async (req, res) => {
     try {
-      const { id } = req.params;
-      const { name } = req.body;
-      
-      if (!name || typeof name !== 'string' || name.trim() === '') {
-        return res.status(400).json({ message: "Invalid tag name" });
-      }
-      
-      const updatedTag = await storage.updateTag(id, name);
-      
-      if (!updatedTag) {
-        return res.status(404).json({ message: "Tag not found" });
-      }
-      
-      return res.status(200).json(updatedTag);
-    } catch (error) {
-      console.error("Error updating tag:", error);
-      return res.status(500).json({ message: "Internal server error" });
-    }
-  });
-  
-  app.delete("/api/tags/:id", isAuthenticated, isAdmin, async (req, res) => {
-    try {
-      const { id } = req.params;
-      const deleted = await storage.deleteTag(id);
+      const { tag } = req.params;
+      const deleted = await storage.deleteTag(decodeURIComponent(tag));
       
       if (!deleted) {
         return res.status(404).json({ message: "Tag not found" });

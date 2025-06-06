@@ -9,7 +9,7 @@ import Sidebar from "@/components/Sidebar";
 import ReferenceCard from "@/components/ReferenceCard";
 import AddEditReferenceDialog from "@/components/AddEditReferenceDialog";
 import ReferenceDetailDialog from "@/components/ReferenceDetailDialog";
-import { Reference, Category, Tag } from "@/types";
+import { Reference, Category } from "@/types";
 import { Button } from "@/components/ui/button";
 import {
   LayoutGrid,
@@ -74,14 +74,14 @@ export default function HomePage() {
   });
 
   // Fetch tags
-  const { data: tagsData } = useQuery<Tag[]>({
+  const { data: tagsData } = useQuery<string[]>({
     queryKey: ["/api/tags"],
     staleTime: Infinity, // Tags don't change often
   });
 
   // Define categories and tags state
   const [categories, setCategories] = useState<Category[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
   
   // Ensure we have valid arrays to work with
   const safeReferences = Array.isArray(references) ? references : [];
@@ -138,18 +138,9 @@ export default function HomePage() {
   // Update tags when data is fetched
   useEffect(() => {
     if (tagsData) {
-      // Ensure we're working with arrays
-      const safeData = (Array.isArray(tagsData) ? tagsData : 
-                      (typeof tagsData === 'object' && tagsData !== null) ? 
-                        Object.values(tagsData) : []) as Array<Record<string, any>>;
-                        
-      // Make sure each tag has required properties
-      const normalizedData = safeData.map((tag) => ({
-        id: tag?.id || `temp-${Math.random().toString(36).substring(2, 9)}`,
-        name: tag?.name || 'Unnamed'
-      }));
-      
-      setTags(normalizedData);
+      // Tags are now simple strings
+      const safeTags = Array.isArray(tagsData) ? tagsData : [];
+      setTags(safeTags);
     }
   }, [tagsData]);
   

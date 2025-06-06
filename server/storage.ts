@@ -164,22 +164,26 @@ export class JsonDbStorage implements IStorage {
     ];
     
     // Create default tags
-    const tagIds = [
-      await this.createTag({ name: "javascript" }),
-      await this.createTag({ name: "ui/ux" }),
-      await this.createTag({ name: "algorithm" }),
-      await this.createTag({ name: "database" }),
-      await this.createTag({ name: "frontend" }),
-      await this.createTag({ name: "backend" }),
-      await this.createTag({ name: "mobile" }),
-      await this.createTag({ name: "productivity" }),
-      await this.createTag({ name: "tools" }),
-      await this.createTag({ name: "data" }),
-      await this.createTag({ name: "visualization" }),
-      await this.createTag({ name: "design" }),
-      await this.createTag({ name: "development" }),
-      await this.createTag({ name: "performance" })
+    const defaultTags = [
+      "javascript",
+      "ui/ux", 
+      "algorithm",
+      "database",
+      "frontend",
+      "backend",
+      "mobile",
+      "productivity",
+      "tools",
+      "data",
+      "visualization",
+      "design",
+      "development",
+      "performance"
     ];
+    
+    for (const tag of defaultTags) {
+      await this.createTag(tag);
+    }
     
     // Create sample references
     await this.createReference({
