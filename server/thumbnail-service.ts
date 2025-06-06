@@ -220,17 +220,23 @@ export class ThumbnailService {
             // Clean up the temporary file
             await fs.promises.unlink(sourcePath);
             console.log(`Successfully generated thumbnail: ${filename}`);
+            
+            // Trigger cache invalidation to refresh UI
+            await this.triggerThumbnailRefresh(filename);
           } catch (copyError) {
             console.error(`Failed to copy thumbnail file:`, copyError);
             await this.createFailureThumbnail(filename, title, category, url);
+            await this.triggerThumbnailRefresh(filename);
           }
         } else {
           // Generation failed, create failure thumbnail
           await this.createFailureThumbnail(filename, title, category, url);
+          await this.triggerThumbnailRefresh(filename);
         }
       } catch (error) {
         console.error(`Thumbnail generation failed for ${filename}:`, error);
         await this.createFailureThumbnail(filename, title, category, url);
+        await this.triggerThumbnailRefresh(filename);
       }
     }, 100); // Small delay to ensure reference is saved first
   }
@@ -277,6 +283,36 @@ export class ThumbnailService {
     await fs.promises.writeFile(filepath, pngBuffer);
     
     console.log(`Created failure thumbnail: ${filename}`);
+  }
+
+  // Trigger UI refresh by updating file timestamp and broadcasting change
+  static async triggerThumbnailRefresh(filename: string): Promise<void> {
+    try {
+      const fs = await import('fs');
+      const path = await import('path');
+      
+      const filepath = path.join(process.cwd(), 'client/public/thumbnails', filename);
+      
+      // Update file timestamp to trigger browser cache invalidation
+      const now = new Date();
+      await fs.promises.utimes(filepath, now, now);
+      
+      console.log(`Triggered thumbnail refresh for: ${filename}`);
+      
+      // Broadcast thumbnail update event (can be used by SSE or WebSocket)
+      this.broadcastThumbnailUpdate(filename);
+    } catch (error) {
+      console.error(`Failed to trigger thumbnail refresh:`, error);
+    }
+  }
+
+  // Broadcast thumbnail update to connected clients
+  static broadcastThumbnailUpdate(filename: string): void {
+    // This can be extended to use WebSocket or SSE for real-time updates
+    console.log(`Broadcasting thumbnail update: ${filename}`);
+    
+    // For now, we rely on the browser's natural cache-busting mechanisms
+    // and the fact that React Query will refetch on focus/visibility changes
   }
 
   static getJobStatus(jobId: string): ThumbnailJob | undefined {
