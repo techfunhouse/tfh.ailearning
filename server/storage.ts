@@ -304,14 +304,8 @@ export class JsonDbStorage implements IStorage {
     const id = uuid();
     const now = new Date().toISOString();
     
-    // Generate placeholder thumbnail and queue background generation
+    // Generate placeholder thumbnail  
     const placeholderThumbnail = ThumbnailService.generatePlaceholderThumbnail();
-    const thumbnailJobId = ThumbnailService.queueThumbnailGeneration(
-      id,
-      reference.link,
-      reference.title,
-      reference.category
-    );
     
     const newReference: Reference = {
       ...reference,
@@ -320,7 +314,7 @@ export class JsonDbStorage implements IStorage {
       loveCount: 0,
       thumbnail: reference.thumbnail || placeholderThumbnail,
       thumbnailStatus: 'generating',
-      thumbnailId: thumbnailJobId,
+      thumbnailId: '',
       createdAt: now,
       updatedAt: now,
     };
@@ -328,9 +322,8 @@ export class JsonDbStorage implements IStorage {
     this.referencesDb.data.references.push(newReference);
     this.saveReferenceData();
     
-    // Set up job completion callback with proper binding
-    console.log(`[Storage] Registering callback for job ${thumbnailJobId} for reference ${id}`);
-    ThumbnailService.onJobUpdate(thumbnailJobId, async (job: any) => {
+    // Define callback before queueing generation to ensure proper timing
+    const callbackHandler = async (job: any) => {
       console.log(`[Storage] Callback triggered for job ${job.id}, status: ${job.status}, result:`, job.result);
       if (job.status === 'completed' && job.result?.success) {
         console.log(`[Storage] Updating reference ${id} with completed thumbnail: ${job.result.thumbnailPath}`);
@@ -341,7 +334,22 @@ export class JsonDbStorage implements IStorage {
       } else {
         console.log(`[Storage] Ignoring job status: ${job.status}`);
       }
-    });
+    };
+    
+    // Queue thumbnail generation with pre-registered callback
+    console.log(`[Storage] Queueing thumbnail generation for reference ${id}`);
+    const thumbnailJobId = ThumbnailService.queueThumbnailGenerationWithCallback(
+      id,
+      reference.link,
+      reference.title,
+      reference.category,
+      callbackHandler
+    );
+    
+    // Update reference with job ID
+    newReference.thumbnailId = thumbnailJobId;
+    this.referencesDb.data.references[this.referencesDb.data.references.length - 1] = newReference;
+    this.saveReferenceData();
     
     return newReference;
   }

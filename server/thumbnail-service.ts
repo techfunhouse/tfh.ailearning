@@ -172,6 +172,37 @@ export class ThumbnailService {
     return jobId;
   }
 
+  // Enhanced method that registers callback before processing
+  static queueThumbnailGenerationWithCallback(
+    referenceId: string, 
+    url: string, 
+    title: string, 
+    category: string, 
+    callback: (job: ThumbnailJob) => void
+  ): string {
+    const jobId = uuidv4();
+    const job: ThumbnailJob = {
+      id: jobId,
+      referenceId,
+      url,
+      title,
+      category,
+      status: 'pending',
+      createdAt: new Date()
+    };
+    
+    // Register callback BEFORE adding to queue
+    this.eventCallbacks.set(jobId, callback);
+    this.jobQueue.set(jobId, job);
+    
+    // Start processing if not already running
+    if (!this.processingQueue) {
+      this.processQueue();
+    }
+    
+    return jobId;
+  }
+
   static getJobStatus(jobId: string): ThumbnailJob | undefined {
     return this.jobQueue.get(jobId);
   }
