@@ -1,21 +1,3 @@
 {
-  "references": [
-    {
-      "title": "https://react.dev/learn",
-      "link": "https://react.dev/learn",
-      "description": "https://react.dev/learn",
-      "category": "Research Portals & Academic Papers",
-      "tags": [
-        "cddd"
-      ],
-      "thumbnail": "/thumbnails/d26faf35-ff34-4c29-b555-c75a3913e3f6.jpg",
-      "id": "6558a35a-c73b-4a92-b9ee-5b0cd8edea61",
-      "createdBy": "admin",
-      "loveCount": 0,
-      "thumbnailStatus": "completed",
-      "thumbnailId": "e0095968-7c4c-48fa-91c5-daf2db22843d",
-      "createdAt": "2025-06-06T06:35:02.696Z",
-      "updatedAt": "2025-06-06T06:35:02.758Z"
-    }
-  ]
+  "references": []
 }

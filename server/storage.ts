@@ -328,12 +328,16 @@ export class JsonDbStorage implements IStorage {
     this.referencesDb.data.references.push(newReference);
     this.saveReferenceData();
     
-    // Set up job completion callback
-    ThumbnailService.onJobUpdate(thumbnailJobId, (job: any) => {
+    // Set up job completion callback with proper binding
+    console.log(`[Storage] Registering callback for job ${thumbnailJobId} for reference ${id}`);
+    ThumbnailService.onJobUpdate(thumbnailJobId, async (job: any) => {
+      console.log(`[Storage] Callback triggered for job ${job.id}, status: ${job.status}`);
       if (job.status === 'completed' && job.result?.success) {
-        this.updateReferenceThumbnail(id, job.result.thumbnailPath, 'completed');
+        console.log(`[Storage] Updating reference ${id} with completed thumbnail: ${job.result.thumbnailPath}`);
+        await this.updateReferenceThumbnail(id, job.result.thumbnailPath, 'completed');
       } else if (job.status === 'failed') {
-        this.updateReferenceThumbnail(id, reference.thumbnail || '/api/placeholder/320/180', 'failed');
+        console.log(`[Storage] Updating reference ${id} with failed status`);
+        await this.updateReferenceThumbnail(id, reference.thumbnail || '/api/placeholder/320/180', 'failed');
       }
     });
     
@@ -375,12 +379,16 @@ export class JsonDbStorage implements IStorage {
         reference.category || existingReference.category
       );
       
-      // Set up job completion callback
-      ThumbnailService.onJobUpdate(thumbnailId, (job: any) => {
+      // Set up job completion callback with proper binding
+      console.log(`[Storage] Registering update callback for job ${thumbnailId} for reference ${id}`);
+      ThumbnailService.onJobUpdate(thumbnailId, async (job: any) => {
+        console.log(`[Storage] Update callback triggered for job ${job.id}, status: ${job.status}`);
         if (job.status === 'completed' && job.result?.success) {
-          this.updateReferenceThumbnail(id, job.result.thumbnailPath, 'completed');
+          console.log(`[Storage] Updating reference ${id} with completed thumbnail: ${job.result.thumbnailPath}`);
+          await this.updateReferenceThumbnail(id, job.result.thumbnailPath, 'completed');
         } else if (job.status === 'failed') {
-          this.updateReferenceThumbnail(id, reference.thumbnail || '/api/placeholder/320/180', 'failed');
+          console.log(`[Storage] Updating reference ${id} with failed status`);
+          await this.updateReferenceThumbnail(id, reference.thumbnail || '/api/placeholder/320/180', 'failed');
         }
       });
     }
@@ -408,15 +416,19 @@ export class JsonDbStorage implements IStorage {
 
   // Helper method to update thumbnail when background generation completes
   private async updateReferenceThumbnail(id: string, thumbnailPath: string, status: 'completed' | 'failed'): Promise<void> {
+    console.log(`[Storage] updateReferenceThumbnail called for ${id}, path: ${thumbnailPath}, status: ${status}`);
     const index = this.referencesDb.data.references.findIndex(ref => ref.id === id);
     
     if (index !== -1) {
+      console.log(`[Storage] Found reference at index ${index}, updating...`);
       this.referencesDb.data.references[index].thumbnail = thumbnailPath;
       this.referencesDb.data.references[index].thumbnailStatus = status;
       this.referencesDb.data.references[index].updatedAt = new Date().toISOString();
       this.saveReferenceData();
       
-      console.log(`Updated thumbnail for reference ${id}: ${status}`);
+      console.log(`[Storage] Successfully updated thumbnail for reference ${id}: ${status}`);
+    } else {
+      console.log(`[Storage] Reference ${id} not found for thumbnail update`);
     }
   }
 

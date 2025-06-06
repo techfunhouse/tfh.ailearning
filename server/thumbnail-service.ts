@@ -185,9 +185,13 @@ export class ThumbnailService {
   }
 
   private static notifyJobUpdate(job: ThumbnailJob): void {
+    console.log(`[ThumbnailService] Notifying job update for ${job.id}: ${job.status}`);
     const callback = this.eventCallbacks.get(job.id);
     if (callback) {
+      console.log(`[ThumbnailService] Executing callback for job ${job.id}`);
       callback(job);
+    } else {
+      console.log(`[ThumbnailService] No callback found for job ${job.id}`);
     }
   }
 
