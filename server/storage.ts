@@ -419,7 +419,15 @@ export class JsonDbStorage implements IStorage {
     
     // Clean up thumbnail file if it's a local file
     if (referenceToDelete.thumbnail && referenceToDelete.thumbnail.startsWith('/thumbnails/')) {
-      // Thumbnail cleanup handled automatically
+      try {
+        const fs = await import('fs/promises');
+        const path = await import('path');
+        const thumbnailPath = path.join(process.cwd(), 'client/public', referenceToDelete.thumbnail);
+        await fs.unlink(thumbnailPath);
+        console.log(`Deleted thumbnail file: ${referenceToDelete.thumbnail}`);
+      } catch (error) {
+        console.log(`Could not delete thumbnail file: ${error}`);
+      }
     }
     
     const initialLength = this.referencesDb.data.references.length;

@@ -1,3 +1,19 @@
 {
-  "references": []
+  "references": [
+    {
+      "title": "Geekforgeeks",
+      "link": "https://www.geeksforgeeks.org/",
+      "description": "https://www.geeksforgeeks.org/",
+      "category": "Video Learning",
+      "tags": [
+        "geeks"
+      ],
+      "thumbnail": "/thumbnails/a704a9e5-1ce2-4024-9cfb-0029d141f7a1.jpg",
+      "id": "2018129a-205a-4ca2-9978-140f3ae276f2",
+      "createdBy": "admin",
+      "loveCount": 0,
+      "createdAt": "2025-06-06T08:37:10.031Z",
+      "updatedAt": "2025-06-06T08:37:10.031Z"
+    }
+  ]
 }
