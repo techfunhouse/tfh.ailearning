@@ -533,39 +533,41 @@ export default function HomePage() {
 
               {/* Category summary cards - Horizontal layout */}
               <div className="relative mb-6">
-                {/* Left scroll button */}
-                {!isAtStart && (
-                  <Button 
-                    variant="outline" 
-                    size="icon" 
-                    className="absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background/80 backdrop-blur-sm shadow-md animate-in fade-in"
-                    onClick={() => {
-                      const container = document.getElementById('category-scroll-container');
-                      if (container) {
-                        container.scrollBy({ left: -300, behavior: 'smooth' });
-                      }
-                    }}
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </Button>
-                )}
+                {/* Left scroll button - always visible */}
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background/80 backdrop-blur-sm shadow-md animate-in fade-in transition-opacity ${
+                    isAtStart ? 'opacity-50 cursor-not-allowed' : 'opacity-100'
+                  }`}
+                  onClick={() => {
+                    const container = document.getElementById('category-scroll-container');
+                    if (container) {
+                      container.scrollBy({ left: -300, behavior: 'smooth' });
+                    }
+                  }}
+                  disabled={isAtStart}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
                 
-                {/* Right scroll button */}
-                {!isAtEnd && (
-                  <Button 
-                    variant="outline" 
-                    size="icon" 
-                    className="absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background/80 backdrop-blur-sm shadow-md animate-in fade-in"
-                    onClick={() => {
-                      const container = document.getElementById('category-scroll-container');
-                      if (container) {
-                        container.scrollBy({ left: 300, behavior: 'smooth' });
-                      }
-                    }}
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                )}
+                {/* Right scroll button - always visible */}
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background/80 backdrop-blur-sm shadow-md animate-in fade-in transition-opacity ${
+                    isAtEnd ? 'opacity-50 cursor-not-allowed' : 'opacity-100'
+                  }`}
+                  onClick={() => {
+                    const container = document.getElementById('category-scroll-container');
+                    if (container) {
+                      container.scrollBy({ left: 300, behavior: 'smooth' });
+                    }
+                  }}
+                  disabled={isAtEnd}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
                 
                 {/* Scrollable container */}
                 <div 
@@ -650,20 +652,20 @@ export default function HomePage() {
                       return (
                         <Card 
                           key={category.id || `cat-${Math.random()}`} 
-                          className={`bg-gradient-to-br ${theme.gradient} ${theme.border} flex-shrink-0 w-[180px] group hover:shadow-md transition-all duration-200 cursor-pointer`}
+                          className={`bg-gradient-to-br ${theme.gradient} ${theme.border} flex-shrink-0 w-[140px] group hover:shadow-md transition-all duration-200 cursor-pointer`}
                           onClick={() => handleCategoryChange([category.name?.toLowerCase() || 'unknown'])}
                         >
-                          <CardContent className="p-3">
-                            <div className="flex flex-col space-y-3">
+                          <CardContent className="p-2.5">
+                            <div className="flex flex-col space-y-2">
                               <div>
                                 <p className="text-xs text-muted-foreground font-medium capitalize mb-1">
                                   {categoryName}
                                 </p>
-                                <div className="flex items-baseline gap-2">
-                                  <p className={`text-lg font-semibold text-foreground ${theme.hoverColor} transition-colors capitalize`}>
-                                    {categoryName}
-                                  </p>
-                                  <span className={`text-2xl font-bold ${theme.iconColor}`}>
+                                <p className={`text-sm font-semibold text-foreground ${theme.hoverColor} transition-colors capitalize`}>
+                                  {categoryName}
+                                </p>
+                                <div className="mt-2">
+                                  <span className={`text-3xl font-bold ${theme.iconColor} block`}>
                                     {count}
                                   </span>
                                 </div>
