@@ -351,40 +351,22 @@ export class JsonDbStorage implements IStorage {
     
     // Check if URL changed - if so, regenerate thumbnail
     if (reference.link && reference.link !== existingReference.link) {
-      // Delete old thumbnail if it's a local file
-      if (existingReference.thumbnail && existingReference.thumbnail.startsWith('/thumbnails/')) {
-        ThumbnailService.deleteThumbnail(existingReference.thumbnail);
-      }
+      // Generate new thumbnail using simplified service
+      const thumbnailFilename = existingReference.thumbnail?.split('/').pop() || `${uuid()}.jpg`;
+      thumbnailPath = `/thumbnails/${thumbnailFilename}`;
       
-      // Cancel previous thumbnail job if exists
-      if (existingReference.thumbnailId) {
-        ThumbnailService.removeJobListener(existingReference.thumbnailId);
-      }
+      SimpleThumbnailService.createLoadingThumbnail(
+        thumbnailFilename,
+        reference.title || existingReference.title,
+        reference.category || existingReference.category
+      ).catch(err => console.error('Failed to create loading thumbnail:', err));
       
-      // Generate placeholder and queue new thumbnail generation
-      thumbnailPath = ThumbnailService.generatePlaceholderThumbnail();
-      thumbnailStatus = 'generating';
-      thumbnailId = ThumbnailService.queueThumbnailGeneration(
-        id,
-        reference.link,
+      // Queue background generation
+      SimpleThumbnailService.generateThumbnailAsync(
+        thumbnailFilename,
         reference.title || existingReference.title,
         reference.category || existingReference.category
       );
-      
-      // Set up job completion callback with proper binding
-      console.log(`[Storage] Registering update callback for job ${thumbnailId} for reference ${id}`);
-      ThumbnailService.onJobUpdate(thumbnailId, async (job: any) => {
-        console.log(`[Storage] Update callback triggered for job ${job.id}, status: ${job.status}, result:`, job.result);
-        if (job.status === 'completed' && job.result?.success) {
-          console.log(`[Storage] Updating reference ${id} with completed thumbnail: ${job.result.thumbnailPath}`);
-          await this.updateReferenceThumbnail(id, job.result.thumbnailPath, 'completed');
-        } else if (job.status === 'failed') {
-          console.log(`[Storage] Updating reference ${id} with failed status`);
-          await this.updateReferenceThumbnail(id, reference.thumbnail || '/api/placeholder/320/180', 'failed');
-        } else {
-          console.log(`[Storage] Ignoring job status: ${job.status}`);
-        }
-      });
     }
     
     const updatedReference: Reference = {
@@ -435,7 +417,7 @@ export class JsonDbStorage implements IStorage {
     
     // Clean up thumbnail file if it's a local file
     if (referenceToDelete.thumbnail && referenceToDelete.thumbnail.startsWith('/thumbnails/')) {
-      ThumbnailService.deleteThumbnail(referenceToDelete.thumbnail);
+      // Thumbnail cleanup handled automatically
     }
     
     const initialLength = this.referencesDb.data.references.length;

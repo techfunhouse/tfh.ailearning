@@ -1,3 +1,19 @@
 {
-  "references": []
+  "references": [
+    {
+      "title": "AsyncAPI",
+      "link": "https://the-codegen-project.org/blog/asyncapi-payload-generator/",
+      "description": "AsyncAPI",
+      "category": "Video Learning",
+      "tags": [
+        "vibe-coding"
+      ],
+      "thumbnail": "/thumbnails/54e6d45c-99c9-4b82-9c48-a25b44055540.jpg",
+      "id": "75ec17fc-16b1-4528-9843-da579ec96546",
+      "createdBy": "admin",
+      "loveCount": 0,
+      "createdAt": "2025-06-06T08:10:50.616Z",
+      "updatedAt": "2025-06-06T08:10:50.616Z"
+    }
+  ]
 }
