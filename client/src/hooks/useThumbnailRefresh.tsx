@@ -1,12 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 export function useThumbnailRefresh(thumbnailPath: string) {
   const queryClient = useQueryClient();
   const [lastModified, setLastModified] = useState<string | null>(null);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (!thumbnailPath || !thumbnailPath.startsWith('/thumbnails/')) {
+    if (!thumbnailPath || !thumbnailPath.startsWith('/thumbnails/') || isCompleted) {
+      return;
+    }
+
+    // Don't poll for existing thumbnails that are already loaded
+    if (thumbnailPath && !thumbnailPath.includes('loading') && !thumbnailPath.includes('error')) {
+      const img = new Image();
+      img.onload = () => {
+        setIsCompleted(true);
+      };
+      img.src = thumbnailPath;
       return;
     }
 
@@ -28,6 +41,21 @@ export function useThumbnailRefresh(thumbnailPath: string) {
             if (lastModified !== null) {
               queryClient.invalidateQueries({ queryKey: ['/api/references'] });
             }
+            
+            // Check if this looks like a real screenshot (not loading/error)
+            // Real screenshots are typically larger than loading placeholders
+            const contentLength = response.headers.get('content-length');
+            if (contentLength && parseInt(contentLength) > 5000) {
+              setIsCompleted(true);
+              if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+              }
+              if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+                timeoutRef.current = null;
+              }
+            }
           }
         }
       } catch (error) {
@@ -38,17 +66,30 @@ export function useThumbnailRefresh(thumbnailPath: string) {
     // Check immediately
     checkThumbnailUpdate();
     
-    // Check every 5 seconds instead of 2 (reduced frequency)
-    const interval = setInterval(checkThumbnailUpdate, 5000);
+    // Only start polling if not completed
+    if (!isCompleted) {
+      // Check every 3 seconds for responsiveness
+      intervalRef.current = setInterval(checkThumbnailUpdate, 3000);
 
-    // Stop checking after 60 seconds (extended timeout for complex sites)
-    const timeout = setTimeout(() => {
-      clearInterval(interval);
-    }, 60000);
+      // Stop checking after 45 seconds to prevent endless polling
+      timeoutRef.current = setTimeout(() => {
+        setIsCompleted(true);
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+      }, 45000);
+    }
 
     return () => {
-      clearInterval(interval);
-      clearTimeout(timeout);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
     };
-  }, [thumbnailPath, queryClient, lastModified]);
+  }, [thumbnailPath, queryClient, lastModified, isCompleted]);
 }

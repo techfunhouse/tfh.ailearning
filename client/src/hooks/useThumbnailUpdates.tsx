@@ -13,7 +13,12 @@ export function useThumbnailUpdates(reference: Reference) {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    if (!reference.thumbnailId || reference.thumbnailStatus === 'completed' || reference.thumbnailStatus === 'failed') {
+    // Only connect if thumbnail generation is actively in progress
+    if (!reference.thumbnailId || 
+        reference.thumbnailStatus === 'completed' || 
+        reference.thumbnailStatus === 'failed' ||
+        !reference.thumbnailStatus || 
+        reference.thumbnailStatus === 'pending') {
       return;
     }
 
