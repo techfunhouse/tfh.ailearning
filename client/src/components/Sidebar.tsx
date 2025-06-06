@@ -87,7 +87,7 @@ export default function Sidebar({
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
   const [isAddTagOpen, setIsAddTagOpen] = useState(false);
   const [isEditCategoryOpen, setIsEditCategoryOpen] = useState(false);
-  const [isEditTagOpen, setIsEditTagOpen] = useState(false);
+
   const [editingCategoryId, setEditingCategoryId] = useState<string>('');
   const [editCategoryName, setEditCategoryName] = useState('');
 
@@ -274,9 +274,17 @@ export default function Sidebar({
     onCategoryChange(newCategories);
   };
 
-  // Filter tags based on search input
+  // Filter tags based on search input with proper type checking
   const filteredTags = tagFilter 
-    ? tags.filter(tag => tag.toLowerCase().includes(tagFilter.toLowerCase())) 
+    ? tags.filter(tag => {
+        if (typeof tag === 'string') {
+          return tag.toLowerCase().includes(tagFilter.toLowerCase());
+        } else if (tag && typeof tag === 'object' && 'name' in tag) {
+          // Handle legacy tag objects during migration
+          return (tag as any).name.toLowerCase().includes(tagFilter.toLowerCase());
+        }
+        return false;
+      })
     : tags;
 
   const onSubmitCategory = (data: { name: string }) => {
@@ -510,39 +518,45 @@ export default function Sidebar({
                   />
                 </div>
                 <div className="flex flex-wrap gap-2 mb-2">
-                  {filteredTags.map(tag => (
-                    <Badge 
-                      key={tag} 
-                      variant={selectedTags.includes(tag) ? "default" : "outline"}
-                      className={`cursor-pointer ${selectedTags.includes(tag) ? 'text-white' : 'hover:bg-muted'}`}
-                      style={{
-                        backgroundColor: selectedTags.includes(tag) ? getTagColor(tag) : 'transparent',
-                        borderColor: getTagColor(tag),
-                        color: selectedTags.includes(tag) ? 'white' : 'hsl(var(--foreground))',
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent event bubbling
-                        onTagSelect(tag);
-                      }}
-                    >
-                      {tag}
-                      {isAdmin && (
-                        <span className="flex items-center ml-1.5">
-                          <span
-                            className="cursor-pointer hover:text-destructive"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setTagToDelete(tag);
-                              setIsDeleteTagDialogOpen(true);
-                            }}
-                            title="Delete Tag"
-                          >
-                            <X className="h-3 w-3" />
+                  {filteredTags.map(tag => {
+                    // Handle both string and object formats during migration
+                    const tagName = typeof tag === 'string' ? tag : (tag as any)?.name || 'Unknown';
+                    const tagKey = typeof tag === 'string' ? tag : (tag as any)?.id || tagName;
+                    
+                    return (
+                      <Badge 
+                        key={tagKey} 
+                        variant={selectedTags.includes(tagName) ? "default" : "outline"}
+                        className={`cursor-pointer ${selectedTags.includes(tagName) ? 'text-white' : 'hover:bg-muted'}`}
+                        style={{
+                          backgroundColor: selectedTags.includes(tagName) ? getTagColor(tagName) : 'transparent',
+                          borderColor: getTagColor(tagName),
+                          color: selectedTags.includes(tagName) ? 'white' : 'hsl(var(--foreground))',
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent event bubbling
+                          onTagSelect(tagName);
+                        }}
+                      >
+                        {tagName}
+                        {isAdmin && (
+                          <span className="flex items-center ml-1.5">
+                            <span
+                              className="cursor-pointer hover:text-destructive"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setTagToDelete(tagName);
+                                setIsDeleteTagDialogOpen(true);
+                              }}
+                              title="Delete Tag"
+                            >
+                              <X className="h-3 w-3" />
+                            </span>
                           </span>
-                        </span>
-                      )}
-                    </Badge>
-                  ))}
+                        )}
+                      </Badge>
+                    );
+                  })}
                   {filteredTags.length === 0 && (
                     <div className="text-sm text-muted-foreground py-2">No tags found</div>
                   )}
@@ -661,40 +675,7 @@ export default function Sidebar({
           </DialogContent>
         </Dialog>
         
-        {/* Edit Tag Dialog */}
-        <Dialog open={isEditTagOpen} onOpenChange={setIsEditTagOpen}>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Edit Tag</DialogTitle>
-            </DialogHeader>
-            <Form {...editTagForm}>
-              <form onSubmit={editTagForm.handleSubmit(onSubmitEditTag)} className="space-y-4">
-                <FormField
-                  control={editTagForm.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tag Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter tag name" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <DialogFooter>
-                  <Button 
-                    type="submit" 
-                    disabled={updateTagMutation.isPending}
-                  >
-                    {updateTagMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Save Changes
-                  </Button>
-                </DialogFooter>
-              </form>
-            </Form>
-          </DialogContent>
-        </Dialog>
+
         
 
       
@@ -717,7 +698,7 @@ export default function Sidebar({
       <ConfirmationDialog
         isOpen={isDeleteTagDialogOpen}
         title="Delete Tag"
-        description={tagToDelete ? `Are you sure you want to delete "${tagToDelete.name}" tag? This will remove the tag from all references.` : ''}
+        description={tagToDelete ? `Are you sure you want to delete "${tagToDelete}" tag? This will remove the tag from all references.` : ''}
         confirmText="Delete"
         cancelText="Cancel"
         variant="danger"
