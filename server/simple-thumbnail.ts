@@ -197,9 +197,12 @@ export class SimpleThumbnailService {
       
       const puppeteer = await import('puppeteer');
       
-      const browser = await puppeteer.default.launch({
+      // Detect environment and configure browser accordingly
+      const isReplit = process.env.REPLIT_CLUSTER || process.env.REPL_SLUG;
+      const isLocal = !isReplit;
+      
+      let browserOptions: any = {
         headless: true,
-        executablePath: '/nix/store/zi4f80l169xlmivz8vja8wlphq74qqk0-chromium-125.0.6422.141/bin/chromium',
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
@@ -210,7 +213,14 @@ export class SimpleThumbnailService {
           '--single-process',
           '--disable-gpu'
         ]
-      });
+      };
+
+      // Only set executablePath for Replit environment
+      if (isReplit) {
+        browserOptions.executablePath = '/nix/store/zi4f80l169xlmivz8vja8wlphq74qqk0-chromium-125.0.6422.141/bin/chromium';
+      }
+      
+      const browser = await puppeteer.default.launch(browserOptions);
 
       const page = await browser.newPage();
       
