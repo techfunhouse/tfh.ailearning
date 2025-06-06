@@ -21,6 +21,8 @@ export const referenceSchema = z.object({
   category: z.string(),
   tags: z.array(z.string()),
   thumbnail: z.string(),
+  thumbnailStatus: z.enum(['pending', 'generating', 'completed', 'failed']).default('pending'),
+  thumbnailId: z.string().optional(),
   loveCount: z.number().default(0),
   createdBy: z.string(),
   createdAt: z.string(), // ISO timestamp
@@ -31,6 +33,8 @@ export const insertReferenceSchema = referenceSchema.omit({
   id: true,
   createdBy: true,
   loveCount: true,
+  thumbnailStatus: true,
+  thumbnailId: true,
   createdAt: true,
   updatedAt: true
 });

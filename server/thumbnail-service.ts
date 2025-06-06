@@ -17,8 +17,25 @@ export interface ThumbnailResult {
   error?: string;
 }
 
+export interface ThumbnailJob {
+  id: string;
+  referenceId: string;
+  url: string;
+  title: string;
+  category: string;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  result?: ThumbnailResult;
+  createdAt: Date;
+  startedAt?: Date;
+  completedAt?: Date;
+  error?: string;
+}
+
 export class ThumbnailService {
   private static browser: puppeteer.Browser | null = null;
+  private static jobQueue: Map<string, ThumbnailJob> = new Map();
+  private static processingQueue: boolean = false;
+  private static eventCallbacks: Map<string, (job: ThumbnailJob) => void> = new Map();
 
   private static async getBrowser(): Promise<puppeteer.Browser> {
     if (!this.browser) {
@@ -53,11 +70,11 @@ export class ThumbnailService {
       
       await page.goto(url, { 
         waitUntil: 'domcontentloaded',
-        timeout: 5000 
+        timeout: 120000  // 2 minutes timeout
       });
       
-      // Wait a bit for content to load
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Wait for content to load fully
+      await new Promise(resolve => setTimeout(resolve, 5000));
       
       const screenshot = await page.screenshot({
         type: 'jpeg',
@@ -131,7 +148,99 @@ export class ThumbnailService {
       </svg>`;
   }
 
-  static async generateThumbnail(url: string, title: string, category: string, existingThumbnail?: string): Promise<ThumbnailResult> {
+  // Background processing methods
+  static queueThumbnailGeneration(referenceId: string, url: string, title: string, category: string): string {
+    const jobId = uuidv4();
+    const job: ThumbnailJob = {
+      id: jobId,
+      referenceId,
+      url,
+      title,
+      category,
+      status: 'pending',
+      createdAt: new Date()
+    };
+    
+    this.jobQueue.set(jobId, job);
+    
+    // Start processing if not already running
+    if (!this.processingQueue) {
+      this.processQueue();
+    }
+    
+    return jobId;
+  }
+
+  static getJobStatus(jobId: string): ThumbnailJob | undefined {
+    return this.jobQueue.get(jobId);
+  }
+
+  static onJobUpdate(jobId: string, callback: (job: ThumbnailJob) => void): void {
+    this.eventCallbacks.set(jobId, callback);
+  }
+
+  static removeJobListener(jobId: string): void {
+    this.eventCallbacks.delete(jobId);
+  }
+
+  private static notifyJobUpdate(job: ThumbnailJob): void {
+    const callback = this.eventCallbacks.get(job.id);
+    if (callback) {
+      callback(job);
+    }
+  }
+
+  private static async processQueue(): Promise<void> {
+    if (this.processingQueue) return;
+    
+    this.processingQueue = true;
+    
+    while (this.jobQueue.size > 0) {
+      const pendingJobs = Array.from(this.jobQueue.values()).filter(job => job.status === 'pending');
+      
+      if (pendingJobs.length === 0) {
+        break;
+      }
+      
+      const job = pendingJobs[0];
+      await this.processJob(job);
+    }
+    
+    this.processingQueue = false;
+  }
+
+  private static async processJob(job: ThumbnailJob): Promise<void> {
+    try {
+      // Update job status
+      job.status = 'processing';
+      job.startedAt = new Date();
+      this.notifyJobUpdate(job);
+      
+      // Generate thumbnail with extended timeout
+      const result = await Promise.race([
+        this.generateThumbnailSync(job.url, job.title, job.category),
+        new Promise<ThumbnailResult>((_, reject) => 
+          setTimeout(() => reject(new Error('Thumbnail generation timeout')), 300000) // 5 minutes timeout
+        )
+      ]);
+      
+      // Update job with result
+      job.status = 'completed';
+      job.result = result;
+      job.completedAt = new Date();
+      this.notifyJobUpdate(job);
+      
+    } catch (error) {
+      console.error(`Thumbnail generation failed for job ${job.id}:`, error);
+      
+      job.status = 'failed';
+      job.error = error instanceof Error ? error.message : 'Unknown error';
+      job.completedAt = new Date();
+      this.notifyJobUpdate(job);
+    }
+  }
+
+  static async generateThumbnailSync(url: string, title: string, category: string, existingThumbnail?: string): Promise<ThumbnailResult> {
     // Clean up existing thumbnail if provided
     if (existingThumbnail && existingThumbnail.startsWith('/thumbnails/')) {
       this.deleteThumbnail(existingThumbnail);
@@ -204,6 +313,16 @@ export class ThumbnailService {
     } catch (error) {
       console.error('Failed to delete thumbnail:', error);
     }
+  }
+
+  // Legacy method for backward compatibility
+  static async generateThumbnail(url: string, title: string, category: string, existingThumbnail?: string): Promise<ThumbnailResult> {
+    return this.generateThumbnailSync(url, title, category, existingThumbnail);
+  }
+
+  // Generate placeholder thumbnail
+  static generatePlaceholderThumbnail(): string {
+    return '/api/placeholder/generating-thumbnail';
   }
 
   static async cleanup(): Promise<void> {
