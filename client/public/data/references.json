@@ -1,49 +1,19 @@
 {
   "references": [
     {
-      "title": "Replit Starter Apps",
-      "link": "https://the-codegen-project.org/blog/asyncapi-payload-generator/",
-      "description": "Replit Starter Apps",
-      "category": "Workshops",
-      "tags": [
-        "vibe-coding"
-      ],
-      "thumbnail": "/thumbnails/c43397a5-930c-4782-aad1-721d7c77f90a.jpg",
-      "id": "7ee51c91-bd15-43a3-8731-eeae8e729bae",
+      "title": "https://www.geeksforgeeks.org/",
+      "link": "https://www.geeksforgeeks.org/",
+      "description": "https://www.geeksforgeeks.org/",
+      "category": "Video Learning",
+      "tags": ["vibe-coding"],
+      "thumbnail": "/api/placeholder/generating-thumbnail",
+      "id": "7c1f34ff-5877-4ed8-b75a-bb1c7bbfc843",
       "createdBy": "admin",
-      "loveCount": 3,
-      "createdAt": "2025-06-05T16:29:45.850Z",
-      "updatedAt": "2025-06-05T16:34:29.037Z"
-    },
-    {
-      "title": "Meetup",
-      "link": "https://www.meetup.com/home/",
-      "description": "Meetup",
-      "category": "Tutorials & Blogs",
-      "tags": [
-        "starter-templates"
-      ],
-      "thumbnail": "/thumbnails/f855ebbb-dd58-40b7-814e-881ab920bbd1.jpg",
-      "id": "2fc7fb22-75aa-47ab-8af3-329260155f23",
-      "createdBy": "admin",
-      "loveCount": 1,
-      "createdAt": "2025-06-05T16:35:31.325Z",
-      "updatedAt": "2025-06-05T16:35:31.325Z"
-    },
-    {
-      "title": "Event-Driven Decision Making: Turning Events Into Action",
-      "link": "https://www.linkedin.com/pulse/event-driven-decision-making-turning-events-action-giri-venkatesan-ul7oc/?trackingId=zPQRUS%2B0RJuIGivAeMeOXg%3D%3D",
-      "description": "Event-Driven Decision Making: Turning Events Into Action\n",
-      "category": "Online Learning",
-      "tags": [
-        "blog"
-      ],
-      "thumbnail": "/thumbnails/05a3522f-cfb0-4076-b1aa-534af15d8342.jpg",
-      "id": "29ba2ee7-336f-405c-ba73-cb2c89ebe73b",
-      "createdBy": "admin",
-      "loveCount": 2,
-      "createdAt": "2025-06-05T16:36:56.208Z",
-      "updatedAt": "2025-06-05T16:36:56.208Z"
+      "loveCount": 0,
+      "thumbnailStatus": "generating",
+      "thumbnailId": "00fecc51-787c-48ff-8612-67b5ea8ea83c",
+      "createdAt": "2025-06-06T06:30:05.661Z",
+      "updatedAt": "2025-06-06T06:30:05.661Z"
     }
   ]
 }
