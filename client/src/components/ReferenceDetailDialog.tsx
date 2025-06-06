@@ -116,56 +116,53 @@ export default function ReferenceDetailDialog({
             </div>
           )}
 
-          {/* Content - matches the image layout */}
-          <div className="space-y-6 px-6 pb-6">
-            {/* Title - Large and prominent */}
+          {/* Content - exact match to image layout */}
+          <div className="space-y-4 px-6 pb-6">
+            {/* URL as main heading - large black text */}
             <div>
-              <h2 className="text-3xl font-bold text-foreground mb-2">{title}</h2>
+              <h1 className="text-4xl font-bold text-black dark:text-white break-all leading-tight">
+                {link}
+              </h1>
             </div>
 
-            {/* URL - Clickable link in blue */}
+            {/* URL again - smaller gray text, clickable */}
             <div>
               <a 
                 href={link} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="text-lg text-blue-600 hover:text-blue-800 hover:underline break-all"
+                className="text-xl text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:underline break-all"
               >
                 {link}
               </a>
             </div>
 
-            {/* Description */}
+            {/* Description - simple text */}
             {description && (
-              <div>
-                <p className="text-lg text-muted-foreground leading-relaxed">
+              <div className="mt-6">
+                <p className="text-2xl text-gray-800 dark:text-gray-200 leading-relaxed font-medium">
                   {description}
                 </p>
               </div>
             )}
 
-            {/* Category Badge */}
-            <div>
-              <Badge variant="secondary" className="text-sm px-3 py-1">
-                <Folder className="h-4 w-4 mr-2" />
-                {category}
-              </Badge>
-            </div>
+            {/* Category and Tags - minimal styling */}
+            {category && (
+              <div className="mt-6">
+                <span className="text-sm text-gray-600 dark:text-gray-400">Category: {category}</span>
+              </div>
+            )}
 
-            {/* Tags */}
             {tags && tags.length > 0 && (
-              <div className="space-y-3">
-                <h4 className="text-sm font-medium text-muted-foreground">Tags</h4>
+              <div className="mt-4">
                 <div className="flex flex-wrap gap-2">
                   {tags.map((tag) => (
-                    <Badge 
+                    <span 
                       key={tag} 
-                      variant="outline"
-                      className={`text-sm px-3 py-1 ${getTagColor(tag)}`}
+                      className="text-sm bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2 py-1 rounded"
                     >
-                      <Tag className="h-3 w-3 mr-1" />
                       {tag}
-                    </Badge>
+                    </span>
                   ))}
                 </div>
               </div>
