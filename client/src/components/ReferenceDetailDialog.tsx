@@ -1,5 +1,4 @@
 import React from 'react';
-import { useMutation } from '@tanstack/react-query';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -7,14 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   ExternalLink, 
-  Heart, 
   Tag, 
   ChevronLeft, 
   ChevronRight
 } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
-import { useToast } from "@/hooks/use-toast";
-import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Reference } from "@/types";
 import { getTagColor } from "@/lib/utils";
 
@@ -33,19 +28,6 @@ export default function ReferenceDetailDialog({
   allReferences = [],
   onNavigate
 }: ReferenceDetailDialogProps) {
-  const { user } = useAuth();
-  const { toast } = useToast();
-  const [isLoved, setIsLoved] = React.useState(false);
-  const [localLoveCount, setLocalLoveCount] = React.useState(0);
-  
-  // Update local state when reference changes
-  React.useEffect(() => {
-    if (reference) {
-      setLocalLoveCount(reference.loveCount || 0);
-      // Check if current user has loved this reference
-      setIsLoved(false); // Reset for simplicity
-    }
-  }, [reference]);
   
   // Navigation logic - only calculate if reference exists
   const currentIndex = React.useMemo(() => {
@@ -68,51 +50,7 @@ export default function ReferenceDetailDialog({
     }
   };
   
-  // Love mutation
-  const loveMutation = useMutation({
-    mutationFn: async () => {
-      if (!reference) throw new Error('No reference selected');
-      const response = await apiRequest('POST', `/api/references/${reference.id}/love`);
-      return response.json();
-    },
-    onSuccess: (data) => {
-      const responseLoveCount = data.loveCount || 0;
-      setLocalLoveCount(responseLoveCount);
-      setIsLoved(!isLoved);
-      
-      toast({
-        title: isLoved ? "Removed from favorites" : "Added to favorites",
-        description: isLoved 
-          ? "Resource removed from your favorites" 
-          : "Resource added to your favorites",
-      });
-      
-      // Invalidate and refetch all reference-related queries
-      queryClient.invalidateQueries({ queryKey: ['/api/references'] });
-      queryClient.refetchQueries({ queryKey: ['/api/references'] });
-    },
-    onError: (error) => {
-      console.error('Error toggling love:', error);
-      toast({
-        title: "Error",
-        description: "Failed to update favorites. Please try again.",
-        variant: "destructive",
-      });
-    }
-  });
-  
-  const handleLoveClick = () => {
-    if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please log in to add resources to favorites.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    loveMutation.mutate();
-  };
+
 
   // If no reference is provided, don't render anything
   if (!reference) {
@@ -234,16 +172,6 @@ export default function ReferenceDetailDialog({
 
         {/* Action Buttons */}
         <div className="flex flex-col gap-3 pt-4 border-t sm:flex-row">
-          <Button
-            variant="outline" 
-            className={`flex-none ${isLoved ? 'bg-pink-500 hover:bg-pink-600 text-white border-none' : 'hover:text-pink-500 hover:border-pink-500'}`}
-            onClick={handleLoveClick}
-            disabled={loveMutation.isPending}
-          >
-            <Heart className={`h-4 w-4 mr-2 ${isLoved ? 'fill-current' : ''}`} />
-            {localLoveCount} Love{localLoveCount !== 1 ? 's' : ''}
-          </Button>
-          
           <Button 
             variant="default" 
             className="flex-1"

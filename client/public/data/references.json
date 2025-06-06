@@ -1,3 +1,15 @@
 {
-  "references": []
+  "references": [
+    {
+      "title": "Canva",
+      "link": "https://www.canva.com/",
+      "description": "https://www.canva.com/",
+      "category": "Video Learning",
+      "tags": [
+        "canva"
+      ],
+      "thumbnail": "/thumbnails/13d29b93-af78-42f5-874c-902fa0e55255.jpg",
+      "id": "e076fd42-240c-48f5-a4f9-f071f2f14b2c"
+    }
+  ]
 }
