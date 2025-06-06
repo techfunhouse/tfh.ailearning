@@ -225,7 +225,12 @@ export class ThumbnailService {
         status: job.status, 
         result: job.result ? { success: job.result.success, thumbnailPath: job.result.thumbnailPath } : null 
       });
-      callback(job);
+      try {
+        callback(job);
+        console.log(`[ThumbnailService] Callback executed successfully for ${job.id}`);
+      } catch (error) {
+        console.error(`[ThumbnailService] Callback execution failed for ${job.id}:`, error);
+      }
     } else {
       console.log(`[ThumbnailService] No callback found for job ${job.id}`);
     }
