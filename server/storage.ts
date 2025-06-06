@@ -330,7 +330,8 @@ export class JsonDbStorage implements IStorage {
     SimpleThumbnailService.generateThumbnailAsync(
       thumbnailFilename,
       reference.title,
-      reference.category
+      reference.category,
+      reference.link
     );
     
     return newReference;
@@ -365,7 +366,8 @@ export class JsonDbStorage implements IStorage {
       SimpleThumbnailService.generateThumbnailAsync(
         thumbnailFilename,
         reference.title || existingReference.title,
-        reference.category || existingReference.category
+        reference.category || existingReference.category,
+        reference.link
       );
     }
     
