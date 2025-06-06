@@ -4,19 +4,44 @@ import path from 'path';
 export class SimpleThumbnailService {
   static async createLoadingThumbnail(filename: string, title: string, category: string): Promise<void> {
     try {
-      // Create a simple solid color JPG as loading placeholder
+      // Create a blue background with text overlay
       const sharp = await import('sharp');
       
-      const placeholderBuffer = await sharp.default({
-        create: {
-          width: 320,
-          height: 180,
-          channels: 3,
-          background: { r: 102, g: 126, b: 234 } // Blue gradient color
-        }
-      })
-      .jpeg({ quality: 90 })
-      .toBuffer();
+      // Truncate text to fit in thumbnail
+      const maxTitleLength = 25;
+      const displayTitle = title.length > maxTitleLength ? title.substring(0, maxTitleLength) + '...' : title;
+      const maxCategoryLength = 20;
+      const displayCategory = category.length > maxCategoryLength ? category.substring(0, maxCategoryLength) + '...' : category;
+      
+      // Create SVG with text
+      const loadingSvg = `
+        <svg width="320" height="180" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100%" height="100%" fill="#667EEA"/>
+          
+          <!-- Loading indicator -->
+          <circle cx="160" cy="60" r="15" fill="rgba(255,255,255,0.3)"/>
+          <text x="160" y="66" font-family="Arial, sans-serif" font-size="14" fill="white" text-anchor="middle">⏳</text>
+          
+          <!-- Title -->
+          <text x="160" y="95" font-family="Arial, sans-serif" font-size="13" fill="white" text-anchor="middle" font-weight="bold">
+            ${displayTitle}
+          </text>
+          
+          <!-- Category -->
+          <text x="160" y="115" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+            ${displayCategory}
+          </text>
+          
+          <!-- Status -->
+          <text x="160" y="140" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.7)" text-anchor="middle">
+            Generating screenshot...
+          </text>
+        </svg>
+      `;
+      
+      const placeholderBuffer = await sharp.default(Buffer.from(loadingSvg))
+        .jpeg({ quality: 90 })
+        .toBuffer();
       
       const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
       await fs.mkdir(thumbnailsDir, { recursive: true });
@@ -60,19 +85,44 @@ export class SimpleThumbnailService {
 
   static async createSimplePlaceholder(filename: string, title: string, category: string): Promise<void> {
     try {
-      // Create a basic solid color JPG as fallback
+      // Create a gray background with basic information
       const sharp = await import('sharp');
       
-      const placeholderBuffer = await sharp.default({
-        create: {
-          width: 320,
-          height: 180,
-          channels: 3,
-          background: { r: 102, g: 126, b: 234 }
-        }
-      })
-      .jpeg({ quality: 90 })
-      .toBuffer();
+      // Truncate text to fit in thumbnail
+      const maxTitleLength = 20;
+      const displayTitle = title.length > maxTitleLength ? title.substring(0, maxTitleLength) + '...' : title;
+      const maxCategoryLength = 16;
+      const displayCategory = category.length > maxCategoryLength ? category.substring(0, maxCategoryLength) + '...' : category;
+      
+      // Create SVG with basic information
+      const placeholderSvg = `
+        <svg width="320" height="180" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100%" height="100%" fill="#808080"/>
+          
+          <!-- Placeholder indicator -->
+          <circle cx="160" cy="60" r="12" fill="rgba(255,255,255,0.3)"/>
+          <text x="160" y="65" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="middle">📄</text>
+          
+          <!-- Title -->
+          <text x="160" y="90" font-family="Arial, sans-serif" font-size="11" fill="white" text-anchor="middle" font-weight="bold">
+            ${displayTitle}
+          </text>
+          
+          <!-- Category -->
+          <text x="160" y="110" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+            ${displayCategory}
+          </text>
+          
+          <!-- Status -->
+          <text x="160" y="130" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,255,255,0.7)" text-anchor="middle">
+            No preview available
+          </text>
+        </svg>
+      `;
+      
+      const placeholderBuffer = await sharp.default(Buffer.from(placeholderSvg))
+        .jpeg({ quality: 90 })
+        .toBuffer();
       
       const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
       await fs.mkdir(thumbnailsDir, { recursive: true });
@@ -178,19 +228,51 @@ export class SimpleThumbnailService {
 
   static async createErrorThumbnail(filename: string, title: string, category: string, url: string): Promise<void> {
     try {
-      // Create a simple red solid color JPG as error placeholder
+      // Create a red background with error information
       const sharp = await import('sharp');
       
-      const errorBuffer = await sharp.default({
-        create: {
-          width: 320,
-          height: 180,
-          channels: 3,
-          background: { r: 255, g: 107, b: 107 } // Red color
-        }
-      })
-      .jpeg({ quality: 90 })
-      .toBuffer();
+      // Truncate text to fit in thumbnail
+      const maxTitleLength = 22;
+      const displayTitle = title.length > maxTitleLength ? title.substring(0, maxTitleLength) + '...' : title;
+      const maxUrlLength = 35;
+      const displayUrl = url.length > maxUrlLength ? url.substring(0, maxUrlLength) + '...' : url;
+      const maxCategoryLength = 18;
+      const displayCategory = category.length > maxCategoryLength ? category.substring(0, maxCategoryLength) + '...' : category;
+      
+      // Create SVG with error information
+      const errorSvg = `
+        <svg width="320" height="180" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100%" height="100%" fill="#FF6B6B"/>
+          
+          <!-- Error indicator -->
+          <circle cx="160" cy="45" r="12" fill="rgba(255,255,255,0.3)"/>
+          <text x="160" y="50" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="middle">⚠</text>
+          
+          <!-- Title -->
+          <text x="160" y="75" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="middle" font-weight="bold">
+            ${displayTitle}
+          </text>
+          
+          <!-- URL -->
+          <text x="160" y="95" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.9)" text-anchor="middle">
+            ${displayUrl}
+          </text>
+          
+          <!-- Category -->
+          <text x="160" y="115" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+            ${displayCategory}
+          </text>
+          
+          <!-- Error message -->
+          <text x="160" y="140" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.7)" text-anchor="middle">
+            Screenshot unavailable
+          </text>
+        </svg>
+      `;
+      
+      const errorBuffer = await sharp.default(Buffer.from(errorSvg))
+        .jpeg({ quality: 90 })
+        .toBuffer();
       
       const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
       const filepath = path.join(thumbnailsDir, filename);
