@@ -2,6 +2,8 @@ import fs from 'fs/promises';
 import path from 'path';
 
 export class SimpleThumbnailService {
+  private static processingQueue: Array<() => Promise<void>> = [];
+  private static isProcessing = false;
   static async createLoadingThumbnail(filename: string, title: string, category: string): Promise<void> {
     try {
       // Create a blue background with text overlay
@@ -157,14 +159,36 @@ export class SimpleThumbnailService {
   }
 
   static generateThumbnailAsync(filename: string, title: string, category: string, url?: string): void {
-    // Generate real screenshot in background
-    setTimeout(async () => {
+    // Add to queue instead of processing immediately
+    const task = async () => {
       if (url) {
         await this.createRealScreenshot(filename, url, title, category);
       } else {
         await this.createSuccessThumbnail(filename, title, category);
       }
-    }, 3000);
+    };
+    
+    this.processingQueue.push(task);
+    this.processQueue();
+  }
+
+  private static async processQueue(): Promise<void> {
+    if (this.isProcessing || this.processingQueue.length === 0) {
+      return;
+    }
+
+    this.isProcessing = true;
+
+    while (this.processingQueue.length > 0) {
+      const task = this.processingQueue.shift();
+      if (task) {
+        await task();
+        // Wait between tasks to prevent resource conflicts
+        await new Promise(resolve => setTimeout(resolve, 3000));
+      }
+    }
+
+    this.isProcessing = false;
   }
 
   static async createRealScreenshot(filename: string, url: string, title: string, category: string): Promise<void> {

@@ -291,8 +291,8 @@ async function importReferences(csvFilePath, baseUrl = 'http://localhost:5000') 
         existingUrls.add(normalizedUrl);
         results.successful++;
 
-        // Small delay to prevent overwhelming the server
-        await new Promise(resolve => setTimeout(resolve, 100));
+        // Larger delay to prevent overwhelming the thumbnail generation system
+        await new Promise(resolve => setTimeout(resolve, 2000));
 
       } catch (error) {
         console.log(`${progress} FAILED (error):`);
