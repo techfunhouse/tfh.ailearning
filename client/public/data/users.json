@@ -5,12 +5,6 @@
       "password": "$2b$10$Zxrk87odXypHx7oAVjaTFeTrS1ja4mxobqetagn5v1AwqT4RSXhh2",
       "isAdmin": true,
       "id": 1
-    },
-    {
-      "username": "user",
-      "password": "$2b$10$UVaibdLoVyT1dqRxF7mXlOjldf1Qpe.AvgYGIHDIdhU3YrChYnpSO",
-      "isAdmin": false,
-      "id": 2
     }
   ]
 }

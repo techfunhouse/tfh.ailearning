@@ -219,6 +219,10 @@
     {
       "name": "testing",
       "id": "b7ab167b-3fef-4905-a57d-9c82c9758876"
+    },
+    {
+      "name": "open-algo",
+      "id": "97b81066-640c-4d6c-91a3-13611f4a8e65"
     }
   ]
 }
