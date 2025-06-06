@@ -36,6 +36,9 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
   
   // Set up real-time thumbnail updates
   const isConnectedToThumbnailUpdates = useThumbnailUpdates(reference);
+  
+  // Auto-refresh when thumbnail generation completes
+  useThumbnailRefresh(reference.thumbnail);
 
   const { toast } = useToast();
   const [isLoved, setIsLoved] = useState(false); // Always start as not loved
