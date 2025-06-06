@@ -3,7 +3,7 @@ import { Reference } from '@/types';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Edit, ExternalLink, Heart, Trash2 } from 'lucide-react';
+import { Edit, ExternalLink, Heart, Trash2, Loader2 } from 'lucide-react';
 import { getTagColor, getCategoryColor } from '@/lib/utils';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
@@ -18,6 +18,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import ConfirmationDialog from './ConfirmationDialog';
+import { useThumbnailUpdates } from '@/hooks/useThumbnailUpdates';
 
 interface ReferenceCardProps {
   reference: Reference;
@@ -32,6 +33,8 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
   // Handle potentially undefined love count by providing default
   const loveCount = reference.loveCount || 0;
   
+  // Set up real-time thumbnail updates
+  const isConnectedToThumbnailUpdates = useThumbnailUpdates(reference);
 
   const { toast } = useToast();
   const [isLoved, setIsLoved] = useState(false); // Always start as not loved
@@ -39,6 +42,9 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  // Check if thumbnail is being generated
+  const isThumbnailGenerating = reference.thumbnailStatus === 'generating' || reference.thumbnailStatus === 'pending';
 
   
   // Love mutation
@@ -161,6 +167,18 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
                 setImageError(true);
               }}
             />
+          )}
+          
+          {/* Thumbnail generation overlay */}
+          {isThumbnailGenerating && (
+            <div className="absolute inset-0 bg-blue-500/20 backdrop-blur-sm flex items-center justify-center">
+              <div className="bg-white/90 rounded-lg px-4 py-2 flex items-center gap-2 shadow-lg">
+                <Loader2 className="h-4 w-4 animate-spin text-blue-600" />
+                <span className="text-sm font-medium text-gray-700">
+                  Generating thumbnail...
+                </span>
+              </div>
+            </div>
           )}
           
           {/* Admin edit and delete buttons */}

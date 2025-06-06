@@ -12,6 +12,8 @@ export interface Reference {
   category: string;
   tags: string[];
   thumbnail: string;
+  thumbnailStatus: 'pending' | 'generating' | 'completed' | 'failed';
+  thumbnailId?: string;
   loveCount: number;
   createdBy: string;
   createdAt: string;
