@@ -27,6 +27,14 @@
     {
       "name": "video",
       "id": "8d03d28c-74ae-43a9-ba14-5317c1ecd90a"
+    },
+    {
+      "name": "blogs",
+      "id": "95719a31-d541-4318-a312-a229e490ff5d"
+    },
+    {
+      "name": "tutorials",
+      "id": "ea802d5b-7d09-4d7b-9018-37efef79f42f"
     }
   ]
 }

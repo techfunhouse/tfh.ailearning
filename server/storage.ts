@@ -331,13 +331,15 @@ export class JsonDbStorage implements IStorage {
     // Set up job completion callback with proper binding
     console.log(`[Storage] Registering callback for job ${thumbnailJobId} for reference ${id}`);
     ThumbnailService.onJobUpdate(thumbnailJobId, async (job: any) => {
-      console.log(`[Storage] Callback triggered for job ${job.id}, status: ${job.status}`);
+      console.log(`[Storage] Callback triggered for job ${job.id}, status: ${job.status}, result:`, job.result);
       if (job.status === 'completed' && job.result?.success) {
         console.log(`[Storage] Updating reference ${id} with completed thumbnail: ${job.result.thumbnailPath}`);
         await this.updateReferenceThumbnail(id, job.result.thumbnailPath, 'completed');
       } else if (job.status === 'failed') {
         console.log(`[Storage] Updating reference ${id} with failed status`);
         await this.updateReferenceThumbnail(id, reference.thumbnail || '/api/placeholder/320/180', 'failed');
+      } else {
+        console.log(`[Storage] Ignoring job status: ${job.status}`);
       }
     });
     
@@ -382,13 +384,15 @@ export class JsonDbStorage implements IStorage {
       // Set up job completion callback with proper binding
       console.log(`[Storage] Registering update callback for job ${thumbnailId} for reference ${id}`);
       ThumbnailService.onJobUpdate(thumbnailId, async (job: any) => {
-        console.log(`[Storage] Update callback triggered for job ${job.id}, status: ${job.status}`);
+        console.log(`[Storage] Update callback triggered for job ${job.id}, status: ${job.status}, result:`, job.result);
         if (job.status === 'completed' && job.result?.success) {
           console.log(`[Storage] Updating reference ${id} with completed thumbnail: ${job.result.thumbnailPath}`);
           await this.updateReferenceThumbnail(id, job.result.thumbnailPath, 'completed');
         } else if (job.status === 'failed') {
           console.log(`[Storage] Updating reference ${id} with failed status`);
           await this.updateReferenceThumbnail(id, reference.thumbnail || '/api/placeholder/320/180', 'failed');
+        } else {
+          console.log(`[Storage] Ignoring job status: ${job.status}`);
         }
       });
     }
