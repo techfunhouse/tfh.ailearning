@@ -101,68 +101,75 @@ export default function ReferenceDetailDialog({
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto">
-          <div className="space-y-6">
-            {/* Thumbnail Section */}
-            {thumbnail && (
-              <div className="relative">
-                <img 
-                  src={thumbnail} 
-                  alt={title}
-                  className="w-full h-64 object-cover rounded-lg border shadow-sm"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                  }}
-                />
+          {/* Thumbnail - Full width at top */}
+          {thumbnail && (
+            <div className="w-full mb-6">
+              <img 
+                src={thumbnail} 
+                alt={title}
+                className="w-full h-auto max-h-96 object-cover rounded-lg"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }}
+              />
+            </div>
+          )}
+
+          {/* Content - matches the image layout */}
+          <div className="space-y-6 px-6 pb-6">
+            {/* Title - Large and prominent */}
+            <div>
+              <h2 className="text-3xl font-bold text-foreground mb-2">{title}</h2>
+            </div>
+
+            {/* URL - Clickable link in blue */}
+            <div>
+              <a 
+                href={link} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-lg text-blue-600 hover:text-blue-800 hover:underline break-all"
+              >
+                {link}
+              </a>
+            </div>
+
+            {/* Description */}
+            {description && (
+              <div>
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  {description}
+                </p>
               </div>
             )}
 
-            {/* Content Section */}
-            <div className="space-y-4">
-              {/* Link */}
-              <div className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 break-all">
-                <ExternalLink className="h-4 w-4 flex-shrink-0" />
-                <a href={link} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                  {link}
-                </a>
-              </div>
-
-              {/* Category Badge */}
-              <div>
-                <Badge variant="secondary" className="text-xs">
-                  <Folder className="h-3 w-3 mr-1" />
-                  {category}
-                </Badge>
-              </div>
-
-              {/* Description */}
-              {description && (
-                <div className="prose prose-sm dark:prose-invert max-w-none">
-                  <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
-                    {description}
-                  </p>
-                </div>
-              )}
-
-              {/* Tags */}
-              {tags && tags.length > 0 && (
-                <div className="space-y-2">
-                  <h4 className="text-sm font-medium text-muted-foreground">Tags</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {tags.map((tag) => (
-                      <Badge 
-                        key={tag} 
-                        variant="outline"
-                        className={`text-xs ${getTagColor(tag)}`}
-                      >
-                        <Tag className="h-3 w-3 mr-1" />
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
+            {/* Category Badge */}
+            <div>
+              <Badge variant="secondary" className="text-sm px-3 py-1">
+                <Folder className="h-4 w-4 mr-2" />
+                {category}
+              </Badge>
             </div>
+
+            {/* Tags */}
+            {tags && tags.length > 0 && (
+              <div className="space-y-3">
+                <h4 className="text-sm font-medium text-muted-foreground">Tags</h4>
+                <div className="flex flex-wrap gap-2">
+                  {tags.map((tag) => (
+                    <Badge 
+                      key={tag} 
+                      variant="outline"
+                      className={`text-sm px-3 py-1 ${getTagColor(tag)}`}
+                    >
+                      <Tag className="h-3 w-3 mr-1" />
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
