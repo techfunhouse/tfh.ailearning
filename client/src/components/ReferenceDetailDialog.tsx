@@ -9,7 +9,10 @@ import {
   Tag, 
   ChevronLeft, 
   ChevronRight,
-  Folder
+  Folder,
+  Edit,
+  Trash2,
+  Eye
 } from "lucide-react";
 import { Reference } from "@/types";
 import { getTagColor } from "@/lib/utils";
@@ -20,6 +23,9 @@ interface ReferenceDetailDialogProps {
   onClose: () => void;
   allReferences?: Reference[];
   onNavigate?: (direction: 'prev' | 'next') => void;
+  onEdit?: (reference: Reference) => void;
+  onDelete?: (id: string) => void;
+  isAdmin?: boolean;
 }
 
 export default function ReferenceDetailDialog({ 
@@ -27,7 +33,10 @@ export default function ReferenceDetailDialog({
   isOpen, 
   onClose,
   allReferences = [],
-  onNavigate
+  onNavigate,
+  onEdit,
+  onDelete,
+  isAdmin = false
 }: ReferenceDetailDialogProps) {
   
   // Navigation logic - only calculate if reference exists
@@ -69,34 +78,75 @@ export default function ReferenceDetailDialog({
               {title}
             </DialogTitle>
             
-            {/* Navigation Controls - top right with margin to avoid close button */}
-            {allReferences.length > 1 && (
-              <div className="flex items-center gap-2 flex-shrink-0 mr-8">
+            {/* Action Icons - top right */}
+            <div className="flex items-center gap-1 flex-shrink-0 mr-8">
+              {/* View/Visit Icon */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => window.open(link, '_blank', 'noopener,noreferrer')}
+                className="h-10 w-10 p-0 hover:bg-blue-50 hover:text-blue-600"
+                title="Visit Resource"
+              >
+                <Eye className="h-5 w-5" />
+              </Button>
+              
+              {/* Edit Icon - only show for admins */}
+              {isAdmin && onEdit && (
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
-                  onClick={handlePrevious}
-                  disabled={!hasPrevious}
-                  className="h-8 w-8 p-0"
+                  onClick={() => onEdit(reference)}
+                  className="h-10 w-10 p-0 hover:bg-yellow-50 hover:text-yellow-600"
+                  title="Edit Reference"
                 >
-                  <ChevronLeft className="h-4 w-4" />
+                  <Edit className="h-5 w-5" />
                 </Button>
-                
-                <span className="text-sm text-muted-foreground px-2 whitespace-nowrap">
-                  {currentIndex + 1} of {allReferences.length}
-                </span>
-                
+              )}
+              
+              {/* Delete Icon - only show for admins */}
+              {isAdmin && onDelete && (
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
-                  onClick={handleNext}
-                  disabled={!hasNext}
-                  className="h-8 w-8 p-0"
+                  onClick={() => onDelete(reference.id)}
+                  className="h-10 w-10 p-0 hover:bg-red-50 hover:text-red-600"
+                  title="Delete Reference"
                 >
-                  <ChevronRight className="h-4 w-4" />
+                  <Trash2 className="h-5 w-5" />
                 </Button>
-              </div>
-            )}
+              )}
+              
+              {/* Navigation Controls */}
+              {allReferences.length > 1 && (
+                <>
+                  <div className="w-px h-6 bg-border mx-2" />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handlePrevious}
+                    disabled={!hasPrevious}
+                    className="h-8 w-8 p-0"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  
+                  <span className="text-sm text-muted-foreground px-2 whitespace-nowrap">
+                    {currentIndex + 1} of {allReferences.length}
+                  </span>
+                  
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleNext}
+                    disabled={!hasNext}
+                    className="h-8 w-8 p-0"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
         </DialogHeader>
 
@@ -170,17 +220,7 @@ export default function ReferenceDetailDialog({
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-col gap-3 pt-4 border-t sm:flex-row">
-          <Button 
-            variant="default" 
-            className="flex-1"
-            onClick={() => window.open(link, '_blank', 'noopener,noreferrer')}
-          >
-            <ExternalLink className="h-4 w-4 mr-2" />
-            Visit Resource
-          </Button>
-        </div>
+
       </DialogContent>
     </Dialog>
   );

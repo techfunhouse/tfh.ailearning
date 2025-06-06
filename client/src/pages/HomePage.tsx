@@ -780,6 +780,13 @@ export default function HomePage() {
         onClose={() => setIsDetailDialogOpen(false)}
         allReferences={filteredReferences}
         onNavigate={handleNavigateReference}
+        isAdmin={isAdmin}
+        onEdit={handleEditReference}
+        onDelete={(id) => {
+          // Handle delete logic here
+          console.log('Delete reference:', id);
+          setIsDetailDialogOpen(false);
+        }}
       />
       
       {/* Scroll to Top Button */}
