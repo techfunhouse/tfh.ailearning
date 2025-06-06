@@ -13,7 +13,7 @@ export function useThumbnailUpdates(reference: Reference) {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    if (!reference.thumbnailId || reference.thumbnailStatus === 'completed') {
+    if (!reference.thumbnailId || reference.thumbnailStatus === 'completed' || reference.thumbnailStatus === 'failed') {
       return;
     }
 
