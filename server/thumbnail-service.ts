@@ -183,8 +183,8 @@ export class ThumbnailService {
     const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
     await fs.promises.mkdir(thumbnailsDir, { recursive: true });
     
-    const filepath = path.join(thumbnailsDir, filename);
-    await fs.promises.writeFile(filepath, pngBuffer);
+    const filepath = path.join(thumbnailsDir, filename.replace('.jpg', '.svg'));
+    await fs.promises.writeFile(filepath, svgBuffer);
     
     console.log(`Created loading thumbnail: ${filename}`);
   }

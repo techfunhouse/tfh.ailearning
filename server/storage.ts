@@ -309,7 +309,7 @@ export class JsonDbStorage implements IStorage {
     const thumbnailPath = `/thumbnails/${thumbnailFilename}`;
     
     // Create loading thumbnail file immediately (non-blocking)
-    ThumbnailService.createLoadingThumbnail(thumbnailFilename, reference.title, reference.category).catch(err => {
+    SimpleThumbnailService.createLoadingThumbnail(thumbnailFilename, reference.title, reference.category).catch(err => {
       console.error('Failed to create loading thumbnail:', err);
     });
     
@@ -327,11 +327,10 @@ export class JsonDbStorage implements IStorage {
     this.saveReferenceData();
     
     // Queue background thumbnail generation that will overwrite the loading image
-    ThumbnailService.generateThumbnailToFile(
-      reference.link,
+    SimpleThumbnailService.generateThumbnailAsync(
+      thumbnailFilename,
       reference.title,
-      reference.category,
-      thumbnailFilename
+      reference.category
     );
     
     return newReference;
