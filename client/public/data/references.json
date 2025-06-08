@@ -2,25 +2,27 @@
   "references": [
     {
       "title": "Canva",
-      "link": "https://www.canva.com/",
+      "link": "https://www.canva.com",
       "description": "https://www.canva.com/",
       "category": "Video Learning",
       "tags": [
         "canva"
       ],
       "thumbnail": "/thumbnails/13d29b93-af78-42f5-874c-902fa0e55255.jpg",
-      "id": "e076fd42-240c-48f5-a4f9-f071f2f14b2c"
+      "id": "e076fd42-240c-48f5-a4f9-f071f2f14b2c",
+      "updatedAt": "2025-06-08T05:15:55.118Z"
     },
     {
       "title": "AI Summit",
-      "link": "https://www.youtube.com/watch?v=z4zXicOAF28",
+      "link": "https://www.youtube.com/watch?v=z4zXicOAF28/",
       "description": "AI Summit",
       "category": "Video Learning",
       "tags": [
         "conference"
       ],
       "thumbnail": "/thumbnails/78031add-5e68-4882-a380-192d209bf4b9.jpg",
-      "id": "0f8f5b54-a751-423c-8a42-78731c549dc4"
+      "id": "0f8f5b54-a751-423c-8a42-78731c549dc4",
+      "updatedAt": "2025-06-08T05:15:37.053Z"
     }
   ]
 }
