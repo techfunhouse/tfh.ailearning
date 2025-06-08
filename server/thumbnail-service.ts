@@ -426,7 +426,7 @@ export class ThumbnailService {
         <text x="320" y="180" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">
           <tspan x="320" dy="0">${safeTruncatedTitle}</tspan>
         </text>
-        <text x="320" y="320" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.8)" text-anchor="middle">${safeDomain}</text>
+        <text x="320" y="320" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.8)" text-anchor="middle">Screenshot Unavailable</text>
       </svg>`;
   }
 
@@ -506,12 +506,13 @@ export class ThumbnailService {
             await this.triggerThumbnailRefresh(filename);
           }
         } else {
-          // Generation failed, create failure thumbnail
+          // Generation failed, create failure thumbnail to replace loading thumbnail
           await this.createFailureThumbnail(filename, title, category, url);
           await this.triggerThumbnailRefresh(filename);
         }
       } catch (error) {
         console.error(`Thumbnail generation failed for ${filename}:`, error);
+        // Create failure thumbnail to replace loading thumbnail
         await this.createFailureThumbnail(filename, title, category, url);
         await this.triggerThumbnailRefresh(filename);
       }

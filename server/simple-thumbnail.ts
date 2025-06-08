@@ -334,7 +334,7 @@ export class SimpleThumbnailService {
           
           <!-- Error message -->
           <text x="320" y="280" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.7)" text-anchor="middle">
-            Screenshot unavailable
+            Screenshot Unavailable
           </text>
         </svg>
       `;
