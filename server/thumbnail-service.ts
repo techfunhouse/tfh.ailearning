@@ -229,7 +229,7 @@ export class ThumbnailService {
       <text x="320" y="260" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.8)" text-anchor="middle">
         Generating thumbnail...
       </text>
-      <text x="160" y="150" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,255,255,0.6)" text-anchor="middle">
+      <text x="320" y="300" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.6)" text-anchor="middle">
         ${category}
       </text>
     </svg>`;
@@ -320,7 +320,7 @@ export class ThumbnailService {
       <text x="320" y="240" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.7)" text-anchor="middle">
         ${category}
       </text>
-      <text x="160" y="150" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+      <text x="320" y="300" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.8)" text-anchor="middle">
         Preview unavailable
       </text>
     </svg>`;
