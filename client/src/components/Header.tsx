@@ -77,7 +77,7 @@ export default function Header({ onSearch }: HeaderProps) {
             className="hidden sm:flex items-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
           >
             <img
-              src="/bygvensan.jpg"
+              src="/bygvensan.png"
               alt="Created by Giri Venkatesan - LinkedIn"
               className="h-8 w-auto rounded"
             />

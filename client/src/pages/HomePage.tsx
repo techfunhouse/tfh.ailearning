@@ -576,21 +576,14 @@ export default function HomePage() {
                   {/* Total Sources card */}
                   <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-200 dark:border-blue-800/30 flex-shrink-0 w-[140px] group hover:shadow-md transition-all duration-200 cursor-pointer"
                         onClick={() => handleCategoryChange(["all"])}>
-                    <CardContent className="p-2.5">
-                      <div className="flex flex-col space-y-2">
-                        <div>
-                          <p className="text-xs text-muted-foreground font-medium mb-1">
-                            All Resources
-                          </p>
-                          <p className="text-sm font-semibold text-foreground group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
-                            Total Sources
-                          </p>
-                          <div className="mt-2">
-                            <span className="text-3xl font-bold text-gray-800 dark:text-gray-200 block">
-                              {references.length}
-                            </span>
-                          </div>
-                        </div>
+                    <CardContent className="p-2.5 h-[100px] flex flex-col justify-between">
+                      <div className={`text-sm font-semibold text-foreground group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors`}>
+                        Total Sources
+                      </div>
+                      <div className="flex items-end justify-center">
+                        <span className="text-3xl font-bold text-gray-800 dark:text-gray-200 block">
+                          {references.length}
+                        </span>
                       </div>
                     </CardContent>
                   </Card>
@@ -650,24 +643,17 @@ export default function HomePage() {
                       return (
                         <Card 
                           key={category.id || `cat-${Math.random()}`} 
-                          className={`bg-gradient-to-br ${theme.gradient} ${theme.border} flex-shrink-0 w-[140px] group hover:shadow-md transition-all duration-200 cursor-pointer`}
+                          className={`bg-gradient-to-br ${theme.gradient} ${theme.border} flex-shrink-0 w-[140px] group hover:shadow-md transition-all duration-200 cursor-pointer h-[100px] flex flex-col justify-between`}
                           onClick={() => handleCategoryChange([category.name?.toLowerCase() || 'unknown'])}
                         >
-                          <CardContent className="p-2.5">
-                            <div className="flex flex-col space-y-2">
-                              <div>
-                                <p className="text-xs text-muted-foreground font-medium capitalize mb-1">
-                                  Category
-                                </p>
-                                <p className={`text-sm font-semibold text-foreground ${theme.hoverColor} transition-colors capitalize`}>
-                                  {categoryName}
-                                </p>
-                                <div className="mt-2">
-                                  <span className="text-3xl font-bold text-gray-800 dark:text-gray-200 block">
-                                    {count}
-                                  </span>
-                                </div>
-                              </div>
+                          <CardContent className="p-2.5 flex flex-col h-full justify-between">
+                            <div className={`text-sm font-semibold text-foreground ${theme.hoverColor} transition-colors capitalize`}>
+                              {categoryName}
+                            </div>
+                            <div className="flex items-end justify-center mt-auto mb-1">
+                              <span className="text-3xl font-bold text-gray-800 dark:text-gray-200 block">
+                                {count}
+                              </span>
                             </div>
                           </CardContent>
                         </Card>

@@ -5,7 +5,7 @@
       "id": "02cc8bb3-99c1-4cb5-8c0c-8dd9bcce07cc"
     },
     {
-      "name": "Tutorials & Blogs",
+      "name": "Tutorials",
       "id": "b64812f9-6460-437a-b9e5-a89d2058723b"
     },
     {
@@ -13,19 +13,23 @@
       "id": "4dddf3ff-436e-47f8-b9aa-5b813bbc0848"
     },
     {
-      "name": "Communities & Forums",
+      "name": "Communities",
       "id": "738b87c5-6dd6-4483-9431-030a3c5272b9"
     },
     {
-      "name": "Research Portals & Academic Papers",
+      "name": "Research Portals",
       "id": "9c3d8882-5472-4b44-9009-5446774681f2"
+    },
+    {
+      "name": "Academic Papers",
+      "id": "f63066bf-36e0-4012-acd1-616e31c81d52"
     },
     {
       "name": "Workshops",
       "id": "e263cc32-35de-4f78-a5ac-408a3e1a538e"
     },
     {
-      "name": "Podcasts & Audio",
+      "name": "Podcasts",
       "id": "67ffc874-666d-47fd-9404-e62330a0fd70"
     }
   ]
