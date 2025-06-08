@@ -12,28 +12,15 @@
       "id": "e076fd42-240c-48f5-a4f9-f071f2f14b2c"
     },
     {
-      "title": "Geekforgeeks",
-      "link": "https://www.geeksforgeeks.org/",
-      "description": "https://www.geeksforgeeks.org/",
-      "category": "Tutorials & Blogs",
-      "tags": [
-        "geeks"
-      ],
-      "thumbnail": "/thumbnails/39efed4a-b8a3-4984-ae0f-943b390337d2.jpg",
-      "id": "4e5990b1-ce77-405f-a637-f1c0acd386de",
-      "updatedAt": "2025-06-06T16:37:45.587Z"
-    },
-    {
-      "title": "AI Engineer Summit",
+      "title": "AI Summit",
       "link": "https://www.youtube.com/watch?v=z4zXicOAF28",
-      "description": "AI Engineer Summit",
-      "category": "Online Learning",
+      "description": "AI Summit",
+      "category": "Video Learning",
       "tags": [
         "conference"
       ],
-      "thumbnail": "/thumbnails/cba6b62c-b92d-4afa-a382-170d861f7b91.jpg",
-      "id": "18e1f9eb-96f9-46aa-a5e2-bc320454f551",
-      "updatedAt": "2025-06-08T05:04:19.875Z"
+      "thumbnail": "/thumbnails/78031add-5e68-4882-a380-192d209bf4b9.jpg",
+      "id": "0f8f5b54-a751-423c-8a42-78731c549dc4"
     }
   ]
 }

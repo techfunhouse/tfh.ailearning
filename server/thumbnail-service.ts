@@ -63,11 +63,11 @@ export class ThumbnailService {
       const browser = await this.getBrowser();
       page = await browser.newPage();
       
-      // Set 640x360 thumbnail resolution with higher DPI for quality
+      // Set high-resolution viewport for crisp 640x360 output
       await page.setViewport({ 
-        width: 1280, 
-        height: 720,
-        deviceScaleFactor: 2 // Higher DPI for crisp 640x360 output
+        width: 1920, 
+        height: 1080,
+        deviceScaleFactor: 3 // Much higher DPI for crisp downscaling
       });
       
       // Enhanced navigation options for problematic sites like YouTube
@@ -79,15 +79,31 @@ export class ThumbnailService {
       // Wait for content to load
       await new Promise(resolve => setTimeout(resolve, 3000));
       
-      // Take screenshot at exact 640x360 resolution
+      // Take high-quality screenshot and scale down for crisp 640x360
       const screenshot = await page.screenshot({
-        type: 'jpeg',
-        quality: 85,
-        clip: { x: 0, y: 0, width: 640, height: 360 }
+        type: 'png', // Use PNG for better quality during processing
+        clip: { x: 0, y: 0, width: 1920, height: 1080 },
+        optimizeForSpeed: false // Prioritize quality over speed
       });
       
       await page.close();
-      return screenshot as Buffer;
+      
+      // Use Sharp to resize to exactly 640x360 with high quality
+      const sharp = await import('sharp');
+      const resizedBuffer = await sharp.default(screenshot)
+        .resize(640, 360, {
+          kernel: sharp.default.kernel.lanczos3, // High-quality resampling
+          fit: 'cover', // Maintain aspect ratio and fill dimensions
+          position: 'top' // Focus on top part of the page
+        })
+        .jpeg({ 
+          quality: 90, 
+          progressive: true,
+          mozjpeg: true // Use mozjpeg for better compression
+        })
+        .toBuffer();
+      
+      return resizedBuffer;
     } catch (error: any) {
       if (page) {
         try {
@@ -115,10 +131,11 @@ export class ThumbnailService {
       const browser = await this.getBrowser();
       page = await browser.newPage();
       
-      // Simpler viewport for problematic sites
+      // High-resolution viewport even for simple approach
       await page.setViewport({ 
-        width: 640, 
-        height: 360
+        width: 1280, 
+        height: 720,
+        deviceScaleFactor: 2
       });
       
       // Simpler navigation without waiting for network idle
@@ -131,13 +148,27 @@ export class ThumbnailService {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       const screenshot = await page.screenshot({
-        type: 'jpeg',
-        quality: 80,
+        type: 'png',
         fullPage: false
       });
       
       await page.close();
-      return screenshot as Buffer;
+      
+      // Resize with Sharp for consistent quality
+      const sharp = await import('sharp');
+      const resizedBuffer = await sharp.default(screenshot)
+        .resize(640, 360, {
+          kernel: sharp.default.kernel.lanczos3,
+          fit: 'cover',
+          position: 'top'
+        })
+        .jpeg({ 
+          quality: 85, 
+          progressive: true
+        })
+        .toBuffer();
+      
+      return resizedBuffer;
     } catch (error) {
       if (page) {
         try {
