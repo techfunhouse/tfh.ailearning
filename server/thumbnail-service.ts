@@ -58,35 +58,95 @@ export class ThumbnailService {
   }
 
   private static async generateScreenshot(url: string): Promise<Buffer | null> {
+    let page;
     try {
       const browser = await this.getBrowser();
-      const page = await browser.newPage();
+      page = await browser.newPage();
       
-      // Set higher resolution viewport for better quality
+      // Set 640x360 thumbnail resolution with higher DPI for quality
       await page.setViewport({ 
-        width: 1920, 
-        height: 1008,
-        deviceScaleFactor: 2 // Higher DPI for crisp images
+        width: 1280, 
+        height: 720,
+        deviceScaleFactor: 2 // Higher DPI for crisp 640x360 output
       });
       
+      // Enhanced navigation options for problematic sites like YouTube
+      await page.goto(url, { 
+        waitUntil: ['domcontentloaded', 'networkidle0'],
+        timeout: 30000  // Reduced timeout to 30 seconds
+      });
+      
+      // Wait for content to load
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // Take screenshot at exact 640x360 resolution
+      const screenshot = await page.screenshot({
+        type: 'jpeg',
+        quality: 85,
+        clip: { x: 0, y: 0, width: 640, height: 360 }
+      });
+      
+      await page.close();
+      return screenshot as Buffer;
+    } catch (error: any) {
+      if (page) {
+        try {
+          await page.close();
+        } catch (closeError) {
+          console.error('Error closing page:', closeError);
+        }
+      }
+      
+      // Handle specific YouTube/frame detachment errors
+      if (error?.message?.includes('Navigating frame was detached') || 
+          error?.message?.includes('Frame was detached')) {
+        console.error(`Frame detachment error for ${url}, retrying with simpler approach:`, error.message);
+        return await this.generateSimpleScreenshot(url);
+      }
+      
+      console.error('Screenshot generation failed:', error);
+      return null;
+    }
+  }
+
+  private static async generateSimpleScreenshot(url: string): Promise<Buffer | null> {
+    let page;
+    try {
+      const browser = await this.getBrowser();
+      page = await browser.newPage();
+      
+      // Simpler viewport for problematic sites
+      await page.setViewport({ 
+        width: 640, 
+        height: 360
+      });
+      
+      // Simpler navigation without waiting for network idle
       await page.goto(url, { 
         waitUntil: 'domcontentloaded',
-        timeout: 120000  // 2 minutes timeout
+        timeout: 15000
       });
       
-      // Wait for content to load fully
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      // Shorter wait time
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
       const screenshot = await page.screenshot({
         type: 'jpeg',
-        quality: 85, // Good balance between quality and file size
-        clip: { x: 0, y: 0, width: 1920, height: 1008 }
+        quality: 80,
+        fullPage: false
       });
       
       await page.close();
       return screenshot as Buffer;
     } catch (error) {
-      console.error('Screenshot generation failed:', error);
+      if (page) {
+        try {
+          await page.close();
+        } catch (closeError) {
+          console.error('Error closing page in simple screenshot:', closeError);
+        }
+      }
+      console.error('Simple screenshot generation also failed:', error);
       return null;
     }
   }
@@ -128,45 +188,45 @@ export class ThumbnailService {
     const safeCategory = escapeXml(category);
     const safeDomain = escapeXml(domain);
 
-    return `<svg width="320" height="180" xmlns="http://www.w3.org/2000/svg">
+    return `<svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" style="stop-color:${color};stop-opacity:1" />
             <stop offset="100%" style="stop-color:${color};stop-opacity:0.8" />
           </linearGradient>
-          <pattern id="dots" patternUnits="userSpaceOnUse" width="20" height="20">
-            <circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.1)"/>
+          <pattern id="dots" patternUnits="userSpaceOnUse" width="40" height="40">
+            <circle cx="20" cy="20" r="4" fill="rgba(255,255,255,0.1)"/>
           </pattern>
         </defs>
-        <rect width="320" height="180" fill="url(#bg)"/>
-        <rect width="320" height="180" fill="url(#dots)"/>
-        <rect x="10" y="10" width="${Math.min(safeCategory.length * 8 + 20, 150)}" height="25" rx="4" fill="rgba(0,0,0,0.3)"/>
-        <text x="20" y="27" font-family="Arial, sans-serif" font-size="12" fill="white">${safeCategory}</text>
-        <text x="160" y="90" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">
-          <tspan x="160" dy="0">${safeTruncatedTitle}</tspan>
+        <rect width="640" height="360" fill="url(#bg)"/>
+        <rect width="640" height="360" fill="url(#dots)"/>
+        <rect x="20" y="20" width="${Math.min(safeCategory.length * 16 + 40, 300)}" height="50" rx="8" fill="rgba(0,0,0,0.3)"/>
+        <text x="40" y="54" font-family="Arial, sans-serif" font-size="24" fill="white">${safeCategory}</text>
+        <text x="320" y="180" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">
+          <tspan x="320" dy="0">${safeTruncatedTitle}</tspan>
         </text>
-        <text x="160" y="160" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)" text-anchor="middle">${safeDomain}</text>
+        <text x="320" y="320" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.8)" text-anchor="middle">${safeDomain}</text>
       </svg>`;
   }
 
   // Create loading thumbnail file that shows generation in progress
   static async createLoadingThumbnail(filename: string, title: string, category: string): Promise<void> {
     const loadingSvg = `
-    <svg width="320" height="180" xmlns="http://www.w3.org/2000/svg">
+    <svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
           <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
         </linearGradient>
       </defs>
-      <rect width="320" height="180" fill="url(#grad)"/>
-      <circle cx="160" cy="70" r="15" fill="none" stroke="white" stroke-width="2">
-        <animateTransform attributeName="transform" type="rotate" values="0 160 70;360 160 70" dur="2s" repeatCount="indefinite"/>
+      <rect width="640" height="360" fill="url(#grad)"/>
+      <circle cx="320" cy="140" r="30" fill="none" stroke="white" stroke-width="4">
+        <animateTransform attributeName="transform" type="rotate" values="0 320 140;360 320 140" dur="2s" repeatCount="indefinite"/>
       </circle>
-      <text x="160" y="110" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white" text-anchor="middle">
-        ${title.length > 25 ? title.substring(0, 25) + '...' : title}
+      <text x="320" y="220" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">
+        ${title.length > 50 ? title.substring(0, 50) + '...' : title}
       </text>
-      <text x="160" y="130" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+      <text x="320" y="260" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.8)" text-anchor="middle">
         Generating thumbnail...
       </text>
       <text x="160" y="150" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,255,255,0.6)" text-anchor="middle">
@@ -239,25 +299,25 @@ export class ThumbnailService {
 
   // Create failure thumbnail with title, URL, and category
   static async createFailureThumbnail(filename: string, title: string, category: string, url: string): Promise<void> {
-    const safeTruncatedTitle = (title || 'Untitled').replace(/[<>&"']/g, ' ').substring(0, 30);
-    const safeDomain = url.replace(/^https?:\/\//, '').split('/')[0].substring(0, 25);
+    const safeTruncatedTitle = (title || 'Untitled').replace(/[<>&"']/g, ' ').substring(0, 50);
+    const safeDomain = url.replace(/^https?:\/\//, '').split('/')[0].substring(0, 40);
     
     const failureSvg = `
-    <svg width="320" height="180" xmlns="http://www.w3.org/2000/svg">
+    <svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="failGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
           <stop offset="100%" style="stop-color:#ee5a52;stop-opacity:1" />
         </linearGradient>
       </defs>
-      <rect width="320" height="180" fill="url(#failGrad)"/>
-      <text x="160" y="60" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white" text-anchor="middle">
+      <rect width="640" height="360" fill="url(#failGrad)"/>
+      <text x="320" y="120" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">
         ${safeTruncatedTitle}
       </text>
-      <text x="160" y="90" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.9)" text-anchor="middle">
+      <text x="320" y="180" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.9)" text-anchor="middle">
         ${safeDomain}
       </text>
-      <text x="160" y="120" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,255,255,0.7)" text-anchor="middle">
+      <text x="320" y="240" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.7)" text-anchor="middle">
         ${category}
       </text>
       <text x="160" y="150" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)" text-anchor="middle">
