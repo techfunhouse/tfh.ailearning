@@ -39,67 +39,121 @@ export class ThumbnailService {
 
   private static async getBrowser(): Promise<puppeteer.Browser> {
     if (!this.browser) {
-      this.browser = await puppeteer.launch({
+      // Detect if running locally or on Replit
+      const isReplit = process.env.REPL_ID || process.env.REPLIT_ENV;
+      
+      const browserConfig: any = {
         headless: true,
-        executablePath: '/nix/store/zi4f80l169xlmivz8vja8wlphq74qqk0-chromium-125.0.6422.141/bin/chromium-browser',
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
           '--disable-dev-shm-usage',
           '--disable-accelerated-2d-canvas',
           '--no-first-run',
-          '--no-zygote',
-          '--single-process',
-          '--disable-gpu'
+          '--disable-gpu',
+          '--disable-web-security',
+          '--disable-features=VizDisplayCompositor',
+          '--disable-background-timer-throttling',
+          '--disable-renderer-backgrounding',
+          '--disable-backgrounding-occluded-windows',
+          '--disable-ipc-flooding-protection'
         ]
-      });
+      };
+
+      if (isReplit) {
+        // Replit-specific configuration
+        browserConfig.executablePath = '/nix/store/zi4f80l169xlmivz8vja8wlphq74qqk0-chromium-125.0.6422.141/bin/chromium-browser';
+        browserConfig.args.push('--no-zygote', '--single-process');
+      } else {
+        // Local development configuration - more permissive
+        browserConfig.args.push(
+          '--disable-extensions',
+          '--disable-plugins',
+          '--disable-default-apps',
+          '--disable-sync',
+          '--disable-translate',
+          '--hide-scrollbars',
+          '--mute-audio',
+          '--disable-blink-features=AutomationControlled'
+        );
+      }
+
+      this.browser = await puppeteer.launch(browserConfig);
     }
     return this.browser;
   }
 
-  private static async generateScreenshot(url: string): Promise<Buffer | null> {
+  private static async generateScreenshot(url: string, retryCount = 0): Promise<Buffer | null> {
+    const maxRetries = 3;
     let page;
+    
     try {
       const browser = await this.getBrowser();
       page = await browser.newPage();
       
-      // Set high-resolution viewport for crisp 640x360 output
-      await page.setViewport({ 
-        width: 1920, 
-        height: 1080,
-        deviceScaleFactor: 3 // Much higher DPI for crisp downscaling
+      // Detect if running locally for different handling
+      const isLocal = !process.env.REPL_ID && !process.env.REPLIT_ENV;
+      
+      // Set user agent to avoid bot detection
+      await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+      
+      // Configure viewport based on environment
+      if (isLocal && url.includes('youtube.com')) {
+        // Use more conservative settings for YouTube on local
+        await page.setViewport({ 
+          width: 1280, 
+          height: 720,
+          deviceScaleFactor: 2
+        });
+      } else {
+        // High-resolution viewport for other sites or Replit
+        await page.setViewport({ 
+          width: 1920, 
+          height: 1080,
+          deviceScaleFactor: 3
+        });
+      }
+      
+      // Set extra headers to avoid detection
+      await page.setExtraHTTPHeaders({
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
       });
       
-      // Enhanced navigation options for problematic sites like YouTube
+      // Navigate with timeout and simple wait strategy
       await page.goto(url, { 
-        waitUntil: ['domcontentloaded', 'networkidle0'],
-        timeout: 30000  // Reduced timeout to 30 seconds
+        waitUntil: 'domcontentloaded',
+        timeout: 20000
       });
       
-      // Wait for content to load
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      // Wait for content based on site type
+      if (url.includes('youtube.com')) {
+        await new Promise(resolve => setTimeout(resolve, 2000)); // Shorter wait for YouTube
+      } else {
+        await new Promise(resolve => setTimeout(resolve, 3000));
+      }
       
-      // Take high-quality screenshot and scale down for crisp 640x360
+      // Take screenshot
       const screenshot = await page.screenshot({
-        type: 'png', // Use PNG for better quality during processing
-        clip: { x: 0, y: 0, width: 1920, height: 1080 },
-        optimizeForSpeed: false // Prioritize quality over speed
+        type: 'png',
+        clip: { x: 0, y: 0, width: page.viewport()!.width, height: page.viewport()!.height },
+        optimizeForSpeed: false
       });
       
       await page.close();
       
-      // Use Sharp to resize to exactly 640x360 with high quality
+      // Process with Sharp for high quality
       const sharp = await import('sharp');
       const resizedBuffer = await sharp.default(screenshot)
         .resize(640, 360, {
-          kernel: sharp.default.kernel.lanczos3, // High-quality resampling
-          fit: 'cover', // Maintain aspect ratio and fill dimensions
-          position: 'top' // Focus on top part of the page
+          kernel: sharp.default.kernel.lanczos3,
+          fit: 'cover',
+          position: 'top'
         })
         .jpeg({ 
           quality: 90, 
           progressive: true,
-          mozjpeg: true // Use mozjpeg for better compression
+          mozjpeg: true
         })
         .toBuffer();
       
@@ -113,14 +167,26 @@ export class ThumbnailService {
         }
       }
       
-      // Handle specific YouTube/frame detachment errors
-      if (error?.message?.includes('Navigating frame was detached') || 
-          error?.message?.includes('Frame was detached')) {
-        console.error(`Frame detachment error for ${url}, retrying with simpler approach:`, error.message);
-        return await this.generateSimpleScreenshot(url);
+      // Handle frame detachment and other errors with retries
+      if (retryCount < maxRetries) {
+        if (error?.message?.includes('frame was detached') || 
+            error?.message?.includes('Navigation timeout') ||
+            error?.message?.includes('Target closed')) {
+          console.log(`Retry ${retryCount + 1}/${maxRetries} for ${url} due to: ${error.message}`);
+          
+          // Wait before retry
+          await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+          
+          // Try with simpler approach on retries
+          if (retryCount > 0) {
+            return await this.generateSimpleScreenshot(url);
+          } else {
+            return await this.generateScreenshot(url, retryCount + 1);
+          }
+        }
       }
       
-      console.error('Screenshot generation failed:', error);
+      console.error(`Failed to capture screenshot for ${url}:`, error);
       return null;
     }
   }
