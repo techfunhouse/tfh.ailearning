@@ -25,27 +25,27 @@ export class SimpleThumbnailService {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&apos;');
       
-      // Create SVG with text
+      // Create SVG with text at 640x360 resolution
       const loadingSvg = `
-        <svg width="320" height="180" xmlns="http://www.w3.org/2000/svg">
+        <svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
           <rect width="100%" height="100%" fill="#667EEA"/>
           
           <!-- Loading indicator -->
-          <circle cx="160" cy="60" r="15" fill="rgba(255,255,255,0.3)"/>
-          <text x="160" y="66" font-family="Arial, sans-serif" font-size="14" fill="white" text-anchor="middle">⏳</text>
+          <circle cx="320" cy="120" r="30" fill="rgba(255,255,255,0.3)"/>
+          <text x="320" y="132" font-family="Arial, sans-serif" font-size="28" fill="white" text-anchor="middle">⏳</text>
           
           <!-- Title -->
-          <text x="160" y="95" font-family="Arial, sans-serif" font-size="13" fill="white" text-anchor="middle" font-weight="bold">
+          <text x="320" y="190" font-family="Arial, sans-serif" font-size="26" fill="white" text-anchor="middle" font-weight="bold">
             ${displayTitle}
           </text>
           
           <!-- Category -->
-          <text x="160" y="115" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+          <text x="320" y="230" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.8)" text-anchor="middle">
             ${displayCategory}
           </text>
           
           <!-- Status -->
-          <text x="160" y="140" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.7)" text-anchor="middle">
+          <text x="320" y="280" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.7)" text-anchor="middle">
             Generating screenshot...
           </text>
         </svg>
@@ -75,8 +75,8 @@ export class SimpleThumbnailService {
       
       const successBuffer = await sharp.default({
         create: {
-          width: 320,
-          height: 180,
+          width: 640,
+          height: 360,
           channels: 3,
           background: { r: 86, g: 171, b: 47 } // Green color
         }
@@ -116,27 +116,27 @@ export class SimpleThumbnailService {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&apos;');
       
-      // Create SVG with basic information
+      // Create SVG with basic information at 640x360
       const placeholderSvg = `
-        <svg width="320" height="180" xmlns="http://www.w3.org/2000/svg">
+        <svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
           <rect width="100%" height="100%" fill="#808080"/>
           
           <!-- Placeholder indicator -->
-          <circle cx="160" cy="60" r="12" fill="rgba(255,255,255,0.3)"/>
-          <text x="160" y="65" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="middle">📄</text>
+          <circle cx="320" cy="120" r="24" fill="rgba(255,255,255,0.3)"/>
+          <text x="320" y="130" font-family="Arial, sans-serif" font-size="24" fill="white" text-anchor="middle">📄</text>
           
           <!-- Title -->
-          <text x="160" y="90" font-family="Arial, sans-serif" font-size="11" fill="white" text-anchor="middle" font-weight="bold">
+          <text x="320" y="180" font-family="Arial, sans-serif" font-size="22" fill="white" text-anchor="middle" font-weight="bold">
             ${displayTitle}
           </text>
           
           <!-- Category -->
-          <text x="160" y="110" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+          <text x="320" y="220" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.8)" text-anchor="middle">
             ${displayCategory}
           </text>
           
           <!-- Status -->
-          <text x="160" y="130" font-family="Arial, sans-serif" font-size="8" fill="rgba(255,255,255,0.7)" text-anchor="middle">
+          <text x="320" y="260" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.7)" text-anchor="middle">
             No preview available
           </text>
         </svg>
@@ -308,32 +308,32 @@ export class SimpleThumbnailService {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&apos;');
       
-      // Create SVG with error information
+      // Create SVG with error information at 640x360
       const errorSvg = `
-        <svg width="320" height="180" xmlns="http://www.w3.org/2000/svg">
+        <svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
           <rect width="100%" height="100%" fill="#FF6B6B"/>
           
           <!-- Error indicator -->
-          <circle cx="160" cy="45" r="12" fill="rgba(255,255,255,0.3)"/>
-          <text x="160" y="50" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="middle">⚠</text>
+          <circle cx="320" cy="90" r="24" fill="rgba(255,255,255,0.3)"/>
+          <text x="320" y="100" font-family="Arial, sans-serif" font-size="24" fill="white" text-anchor="middle">⚠</text>
           
           <!-- Title -->
-          <text x="160" y="75" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="middle" font-weight="bold">
+          <text x="320" y="150" font-family="Arial, sans-serif" font-size="24" fill="white" text-anchor="middle" font-weight="bold">
             ${displayTitle}
           </text>
           
           <!-- URL -->
-          <text x="160" y="95" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.9)" text-anchor="middle">
+          <text x="320" y="190" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.9)" text-anchor="middle">
             ${displayUrl}
           </text>
           
           <!-- Category -->
-          <text x="160" y="115" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+          <text x="320" y="230" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.8)" text-anchor="middle">
             ${displayCategory}
           </text>
           
           <!-- Error message -->
-          <text x="160" y="140" font-family="Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.7)" text-anchor="middle">
+          <text x="320" y="280" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.7)" text-anchor="middle">
             Screenshot unavailable
           </text>
         </svg>

@@ -97,84 +97,136 @@ export class ThumbnailService {
   }
 
   private static async generatePlaywrightScreenshot(url: string): Promise<Buffer | null> {
-    let browser;
-    let page;
-    
-    try {
-      // Launch Playwright browser with optimized settings for local development
-      browser = await chromium.launch({
-        headless: true,
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage',
-          '--disable-web-security',
-          '--disable-features=VizDisplayCompositor',
-          '--disable-background-timer-throttling',
-          '--disable-renderer-backgrounding',
-          '--disable-backgrounding-occluded-windows'
-        ]
-      });
+    const strategies = [
+      { name: 'HighRes', viewport: { width: 1920, height: 1080 }, timeout: 30000, waitTime: 4000 },
+      { name: 'MediumRes', viewport: { width: 1280, height: 720 }, timeout: 20000, waitTime: 3000 },
+      { name: 'BasicRes', viewport: { width: 1024, height: 576 }, timeout: 15000, waitTime: 2000 }
+    ];
+
+    for (const strategy of strategies) {
+      let browser;
+      let context;
+      let page;
       
-      page = await browser.newPage();
-      
-      // Set high-resolution viewport for crisp screenshots
-      await page.setViewportSize({ 
-        width: 1920, 
-        height: 1080
-      });
-      
-      // Set user agent and headers
-      await page.setExtraHTTPHeaders({
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-      });
-      
-      // Navigate with proper wait strategy
-      await page.goto(url, { 
-        waitUntil: 'domcontentloaded',
-        timeout: 30000
-      });
-      
-      // Wait for content to load
-      await page.waitForTimeout(3000);
-      
-      // Take high-quality screenshot
-      const screenshot = await page.screenshot({
-        type: 'png',
-        clip: { x: 0, y: 0, width: 1920, height: 1080 }
-      });
-      
-      await browser.close();
-      
-      // Process with Sharp for high-quality 640x360 output
-      const resizedBuffer = await sharp(screenshot)
-        .resize(640, 360, {
-          kernel: sharp.kernel.lanczos3,
-          fit: 'cover',
-          position: 'top'
-        })
-        .jpeg({ 
-          quality: 95, 
-          progressive: true,
-          mozjpeg: true
-        })
-        .toBuffer();
-      
-      return resizedBuffer;
-    } catch (error: any) {
-      if (browser) {
-        try {
-          await browser.close();
-        } catch (closeError) {
-          console.error('Error closing Playwright browser:', closeError);
+      try {
+        console.log(`Attempting Playwright ${strategy.name} strategy for ${url}`);
+        
+        // Launch browser with progressive fallback configurations
+        browser = await chromium.launch({
+          headless: true,
+          args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-web-security',
+            '--disable-features=VizDisplayCompositor,AudioServiceOutOfProcess',
+            '--disable-background-timer-throttling',
+            '--disable-renderer-backgrounding',
+            '--disable-backgrounding-occluded-windows',
+            '--disable-blink-features=AutomationControlled',
+            '--disable-extensions',
+            '--disable-plugins',
+            '--disable-default-apps',
+            '--no-first-run',
+            '--no-default-browser-check',
+            '--disable-sync',
+            '--disable-translate',
+            '--hide-scrollbars',
+            '--mute-audio'
+          ]
+        });
+        
+        // Create context with specific settings
+        context = await browser.newContext({
+          viewport: strategy.viewport,
+          userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          extraHTTPHeaders: {
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+          },
+          ignoreHTTPSErrors: true
+        });
+        
+        page = await context.newPage();
+        
+        // Block unnecessary resources for faster loading
+        await page.route('**/*', (route) => {
+          const resourceType = route.request().resourceType();
+          if (['font', 'media', 'websocket'].includes(resourceType)) {
+            route.abort();
+          } else {
+            route.continue();
+          }
+        });
+        
+        // Navigate with progressive wait strategies
+        if (url.includes('youtube.com') || url.includes('google')) {
+          // Special handling for Google properties
+          await page.goto(url, { 
+            waitUntil: 'domcontentloaded',
+            timeout: strategy.timeout
+          });
+          await page.waitForTimeout(strategy.waitTime);
+          
+          // Try to dismiss cookie/privacy notices
+          try {
+            await page.click('[aria-label="Accept all"]', { timeout: 2000 });
+          } catch {}
+          try {
+            await page.click('button:has-text("Accept")', { timeout: 2000 });
+          } catch {}
+        } else {
+          // Standard navigation for other sites
+          await page.goto(url, { 
+            waitUntil: 'networkidle',
+            timeout: strategy.timeout
+          });
+          await page.waitForTimeout(strategy.waitTime);
         }
+        
+        // Take screenshot with full viewport
+        const screenshot = await page.screenshot({
+          type: 'png',
+          fullPage: false
+        });
+        
+        await browser.close();
+        
+        // Process with Sharp for high-quality 640x360 output
+        const resizedBuffer = await sharp(screenshot)
+          .resize(640, 360, {
+            kernel: sharp.kernel.lanczos3,
+            fit: 'cover',
+            position: 'top'
+          })
+          .jpeg({ 
+            quality: 95, 
+            progressive: true,
+            mozjpeg: true
+          })
+          .toBuffer();
+        
+        console.log(`Successfully captured screenshot with ${strategy.name} strategy`);
+        return resizedBuffer;
+        
+      } catch (error: any) {
+        console.log(`${strategy.name} strategy failed for ${url}: ${error.message}`);
+        
+        if (browser) {
+          try {
+            await browser.close();
+          } catch (closeError) {
+            console.error('Error closing browser:', closeError);
+          }
+        }
+        
+        // Continue to next strategy
+        continue;
       }
-      
-      console.error(`Playwright screenshot failed for ${url}:`, error);
-      return null;
     }
+    
+    console.error(`All Playwright strategies failed for ${url}`);
+    return null;
   }
 
   private static async generatePuppeteerScreenshot(url: string, retryCount = 0): Promise<Buffer | null> {
