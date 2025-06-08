@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer';
+import { chromium } from 'playwright';
 import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
@@ -84,6 +85,99 @@ export class ThumbnailService {
   }
 
   private static async generateScreenshot(url: string, retryCount = 0): Promise<Buffer | null> {
+    const isLocal = !process.env.REPL_ID && !process.env.REPLIT_ENV;
+    
+    // Use Playwright for local development to avoid frame detachment issues
+    if (isLocal) {
+      return await this.generatePlaywrightScreenshot(url);
+    }
+    
+    // Use Puppeteer for Replit environment
+    return await this.generatePuppeteerScreenshot(url, retryCount);
+  }
+
+  private static async generatePlaywrightScreenshot(url: string): Promise<Buffer | null> {
+    let browser;
+    let page;
+    
+    try {
+      // Launch Playwright browser with optimized settings for local development
+      browser = await chromium.launch({
+        headless: true,
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-web-security',
+          '--disable-features=VizDisplayCompositor',
+          '--disable-background-timer-throttling',
+          '--disable-renderer-backgrounding',
+          '--disable-backgrounding-occluded-windows'
+        ]
+      });
+      
+      page = await browser.newPage();
+      
+      // Set high-resolution viewport for crisp screenshots
+      await page.setViewportSize({ 
+        width: 1920, 
+        height: 1080
+      });
+      
+      // Set user agent and headers
+      await page.setExtraHTTPHeaders({
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      });
+      
+      // Navigate with proper wait strategy
+      await page.goto(url, { 
+        waitUntil: 'domcontentloaded',
+        timeout: 30000
+      });
+      
+      // Wait for content to load
+      await page.waitForTimeout(3000);
+      
+      // Take high-quality screenshot
+      const screenshot = await page.screenshot({
+        type: 'png',
+        clip: { x: 0, y: 0, width: 1920, height: 1080 }
+      });
+      
+      await browser.close();
+      
+      // Process with Sharp for high-quality 640x360 output
+      const resizedBuffer = await sharp(screenshot)
+        .resize(640, 360, {
+          kernel: sharp.kernel.lanczos3,
+          fit: 'cover',
+          position: 'top'
+        })
+        .jpeg({ 
+          quality: 95, 
+          progressive: true,
+          mozjpeg: true
+        })
+        .toBuffer();
+      
+      return resizedBuffer;
+    } catch (error: any) {
+      if (browser) {
+        try {
+          await browser.close();
+        } catch (closeError) {
+          console.error('Error closing Playwright browser:', closeError);
+        }
+      }
+      
+      console.error(`Playwright screenshot failed for ${url}:`, error);
+      return null;
+    }
+  }
+
+  private static async generatePuppeteerScreenshot(url: string, retryCount = 0): Promise<Buffer | null> {
     const maxRetries = 3;
     let page;
     
@@ -91,28 +185,15 @@ export class ThumbnailService {
       const browser = await this.getBrowser();
       page = await browser.newPage();
       
-      // Detect if running locally for different handling
-      const isLocal = !process.env.REPL_ID && !process.env.REPLIT_ENV;
-      
       // Set user agent to avoid bot detection
       await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
       
-      // Configure viewport based on environment
-      if (isLocal && url.includes('youtube.com')) {
-        // Use more conservative settings for YouTube on local
-        await page.setViewport({ 
-          width: 1280, 
-          height: 720,
-          deviceScaleFactor: 2
-        });
-      } else {
-        // High-resolution viewport for other sites or Replit
-        await page.setViewport({ 
-          width: 1920, 
-          height: 1080,
-          deviceScaleFactor: 3
-        });
-      }
+      // High-resolution viewport for Replit
+      await page.setViewport({ 
+        width: 1920, 
+        height: 1080,
+        deviceScaleFactor: 3
+      });
       
       // Set extra headers to avoid detection
       await page.setExtraHTTPHeaders({
@@ -120,23 +201,19 @@ export class ThumbnailService {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
       });
       
-      // Navigate with timeout and simple wait strategy
+      // Navigate with timeout
       await page.goto(url, { 
         waitUntil: 'domcontentloaded',
         timeout: 20000
       });
       
-      // Wait for content based on site type
-      if (url.includes('youtube.com')) {
-        await new Promise(resolve => setTimeout(resolve, 2000)); // Shorter wait for YouTube
-      } else {
-        await new Promise(resolve => setTimeout(resolve, 3000));
-      }
+      // Wait for content to load
+      await new Promise(resolve => setTimeout(resolve, 3000));
       
       // Take screenshot
       const screenshot = await page.screenshot({
         type: 'png',
-        clip: { x: 0, y: 0, width: page.viewport()!.width, height: page.viewport()!.height },
+        clip: { x: 0, y: 0, width: 1920, height: 1080 },
         optimizeForSpeed: false
       });
       
@@ -177,12 +254,7 @@ export class ThumbnailService {
           // Wait before retry
           await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
           
-          // Try with simpler approach on retries
-          if (retryCount > 0) {
-            return await this.generateSimpleScreenshot(url);
-          } else {
-            return await this.generateScreenshot(url, retryCount + 1);
-          }
+          return await this.generatePuppeteerScreenshot(url, retryCount + 1);
         }
       }
       
