@@ -94,6 +94,42 @@
       ],
       "id": "6d62dadb-b48f-459c-9854-c10fe74b62ab",
       "thumbnail": "/thumbnails/6d62dadb-b48f-459c-9854-c10fe74b62ab.jpg"
+    },
+    {
+      "title": "Torn Paper Design Test",
+      "link": "https://example.com/torn-paper-test",
+      "description": "Testing the new torn paper GENERATING placeholder design",
+      "category": "Development Tools",
+      "tags": [
+        "torn",
+        "paper"
+      ],
+      "id": "d8ff7780-7404-4cdf-ab65-0380cb07a0a6",
+      "thumbnail": "/thumbnails/d8ff7780-7404-4cdf-ab65-0380cb07a0a6.jpg"
+    },
+    {
+      "title": "New Torn Paper Style",
+      "link": "https://youtube.com/watch?v=tornpaper123",
+      "description": "Testing the updated torn paper style with GENERATING text",
+      "category": "Video Learning",
+      "tags": [
+        "style",
+        "torn"
+      ],
+      "id": "615e0eca-74a3-4ce8-a284-6bbcdced1b59",
+      "thumbnail": "/thumbnails/615e0eca-74a3-4ce8-a284-6bbcdced1b59.jpg"
+    },
+    {
+      "title": "Final Torn Paper Test",
+      "link": "https://github.com/final/torn-paper-design",
+      "description": "Final test of the torn paper GENERATING design",
+      "category": "Development Tools",
+      "tags": [
+        "final",
+        "design"
+      ],
+      "id": "81e3bb23-9985-4eb3-bcb4-84252b0d27d5",
+      "thumbnail": "/thumbnails/81e3bb23-9985-4eb3-bcb4-84252b0d27d5.jpg"
     }
   ]
 }
