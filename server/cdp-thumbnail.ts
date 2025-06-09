@@ -421,31 +421,70 @@ export class CDPThumbnailService {
       
       // Process with Sharp for consistency
       console.log(`[CDP DEBUG] Step 12: Processing screenshot with Sharp...`);
-      const sharpModule = await import('sharp');
-      const sharp = sharpModule.default || sharpModule;
       
-      console.log(`[CDP DEBUG] Step 12: Converting base64 screenshot data (${screenshot.data.length} chars)...`);
-      const thumbnailBuffer = await sharp(Buffer.from(screenshot.data, 'base64'))
-        .jpeg({ quality: 90 }) // Convert to JPG format
-        .resize(1024, 768, { 
-          kernel: sharp.kernel.lanczos3,
-          fit: 'contain',
-          background: { r: 255, g: 255, b: 255, alpha: 1 } // White background
-        })
-        .toBuffer();
-      
-      console.log(`[CDP DEBUG] Step 12: Sharp processing completed, buffer size: ${thumbnailBuffer.length}`);
-      
-      // Save to file
-      console.log(`[CDP DEBUG] Step 13: Saving thumbnail file...`);
-      const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
-      await fs.mkdir(thumbnailsDir, { recursive: true });
-      const filepath = path.join(thumbnailsDir, filename);
-      await fs.writeFile(filepath, thumbnailBuffer);
-      
-      console.log(`[CDP DEBUG] Step 13: File saved successfully: ${filepath}`);
-      console.log(`[CDP DEBUG] ========== CDP screenshot completed successfully ==========`);
-      return true;
+      try {
+        const sharpModule = await Promise.race([
+          import('sharp'),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Sharp import timeout')), 10000))
+        ]);
+        const sharp = sharpModule.default || sharpModule;
+        
+        console.log(`[CDP DEBUG] Step 12: Sharp imported, converting base64 screenshot data (${screenshot.data.length} chars)...`);
+        
+        const sharpProcessing = sharp(Buffer.from(screenshot.data, 'base64'))
+          .jpeg({ quality: 90 }) // Convert to JPG format
+          .resize(1024, 768, { 
+            kernel: sharp.kernel.lanczos3,
+            fit: 'contain',
+            background: { r: 255, g: 255, b: 255, alpha: 1 } // White background
+          })
+          .toBuffer();
+          
+        const sharpTimeout = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Sharp processing timeout')), 30000)
+        );
+        
+        const thumbnailBuffer = await Promise.race([sharpProcessing, sharpTimeout]);
+        console.log(`[CDP DEBUG] Step 12: Sharp processing completed, buffer size: ${thumbnailBuffer.length}`);
+        
+        // Save to file
+        console.log(`[CDP DEBUG] Step 13: Saving thumbnail file...`);
+        const path = await import('path');
+        const fs = await import('fs/promises');
+        
+        const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+        await fs.mkdir(thumbnailsDir, { recursive: true });
+        const filepath = path.join(thumbnailsDir, filename);
+        
+        const fileWriteTimeout = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('File write timeout')), 10000)
+        );
+        
+        await Promise.race([
+          fs.writeFile(filepath, thumbnailBuffer),
+          fileWriteTimeout
+        ]);
+        
+        console.log(`[CDP DEBUG] Step 13: File saved successfully: ${filepath}`);
+        console.log(`[CDP DEBUG] ========== CDP screenshot completed successfully ==========`);
+        return true;
+        
+      } catch (sharpError) {
+        console.log(`[CDP DEBUG] Sharp processing failed: ${sharpError.message}`);
+        
+        // Fallback: save raw PNG data directly
+        console.log(`[CDP DEBUG] Step 12 Fallback: Saving raw PNG data...`);
+        const path = await import('path');
+        const fs = await import('fs/promises');
+        
+        const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+        await fs.mkdir(thumbnailsDir, { recursive: true });
+        const filepath = path.join(thumbnailsDir, filename.replace('.jpg', '.png'));
+        await fs.writeFile(filepath, Buffer.from(screenshot.data, 'base64'));
+        
+        console.log(`[CDP DEBUG] Step 13 Fallback: Raw PNG saved: ${filepath}`);
+        return true;
+      }
       
     } catch (error: any) {
       console.log(`CDP screenshot failed for ${url}: ${error.message}`);
