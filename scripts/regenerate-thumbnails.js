@@ -9,15 +9,31 @@ const DEFAULT_IDS_FILE = 'reference-ids.txt';
 
 async function authenticate(baseUrl, username = 'admin', password = 'admin123') {
   try {
-    // Test server connectivity
-    const testResponse = await fetch(`${baseUrl}/api/references`);
-    if (!testResponse.ok) {
-      throw new Error(`Server not responding: ${testResponse.status}`);
+    // Use a global cookie jar for session persistence
+    global.cookieJar = global.cookieJar || new Map();
+    
+    const response = await fetch(`${baseUrl}/api/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Authentication failed: ${response.status} ${errorText}`);
+    }
+
+    // Extract and store cookies from Set-Cookie header
+    const cookieHeader = response.headers.get('set-cookie');
+    if (cookieHeader) {
+      const sessionCookie = cookieHeader.split(';')[0];
+      global.cookieJar.set('session', sessionCookie);
+      return sessionCookie;
     }
     
-    // For thumbnail regeneration, we don't need authentication
-    // Just return a dummy cookie for compatibility
-    return 'no-auth-needed';
+    throw new Error('No session cookie received from server');
     
   } catch (error) {
     if (error.cause?.code === 'ECONNREFUSED') {
