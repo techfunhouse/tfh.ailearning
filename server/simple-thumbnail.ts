@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import puppeteer from 'puppeteer';
 
 export class SimpleThumbnailService {
   private static processingQueue: Array<() => Promise<void>> = [];
@@ -220,36 +221,71 @@ export class SimpleThumbnailService {
         browserOptions.executablePath = '/nix/store/zi4f80l169xlmivz8vja8wlphq74qqk0-chromium-125.0.6422.141/bin/chromium';
       }
       
-      const browser = await puppeteer.default.launch(browserOptions);
+      const browser = await puppeteer.launch(browserOptions);
 
       const page = await browser.newPage();
       
-      // Set higher resolution viewport for better quality (matching working version)
+      // Add error handlers to prevent session closure issues
+      page.on('error', (error) => {
+        console.log(`Page error for ${url}: ${error.message}`);
+      });
+      
+      page.on('pageerror', (error) => {
+        console.log(`Page script error for ${url}: ${error.message}`);
+      });
+      
+      // Set user agent to avoid bot detection
+      await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+      
+      // Set headers to appear more like a real browser
+      await page.setExtraHTTPHeaders({
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+      });
+      
+      // Set higher resolution viewport for better quality
       await page.setViewport({ 
         width: 1920, 
         height: 1008,
-        deviceScaleFactor: 2 // Higher DPI for crisp images
+        deviceScaleFactor: 1.5 // Reduced to prevent memory issues
       });
       
       try {
-        // Navigate to the URL with extended timeout (matching working version)
+        // Navigate with progressive timeout and better wait strategy
         await page.goto(url, { 
           waitUntil: 'domcontentloaded',
-          timeout: 120000  // 2 minutes timeout
+          timeout: 30000
         });
         
-        // Wait for content to load fully (matching working version)
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        // Wait for content with additional checks
+        await new Promise(resolve => setTimeout(resolve, 3000));
         
-        // Take screenshot with original working settings
+        // Wait for body element to ensure page is ready
+        try {
+          await page.waitForSelector('body', { timeout: 5000 });
+        } catch (selectorError) {
+          console.log(`Body selector wait failed for ${url}, proceeding with screenshot`);
+        }
+        
+        // Verify page is still valid before screenshot
+        if (page.isClosed()) {
+          throw new Error('Page was closed before screenshot attempt');
+        }
+        
+        // Take screenshot with better error handling
         const screenshotBuffer = await page.screenshot({
           type: 'jpeg',
-          quality: 85, // Good balance between quality and file size
+          quality: 85,
           clip: { x: 0, y: 0, width: 1920, height: 1008 }
         });
 
-        await page.close();
-        await browser.close();
+        // Safely close resources
+        if (!page.isClosed()) {
+          await page.close();
+        }
+        if (browser.isConnected()) {
+          await browser.close();
+        }
 
         // Resize screenshot to thumbnail size using Sharp
         const sharp = await import('sharp');
@@ -265,11 +301,48 @@ export class SimpleThumbnailService {
         
         console.log(`Created real screenshot thumbnail: ${filename}`);
         
-      } catch (pageError) {
+      } catch (pageError: any) {
         console.error(`Failed to capture screenshot for ${url}:`, pageError);
-        await browser.close();
         
-        // Fallback to error thumbnail
+        // Clean up browser safely
+        try {
+          if (!page.isClosed()) {
+            await page.close();
+          }
+          if (browser.isConnected()) {
+            await browser.close();
+          }
+        } catch (cleanupError) {
+          console.log('Browser cleanup error:', cleanupError);
+        }
+        
+        // Check if this is a retryable error
+        const retryableErrors = [
+          'Session closed',
+          'Protocol error',
+          'Target closed',
+          'Page was closed',
+          'Connection closed',
+          'Navigation timeout'
+        ];
+        
+        const isRetryable = retryableErrors.some(errorType => 
+          pageError?.message?.includes(errorType)
+        );
+        
+        if (isRetryable) {
+          console.log(`Retryable error detected for ${url}, will use fallback strategy`);
+          
+          // Try a simpler approach with reduced settings
+          try {
+            await SimpleThumbnailService.createSimpleScreenshotFallback(filename, url, title, category);
+            return;
+          } catch (fallbackError) {
+            console.log(`Fallback strategy also failed for ${url}:`, fallbackError);
+          }
+        }
+        
+        // Final fallback to error thumbnail
         await this.createErrorThumbnail(filename, title, category, url);
       }
       
@@ -277,6 +350,86 @@ export class SimpleThumbnailService {
       console.error('Error creating real screenshot:', error);
       // Fallback to error thumbnail
       await this.createErrorThumbnail(filename, title, category, url);
+    }
+  }
+
+  static async createSimpleScreenshotFallback(filename: string, url: string, title: string, category: string): Promise<void> {
+    console.log(`Attempting simple fallback screenshot for ${url}`);
+    
+    const browserOptions: any = {
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--single-process',
+        '--disable-web-security',
+        '--disable-features=VizDisplayCompositor'
+      ]
+    };
+    
+    let browser;
+    let page;
+    
+    try {
+      browser = await puppeteer.launch(browserOptions);
+      page = await browser.newPage();
+      
+      // Minimal configuration
+      await page.setViewport({ width: 1280, height: 720 });
+      await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36');
+      
+      // Simple navigation with short timeout
+      await page.goto(url, { 
+        waitUntil: 'domcontentloaded',
+        timeout: 15000
+      });
+      
+      // Minimal wait
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Check if page is still valid
+      if (page.isClosed()) {
+        throw new Error('Page closed during fallback attempt');
+      }
+      
+      // Simple screenshot
+      const screenshotBuffer = await page.screenshot({
+        type: 'jpeg',
+        quality: 80,
+        fullPage: false
+      });
+      
+      // Clean up immediately
+      if (!page.isClosed()) await page.close();
+      if (browser.isConnected()) await browser.close();
+      
+      // Process and save
+      const sharp = await import('sharp');
+      const thumbnailBuffer = await sharp.default(screenshotBuffer)
+        .resize(320, 180, { fit: 'cover' })
+        .jpeg({ quality: 85 })
+        .toBuffer();
+      
+      const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+      const filepath = path.join(thumbnailsDir, filename);
+      await fs.writeFile(filepath, thumbnailBuffer);
+      
+      console.log(`Created fallback screenshot thumbnail: ${filename}`);
+      
+    } catch (error: any) {
+      console.log(`Fallback screenshot failed for ${url}: ${error.message}`);
+      
+      // Clean up on error
+      if (page && !page.isClosed()) {
+        try { await page.close(); } catch {}
+      }
+      if (browser && browser.isConnected()) {
+        try { await browser.close(); } catch {}
+      }
+      
+      throw error;
     }
   }
 
