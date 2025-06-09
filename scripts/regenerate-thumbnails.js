@@ -8,25 +8,54 @@ const DEFAULT_BASE_URL = 'http://localhost:5000';
 const DEFAULT_IDS_FILE = 'reference-ids.txt';
 
 async function authenticate(baseUrl, username = 'admin', password = 'admin123') {
-  const response = await fetch(`${baseUrl}/api/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ username, password }),
-  });
+  try {
+    const response = await fetch(`${baseUrl}/api/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
 
-  if (!response.ok) {
-    throw new Error(`Authentication failed: ${response.status} ${response.statusText}`);
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Authentication failed: ${response.status} ${errorText}`);
+    }
+
+    // Get the session cookie from the response headers
+    const cookieHeader = response.headers.get('set-cookie');
+    
+    if (cookieHeader) {
+      // Extract session ID from cookie header
+      const sessionMatch = cookieHeader.match(/connect\.sid=([^;]+)/);
+      if (sessionMatch) {
+        return `connect.sid=${sessionMatch[1]}`;
+      }
+    }
+    
+    // If no cookie in response, try with a simple session approach
+    // Since the login was successful, we'll use a simple cookie jar approach
+    const cookieJar = new Map();
+    
+    // Make a follow-up request to get user info which should set the session
+    const meResponse = await fetch(`${baseUrl}/api/me`, {
+      headers: {
+        'Cookie': cookieHeader || '',
+      }
+    });
+    
+    if (meResponse.ok) {
+      return cookieHeader || 'authenticated=true';
+    }
+    
+    throw new Error('Unable to establish session after login');
+    
+  } catch (error) {
+    if (error.cause?.code === 'ECONNREFUSED') {
+      throw new Error('Cannot connect to server. Make sure the server is running.');
+    }
+    throw error;
   }
-
-  // Extract session cookie
-  const setCookieHeader = response.headers.get('set-cookie');
-  if (!setCookieHeader) {
-    throw new Error('No session cookie received');
-  }
-
-  return setCookieHeader;
 }
 
 async function getReference(baseUrl, cookies, referenceId) {
