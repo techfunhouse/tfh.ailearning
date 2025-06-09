@@ -255,19 +255,17 @@ export class CDPThumbnailService {
       });
       console.log(`[CDP DEBUG] Step 8: Viewport set successfully`);
       
-      // Navigate with robust error handling and timeout
+      // Navigate with multiple fallback strategies
       console.log(`[CDP DEBUG] Step 9: Starting navigation to ${url}...`);
-      const navigationPromise = TargetPage.loadEventFired();
-      
-      const navigationTimeout = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Navigation timeout')), 60000); // 60 second timeout
-      });
       
       await TargetPage.navigate({ url });
-      console.log(`[CDP DEBUG] Step 9: Navigation command sent, waiting for load event...`);
+      console.log(`[CDP DEBUG] Step 9: Navigation command sent, using time-based completion...`);
       
-      await Promise.race([navigationPromise, navigationTimeout]);
-      console.log(`[CDP DEBUG] Step 9: Page loaded successfully`);
+      // Use time-based approach instead of waiting for load event (more reliable for YouTube)
+      const navigationDelay = isYouTube ? 45000 : 30000; // Very liberal delays for local systems
+      console.log(`[CDP DEBUG] Step 9: Waiting ${navigationDelay}ms for page to complete loading...`);
+      await new Promise(resolve => setTimeout(resolve, navigationDelay));
+      console.log(`[CDP DEBUG] Step 9: Navigation wait completed`);
       
       // Wait for content to stabilize - much longer delays for local systems
       const loadDelay = isYouTube ? 20000 : 12000; // Significantly increased

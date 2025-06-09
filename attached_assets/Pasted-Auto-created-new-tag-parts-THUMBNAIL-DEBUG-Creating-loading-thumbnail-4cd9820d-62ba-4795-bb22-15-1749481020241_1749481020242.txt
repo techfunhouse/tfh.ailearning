@@ -1,0 +1,65 @@
+Auto-created new tag: parts
+[THUMBNAIL DEBUG] Creating loading thumbnail: 4cd9820d-62ba-4795-bb22-15ccd2594f27.jpg
+Reference data saved to file
+[THUMBNAIL DEBUG] Queuing thumbnail generation for: 4cd9820d-62ba-4795-bb22-15ccd2594f27.jpg, URL: https://www.youtube.com/watch?v=kXsy1JCTQms
+[THUMBNAIL DEBUG] Processing queue with 1 items
+[THUMBNAIL DEBUG] Starting real screenshot for: 4cd9820d-62ba-4795-bb22-15ccd2594f27.jpg
+[THUMBNAIL DEBUG] Creating real screenshot for: 4cd9820d-62ba-4795-bb22-15ccd2594f27.jpg from https://www.youtube.com/watch?v=kXsy1JCTQms
+[THUMBNAIL DEBUG] Attempting CDP screenshot for: https://www.youtube.com/watch?v=kXsy1JCTQms
+[CDP DEBUG] ========== Starting CDP screenshot ==========
+[CDP DEBUG] URL: https://www.youtube.com/watch?v=kXsy1JCTQms
+[CDP DEBUG] Filename: 4cd9820d-62ba-4795-bb22-15ccd2594f27.jpg
+[CDP DEBUG] Process platform: darwin
+[CDP DEBUG] Node version: v20.19.2
+[CDP DEBUG] Step 1: Launching Chrome...
+8:25:07 PM [express] POST /api/references 201 in 14ms :: {"title":"Part 1","link":"https://www.youtu…
+[CDP DEBUG] Launching Chrome with CDP on port 49191
+[CDP DEBUG] Chrome path: /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+[CDP DEBUG] Chrome args: --headless --disable-gpu --no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-web-security --disable-features=VizDisplayCompositor --remote-debugging-port=49191 --window-size=1024,768 --disable-extensions --disable-plugins --autoplay-policy=no-user-gesture-required --mute-audio --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-renderer-backgrounding
+[CDP DEBUG] Chrome process spawned with PID: 90116
+8:25:07 PM [express] GET /api/references 200 in 2ms :: [{"title":"Part 1","link":"https://www.youtub…
+[THUMBNAIL DEBUG] Created loading thumbnail JPG: 4cd9820d-62ba-4795-bb22-15ccd2594f27.jpg
+Chrome stderr:
+DevTools listening on ws://127.0.0.1:49191/devtools/browser/d153fc78-3039-45ae-b5ee-3606f84530db
+
+Chrome CDP connection established on port 49191
+[CDP DEBUG] Step 1: Chrome launch completed
+[CDP DEBUG] Step 2: Waiting 15000ms for Chrome to stabilize (YouTube: true)
+Chrome stderr: WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1749480912.308802 4291962 voice_transcription.cc:58] Registering VoiceTranscriptionCapability
+
+Chrome stderr: Trying to load the allocator multiple times. This is *not* supported.
+
+Chrome stderr: Created TensorFlow Lite XNNPACK delegate for CPU.
+
+Chrome stderr: Attempting to use a delegate that only supports static-sized tensors with a graph that has dynamic-sized tensors (tensor#-1 is a dynamic-sized tensor).
+
+[CDP DEBUG] Step 2: Chrome stabilization completed
+[CDP DEBUG] Step 3: Listing available targets...
+[CDP DEBUG] Step 3: Available targets: 4
+[CDP DEBUG] Step 4: Connecting to browser on port 49191...
+[CDP DEBUG] Step 4: Browser connection successful
+[CDP DEBUG] Step 5: Getting updated target list...
+[CDP DEBUG] Step 5: Found 4 targets
+[CDP DEBUG] Step 5: Using existing target: B301C14D33D1F517378999EDDDC2B887
+[CDP DEBUG] Step 6: Connecting to target page B301C14D33D1F517378999EDDDC2B887...
+[CDP DEBUG] Step 6: Target page connection successful
+[CDP DEBUG] Step 7: Enabling Page domain...
+[CDP DEBUG] Step 7: Enabling Runtime domain...
+[CDP DEBUG] Step 7: Enabling Network domain...
+[CDP DEBUG] Step 7: All domains enabled successfully
+[CDP DEBUG] Step 8: Setting viewport to 1024x768...
+[CDP DEBUG] Step 8: Viewport set successfully
+[CDP DEBUG] Step 9: Starting navigation to https://www.youtube.com/watch?v=kXsy1JCTQms...
+[CDP DEBUG] Step 9: Navigation command sent, waiting for load event...
+CDP screenshot failed for https://www.youtube.com/watch?v=kXsy1JCTQms: Navigation timeout
+[THUMBNAIL DEBUG] CDP failed, trying fallback methods for: https://www.youtube.com/watch?v=kXsy1JCTQms
+[THUMBNAIL DEBUG] Creating YouTube fallback for: 4cd9820d-62ba-4795-bb22-15ccd2594f27.jpg
+[THUMBNAIL DEBUG] Extracted YouTube video ID: kXsy1JCTQms
+[THUMBNAIL DEBUG] Creating YouTube enhanced placeholder for: 4cd9820d-62ba-4795-bb22-15ccd2594f27.jpg
+[CDP DEBUG] Chrome process exited with code 0, signal: null
+[THUMBNAIL DEBUG] Created YouTube enhanced placeholder JPG: 4cd9820d-62ba-4795-bb22-15ccd2594f27.jpg
+[THUMBNAIL DEBUG] Queue processing completed
+8:26:33 PM [express] GET /api/categories 304 in 3ms :: [{"name":"Video Learning","id":"02cc8bb3-99c1…
+8:26:33 PM [express] GET /api/references 304 in 15ms :: [{"title":"Part 1","link":"https://www.youtu…
+8:26:33 PM [express] GET /api/tags 304 in 17ms :: ["AAA","ISG","agent","blog","canva","conference","…
