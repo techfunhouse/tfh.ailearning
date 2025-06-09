@@ -196,7 +196,7 @@ export class SimpleThumbnailService {
     try {
       console.log(`Starting real screenshot generation for: ${url}`);
       
-      const puppeteer = await import('puppeteer');
+      // Use the already imported puppeteer module
       
       // Detect environment and configure browser accordingly
       const isReplit = process.env.REPLIT_CLUSTER || process.env.REPL_SLUG;
