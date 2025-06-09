@@ -44,26 +44,17 @@ export class CDPThumbnailService {
     }
 
     const args = [
-      '--headless=new',
+      '--headless',
       '--disable-gpu',
       '--no-sandbox',
       '--disable-setuid-sandbox',
       '--disable-dev-shm-usage',
       '--disable-web-security',
       '--disable-features=VizDisplayCompositor',
-      '--disable-background-timer-throttling',
-      '--disable-renderer-backgrounding',
-      '--disable-backgrounding-occluded-windows',
-      '--disable-extensions',
-      '--disable-plugins',
-      '--disable-images',
-      '--disable-javascript',
       '--remote-debugging-port=' + this.chromePort,
       '--window-size=1024,768',
-      '--virtual-time-budget=10000',
-      '--run-all-compositor-stages-before-draw',
-      '--disable-new-content-rendering-timeout',
-      '--disable-ipc-flooding-protection'
+      '--disable-extensions',
+      '--disable-plugins'
     ];
 
     console.log(`Launching Chrome with CDP on port ${this.chromePort}`);
@@ -82,6 +73,13 @@ export class CDPThumbnailService {
       console.log(`Chrome process exited with code ${code}`);
       this.chromeProcess = null;
     });
+
+    // Capture stderr for debugging
+    if (this.chromeProcess.stderr) {
+      this.chromeProcess.stderr.on('data', (data: Buffer) => {
+        console.log('Chrome stderr:', data.toString());
+      });
+    }
 
     // Wait for Chrome to start and verify connection
     await new Promise((resolve, reject) => {
