@@ -1,0 +1,32 @@
+[THUMBNAIL DEBUG] Attempting CDP screenshot for: https://www.youtube.com/watch?v=kXsy1JCTQms
+[CDP DEBUG] ========== Starting CDP screenshot ==========
+[CDP DEBUG] URL: https://www.youtube.com/watch?v=kXsy1JCTQms
+[CDP DEBUG] Filename: 2837a7ec-aff0-4313-bf6d-a1b9368e9cca.jpg
+[CDP DEBUG] Process platform: darwin
+[CDP DEBUG] Node version: v20.19.2
+[CDP DEBUG] Step 1: Launching Chrome...
+8:16:40 PM [express] POST /api/references 201 in 34ms :: {"title":"Part 1","link":"https://www.youtu…
+8:16:40 PM [express] GET /api/references 200 in 57ms :: [{"title":"Part 1","link":"https://www.youtu…
+[CDP DEBUG] Launching Chrome with CDP on port 63278
+[CDP DEBUG] Chrome path: /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+[CDP DEBUG] Chrome args: --headless --disable-gpu --no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-web-security --disable-features=VizDisplayCompositor --remote-debugging-port=63278 --window-size=1024,768 --disable-extensions --disable-plugins --autoplay-policy=no-user-gesture-required --mute-audio --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-renderer-backgrounding
+[CDP DEBUG] Chrome process spawned with PID: 89728
+[THUMBNAIL DEBUG] Created loading thumbnail JPG: 2837a7ec-aff0-4313-bf6d-a1b9368e9cca.jpg
+Chrome stderr:
+DevTools listening on ws://127.0.0.1:63278/devtools/browser/03380235-0a48-49d3-ab7d-3f22584855ea
+
+Chrome CDP connection established on port 63278
+[CDP DEBUG] Step 1: Chrome launch completed
+[CDP DEBUG] Step 2: Waiting 5000ms for Chrome to stabilize (YouTube: true)
+Chrome stderr: WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1749480406.751540 4280155 voice_transcription.cc:58] Registering VoiceTranscriptionCapability
+
+Chrome stderr: Trying to load the allocator multiple times. This is *not* supported.
+
+[CDP DEBUG] Step 2: Chrome stabilization completed
+[CDP DEBUG] Step 3: Listing available targets...
+[CDP DEBUG] Step 3: Available targets: 4
+Using existing target: B7BB7826B220C6EA9378860F17E70605
+Chrome stderr: Created TensorFlow Lite XNNPACK delegate for CPU.
+
+Chrome stderr: Attempting to use a delegate that only supports static-sized tensors with a graph that has dynamic-sized tensors (tensor#-1 is a dynamic-sized tensor).

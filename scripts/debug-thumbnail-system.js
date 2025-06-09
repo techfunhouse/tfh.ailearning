@@ -6,10 +6,13 @@
  * and provides detailed debugging information for troubleshooting
  */
 
-const { spawn } = require('child_process');
-const fs = require('fs').promises;
-const path = require('path');
-const os = require('os');
+import { spawn } from 'child_process';
+import fs from 'fs/promises';
+import path from 'path';
+import os from 'os';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 async function checkSystemInfo() {
   console.log('\n=== SYSTEM INFORMATION ===');

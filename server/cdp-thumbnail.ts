@@ -123,8 +123,8 @@ export class CDPThumbnailService {
       // Start checking after initial delay
       setTimeout(checkConnection, 1000);
       
-      // Timeout after 30 seconds for YouTube URLs
-      setTimeout(() => reject(new Error('Chrome startup timeout')), 30000);
+      // Much longer timeout for local systems - 90 seconds
+      setTimeout(() => reject(new Error('Chrome startup timeout')), 90000);
     });
   }
 
@@ -161,9 +161,9 @@ export class CDPThumbnailService {
       await this.launchChrome();
       console.log(`[CDP DEBUG] Step 1: Chrome launch completed`);
       
-      // Wait for Chrome to stabilize - longer delay for YouTube URLs
+      // Wait for Chrome to stabilize - much longer delays for local systems
       const isYouTube = url.includes('youtube.com') || url.includes('youtu.be');
-      const stabilizeDelay = isYouTube ? 5000 : 2000;
+      const stabilizeDelay = isYouTube ? 15000 : 8000; // Increased significantly
       console.log(`[CDP DEBUG] Step 2: Waiting ${stabilizeDelay}ms for Chrome to stabilize (YouTube: ${isYouTube})`);
       await new Promise(resolve => setTimeout(resolve, stabilizeDelay));
       console.log(`[CDP DEBUG] Step 2: Chrome stabilization completed`);
@@ -185,50 +185,95 @@ export class CDPThumbnailService {
       }
       
       // Connect to browser first
+      console.log(`[CDP DEBUG] Step 4: Connecting to browser on port ${this.chromePort}...`);
       client = await CDP({ port: this.chromePort });
+      console.log(`[CDP DEBUG] Step 4: Browser connection successful`);
+      
       const { Target } = client;
       
       let targetId: string;
       
       // Try to use existing target or create new one
+      console.log(`[CDP DEBUG] Step 5: Getting updated target list...`);
       const updatedTargets = await CDP.List({ port: this.chromePort });
+      console.log(`[CDP DEBUG] Step 5: Found ${updatedTargets.length} targets`);
+      
       if (updatedTargets.length > 0) {
         // Use existing target
         targetId = updatedTargets[0].id;
-        console.log(`Using existing target: ${targetId}`);
+        console.log(`[CDP DEBUG] Step 5: Using existing target: ${targetId}`);
       } else {
         // Create new target as last resort
-        console.log('Creating new target...');
+        console.log(`[CDP DEBUG] Step 5: Creating new target...`);
         const result = await Target.createTarget({ url: 'about:blank' });
         targetId = result.targetId;
+        console.log(`[CDP DEBUG] Step 5: Created new target: ${targetId}`);
       }
       
-      // Connect to the target page
-      pageClient = await CDP({ port: this.chromePort, target: targetId });
+      // Connect to the target page with timeout
+      console.log(`[CDP DEBUG] Step 6: Connecting to target page ${targetId}...`);
+      
+      // Add timeout to page connection
+      const pageConnectionPromise = CDP({ port: this.chromePort, target: targetId });
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Page connection timeout')), 30000); // 30 second timeout
+      });
+      
+      pageClient = await Promise.race([pageConnectionPromise, timeoutPromise]) as any;
+      console.log(`[CDP DEBUG] Step 6: Target page connection successful`);
+      
       const { Page: TargetPage, Runtime: TargetRuntime, Network: TargetNetwork } = pageClient;
       
-      // Enable necessary domains on the target page
-      await TargetPage.enable();
-      await TargetRuntime.enable();
-      await TargetNetwork.enable();
+      // Enable necessary domains on the target page with timeouts
+      console.log(`[CDP DEBUG] Step 7: Enabling Page domain...`);
+      await Promise.race([
+        TargetPage.enable(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Page.enable timeout')), 15000))
+      ]);
+      
+      console.log(`[CDP DEBUG] Step 7: Enabling Runtime domain...`);
+      await Promise.race([
+        TargetRuntime.enable(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Runtime.enable timeout')), 15000))
+      ]);
+      
+      console.log(`[CDP DEBUG] Step 7: Enabling Network domain...`);
+      await Promise.race([
+        TargetNetwork.enable(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Network.enable timeout')), 15000))
+      ]);
+      
+      console.log(`[CDP DEBUG] Step 7: All domains enabled successfully`);
       
       // Set viewport
+      console.log(`[CDP DEBUG] Step 8: Setting viewport to 1024x768...`);
       await TargetPage.setDeviceMetricsOverride({
         width: 1024,
         height: 768,
         deviceScaleFactor: 1,
         mobile: false
       });
+      console.log(`[CDP DEBUG] Step 8: Viewport set successfully`);
       
-      // Navigate with robust error handling
+      // Navigate with robust error handling and timeout
+      console.log(`[CDP DEBUG] Step 9: Starting navigation to ${url}...`);
       const navigationPromise = TargetPage.loadEventFired();
       
-      await TargetPage.navigate({ url });
-      await navigationPromise;
+      const navigationTimeout = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Navigation timeout')), 60000); // 60 second timeout
+      });
       
-      // Wait for content to stabilize - YouTube needs more time
-      const loadDelay = isYouTube ? 8000 : 3000;
+      await TargetPage.navigate({ url });
+      console.log(`[CDP DEBUG] Step 9: Navigation command sent, waiting for load event...`);
+      
+      await Promise.race([navigationPromise, navigationTimeout]);
+      console.log(`[CDP DEBUG] Step 9: Page loaded successfully`);
+      
+      // Wait for content to stabilize - much longer delays for local systems
+      const loadDelay = isYouTube ? 20000 : 12000; // Significantly increased
+      console.log(`[CDP DEBUG] Step 10: Waiting ${loadDelay}ms for content to stabilize...`);
       await new Promise(resolve => setTimeout(resolve, loadDelay));
+      console.log(`[CDP DEBUG] Step 10: Content stabilization completed`);
       
       // Remove LinkedIn overlays and sign-in modals
       if (url.includes('linkedin.com')) {
@@ -369,10 +414,12 @@ export class CDPThumbnailService {
       }
       
       // Take screenshot with calculated clip area
+      console.log(`[CDP DEBUG] Step 11: Taking screenshot with clip area: ${JSON.stringify(clipArea)}...`);
       const screenshot = await TargetPage.captureScreenshot({
         format: 'png',
         clip: clipArea
       });
+      console.log(`[CDP DEBUG] Step 11: Screenshot captured successfully`);
       
       // Process with Sharp for consistency
       const sharpModule = await import('sharp');
