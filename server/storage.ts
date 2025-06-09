@@ -503,7 +503,37 @@ export class JsonDbStorage implements IStorage {
 
   // Tag methods
   async getTags(): Promise<string[]> {
-    return this.tagsDb.data.tags;
+    // Force clean up corrupted tag data structure
+    const rawTags = this.tagsDb.data.tags || [];
+    const cleanTags: string[] = [];
+    
+    for (const tag of rawTags) {
+      if (typeof tag === 'string') {
+        cleanTags.push(tag);
+      } else if (tag && typeof tag === 'object') {
+        // Handle nested objects like {name: {name: "canva"}} or {name: "canva"}
+        let extractedTag = '';
+        if (tag.name) {
+          if (typeof tag.name === 'string') {
+            extractedTag = tag.name;
+          } else if (tag.name.name && typeof tag.name.name === 'string') {
+            extractedTag = tag.name.name;
+          }
+        }
+        if (extractedTag) {
+          cleanTags.push(extractedTag);
+        }
+      }
+    }
+    
+    // Remove duplicates and sort
+    const uniqueTags = [...new Set(cleanTags)].sort();
+    
+    // Replace corrupted data with clean strings
+    this.tagsDb.data.tags = uniqueTags;
+    this.saveTagData();
+    
+    return uniqueTags;
   }
 
   async createTag(tag: string): Promise<string> {
