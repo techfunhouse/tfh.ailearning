@@ -33,6 +33,17 @@
       ],
       "thumbnail": "/thumbnails/ac3e8409-21e2-42e9-9e05-5881ed394a7e.jpg",
       "id": "ac3e8409-21e2-42e9-9e05-5881ed394a7e"
+    },
+    {
+      "title": "Part 2",
+      "link": "https://youtu.be/k-NarWYNTMU",
+      "description": "Part 2",
+      "category": "Video Learning",
+      "tags": [
+        "parts"
+      ],
+      "thumbnail": "/thumbnails/67ca99f2-12aa-473f-beff-a1d0aa83c5fc.jpg",
+      "id": "67ca99f2-12aa-473f-beff-a1d0aa83c5fc"
     }
   ]
 }

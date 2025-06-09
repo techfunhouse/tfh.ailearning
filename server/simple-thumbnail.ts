@@ -6,7 +6,9 @@ import { CDPThumbnailService } from './cdp-thumbnail.js';
 export class SimpleThumbnailService {
   private static processingQueue: Array<() => Promise<void>> = [];
   private static isProcessing = false;
+
   static async createLoadingThumbnail(filename: string, title: string, category: string): Promise<void> {
+    console.log(`[THUMBNAIL DEBUG] Creating loading thumbnail: ${filename}`);
     try {
       // Create a blue background with text overlay
       const sharpModule = await import('sharp');
@@ -28,27 +30,27 @@ export class SimpleThumbnailService {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&apos;');
       
-      // Create SVG with text at 640x360 resolution
+      // Create SVG with text at 1024x768 resolution
       const loadingSvg = `
-        <svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
+        <svg width="1024" height="768" xmlns="http://www.w3.org/2000/svg">
           <rect width="100%" height="100%" fill="#667EEA"/>
           
           <!-- Loading indicator -->
-          <circle cx="320" cy="120" r="30" fill="rgba(255,255,255,0.3)"/>
-          <text x="320" y="132" font-family="Arial, sans-serif" font-size="28" fill="white" text-anchor="middle">⏳</text>
+          <circle cx="512" cy="250" r="40" fill="rgba(255,255,255,0.3)"/>
+          <text x="512" y="270" font-family="Arial, sans-serif" font-size="36" fill="white" text-anchor="middle">⏳</text>
           
           <!-- Title -->
-          <text x="320" y="190" font-family="Arial, sans-serif" font-size="26" fill="white" text-anchor="middle" font-weight="bold">
+          <text x="512" y="350" font-family="Arial, sans-serif" font-size="32" fill="white" text-anchor="middle" font-weight="bold">
             ${displayTitle}
           </text>
           
           <!-- Category -->
-          <text x="320" y="230" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+          <text x="512" y="400" font-family="Arial, sans-serif" font-size="24" fill="rgba(255,255,255,0.8)" text-anchor="middle">
             ${displayCategory}
           </text>
           
           <!-- Status -->
-          <text x="320" y="280" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.7)" text-anchor="middle">
+          <text x="512" y="480" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.7)" text-anchor="middle">
             Generating screenshot...
           </text>
         </svg>
@@ -64,22 +66,24 @@ export class SimpleThumbnailService {
       const filepath = path.join(thumbnailsDir, filename);
       await fs.writeFile(filepath, placeholderBuffer);
       
-      console.log(`Created loading thumbnail: ${filename}`);
+      console.log(`[THUMBNAIL DEBUG] Created loading thumbnail JPG: ${filename}`);
     } catch (error) {
-      console.error('Error creating loading thumbnail:', error);
+      console.error('[THUMBNAIL DEBUG] Error creating loading thumbnail:', error);
       await this.createSimplePlaceholder(filename, title, category);
     }
   }
 
   static async createSuccessThumbnail(filename: string, title: string, category: string): Promise<void> {
+    console.log(`[THUMBNAIL DEBUG] Creating success thumbnail: ${filename}`);
     try {
       // Create a simple green solid color JPG as success placeholder
-      const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
+      const sharpModule = await import('sharp'); 
+      const sharp = sharpModule.default || sharpModule;
       
       const successBuffer = await sharp({
         create: {
-          width: 640,
-          height: 360,
+          width: 1024,
+          height: 768,
           channels: 3,
           background: { r: 86, g: 171, b: 47 } // Green color
         }
@@ -91,17 +95,19 @@ export class SimpleThumbnailService {
       const filepath = path.join(thumbnailsDir, filename);
       await fs.writeFile(filepath, successBuffer);
       
-      console.log(`Created success thumbnail: ${filename}`);
+      console.log(`[THUMBNAIL DEBUG] Created success thumbnail JPG: ${filename}`);
     } catch (error) {
-      console.error('Error creating success thumbnail:', error);
+      console.error('[THUMBNAIL DEBUG] Error creating success thumbnail:', error);
       await this.createSimplePlaceholder(filename, title, category);
     }
   }
 
   static async createSimplePlaceholder(filename: string, title: string, category: string): Promise<void> {
+    console.log(`[THUMBNAIL DEBUG] Creating simple placeholder: ${filename}`);
     try {
       // Create a gray background with basic information
-      const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
+      const sharpModule = await import('sharp'); 
+      const sharp = sharpModule.default || sharpModule;
       
       // Truncate and escape text for XML safety
       const maxTitleLength = 20;
@@ -119,27 +125,27 @@ export class SimpleThumbnailService {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&apos;');
       
-      // Create SVG with basic information at 640x360
+      // Create SVG with basic information at 1024x768
       const placeholderSvg = `
-        <svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
+        <svg width="1024" height="768" xmlns="http://www.w3.org/2000/svg">
           <rect width="100%" height="100%" fill="#808080"/>
           
           <!-- Placeholder indicator -->
-          <circle cx="320" cy="120" r="24" fill="rgba(255,255,255,0.3)"/>
-          <text x="320" y="130" font-family="Arial, sans-serif" font-size="24" fill="white" text-anchor="middle">📄</text>
+          <circle cx="512" cy="250" r="32" fill="rgba(255,255,255,0.3)"/>
+          <text x="512" y="270" font-family="Arial, sans-serif" font-size="32" fill="white" text-anchor="middle">📄</text>
           
           <!-- Title -->
-          <text x="320" y="180" font-family="Arial, sans-serif" font-size="22" fill="white" text-anchor="middle" font-weight="bold">
+          <text x="512" y="350" font-family="Arial, sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="bold">
             ${displayTitle}
           </text>
           
           <!-- Category -->
-          <text x="320" y="220" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+          <text x="512" y="400" font-family="Arial, sans-serif" font-size="22" fill="rgba(255,255,255,0.8)" text-anchor="middle">
             ${displayCategory}
           </text>
           
           <!-- Status -->
-          <text x="320" y="260" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.7)" text-anchor="middle">
+          <text x="512" y="480" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.7)" text-anchor="middle">
             No preview available
           </text>
         </svg>
@@ -155,24 +161,33 @@ export class SimpleThumbnailService {
       const filepath = path.join(thumbnailsDir, filename);
       await fs.writeFile(filepath, placeholderBuffer);
       
-      console.log(`Created simple placeholder: ${filename}`);
+      console.log(`[THUMBNAIL DEBUG] Created simple placeholder JPG: ${filename}`);
     } catch (error) {
-      console.error('Error creating simple placeholder:', error);
+      console.error(`[THUMBNAIL DEBUG] Error creating simple placeholder:`, error);
     }
   }
 
   static generateThumbnailAsync(filename: string, title: string, category: string, url?: string): void {
-    // Add to queue instead of processing immediately
-    const task = async () => {
-      if (url) {
-        await this.createRealScreenshot(filename, url, title, category);
-      } else {
-        await this.createSuccessThumbnail(filename, title, category);
-      }
-    };
+    console.log(`[THUMBNAIL DEBUG] Queuing thumbnail generation for: ${filename}, URL: ${url}`);
     
-    this.processingQueue.push(task);
-    this.processQueue();
+    this.processingQueue.push(async () => {
+      try {
+        if (url) {
+          console.log(`[THUMBNAIL DEBUG] Starting real screenshot for: ${filename}`);
+          await this.createRealScreenshot(filename, url, title, category);
+        } else {
+          console.log(`[THUMBNAIL DEBUG] No URL provided, creating placeholder for: ${filename}`);
+          await this.createSimplePlaceholder(filename, title, category);
+        }
+      } catch (error) {
+        console.error(`[THUMBNAIL DEBUG] Failed to generate thumbnail for ${filename}:`, error);
+        await this.createErrorThumbnail(filename, title, category, url || '');
+      }
+    });
+
+    if (!this.isProcessing) {
+      this.processQueue();
+    }
   }
 
   private static async processQueue(): Promise<void> {
@@ -181,743 +196,253 @@ export class SimpleThumbnailService {
     }
 
     this.isProcessing = true;
+    console.log(`[THUMBNAIL DEBUG] Processing queue with ${this.processingQueue.length} items`);
 
     while (this.processingQueue.length > 0) {
       const task = this.processingQueue.shift();
       if (task) {
-        await task();
-        // Wait between tasks to prevent resource conflicts
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        try {
+          await task();
+        } catch (error) {
+          console.error('[THUMBNAIL DEBUG] Task failed:', error);
+        }
       }
     }
 
     this.isProcessing = false;
+    console.log('[THUMBNAIL DEBUG] Queue processing completed');
   }
 
   static async createRealScreenshot(filename: string, url: string, title: string, category: string): Promise<void> {
+    console.log(`[THUMBNAIL DEBUG] Creating real screenshot for: ${filename} from ${url}`);
+    
     try {
-      console.log(`Starting real screenshot generation for: ${url}`);
+      // Try CDP method first
+      console.log(`[THUMBNAIL DEBUG] Attempting CDP screenshot for: ${url}`);
+      const success = await CDPThumbnailService.takeScreenshot(url, filename);
       
-      // First try CDP approach (highest quality)
-      const { CDPThumbnailService } = await import('./cdp-thumbnail');
-      const cdpSuccess = await CDPThumbnailService.takeScreenshot(url, filename);
-      
-      if (cdpSuccess) {
-        console.log(`CDP screenshot successful for: ${url}`);
+      if (success) {
+        console.log(`[THUMBNAIL DEBUG] CDP screenshot successful: ${filename}`);
         return;
       }
       
-      console.log(`CDP failed, falling back to Puppeteer for: ${url}`);
+      console.log(`[THUMBNAIL DEBUG] CDP failed, trying fallback methods for: ${url}`);
       
-      // Use the already imported puppeteer module
-      
-      // Detect environment and configure browser accordingly
-      const isReplit = process.env.REPLIT_CLUSTER || process.env.REPL_SLUG;
-      const isLocal = !isReplit;
-      
-      let browserOptions: any = {
-        headless: true,
-        timeout: 60000,
-        protocolTimeout: 60000,
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage',
-          '--disable-accelerated-2d-canvas',
-          '--no-first-run',
-          '--no-zygote',
-          '--single-process',
-          '--disable-gpu',
-          '--disable-background-timer-throttling',
-          '--disable-backgrounding-occluded-windows',
-          '--disable-renderer-backgrounding',
-          '--disable-features=TranslateUI',
-          '--disable-ipc-flooding-protection',
-          '--disable-hang-monitor',
-          '--disable-prompt-on-repost',
-          '--disable-sync',
-          '--force-device-scale-factor=1',
-          '--hide-scrollbars',
-          '--mute-audio',
-          '--no-default-browser-check',
-          '--no-pings',
-          '--disable-extensions-file-access-check',
-          '--disable-default-apps',
-          '--disable-popup-blocking'
-        ]
-      };
-
-      // Only set executablePath for Replit environment
-      if (isReplit) {
-        browserOptions.executablePath = '/nix/store/zi4f80l169xlmivz8vja8wlphq74qqk0-chromium-125.0.6422.141/bin/chromium';
-      }
-      
-      const browser = await puppeteer.launch(browserOptions);
-
-      const page = await browser.newPage();
-      
-      // Add error handlers to prevent session closure issues
-      page.on('error', (error) => {
-        console.log(`Page error for ${url}: ${error.message}`);
-      });
-      
-      page.on('pageerror', (error) => {
-        console.log(`Page script error for ${url}: ${error.message}`);
-      });
-      
-      // Set user agent to avoid bot detection
-      await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
-      
-      // Set headers to appear more like a real browser
-      await page.setExtraHTTPHeaders({
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
-      });
-      
-      // Set higher resolution viewport for better quality
-      await page.setViewport({ 
-        width: 2048, 
-        height: 1536,
-        deviceScaleFactor: 1.5 // Optimal for 1024x768 output
-      });
-      
-      try {
-        // Immediate YouTube detection and specialized handling
-        if (url.includes('youtube.com') || url.includes('youtu.be')) {
-          console.log(`Detected YouTube URL ${url}, using isolated browser strategy`);
-          // Close this page and browser, use completely isolated approach
-          if (!page.isClosed()) await page.close();
-          if (browser.isConnected()) await browser.close();
-          
-          // Call specialized YouTube method and return immediately
-          await SimpleThumbnailService.createYouTubeScreenshotFallback(filename, url, title, category);
-          return;
-        }
-        
-        // Standard navigation for non-YouTube websites
-        await page.goto(url, { 
-          waitUntil: 'domcontentloaded',
-          timeout: 30000
-        });
-        
-        // Wait for content with additional checks
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        
-        // Wait for body element to ensure page is ready
-        try {
-          await page.waitForSelector('body', { timeout: 5000 });
-        } catch (selectorError) {
-          console.log(`Body selector wait failed for ${url}, proceeding with screenshot`);
-        }
-        
-        // Verify page is still valid before screenshot
-        if (page.isClosed()) {
-          throw new Error('Page was closed before screenshot attempt');
-        }
-        
-        // Take screenshot with better error handling
-        const screenshotBuffer = await page.screenshot({
-          type: 'jpeg',
-          quality: 90,
-          clip: { x: 0, y: 0, width: 2048, height: 1536 }
-        });
-
-        // Safely close resources
-        if (!page.isClosed()) {
-          await page.close();
-        }
-        if (browser.isConnected()) {
-          await browser.close();
-        }
-
-        // Resize screenshot to thumbnail size using Sharp
-        const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
-        const thumbnailBuffer = await sharp(screenshotBuffer)
-          .resize(1024, 768, { 
-            fit: 'cover',
-            kernel: sharp.default.kernel.lanczos3
-          })
-          .jpeg({ quality: 90 })
-          .toBuffer();
-
-        // Save the real screenshot
-        const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
-        const filepath = path.join(thumbnailsDir, filename);
-        await fs.writeFile(filepath, thumbnailBuffer);
-        
-        console.log(`Created real screenshot thumbnail: ${filename}`);
-        
-      } catch (pageError: any) {
-        console.error(`Failed to capture screenshot for ${url}:`, pageError);
-        
-        // Clean up browser safely
-        try {
-          if (!page.isClosed()) {
-            await page.close();
-          }
-          if (browser.isConnected()) {
-            await browser.close();
-          }
-        } catch (cleanupError) {
-          console.log('Browser cleanup error:', cleanupError);
-        }
-        
-        // Check if this is a retryable error
-        const retryableErrors = [
-          'Session closed',
-          'Protocol error',
-          'Target closed',
-          'Page was closed',
-          'Connection closed',
-          'Navigation timeout',
-          'Navigating frame was detached',
-          'frame was detached',
-          'Frame was detached'
-        ];
-        
-        const isRetryable = retryableErrors.some(errorType => 
-          pageError?.message?.includes(errorType)
-        );
-        
-        if (isRetryable) {
-          console.log(`Retryable error detected for ${url}, will use fallback strategy`);
-          
-          // Special handling for YouTube URLs with frame detachment issues
-          if (url.includes('youtube.com') || url.includes('youtu.be')) {
-            try {
-              await SimpleThumbnailService.createYouTubeScreenshotFallback(filename, url, title, category);
-              return;
-            } catch (youtubeError) {
-              console.log(`YouTube fallback strategy failed for ${url}:`, youtubeError);
-            }
-          }
-          
-          // Special handling for LinkedIn URLs with login overlays and session issues
-          if (url.includes('linkedin.com')) {
-            try {
-              await SimpleThumbnailService.createLinkedInScreenshotFallback(filename, url, title, category);
-              return;
-            } catch (linkedinError) {
-              console.log(`LinkedIn fallback strategy failed for ${url}:`, linkedinError);
-            }
-          }
-          
-          // Try a simpler approach with reduced settings
-          try {
-            await SimpleThumbnailService.createSimpleScreenshotFallback(filename, url, title, category);
-            return;
-          } catch (fallbackError) {
-            console.log(`Fallback strategy also failed for ${url}:`, fallbackError);
-          }
-        }
-        
-        // Final fallback to error thumbnail
-        await this.createErrorThumbnail(filename, title, category, url);
+      // Try specific fallbacks based on URL type
+      if (url.includes('linkedin.com')) {
+        await this.createLinkedInScreenshotFallback(filename, url, title, category);
+      } else if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        await this.createYouTubeScreenshotFallback(filename, url, title, category);
+      } else {
+        await this.createSimpleScreenshotFallback(filename, url, title, category);
       }
       
     } catch (error) {
-      console.error('Error creating real screenshot:', error);
-      // Fallback to error thumbnail
+      console.error(`[THUMBNAIL DEBUG] All screenshot methods failed for ${url}:`, error);
       await this.createErrorThumbnail(filename, title, category, url);
     }
   }
 
   static async createLinkedInScreenshotFallback(filename: string, url: string, title: string, category: string): Promise<void> {
-    console.log(`Attempting specialized LinkedIn fallback for ${url}`);
-    
-    const browserOptions: any = {
-      headless: true,
-      timeout: 120000,
-      protocolTimeout: 120000,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--disable-web-security',
-        '--disable-features=VizDisplayCompositor',
-        '--disable-background-timer-throttling',
-        '--disable-renderer-backgrounding',
-        '--disable-backgrounding-occluded-windows',
-        '--disable-hang-monitor',
-        '--disable-prompt-on-repost',
-        '--disable-sync',
-        '--disable-translate',
-        '--disable-extensions',
-        '--disable-default-apps',
-        '--disable-popup-blocking',
-        '--allow-running-insecure-content',
-        '--disable-features=TranslateUI',
-        '--disable-ipc-flooding-protection',
-        '--disable-blink-features=AutomationControlled',
-        '--disable-dev-shm-usage',
-        '--no-first-run',
-        '--no-default-browser-check',
-        '--disable-infobars',
-        '--disable-notifications'
-      ]
-    };
-    
-    let browser;
-    let page;
+    console.log(`[THUMBNAIL DEBUG] Creating LinkedIn fallback for: ${filename}`);
     
     try {
-      browser = await puppeteer.launch(browserOptions);
-      page = await browser.newPage();
+      const sharpModule = await import('sharp');
+      const sharp = sharpModule.default || sharpModule;
       
-      // Set LinkedIn-optimized configuration
-      await page.setViewport({ width: 1920, height: 1080 });
-      await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
-      
-      // Set headers to appear as legitimate browser
-      await page.setExtraHTTPHeaders({
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Sec-Fetch-Site': 'none',
-        'Sec-Fetch-Mode': 'navigate',
-        'Sec-Fetch-User': '?1',
-        'Sec-Fetch-Dest': 'document'
-      });
-      
-      // Block unnecessary resources to reduce session pressure
-      await page.setRequestInterception(true);
-      page.on('request', (request) => {
-        const resourceType = request.resourceType();
-        if (['font', 'stylesheet', 'media', 'other'].includes(resourceType)) {
-          request.abort();
-        } else {
-          request.continue();
-        }
-      });
-      
-      // Multiple navigation attempts with different strategies
-      let navigationSuccess = false;
-      
-      // Strategy 1: Direct navigation with extended timeout
-      try {
-        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
-        navigationSuccess = true;
-      } catch (error1: any) {
-        console.log(`LinkedIn Strategy 1 failed: ${error1.message}`);
-        
-        // Strategy 2: Minimal wait conditions
-        try {
-          await page.goto(url, { waitUntil: 'load', timeout: 30000 });
-          navigationSuccess = true;
-        } catch (error2: any) {
-          console.log(`LinkedIn Strategy 2 failed: ${error2.message}`);
-          
-          // Strategy 3: No wait conditions, just navigate
-          try {
-            await page.goto(url, { timeout: 20000 });
-            navigationSuccess = true;
-          } catch (error3: any) {
-            console.log(`LinkedIn Strategy 3 failed: ${error3.message}`);
-            throw new Error('All LinkedIn navigation strategies failed');
-          }
-        }
-      }
-      
-      if (!navigationSuccess) {
-        throw new Error('Failed to navigate to LinkedIn page');
-      }
-      
-      // Wait for initial content load
-      await new Promise(resolve => setTimeout(resolve, 8000));
-      
-      // Hide LinkedIn login overlays and modals
-      await page.evaluate(() => {
-        // Remove common LinkedIn login overlays
-        const overlaySelectors = [
-          '.guest-homepage-overlay',
-          '.sign-in-modal',
-          '.authwall-join-form',
-          '.join-form',
-          '.visitor-nav',
-          '.top-card-layout__cta-container',
-          '[data-test-id="sign-in-modal"]',
-          '[data-test-id="guest-homepage-overlay"]',
-          '.artdeco-modal',
-          '.authentication-outlet',
-          '.nav-item--sign-in-cta'
-        ];
-        
-        overlaySelectors.forEach(selector => {
-          const elements = document.querySelectorAll(selector);
-          elements.forEach(el => {
-            if (el && el.parentNode) {
-              el.parentNode.removeChild(el);
-            }
-          });
-        });
-        
-        // Hide any elements with z-index above 1000 (likely modals)
-        const allElements = document.querySelectorAll('*');
-        allElements.forEach(el => {
-          const zIndex = window.getComputedStyle(el).zIndex;
-          if (zIndex && parseInt(zIndex) > 1000) {
-            (el as HTMLElement).style.display = 'none';
-          }
-        });
-        
-        // Remove authentication walls
-        const authWalls = document.querySelectorAll('[class*="auth"]');
-        authWalls.forEach(el => {
-          if (el.textContent && (
-            el.textContent.includes('Sign in') || 
-            el.textContent.includes('Join now') ||
-            el.textContent.includes('Log in')
-          )) {
-            (el as HTMLElement).style.display = 'none';
-          }
-        });
-      });
-      
-      // Additional wait for content stabilization
-      await new Promise(resolve => setTimeout(resolve, 5000));
-      
-      // Check if page is still valid
-      if (page.isClosed()) {
-        throw new Error('Page closed during LinkedIn processing');
-      }
-      
-      // Take screenshot with high quality settings
-      const screenshotBuffer = await page.screenshot({
-        type: 'jpeg',
-        quality: 95,
-        clip: { x: 0, y: 0, width: 1920, height: 1080 }
-      });
-      
-      // Clean up immediately
-      if (!page.isClosed()) await page.close();
-      if (browser.isConnected()) await browser.close();
-      
-      // Process and save with high quality
-      const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
-      const thumbnailBuffer = await sharp(screenshotBuffer)
-        .resize(1024, 768, { 
-          fit: 'cover',
-          kernel: sharp.default.kernel.lanczos3
-        })
-        .jpeg({ quality: 90 })
-        .toBuffer();
-      
-      const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
-      const filepath = path.join(thumbnailsDir, filename);
-      await fs.writeFile(filepath, thumbnailBuffer);
-      
-      console.log(`Created LinkedIn fallback screenshot: ${filename}`);
-      
-    } catch (error: any) {
-      console.log(`LinkedIn fallback failed for ${url}: ${error.message}`);
-      
-      // Clean up on error
-      if (page && !page.isClosed()) {
-        try { await page.close(); } catch {}
-      }
-      if (browser && browser.isConnected()) {
-        try { await browser.close(); } catch {}
-      }
-      
-      throw error;
-    }
-  }
-
-  static async createYouTubeScreenshotFallback(filename: string, url: string, title: string, category: string): Promise<void> {
-    console.log(`Attempting YouTube capture for ${url}`);
-    
-    // Detect environment - use different strategies for local vs Replit
-    const isReplit = process.env.REPLIT_CLUSTER || process.env.REPL_SLUG;
-    const isLocal = !isReplit;
-    
-    // Try CDP-based screenshot first (more robust than Puppeteer)
-    try {
-      console.log('Using CDP for YouTube screenshot');
-      const success = await CDPThumbnailService.takeScreenshot(url, filename);
-      if (success) {
-        console.log(`CDP YouTube screenshot created: ${filename}`);
-        return;
-      }
-    } catch (error: any) {
-      console.log(`CDP screenshot failed: ${error.message}`);
-    }
-    
-    // For local environments or CDP failure, use enhanced placeholder for YouTube
-    if (isLocal) {
-      console.log('Local environment detected - using enhanced placeholder for YouTube');
-      await this.createYouTubeEnhancedPlaceholder(filename, url, title, category);
-      return;
-    }
-    
-    // Replit fallback with Puppeteer if CDP fails
-    console.log('Falling back to Puppeteer for YouTube');
-    const browserOptions: any = {
-      headless: true,
-      timeout: 60000,
-      executablePath: '/nix/store/zi4f80l169xlmivz8vja8wlphq74qqk0-chromium-125.0.6422.141/bin/chromium',
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--disable-web-security',
-        '--single-process'
-      ]
-    };
-    
-    let browser;
-    let page;
-    
-    try {
-      browser = await puppeteer.launch(browserOptions);
-      page = await browser.newPage();
-      
-      await page.setViewport({ width: 1024, height: 768 });
-      await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
-      
-      await page.goto(url, { 
-        waitUntil: 'domcontentloaded', 
-        timeout: 30000
-      });
-      
-      // Wait for video thumbnail to load
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      // Take screenshot
-      const screenshotBuffer = await page.screenshot({ 
-        fullPage: false,
-        clip: { x: 0, y: 0, width: 1024, height: 768 }
-      });
-      
-      // Process and save
-      const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
-      const thumbnailBuffer = await sharp(screenshotBuffer)
-        .resize(1024, 768, { 
-          kernel: sharp.kernel.lanczos3,
-          fit: 'contain',
-          background: { r: 0, g: 0, b: 0, alpha: 1 }
-        })
-        .toBuffer();
-      
-      const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
-      const filepath = path.join(thumbnailsDir, filename);
-      await fs.writeFile(filepath, thumbnailBuffer);
-      
-      console.log(`Created YouTube screenshot: ${filename}`);
-      
-    } catch (error: any) {
-      console.log(`YouTube Puppeteer fallback failed for ${url}: ${error.message}`);
-      // Final fallback to enhanced placeholder
-      await this.createYouTubeEnhancedPlaceholder(filename, url, title, category);
-    } finally {
-      // Clean up
-      if (page && !page.isClosed()) {
-        try { await page.close(); } catch {}
-      }
-      if (browser && browser.isConnected()) {
-        try { await browser.close(); } catch {}
-      }
-    }
-  }
-
-  static async createYouTubeEnhancedPlaceholder(filename: string, url: string, title: string, category: string): Promise<void> {
-    try {
-      console.log(`Creating enhanced YouTube placeholder for ${title}`);
-      
-      // Extract video ID from URL
-      const videoId = this.extractYouTubeVideoId(url);
-      
-      const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
-      
-      // Create enhanced YouTube-style thumbnail
-      const svgContent = `
+      const linkedInSvg = `
         <svg width="1024" height="768" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="youtubeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#FF0000;stop-opacity:0.1" />
-              <stop offset="100%" style="stop-color:#CC0000;stop-opacity:0.2" />
-            </linearGradient>
-            <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-              <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.3"/>
-            </filter>
-          </defs>
+          <rect width="100%" height="100%" fill="#0A66C2"/>
           
-          <!-- Background -->
-          <rect width="1024" height="768" fill="#000000"/>
-          <rect width="1024" height="768" fill="url(#youtubeGrad)"/>
+          <!-- LinkedIn logo area -->
+          <circle cx="512" cy="250" r="50" fill="rgba(255,255,255,0.2)"/>
+          <text x="512" y="270" font-family="Arial, sans-serif" font-size="40" fill="white" text-anchor="middle">💼</text>
           
-          <!-- YouTube Play Button -->
-          <circle cx="512" cy="384" r="80" fill="#FF0000" filter="url(#shadow)"/>
-          <polygon points="482,344 482,424 562,384" fill="white"/>
+          <!-- Title -->
+          <text x="512" y="350" font-family="Arial, sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="bold">
+            LinkedIn Content
+          </text>
           
-          <!-- Title Background -->
-          <rect x="50" y="580" width="924" height="120" rx="10" fill="#000000" fill-opacity="0.8"/>
-          
-          <!-- YouTube Logo Area -->
-          <rect x="50" y="50" width="200" height="60" rx="8" fill="#FF0000"/>
-          <text x="150" y="85" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="24" font-weight="bold">YouTube</text>
-          
-          <!-- Video Title -->
-          <text x="512" y="630" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="32" font-weight="bold">
-            ${this.truncateText(title, 40)}
+          <!-- URL -->
+          <text x="512" y="400" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+            ${url.length > 60 ? url.substring(0, 60) + '...' : url}
           </text>
           
           <!-- Category -->
-          <text x="512" y="670" text-anchor="middle" fill="#CCCCCC" font-family="Arial, sans-serif" font-size="20">
+          <text x="512" y="480" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.9)" text-anchor="middle">
             ${category}
-          </text>
-          
-          <!-- Video ID -->
-          <text x="924" y="40" text-anchor="end" fill="#666666" font-family="monospace" font-size="14">
-            ${videoId || 'Video'}
           </text>
         </svg>
       `;
       
-      const sharpLib = await import('sharp');
-      const thumbnailBuffer = await sharpLib.default(Buffer.from(svgContent))
-        .resize(1024, 768, { 
-          fit: 'contain',
-          background: { r: 0, g: 0, b: 0, alpha: 1 }
-        })
+      const buffer = await sharp(Buffer.from(linkedInSvg))
+        .jpeg({ quality: 90 })
         .toBuffer();
       
       const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+      await fs.mkdir(thumbnailsDir, { recursive: true });
+      
       const filepath = path.join(thumbnailsDir, filename);
-      await fs.writeFile(filepath, thumbnailBuffer);
+      await fs.writeFile(filepath, buffer);
       
-      console.log(`Created enhanced YouTube placeholder: ${filename}`);
+      console.log(`[THUMBNAIL DEBUG] Created LinkedIn fallback JPG: ${filename}`);
+    } catch (error) {
+      console.error(`[THUMBNAIL DEBUG] LinkedIn fallback failed:`, error);
+      await this.createErrorThumbnail(filename, title, category, url);
+    }
+  }
+
+  static async createYouTubeScreenshotFallback(filename: string, url: string, title: string, category: string): Promise<void> {
+    console.log(`[THUMBNAIL DEBUG] Creating YouTube fallback for: ${filename}`);
+    
+    try {
+      // Extract video ID for potential thumbnail URL
+      const videoId = this.extractYouTubeVideoId(url);
+      console.log(`[THUMBNAIL DEBUG] Extracted YouTube video ID: ${videoId}`);
       
-    } catch (error: any) {
-      console.error('Error creating YouTube enhanced placeholder:', error);
-      // Fallback to simple error thumbnail
+      if (videoId) {
+        await this.createYouTubeEnhancedPlaceholder(filename, url, title, category);
+      } else {
+        await this.createSimpleScreenshotFallback(filename, url, title, category);
+      }
+    } catch (error) {
+      console.error(`[THUMBNAIL DEBUG] YouTube fallback failed:`, error);
+      await this.createErrorThumbnail(filename, title, category, url);
+    }
+  }
+
+  static async createYouTubeEnhancedPlaceholder(filename: string, url: string, title: string, category: string): Promise<void> {
+    console.log(`[THUMBNAIL DEBUG] Creating YouTube enhanced placeholder for: ${filename}`);
+    
+    try {
+      const sharpModule = await import('sharp');
+      const sharp = sharpModule.default || sharpModule;
+      
+      const youtubeSvg = `
+        <svg width="1024" height="768" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100%" height="100%" fill="#FF0000"/>
+          
+          <!-- YouTube logo area -->
+          <circle cx="512" cy="250" r="50" fill="rgba(255,255,255,0.2)"/>
+          <text x="512" y="270" font-family="Arial, sans-serif" font-size="40" fill="white" text-anchor="middle">▶️</text>
+          
+          <!-- Title -->
+          <text x="512" y="350" font-family="Arial, sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="bold">
+            ${this.truncateText(title, 40)}
+          </text>
+          
+          <!-- URL -->
+          <text x="512" y="400" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+            YouTube Video
+          </text>
+          
+          <!-- Category -->
+          <text x="512" y="480" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.9)" text-anchor="middle">
+            ${category}
+          </text>
+        </svg>
+      `;
+      
+      const buffer = await sharp(Buffer.from(youtubeSvg))
+        .jpeg({ quality: 90 })
+        .toBuffer();
+      
+      const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+      await fs.mkdir(thumbnailsDir, { recursive: true });
+      
+      const filepath = path.join(thumbnailsDir, filename);
+      await fs.writeFile(filepath, buffer);
+      
+      console.log(`[THUMBNAIL DEBUG] Created YouTube enhanced placeholder JPG: ${filename}`);
+    } catch (error) {
+      console.error(`[THUMBNAIL DEBUG] YouTube enhanced placeholder failed:`, error);
       await this.createErrorThumbnail(filename, title, category, url);
     }
   }
 
   static extractYouTubeVideoId(url: string): string | null {
-    const patterns = [
-      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
-      /youtube\.com\/watch\?.*v=([^&\n?#]+)/
-    ];
-    
-    for (const pattern of patterns) {
-      const match = url.match(pattern);
-      if (match) return match[1];
-    }
-    
-    return null;
+    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
   }
 
   static truncateText(text: string, maxLength: number): string {
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength - 3) + '...';
+    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   }
 
   static async createSimpleScreenshotFallback(filename: string, url: string, title: string, category: string): Promise<void> {
-    console.log(`Attempting simple fallback screenshot for ${url}`);
-    
-    const browserOptions: any = {
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--single-process',
-        '--disable-web-security',
-        '--disable-features=VizDisplayCompositor'
-      ]
-    };
-    
-    let browser;
-    let page;
+    console.log(`[THUMBNAIL DEBUG] Creating simple screenshot fallback for: ${filename}`);
     
     try {
-      browser = await puppeteer.launch(browserOptions);
-      page = await browser.newPage();
+      const sharpModule = await import('sharp');
+      const sharp = sharpModule.default || sharpModule;
       
-      // Minimal configuration
-      await page.setViewport({ width: 1600, height: 1200 });
-      await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36');
+      const simpleSvg = `
+        <svg width="1024" height="768" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100%" height="100%" fill="#4F46E5"/>
+          
+          <!-- Web icon -->
+          <circle cx="512" cy="250" r="40" fill="rgba(255,255,255,0.2)"/>
+          <text x="512" y="270" font-family="Arial, sans-serif" font-size="32" fill="white" text-anchor="middle">🌐</text>
+          
+          <!-- Title -->
+          <text x="512" y="350" font-family="Arial, sans-serif" font-size="26" fill="white" text-anchor="middle" font-weight="bold">
+            ${this.truncateText(title, 35)}
+          </text>
+          
+          <!-- URL -->
+          <text x="512" y="400" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+            ${this.truncateText(url, 70)}
+          </text>
+          
+          <!-- Category -->
+          <text x="512" y="480" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.9)" text-anchor="middle">
+            ${category}
+          </text>
+        </svg>
+      `;
       
-      // Simple navigation with short timeout
-      await page.goto(url, { 
-        waitUntil: 'domcontentloaded',
-        timeout: 15000
-      });
-      
-      // Minimal wait
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Check if page is still valid
-      if (page.isClosed()) {
-        throw new Error('Page closed during fallback attempt');
-      }
-      
-      // Simple screenshot
-      const screenshotBuffer = await page.screenshot({
-        type: 'jpeg',
-        quality: 85,
-        clip: { x: 0, y: 0, width: 1600, height: 1200 }
-      });
-      
-      // Clean up immediately
-      if (!page.isClosed()) await page.close();
-      if (browser.isConnected()) await browser.close();
-      
-      // Process and save
-      const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
-      const thumbnailBuffer = await sharp(screenshotBuffer)
-        .resize(1024, 768, { 
-          fit: 'cover',
-          kernel: sharp.default.kernel.lanczos3
-        })
-        .jpeg({ quality: 85 })
+      const buffer = await sharp(Buffer.from(simpleSvg))
+        .jpeg({ quality: 90 })
         .toBuffer();
       
       const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+      await fs.mkdir(thumbnailsDir, { recursive: true });
+      
       const filepath = path.join(thumbnailsDir, filename);
-      await fs.writeFile(filepath, thumbnailBuffer);
+      await fs.writeFile(filepath, buffer);
       
-      console.log(`Created fallback screenshot thumbnail: ${filename}`);
-      
-    } catch (error: any) {
-      console.log(`Fallback screenshot failed for ${url}: ${error.message}`);
-      
-      // Clean up on error
-      if (page && !page.isClosed()) {
-        try { await page.close(); } catch {}
-      }
-      if (browser && browser.isConnected()) {
-        try { await browser.close(); } catch {}
-      }
-      
-      throw error;
+      console.log(`[THUMBNAIL DEBUG] Created simple fallback JPG: ${filename}`);
+    } catch (error) {
+      console.error(`[THUMBNAIL DEBUG] Simple fallback failed:`, error);
+      await this.createErrorThumbnail(filename, title, category, url);
     }
   }
 
   static async createErrorThumbnail(filename: string, title: string, category: string, url: string): Promise<void> {
+    console.log(`[THUMBNAIL DEBUG] Creating error thumbnail for: ${filename}`);
+    
     try {
-      // Create a red background with error information
-      const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
+      const sharpModule = await import('sharp');
+      const sharp = sharpModule.default || sharpModule;
       
-      // Truncate and escape text for XML safety
-      const maxTitleLength = 22;
+      const maxTitleLength = 30;
       const displayTitle = (title.length > maxTitleLength ? title.substring(0, maxTitleLength) + '...' : title)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&apos;');
-      const maxUrlLength = 35;
+      
+      const maxUrlLength = 50;
       const displayUrl = (url.length > maxUrlLength ? url.substring(0, maxUrlLength) + '...' : url)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&apos;');
-      const maxCategoryLength = 18;
+      
+      const maxCategoryLength = 20;
       const displayCategory = (category.length > maxCategoryLength ? category.substring(0, maxCategoryLength) + '...' : category)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -925,33 +450,32 @@ export class SimpleThumbnailService {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&apos;');
       
-      // Create SVG with error information at 640x360
       const errorSvg = `
-        <svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
-          <rect width="100%" height="100%" fill="#FF6B6B"/>
+        <svg width="1024" height="768" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100%" height="100%" fill="#DC2626"/>
           
           <!-- Error indicator -->
-          <circle cx="320" cy="90" r="24" fill="rgba(255,255,255,0.3)"/>
-          <text x="320" y="100" font-family="Arial, sans-serif" font-size="24" fill="white" text-anchor="middle">⚠</text>
+          <circle cx="512" cy="200" r="40" fill="rgba(255,255,255,0.2)"/>
+          <text x="512" y="220" font-family="Arial, sans-serif" font-size="32" fill="white" text-anchor="middle">⚠️</text>
           
           <!-- Title -->
-          <text x="320" y="150" font-family="Arial, sans-serif" font-size="24" fill="white" text-anchor="middle" font-weight="bold">
+          <text x="512" y="300" font-family="Arial, sans-serif" font-size="26" fill="white" text-anchor="middle" font-weight="bold">
             ${displayTitle}
           </text>
           
           <!-- URL -->
-          <text x="320" y="190" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.9)" text-anchor="middle">
+          <text x="512" y="350" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.8)" text-anchor="middle">
             ${displayUrl}
           </text>
           
           <!-- Category -->
-          <text x="320" y="230" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+          <text x="512" y="400" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.9)" text-anchor="middle">
             ${displayCategory}
           </text>
           
           <!-- Error message -->
-          <text x="320" y="280" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.7)" text-anchor="middle">
-            Screenshot Unavailable
+          <text x="512" y="480" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.7)" text-anchor="middle">
+            Screenshot generation failed
           </text>
         </svg>
       `;
@@ -961,12 +485,14 @@ export class SimpleThumbnailService {
         .toBuffer();
       
       const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+      await fs.mkdir(thumbnailsDir, { recursive: true });
+      
       const filepath = path.join(thumbnailsDir, filename);
       await fs.writeFile(filepath, errorBuffer);
       
-      console.log(`Created error thumbnail: ${filename}`);
+      console.log(`[THUMBNAIL DEBUG] Created error thumbnail JPG: ${filename}`);
     } catch (error) {
-      console.error('Error creating error thumbnail:', error);
+      console.error(`[THUMBNAIL DEBUG] Error creating error thumbnail:`, error);
       await this.createSimplePlaceholder(filename, title, category);
     }
   }
