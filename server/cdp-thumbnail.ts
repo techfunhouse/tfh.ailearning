@@ -131,15 +131,22 @@ export class CDPThumbnailService {
       await this.launchChrome();
       
       client = await CDP({ port: this.chromePort });
-      const { Page, Runtime, Network } = client;
+      const { Page, Runtime, Network, Target } = client;
       
-      // Enable necessary domains
-      await Page.enable();
-      await Runtime.enable();
-      await Network.enable();
+      // Create a new target (page) 
+      const { targetId } = await Target.createTarget({ url: 'about:blank' });
+      
+      // Connect to the new target
+      const pageClient = await CDP({ port: this.chromePort, target: targetId });
+      const { Page: TargetPage, Runtime: TargetRuntime, Network: TargetNetwork } = pageClient;
+      
+      // Enable necessary domains on the target page
+      await TargetPage.enable();
+      await TargetRuntime.enable();
+      await TargetNetwork.enable();
       
       // Set viewport
-      await Page.setDeviceMetricsOverride({
+      await TargetPage.setDeviceMetricsOverride({
         width: 1024,
         height: 768,
         deviceScaleFactor: 1,
@@ -147,9 +154,9 @@ export class CDPThumbnailService {
       });
       
       // Navigate with robust error handling
-      const navigationPromise = Page.loadEventFired();
+      const navigationPromise = TargetPage.loadEventFired();
       
-      await Page.navigate({ url });
+      await TargetPage.navigate({ url });
       await navigationPromise;
       
       // Wait for content to stabilize
@@ -157,7 +164,7 @@ export class CDPThumbnailService {
       
       // Additional wait for dynamic content
       try {
-        await Runtime.evaluate({
+        await TargetRuntime.evaluate({
           expression: `
             new Promise(resolve => {
               if (document.readyState === 'complete') {
@@ -175,7 +182,7 @@ export class CDPThumbnailService {
       }
       
       // Take screenshot
-      const screenshot = await Page.captureScreenshot({
+      const screenshot = await TargetPage.captureScreenshot({
         format: 'png',
         clip: {
           x: 0,
@@ -187,8 +194,9 @@ export class CDPThumbnailService {
       });
       
       // Process with Sharp for consistency
-      const sharp = await import('sharp');
-      const thumbnailBuffer = await sharp.default(Buffer.from(screenshot.data, 'base64'))
+      const sharpModule = await import('sharp');
+      const sharp = sharpModule.default || sharpModule;
+      const thumbnailBuffer = await sharp(Buffer.from(screenshot.data, 'base64'))
         .resize(1024, 768, { 
           kernel: sharp.kernel.lanczos3,
           fit: 'contain',

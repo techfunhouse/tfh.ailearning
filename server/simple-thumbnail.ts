@@ -54,7 +54,7 @@ export class SimpleThumbnailService {
         </svg>
       `;
       
-      const placeholderBuffer = await sharp.default(Buffer.from(loadingSvg))
+      const placeholderBuffer = await sharp(Buffer.from(loadingSvg))
         .jpeg({ quality: 90 })
         .toBuffer();
       
@@ -76,7 +76,7 @@ export class SimpleThumbnailService {
       // Create a simple green solid color JPG as success placeholder
       const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
       
-      const successBuffer = await sharp.default({
+      const successBuffer = await sharp({
         create: {
           width: 640,
           height: 360,
@@ -145,7 +145,7 @@ export class SimpleThumbnailService {
         </svg>
       `;
       
-      const placeholderBuffer = await sharp.default(Buffer.from(placeholderSvg))
+      const placeholderBuffer = await sharp(Buffer.from(placeholderSvg))
         .jpeg({ quality: 90 })
         .toBuffer();
       
@@ -321,7 +321,7 @@ export class SimpleThumbnailService {
 
         // Resize screenshot to thumbnail size using Sharp
         const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
-        const thumbnailBuffer = await sharp.default(screenshotBuffer)
+        const thumbnailBuffer = await sharp(screenshotBuffer)
           .resize(1024, 768, { 
             fit: 'cover',
             kernel: sharp.default.kernel.lanczos3
@@ -583,7 +583,7 @@ export class SimpleThumbnailService {
       
       // Process and save with high quality
       const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
-      const thumbnailBuffer = await sharp.default(screenshotBuffer)
+      const thumbnailBuffer = await sharp(screenshotBuffer)
         .resize(1024, 768, { 
           fit: 'cover',
           kernel: sharp.default.kernel.lanczos3
@@ -680,7 +680,7 @@ export class SimpleThumbnailService {
       
       // Process and save
       const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
-      const thumbnailBuffer = await sharp.default(screenshotBuffer)
+      const thumbnailBuffer = await sharp(screenshotBuffer)
         .resize(1024, 768, { 
           kernel: sharp.kernel.lanczos3,
           fit: 'contain',
@@ -857,7 +857,7 @@ export class SimpleThumbnailService {
       
       // Process and save
       const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
-      const thumbnailBuffer = await sharp.default(screenshotBuffer)
+      const thumbnailBuffer = await sharp(screenshotBuffer)
         .resize(1024, 768, { 
           fit: 'cover',
           kernel: sharp.default.kernel.lanczos3
@@ -945,7 +945,7 @@ export class SimpleThumbnailService {
         </svg>
       `;
       
-      const errorBuffer = await sharp.default(Buffer.from(errorSvg))
+      const errorBuffer = await sharp(Buffer.from(errorSvg))
         .jpeg({ quality: 90 })
         .toBuffer();
       
