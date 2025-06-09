@@ -62,20 +62,37 @@ export class CDPThumbnailService {
       '--disable-renderer-backgrounding'
     ];
 
-    console.log(`Launching Chrome with CDP on port ${this.chromePort}`);
+    console.log(`[CDP DEBUG] Launching Chrome with CDP on port ${this.chromePort}`);
+    console.log(`[CDP DEBUG] Chrome path: ${chromePath}`);
+    console.log(`[CDP DEBUG] Chrome args: ${args.join(' ')}`);
+    
     this.chromeProcess = spawn(chromePath, args, {
       stdio: ['ignore', 'pipe', 'pipe'],
       detached: false
     });
 
+    if (!this.chromeProcess) {
+      console.error('[CDP DEBUG] Failed to spawn Chrome process - spawn returned null');
+      throw new Error('Failed to spawn Chrome process');
+    }
+
+    console.log(`[CDP DEBUG] Chrome process spawned with PID: ${this.chromeProcess.pid}`);
+
     // Handle process errors
     this.chromeProcess.on('error', (error: any) => {
-      console.log('Chrome process error:', error.message);
+      console.error('[CDP DEBUG] Chrome process error:', error);
+      console.error('[CDP DEBUG] Error details:', {
+        code: error.code,
+        errno: error.errno,
+        syscall: error.syscall,
+        path: error.path,
+        message: error.message
+      });
       this.chromeProcess = null;
     });
 
-    this.chromeProcess.on('exit', (code: number) => {
-      console.log(`Chrome process exited with code ${code}`);
+    this.chromeProcess.on('exit', (code: number, signal: string) => {
+      console.log(`[CDP DEBUG] Chrome process exited with code ${code}, signal: ${signal}`);
       this.chromeProcess = null;
     });
 
@@ -130,20 +147,31 @@ export class CDPThumbnailService {
   }
 
   static async takeScreenshot(url: string, filename: string): Promise<boolean> {
+    console.log(`[CDP DEBUG] ========== Starting CDP screenshot ==========`);
+    console.log(`[CDP DEBUG] URL: ${url}`);
+    console.log(`[CDP DEBUG] Filename: ${filename}`);
+    console.log(`[CDP DEBUG] Process platform: ${process.platform}`);
+    console.log(`[CDP DEBUG] Node version: ${process.version}`);
+    
     let client: any = null;
     let pageClient: any = null;
     
     try {
+      console.log(`[CDP DEBUG] Step 1: Launching Chrome...`);
       await this.launchChrome();
+      console.log(`[CDP DEBUG] Step 1: Chrome launch completed`);
       
       // Wait for Chrome to stabilize - longer delay for YouTube URLs
       const isYouTube = url.includes('youtube.com') || url.includes('youtu.be');
       const stabilizeDelay = isYouTube ? 5000 : 2000;
+      console.log(`[CDP DEBUG] Step 2: Waiting ${stabilizeDelay}ms for Chrome to stabilize (YouTube: ${isYouTube})`);
       await new Promise(resolve => setTimeout(resolve, stabilizeDelay));
+      console.log(`[CDP DEBUG] Step 2: Chrome stabilization completed`);
       
       // List available targets first
+      console.log(`[CDP DEBUG] Step 3: Listing available targets...`);
       const targets = await CDP.List({ port: this.chromePort });
-      console.log(`Available targets: ${targets.length}`);
+      console.log(`[CDP DEBUG] Step 3: Available targets: ${targets.length}`);
       
       if (targets.length === 0) {
         // Try to create a new page if no targets exist
