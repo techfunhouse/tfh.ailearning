@@ -18,9 +18,11 @@
     "react",
     "repository",
     "screenshot",
+    "simple",
     "solace",
     "test",
     "test-tag",
-    "tutorial"
+    "tutorial",
+    "universal"
   ]
 }

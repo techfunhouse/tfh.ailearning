@@ -70,6 +70,30 @@
       ],
       "id": "9217844a-f675-4324-b83e-101d9407ef8b",
       "thumbnail": "/thumbnails/9217844a-f675-4324-b83e-101d9407ef8b.jpg"
+    },
+    {
+      "title": "Simple Thumbnail Test",
+      "link": "https://example.com/simple-test",
+      "description": "Testing the new simple Generating... placeholder design",
+      "category": "Development Tools",
+      "tags": [
+        "simple",
+        "test"
+      ],
+      "id": "255c2226-a8f7-4d34-8b6c-5650772192f5",
+      "thumbnail": "/thumbnails/255c2226-a8f7-4d34-8b6c-5650772192f5.jpg"
+    },
+    {
+      "title": "Universal Simple Design",
+      "link": "https://docs.example.com/universal-test",
+      "description": "Testing the universal simple placeholder with just Generating text",
+      "category": "Documentation",
+      "tags": [
+        "universal",
+        "simple"
+      ],
+      "id": "6d62dadb-b48f-459c-9854-c10fe74b62ab",
+      "thumbnail": "/thumbnails/6d62dadb-b48f-459c-9854-c10fe74b62ab.jpg"
     }
   ]
 }

@@ -59,7 +59,7 @@ export class PuppeteerThumbnailService {
   }
 
   static async takeScreenshot(url: string, filename: string): Promise<boolean> {
-    console.log(`[THUMBNAIL] Generating elegant placeholder for: ${url}`);
+    console.log(`[THUMBNAIL] Generating simple placeholder for: ${url}`);
     
     // Create thumbnails directory
     const thumbnailsDir = path.join(process.cwd(), 'client', 'public', 'thumbnails');
@@ -75,77 +75,24 @@ export class PuppeteerThumbnailService {
       const canvas = createCanvas(1024, 768);
       const ctx = canvas.getContext('2d');
       
-      // Soft background gradient using page-specific colors
+      // Simple soft background gradient
       const bgGradient = ctx.createLinearGradient(0, 0, 1024, 768);
-      bgGradient.addColorStop(0, pageInfo.gradient[0]);
-      bgGradient.addColorStop(1, pageInfo.gradient[1]);
+      bgGradient.addColorStop(0, '#f8fafc');
+      bgGradient.addColorStop(1, '#e2e8f0');
       ctx.fillStyle = bgGradient;
       ctx.fillRect(0, 0, 1024, 768);
       
-      // Elegant main card with subtle shadow
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.08)';
-      ctx.shadowBlur = 30;
-      ctx.shadowOffsetY = 10;
-      ctx.roundRect(80, 80, 864, 608, 24);
-      ctx.fill();
-      
-      // Reset shadow
-      ctx.shadowColor = 'transparent';
-      ctx.shadowBlur = 0;
-      ctx.shadowOffsetY = 0;
-      
-      // Compact platform badge
-      const badgeGradient = ctx.createLinearGradient(0, 120, 0, 160);
-      badgeGradient.addColorStop(0, pageInfo.color);
-      badgeGradient.addColorStop(1, pageInfo.secondaryColor);
-      ctx.fillStyle = badgeGradient;
-      ctx.roundRect(120, 120, 140, 40, 20);
-      ctx.fill();
-      
-      // Badge text - smaller and cleaner
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
-      ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial';
-      ctx.textAlign = 'center';
-      ctx.fillText(pageInfo.type, 190, 143);
-      
-      // Large icon positioned higher
-      ctx.font = '120px system-ui';
-      ctx.fillStyle = pageInfo.color;
-      ctx.fillText(pageInfo.icon, 512, 300);
-      
-      // Clean main text - smaller and better positioned
-      ctx.fillStyle = '#374151';
-      ctx.font = '28px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial';
-      ctx.fillText('Content Preview', 512, 380);
-      
-      // Smaller subtitle
+      // Simple centered text
       ctx.fillStyle = '#6b7280';
-      ctx.font = '18px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial';
-      ctx.fillText('Thumbnail placeholder', 512, 410);
-      
-      // URL display - positioned lower to avoid overlap
-      const truncatedUrl = url.length > 45 ? url.substring(0, 42) + '...' : url;
-      ctx.fillStyle = '#9ca3af';
-      ctx.font = '16px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial';
-      ctx.fillText(truncatedUrl, 512, 480);
-      
-      // Soft progress dots instead of harsh circle
-      const dotY = 580;
-      for (let i = 0; i < 3; i++) {
-        const dotX = 490 + (i * 22);
-        const opacity = (Date.now() + i * 200) % 1500 < 500 ? 1 : 0.3;
-        ctx.fillStyle = `rgba(${parseInt(pageInfo.color.slice(1, 3), 16)}, ${parseInt(pageInfo.color.slice(3, 5), 16)}, ${parseInt(pageInfo.color.slice(5, 7), 16)}, ${opacity})`;
-        ctx.beginPath();
-        ctx.arc(dotX, dotY, 6, 0, Math.PI * 2);
-        ctx.fill();
-      }
+      ctx.font = '32px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('Generating...', 512, 384)
       
       // Save as JPEG
       const buffer = canvas.toBuffer('image/jpeg', { quality: 0.9 });
       fs.writeFileSync(filepath, buffer);
       
-      console.log(`[THUMBNAIL] Created elegant ${pageInfo.type} placeholder: ${filename}`);
+      console.log(`[THUMBNAIL] Created simple placeholder: ${filename}`);
       return true;
       
     } catch (error) {
