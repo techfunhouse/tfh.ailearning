@@ -1,0 +1,84 @@
+Detected YouTube URL https://www.youtube.com/watch?v=FwOTs4UxQS4/, using isolated browser strategy
+Attempting bulletproof YouTube capture for https://www.youtube.com/watch?v=FwOTs4UxQS4/
+YouTube navigation attempt 1/3
+Attempting navigation to https://www.youtube.com/watch?v=FwOTs4UxQS4/
+Navigation attempt 1 failed: Navigating frame was detached
+Frame detachment detected, forcing browser recreation
+Cleanup error during recreation: Error: Protocol error: Connection closed.
+    at Connection._rawSend (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Connection.ts:134:29)
+    at Connection.send (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Connection.ts:120:17)
+    at CdpPage.close (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Page.ts:1148:24)
+    at async Function.createYouTubeScreenshotFallback (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:732:37)
+    at async Function.createRealScreenshot (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:280:11)
+    at async task (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:166:9)
+    at async Function.processQueue (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:186:9)
+YouTube navigation attempt 2/3
+Browser/page invalid, recreating...
+Navigation attempt 2 failed: Protocol error: Connection closed.
+YouTube navigation attempt 3/3
+Browser/page invalid, recreating...
+Navigation attempt 3 failed: Protocol error: Connection closed.
+YouTube fallback failed for https://www.youtube.com/watch?v=FwOTs4UxQS4/: Protocol error: Connection closed.
+Failed to capture screenshot for https://www.youtube.com/watch?v=FwOTs4UxQS4/: Error: Protocol error: Connection closed.
+    at Connection._rawSend (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Connection.ts:134:29)
+    at Connection.send (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Connection.ts:120:17)
+    at CdpPage.close (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Page.ts:1148:24)
+    at async Function.createYouTubeScreenshotFallback (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:700:35)
+    at async Function.createRealScreenshot (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:280:11)
+    at async task (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:166:9)
+    at async Function.processQueue (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:186:9)
+Retryable error detected for https://www.youtube.com/watch?v=FwOTs4UxQS4/, will use fallback strategy
+Attempting bulletproof YouTube capture for https://www.youtube.com/watch?v=FwOTs4UxQS4/
+YouTube navigation attempt 1/3
+Attempting navigation to https://www.youtube.com/watch?v=FwOTs4UxQS4/
+Navigation attempt 1 failed: Navigating frame was detached
+Frame detachment detected, forcing browser recreation
+Cleanup error during recreation: Error: Protocol error: Connection closed.
+    at Connection._rawSend (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Connection.ts:134:29)
+    at Connection.send (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Connection.ts:120:17)
+    at CdpPage.close (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Page.ts:1148:24)
+    at async Function.createYouTubeScreenshotFallback (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:732:37)
+    at async Function.createRealScreenshot (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:375:15)
+    at async task (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:166:9)
+    at async Function.processQueue (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:186:9)
+YouTube navigation attempt 2/3
+Browser/page invalid, recreating...
+Navigation attempt 2 failed: Protocol error: Connection closed.
+YouTube navigation attempt 3/3
+Browser/page invalid, recreating...
+Navigation attempt 3 failed: Protocol error: Connection closed.
+YouTube fallback failed for https://www.youtube.com/watch?v=FwOTs4UxQS4/: Protocol error: Connection closed.
+YouTube fallback strategy failed for https://www.youtube.com/watch?v=FwOTs4UxQS4/: Error: Protocol error: Connection closed.
+    at Connection._rawSend (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Connection.ts:134:29)
+    at Connection.send (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Connection.ts:120:17)
+    at CdpPage.close (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Page.ts:1148:24)
+    at async Function.createYouTubeScreenshotFallback (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:700:35)
+    at async Function.createRealScreenshot (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:375:15)
+    at async task (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:166:9)
+    at async Function.processQueue (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:186:9)
+Attempting simple fallback screenshot for https://www.youtube.com/watch?v=FwOTs4UxQS4/
+Fallback screenshot failed for https://www.youtube.com/watch?v=FwOTs4UxQS4/: Navigating frame was detached
+Fallback strategy also failed for https://www.youtube.com/watch?v=FwOTs4UxQS4/: Error: Navigating frame was detached
+    at LifecycleWatcher.#onFrameDetached (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/LifecycleWatcher.ts:188:9)
+    at file:///Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/lib/esm/third_party/mitt/mitt.js:36:7
+    at Array.map (<anonymous>)
+    at Object.emit (file:///Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/lib/esm/third_party/mitt/mitt.js:35:20)
+    at CdpFrame.emit (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/common/EventEmitter.ts:135:19)
+    at FrameManager.#removeFramesRecursively (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/FrameManager.ts:572:11)
+    at FrameManager.#onClientDisconnect (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/FrameManager.ts:110:36)
+    at <anonymous> (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/FrameManager.ts:92:31)
+    at onceHandler (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/common/EventEmitter.ts:150:7)
+    at file:///Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/lib/esm/third_party/mitt/mitt.js:36:7
+    at Array.map (<anonymous>)
+    at Object.emit (file:///Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/lib/esm/third_party/mitt/mitt.js:35:20)
+    at CdpCDPSession.emit (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/common/EventEmitter.ts:135:19)
+    at CdpCDPSession.onClosed (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/CdpSession.ts:164:10)
+    at Connection.#onClose (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Connection.ts:226:15)
+    at WebSocket.<anonymous> (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/node/NodeWebSocketTransport.ts:51:22)
+    at callListener (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/ws/lib/event-target.js:290:14)
+    at WebSocket.onClose (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/ws/lib/event-target.js:220:9)
+    at WebSocket.emit (node:events:524:28)
+    at WebSocket.emitClose (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/ws/lib/websocket.js:272:10)
+    at Socket.socketOnClose (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/ws/lib/websocket.js:1341:15)
+    at Socket.emit (node:events:524:28)
+    at TCP.<anonymous> (node:net:343:12)

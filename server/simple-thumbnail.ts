@@ -611,61 +611,33 @@ export class SimpleThumbnailService {
   }
 
   static async createYouTubeScreenshotFallback(filename: string, url: string, title: string, category: string): Promise<void> {
-    console.log(`Attempting bulletproof YouTube capture for ${url}`);
+    console.log(`Attempting YouTube capture for ${url}`);
     
-    // Detect environment for optimized configuration
+    // Detect environment - use different strategies for local vs Replit
     const isReplit = process.env.REPLIT_CLUSTER || process.env.REPL_SLUG;
+    const isLocal = !isReplit;
     
+    // For local environments, skip browser automation entirely for YouTube
+    if (isLocal) {
+      console.log('Local environment detected - using enhanced placeholder for YouTube');
+      await this.createYouTubeEnhancedPlaceholder(filename, url, title, category);
+      return;
+    }
+    
+    // Replit-only browser automation for YouTube
     const browserOptions: any = {
       headless: true,
-      timeout: 120000,
-      protocolTimeout: 120000,
-      ignoreDefaultArgs: ['--disable-extensions'],
+      timeout: 60000,
+      executablePath: '/nix/store/zi4f80l169xlmivz8vja8wlphq74qqk0-chromium-125.0.6422.141/bin/chromium',
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
         '--disable-gpu',
         '--disable-web-security',
-        '--disable-features=VizDisplayCompositor',
-        '--disable-background-timer-throttling',
-        '--disable-renderer-backgrounding',
-        '--disable-backgrounding-occluded-windows',
-        '--disable-hang-monitor',
-        '--disable-prompt-on-repost',
-        '--disable-sync',
-        '--disable-translate',
-        '--disable-extensions',
-        '--disable-default-apps',
-        '--disable-popup-blocking',
-        '--allow-running-insecure-content',
-        '--disable-features=TranslateUI',
-        '--disable-ipc-flooding-protection',
-        '--disable-blink-features=AutomationControlled',
-        '--disable-component-extensions-with-background-pages',
-        '--disable-default-browser-check',
-        '--disable-dev-shm-usage',
-        '--disable-extensions-file-access-check',
-        '--disable-extensions-https-enforcement',
-        '--disable-plugins',
-        '--disable-plugins-discovery',
-        '--disable-preconnect',
-        '--disable-print-preview',
-        '--disable-sync-preferences',
-        '--no-first-run',
-        '--no-default-browser-check',
-        '--disable-infobars',
-        '--disable-notifications',
-        '--disable-client-side-phishing-detection',
-        '--disable-features=site-per-process',
         '--single-process'
       ]
     };
-    
-    // Set executablePath for Replit
-    if (isReplit) {
-      browserOptions.executablePath = '/nix/store/zi4f80l169xlmivz8vja8wlphq74qqk0-chromium-125.0.6422.141/bin/chromium';
-    }
     
     let browser;
     let page;
@@ -674,173 +646,145 @@ export class SimpleThumbnailService {
       browser = await puppeteer.launch(browserOptions);
       page = await browser.newPage();
       
-      // Set aggressive YouTube-specific configuration
-      await page.setViewport({ width: 1920, height: 1080 });
-      await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+      await page.setViewport({ width: 1024, height: 768 });
+      await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
       
-      // Set additional headers for YouTube
-      await page.setExtraHTTPHeaders({
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+      await page.goto(url, { 
+        waitUntil: 'domcontentloaded', 
+        timeout: 30000
       });
       
-      // Bulletproof navigation with frame detachment prevention
-      let navigationSuccess = false;
-      let attempts = 0;
-      const maxAttempts = 3;
+      // Wait for video thumbnail to load
+      await page.waitForTimeout(3000);
       
-      while (!navigationSuccess && attempts < maxAttempts) {
-        attempts++;
-        console.log(`YouTube navigation attempt ${attempts}/${maxAttempts}`);
-        
-        try {
-          // Validate browser and page state before each attempt
-          if (page.isClosed() || !browser.isConnected()) {
-            console.log('Browser/page invalid, recreating...');
-            if (!page.isClosed()) await page.close();
-            if (browser.isConnected()) await browser.close();
-            
-            browser = await puppeteer.launch(browserOptions);
-            page = await browser.newPage();
-            await page.setViewport({ width: 1600, height: 900 });
-            await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
-          }
-          
-          // Try minimal navigation first to avoid frame issues
-          console.log(`Attempting navigation to ${url}`);
-          await page.goto(url, { 
-            waitUntil: 'domcontentloaded', 
-            timeout: 15000
-          });
-          
-          // Immediate validation after navigation
-          if (page.isClosed()) {
-            throw new Error('Page closed immediately after navigation');
-          }
-          
-          navigationSuccess = true;
-          console.log('YouTube navigation successful');
-          break;
-          
-        } catch (navError: any) {
-          console.log(`Navigation attempt ${attempts} failed: ${navError.message}`);
-          
-          // If frame detachment detected, force recreate everything
-          if (navError.message.includes('detached') || navError.message.includes('Frame')) {
-            console.log('Frame detachment detected, forcing browser recreation');
-            try {
-              if (!page.isClosed()) await page.close();
-              if (browser.isConnected()) await browser.close();
-            } catch (cleanupError) {
-              console.log('Cleanup error during recreation:', cleanupError);
-            }
-            
-            // Wait before recreating to let resources clear
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            continue;
-          }
-          
-          // For other errors, wait and retry with same browser
-          if (attempts < maxAttempts) {
-            await new Promise(resolve => setTimeout(resolve, 3000));
-            continue;
-          }
-          
-          throw navError;
-        }
-      }
+      // Take screenshot
+      const screenshotBuffer = await page.screenshot({ 
+        fullPage: false,
+        clip: { x: 0, y: 0, width: 1024, height: 768 }
+      });
       
-      if (!navigationSuccess) {
-        throw new Error(`Failed to navigate to YouTube after ${maxAttempts} attempts`);
-      }
-      
-      // Extended wait for YouTube to fully load
-      await new Promise(resolve => setTimeout(resolve, 12000));
-      
-      // Wait for key YouTube elements with multiple selectors
-      const youtubeSelectors = [
-        '#movie_player',
-        '.html5-video-container',
-        '.ytp-cued-thumbnail-overlay',
-        'video',
-        '.ytd-player'
-      ];
-      
-      for (const selector of youtubeSelectors) {
-        try {
-          await page.waitForSelector(selector, { timeout: 5000 });
-          console.log(`Found YouTube element: ${selector}`);
-          break;
-        } catch {
-          continue;
-        }
-      }
-      
-      // Additional wait for player to stabilize
-      await new Promise(resolve => setTimeout(resolve, 5000));
-      
-      // Final validation before screenshot
-      if (page.isClosed()) {
-        throw new Error('Page closed during YouTube processing');
-      }
-      
-      // Take screenshot with frame detachment protection
-      let screenshotBuffer;
-      try {
-        screenshotBuffer = await page.screenshot({
-          type: 'jpeg',
-          quality: 90,
-          clip: { x: 0, y: 0, width: 1600, height: 900 }
-        });
-      } catch (screenshotError: any) {
-        console.log(`YouTube screenshot failed: ${screenshotError.message}`);
-        
-        // Fallback for frame detachment during screenshot
-        if (screenshotError.message.includes('detached') || screenshotError.message.includes('Frame')) {
-          console.log('Attempting fullpage screenshot fallback');
-          screenshotBuffer = await page.screenshot({
-            type: 'jpeg',
-            quality: 85,
-            fullPage: false
-          });
-        } else {
-          throw screenshotError;
-        }
-      }
-      
-      // Clean up immediately
-      if (!page.isClosed()) await page.close();
-      if (browser.isConnected()) await browser.close();
-      
-      // Process and save with high quality
+      // Process and save
       const sharp = await import('sharp');
       const thumbnailBuffer = await sharp.default(screenshotBuffer)
         .resize(1024, 768, { 
-          fit: 'cover',
-          kernel: sharp.default.kernel.lanczos3
+          kernel: sharp.kernel.lanczos3,
+          fit: 'contain',
+          background: { r: 0, g: 0, b: 0, alpha: 1 }
         })
-        .jpeg({ quality: 90 })
         .toBuffer();
       
       const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
       const filepath = path.join(thumbnailsDir, filename);
       await fs.writeFile(filepath, thumbnailBuffer);
       
-      console.log(`Created YouTube fallback screenshot: ${filename}`);
+      console.log(`Created YouTube screenshot: ${filename}`);
       
     } catch (error: any) {
       console.log(`YouTube fallback failed for ${url}: ${error.message}`);
-      
-      // Clean up on error
+      throw error;
+    } finally {
+      // Clean up
       if (page && !page.isClosed()) {
         try { await page.close(); } catch {}
       }
       if (browser && browser.isConnected()) {
         try { await browser.close(); } catch {}
       }
-      
-      throw error;
     }
+  }
+
+  static async createYouTubeEnhancedPlaceholder(filename: string, url: string, title: string, category: string): Promise<void> {
+    try {
+      console.log(`Creating enhanced YouTube placeholder for ${title}`);
+      
+      // Extract video ID from URL
+      const videoId = this.extractYouTubeVideoId(url);
+      
+      const sharp = await import('sharp');
+      
+      // Create enhanced YouTube-style thumbnail
+      const svgContent = `
+        <svg width="1024" height="768" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="youtubeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#FF0000;stop-opacity:0.1" />
+              <stop offset="100%" style="stop-color:#CC0000;stop-opacity:0.2" />
+            </linearGradient>
+            <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+              <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.3"/>
+            </filter>
+          </defs>
+          
+          <!-- Background -->
+          <rect width="1024" height="768" fill="#000000"/>
+          <rect width="1024" height="768" fill="url(#youtubeGrad)"/>
+          
+          <!-- YouTube Play Button -->
+          <circle cx="512" cy="384" r="80" fill="#FF0000" filter="url(#shadow)"/>
+          <polygon points="482,344 482,424 562,384" fill="white"/>
+          
+          <!-- Title Background -->
+          <rect x="50" y="580" width="924" height="120" rx="10" fill="#000000" fill-opacity="0.8"/>
+          
+          <!-- YouTube Logo Area -->
+          <rect x="50" y="50" width="200" height="60" rx="8" fill="#FF0000"/>
+          <text x="150" y="85" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="24" font-weight="bold">YouTube</text>
+          
+          <!-- Video Title -->
+          <text x="512" y="630" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="32" font-weight="bold">
+            ${this.truncateText(title, 40)}
+          </text>
+          
+          <!-- Category -->
+          <text x="512" y="670" text-anchor="middle" fill="#CCCCCC" font-family="Arial, sans-serif" font-size="20">
+            ${category}
+          </text>
+          
+          <!-- Video ID -->
+          <text x="924" y="40" text-anchor="end" fill="#666666" font-family="monospace" font-size="14">
+            ${videoId || 'Video'}
+          </text>
+        </svg>
+      `;
+      
+      const thumbnailBuffer = await sharp.default(Buffer.from(svgContent))
+        .resize(1024, 768, { 
+          kernel: sharp.kernel.lanczos3,
+          fit: 'contain',
+          background: { r: 0, g: 0, b: 0, alpha: 1 }
+        })
+        .toBuffer();
+      
+      const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+      const filepath = path.join(thumbnailsDir, filename);
+      await fs.writeFile(filepath, thumbnailBuffer);
+      
+      console.log(`Created enhanced YouTube placeholder: ${filename}`);
+      
+    } catch (error: any) {
+      console.error('Error creating YouTube enhanced placeholder:', error);
+      // Fallback to simple error thumbnail
+      await this.createErrorThumbnail(filename, title, category, url);
+    }
+  }
+
+  static extractYouTubeVideoId(url: string): string | null {
+    const patterns = [
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+      /youtube\.com\/watch\?.*v=([^&\n?#]+)/
+    ];
+    
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match) return match[1];
+    }
+    
+    return null;
+  }
+
+  static truncateText(text: string, maxLength: number): string {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength - 3) + '...';
   }
 
   static async createSimpleScreenshotFallback(filename: string, url: string, title: string, category: string): Promise<void> {
