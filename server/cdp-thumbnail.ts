@@ -130,28 +130,6 @@ export class CDPThumbnailService {
   }
 
   static async takeScreenshot(url: string, filename: string): Promise<boolean> {
-    // Add overall timeout for the entire process
-    const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error('Screenshot process timed out after 45 seconds')), 45000);
-    });
-    
-    try {
-      return await Promise.race([
-        this.performScreenshotProcess(url, filename),
-        timeoutPromise
-      ]);
-    } catch (error: any) {
-      console.log(`CDP screenshot failed for ${url}: ${error.message}`);
-      return false;
-    } finally {
-      // Always cleanup Chrome process after each screenshot
-      try {
-        await this.cleanup();
-      } catch {}
-    }
-  }
-
-  private static async performScreenshotProcess(url: string, filename: string): Promise<boolean> {
     let client: any = null;
     let pageClient: any = null;
     
@@ -262,16 +240,13 @@ export class CDPThumbnailService {
               // Remove modal classes
               document.body.classList.remove('modal-open', 'overflow-hidden');
               
-              // Return success indicator
-              true;
+              // Wait a moment for DOM changes
+              new Promise(resolve => setTimeout(resolve, 1000));
             `,
             awaitPromise: true,
             timeout: 5000
           });
           console.log('LinkedIn overlays removed');
-          
-          // Short wait for DOM cleanup
-          await new Promise(resolve => setTimeout(resolve, 1000));
         } catch (error) {
           console.log('Failed to remove LinkedIn overlays:', error);
         }
@@ -363,17 +338,10 @@ export class CDPThumbnailService {
       }
       
       // Take screenshot with calculated clip area
-      console.log(`Taking screenshot with clip area: ${JSON.stringify(clipArea)}`);
       const screenshot = await TargetPage.captureScreenshot({
         format: 'png',
         clip: clipArea
       });
-      
-      if (!screenshot || !screenshot.data) {
-        throw new Error('Screenshot capture failed - no data returned');
-      }
-      
-      console.log(`Screenshot captured successfully, size: ${screenshot.data.length} bytes`);
       
       // Process with Sharp for consistency
       const sharpModule = await import('sharp');
