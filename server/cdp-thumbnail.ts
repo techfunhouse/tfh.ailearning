@@ -422,23 +422,31 @@ export class CDPThumbnailService {
       console.log(`[CDP DEBUG] Step 11: Screenshot captured successfully`);
       
       // Process with Sharp for consistency
+      console.log(`[CDP DEBUG] Step 12: Processing screenshot with Sharp...`);
       const sharpModule = await import('sharp');
       const sharp = sharpModule.default || sharpModule;
+      
+      console.log(`[CDP DEBUG] Step 12: Converting base64 screenshot data (${screenshot.data.length} chars)...`);
       const thumbnailBuffer = await sharp(Buffer.from(screenshot.data, 'base64'))
+        .jpeg({ quality: 90 }) // Convert to JPG format
         .resize(1024, 768, { 
           kernel: sharp.kernel.lanczos3,
           fit: 'contain',
-          background: { r: 0, g: 0, b: 0, alpha: 1 }
+          background: { r: 255, g: 255, b: 255, alpha: 1 } // White background
         })
         .toBuffer();
       
+      console.log(`[CDP DEBUG] Step 12: Sharp processing completed, buffer size: ${thumbnailBuffer.length}`);
+      
       // Save to file
+      console.log(`[CDP DEBUG] Step 13: Saving thumbnail file...`);
       const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
       await fs.mkdir(thumbnailsDir, { recursive: true });
       const filepath = path.join(thumbnailsDir, filename);
       await fs.writeFile(filepath, thumbnailBuffer);
       
-      console.log(`CDP screenshot created: ${filename}`);
+      console.log(`[CDP DEBUG] Step 13: File saved successfully: ${filepath}`);
+      console.log(`[CDP DEBUG] ========== CDP screenshot completed successfully ==========`);
       return true;
       
     } catch (error: any) {
