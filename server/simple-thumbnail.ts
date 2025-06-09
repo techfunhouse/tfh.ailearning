@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import puppeteer from 'puppeteer';
-import { CDPThumbnailService } from './cdp-thumbnail.js';
+import { PuppeteerThumbnailService } from './puppeteer-thumbnail.js';
 
 export class SimpleThumbnailService {
   private static processingQueue: Array<() => Promise<void>> = [];
@@ -217,18 +217,18 @@ export class SimpleThumbnailService {
     console.log(`[THUMBNAIL DEBUG] Creating real screenshot for: ${filename} from ${url}`);
     
     try {
-      // Try CDP method first
-      console.log(`[THUMBNAIL DEBUG] Attempting CDP screenshot for: ${url}`);
-      const success = await CDPThumbnailService.takeScreenshot(url, filename);
+      // Use clean Puppeteer method
+      console.log(`[THUMBNAIL DEBUG] Attempting screenshot for: ${url}`);
+      const success = await PuppeteerThumbnailService.takeScreenshot(url, filename);
       
       if (success) {
-        console.log(`[THUMBNAIL DEBUG] CDP screenshot successful: ${filename}`);
+        console.log(`[THUMBNAIL DEBUG] Screenshot successful: ${filename}`);
         return;
       }
       
-      console.log(`[THUMBNAIL DEBUG] CDP failed, trying fallback methods for: ${url}`);
+      console.log(`[THUMBNAIL DEBUG] Screenshot failed, creating branded fallback for: ${url}`);
       
-      // Try specific fallbacks based on URL type
+      // Create branded fallbacks based on URL type
       if (url.includes('linkedin.com')) {
         await this.createLinkedInScreenshotFallback(filename, url, title, category);
       } else if (url.includes('youtube.com') || url.includes('youtu.be')) {
