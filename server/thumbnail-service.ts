@@ -87,13 +87,13 @@ export class ThumbnailService {
   private static async generateScreenshot(url: string, retryCount = 0): Promise<Buffer | null> {
     const isLocal = !process.env.REPL_ID && !process.env.REPLIT_ENV;
     
-    // Use Playwright for local development to avoid frame detachment issues
+    // Use Puppeteer for local development - more efficient and reliable
     if (isLocal) {
-      return await this.generatePlaywrightScreenshot(url);
+      return await this.generatePuppeteerScreenshot(url, retryCount);
     }
     
-    // Use Puppeteer for Replit environment
-    return await this.generatePuppeteerScreenshot(url, retryCount);
+    // Use Playwright for Replit environment to handle frame detachment issues
+    return await this.generatePlaywrightScreenshot(url);
   }
 
   private static async generatePlaywrightScreenshot(url: string): Promise<Buffer | null> {
