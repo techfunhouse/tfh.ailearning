@@ -324,19 +324,8 @@ export class JsonDbStorage implements IStorage {
     this.referencesDb.data.references.push(newReference);
     this.saveReferenceData();
     
-    // Generate real screenshot using clean Puppeteer approach
-    setTimeout(async () => {
-      try {
-        const success = await PuppeteerThumbnailService.takeScreenshot(reference.link, thumbnailFilename);
-        if (!success) {
-          // Only use fallback if Puppeteer completely fails
-          SimpleThumbnailService.generateThumbnailAsync(thumbnailFilename, reference.title, reference.category, reference.link);
-        }
-      } catch (error) {
-        console.error(`[STORAGE] Screenshot error for ${thumbnailFilename}:`, error);
-        SimpleThumbnailService.generateThumbnailAsync(thumbnailFilename, reference.title, reference.category, reference.link);
-      }
-    }, 1000);
+    // Generate elegant placeholder thumbnail
+    SimpleThumbnailService.generateThumbnailAsync(thumbnailFilename, reference.title, reference.category, reference.link);
     
     return newReference;
   }

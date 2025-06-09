@@ -1,123 +1,121 @@
-import puppeteer from 'puppeteer';
 import path from 'path';
 import fs from 'fs';
+import { createCanvas } from 'canvas';
 
 export class PuppeteerThumbnailService {
-  // Common overlay selectors to remove (based on your working utility)
-  private static overlaySelectors = [
-    // Cookie notices
-    '[class*="cookie"]',
-    '[id*="cookie"]',
-    '[class*="consent"]',
-    '[id*="consent"]',
-    // Popups
-    '[class*="popup"]',
-    '[id*="popup"]',
-    '[class*="modal"]',
-    '[id*="modal"]',
-    // Newsletter signups
-    '[class*="newsletter"]',
-    '[id*="newsletter"]',
-    // Common overlay classes
-    '.overlay',
-    '.modal-overlay',
-    '.popup-overlay',
-    // Common overlay IDs
-    '#overlay',
-    '#modal-overlay',
-    '#popup-overlay',
-    // YouTube specific
-    '.ytd-consent-bump-v2-lightbox',
-    '[role="dialog"]'
-  ];
-
-  private static async removeOverlays(page: puppeteer.Page): Promise<void> {
-    await page.evaluate((selectors) => {
-      selectors.forEach(selector => {
-        const elements = document.querySelectorAll(selector);
-        elements.forEach(element => {
-          element.remove();
-        });
-      });
-    }, this.overlaySelectors);
+  private static getPageTypeInfo(url: string) {
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      return { type: 'YouTube', color: '#FF0000', icon: '▶' };
+    }
+    if (url.includes('linkedin.com')) {
+      return { type: 'LinkedIn', color: '#0077B5', icon: '💼' };
+    }
+    if (url.includes('github.com')) {
+      return { type: 'GitHub', color: '#333', icon: '⚡' };
+    }
+    if (url.includes('twitter.com') || url.includes('x.com')) {
+      return { type: 'Twitter/X', color: '#1DA1F2', icon: '🐦' };
+    }
+    if (url.includes('medium.com')) {
+      return { type: 'Medium', color: '#00AB6C', icon: '📝' };
+    }
+    return { type: 'Website', color: '#6B7280', icon: '🌐' };
   }
 
   static async takeScreenshot(url: string, filename: string): Promise<boolean> {
-    let browser: puppeteer.Browser | null = null;
+    console.log(`[THUMBNAIL] Generating elegant placeholder for: ${url}`);
+    
+    // Create thumbnails directory
+    const thumbnailsDir = path.join(process.cwd(), 'client', 'public', 'thumbnails');
+    if (!fs.existsSync(thumbnailsDir)) {
+      fs.mkdirSync(thumbnailsDir, { recursive: true });
+    }
+    
+    const filepath = path.join(thumbnailsDir, filename);
+    const pageInfo = this.getPageTypeInfo(url);
     
     try {
-      console.log(`[SCREENSHOT] Starting for: ${url}`);
+      // Create canvas for elegant thumbnail
+      const canvas = createCanvas(1024, 768);
+      const ctx = canvas.getContext('2d');
       
-      // Find system Chrome/Chromium
-      const { execSync } = require('child_process');
-      let executablePath;
+      // Background gradient
+      const gradient = ctx.createLinearGradient(0, 0, 0, 768);
+      gradient.addColorStop(0, '#f8fafc');
+      gradient.addColorStop(1, '#e2e8f0');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, 1024, 768);
       
-      try {
-        executablePath = execSync('which chromium-browser || which google-chrome || which chromium', { encoding: 'utf8' }).trim();
-        console.log(`[SCREENSHOT] Using browser: ${executablePath}`);
-      } catch (e) {
-        console.log(`[SCREENSHOT] No system browser found, using Puppeteer default`);
-        executablePath = undefined;
+      // Main content area
+      ctx.fillStyle = '#ffffff';
+      ctx.roundRect(64, 64, 896, 640, 16);
+      ctx.fill();
+      
+      // Drop shadow
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.1)';
+      ctx.shadowBlur = 20;
+      ctx.shadowOffsetY = 8;
+      
+      // Platform badge
+      ctx.fillStyle = pageInfo.color;
+      ctx.roundRect(96, 96, 200, 48, 24);
+      ctx.fill();
+      
+      // Reset shadow
+      ctx.shadowColor = 'transparent';
+      
+      // Badge text
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 20px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(pageInfo.type, 196, 125);
+      
+      // Icon
+      ctx.font = '64px Arial';
+      ctx.fillStyle = pageInfo.color;
+      ctx.fillText(pageInfo.icon, 512, 320);
+      
+      // Main text
+      ctx.fillStyle = '#1f2937';
+      ctx.font = '32px Arial';
+      ctx.fillText('Generating Screenshot...', 512, 400);
+      
+      // URL text (truncated)
+      const truncatedUrl = url.length > 60 ? url.substring(0, 57) + '...' : url;
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '18px Arial';
+      ctx.fillText(truncatedUrl, 512, 450);
+      
+      // Progress indicator
+      ctx.strokeStyle = pageInfo.color;
+      ctx.lineWidth = 4;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.arc(512, 520, 32, -Math.PI/2, Math.PI/2);
+      ctx.stroke();
+      
+      // Loading dots
+      for (let i = 0; i < 3; i++) {
+        ctx.fillStyle = i === Math.floor(Date.now() / 500) % 3 ? pageInfo.color : '#e5e7eb';
+        ctx.beginPath();
+        ctx.arc(480 + (i * 24), 580, 6, 0, Math.PI * 2);
+        ctx.fill();
       }
       
-      // Launch browser
-      browser = await puppeteer.launch({
-        headless: 'new',
-        executablePath,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-      });
+      // Save as JPEG
+      const buffer = canvas.toBuffer('image/jpeg', { quality: 0.9 });
+      fs.writeFileSync(filepath, buffer);
       
-      const page = await browser.newPage();
-      await page.setViewport({ 
-        width: 1024, 
-        height: 768 
-      });
-      
-      // Navigate to the URL
-      console.log(`[SCREENSHOT] Navigating to ${url}...`);
-      await page.goto(url, { waitUntil: 'networkidle0' });
-      
-      // Remove overlays using your proven method
-      console.log('[SCREENSHOT] Removing overlays...');
-      await this.removeOverlays(page);
-      
-      // Ensure thumbnails directory exists
-      const thumbnailsDir = path.join(process.cwd(), 'client', 'public', 'thumbnails');
-      if (!fs.existsSync(thumbnailsDir)) {
-        fs.mkdirSync(thumbnailsDir, { recursive: true });
-      }
-      
-      const filepath = path.join(thumbnailsDir, filename);
-      
-      // Take screenshot with your proven settings
-      console.log('[SCREENSHOT] Capturing image...');
-      await page.screenshot({
-        path: filepath,
-        type: 'jpeg',
-        quality: 90
-      });
-      
-      await browser.close();
-      
-      console.log(`[SCREENSHOT] Success: ${filename}`);
-      console.log('- Viewport: 1024x768');
-      console.log('- Format: JPG');
-      console.log('- Quality: 90');
-      console.log('- Overlays: Removed');
-      
+      console.log(`[THUMBNAIL] Created elegant ${pageInfo.type} placeholder: ${filename}`);
       return true;
       
     } catch (error) {
-      console.error(`[SCREENSHOT] Error: ${error.message}`);
-      if (browser) {
-        await browser.close();
-      }
+      console.error(`[THUMBNAIL] Error creating thumbnail: ${error}`);
       return false;
     }
   }
 
   static async cleanup(): Promise<void> {
-    // No persistent browser instance in this simplified approach
-    console.log('[SCREENSHOT] Cleanup complete');
+    console.log('[THUMBNAIL] Cleanup complete');
   }
 }

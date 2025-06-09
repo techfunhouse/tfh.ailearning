@@ -4,7 +4,7 @@ import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
-import { CDPThumbnailService } from './cdp-thumbnail.js';
+
 
 // Ensure thumbnails directory exists
 const thumbnailsDir = path.join(process.cwd(), 'client', 'public', 'thumbnails');

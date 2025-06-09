@@ -9,13 +9,9 @@
     "gartner",
     "parts",
     "react",
+    "screenshot",
     "solace",
-    "test-tag",
-    {
-      "name": "test"
-    },
-    {
-      "name": "screenshot"
-    }
+    "test",
+    "test-tag"
   ]
 }
