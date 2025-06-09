@@ -503,10 +503,8 @@ export class JsonDbStorage implements IStorage {
 
   // Tag methods
   async getTags(): Promise<string[]> {
-    // Force clean up corrupted tag data structure
+    // Clean up any corrupted tag data structure
     const rawTags = this.tagsDb.data.tags || [];
-    console.log('Raw tags from storage:', JSON.stringify(rawTags, null, 2));
-    
     const cleanTags: string[] = [];
     
     for (const tag of rawTags) {
@@ -535,7 +533,6 @@ export class JsonDbStorage implements IStorage {
     this.tagsDb.data.tags = uniqueTags;
     this.saveTagData();
     
-    console.log('Cleaned tags returning:', JSON.stringify(uniqueTags, null, 2));
     return uniqueTags;
   }
 
