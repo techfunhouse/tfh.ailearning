@@ -121,7 +121,7 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
             <img 
               src={thumbnail} 
               alt={title} 
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain bg-gray-50"
               onError={() => {
                 setImageError(true);
               }}

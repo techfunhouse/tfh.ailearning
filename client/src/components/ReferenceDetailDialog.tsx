@@ -85,11 +85,11 @@ export default function ReferenceDetailDialog({
         <div className="flex-1 overflow-y-auto">
           {/* Thumbnail - Full width at top */}
           {thumbnail && (
-            <div className="w-full mb-6">
+            <div className="w-full mb-6 bg-gray-50 rounded-lg overflow-hidden">
               <img 
                 src={thumbnail} 
                 alt={title}
-                className="w-full h-auto max-h-96 object-cover rounded-lg"
+                className="w-full h-auto max-h-96 object-contain"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
@@ -98,22 +98,15 @@ export default function ReferenceDetailDialog({
             </div>
           )}
 
-          {/* Content - exact match to image layout */}
+          {/* Content */}
           <div className="space-y-4 px-6 pb-6">
-            {/* URL as main heading - large black text */}
-            <div>
-              <h1 className="text-4xl font-bold text-black dark:text-white break-all leading-tight">
-                {link}
-              </h1>
-            </div>
-
-            {/* URL again - smaller gray text, clickable */}
+            {/* URL - clickable link */}
             <div>
               <a 
                 href={link} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="text-xl text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 hover:underline break-all"
+                className="text-lg text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline break-all"
               >
                 {link}
               </a>

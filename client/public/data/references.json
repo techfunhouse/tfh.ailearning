@@ -26,14 +26,15 @@
     },
     {
       "title": "Event Mesh",
-      "link": "https://solace.com/solutions/initiative/event-mesh/",
+      "link": "https://solace.com/",
       "description": "Event Mesh",
       "category": "Tutorials",
       "tags": [
         "solace"
       ],
       "thumbnail": "/thumbnails/ea8fcd5a-fc3d-4cc5-989a-42b1509744b5.jpg",
-      "id": "b6879dcf-b2e4-4f66-9cde-adecef6fb300"
+      "id": "b6879dcf-b2e4-4f66-9cde-adecef6fb300",
+      "updatedAt": "2025-06-09T06:21:12.394Z"
     },
     {
       "title": "MCP vs APIs",
@@ -44,7 +45,8 @@
         "blog"
       ],
       "thumbnail": "/thumbnails/817ed579-8290-4891-9fcd-164921116ae0.jpg",
-      "id": "c1e67049-3350-47a8-be33-47b7aabea575"
+      "id": "c1e67049-3350-47a8-be33-47b7aabea575",
+      "updatedAt": "2025-06-09T06:16:23.925Z"
     }
   ]
 }
