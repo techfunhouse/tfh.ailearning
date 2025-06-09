@@ -346,9 +346,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/tags", async (req, res) => {
     try {
       const tags = await storage.getTags();
-      // Convert simple string array to objects with name property for frontend compatibility
-      const tagObjects = tags.map(tag => ({ name: tag }));
-      return res.status(200).json(tagObjects);
+      return res.status(200).json(tags);
     } catch (error) {
       console.error("Error fetching tags:", error);
       return res.status(500).json({ message: "Internal server error" });
