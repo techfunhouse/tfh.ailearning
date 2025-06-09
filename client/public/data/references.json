@@ -1,99 +1,16 @@
 {
   "references": [
     {
-      "title": "Part 1",
-      "link": "https://www.youtube.com/watch?v=kXsy1JCTQms",
-      "description": "Part 1",
+      "title": "Final Simple Test",
+      "link": "https://www.youtube.com/watch?v=final123",
+      "description": "Testing the final simplified thumbnail system",
       "category": "Video Learning",
       "tags": [
-        "parts"
-      ],
-      "thumbnail": "/thumbnails/28b3e24f-8552-45db-b76f-b1676eec5dbb.jpg",
-      "id": "28b3e24f-8552-45db-b76f-b1676eec5dbb"
-    },
-    {
-      "title": "Beautiful YouTube Tutorial",
-      "link": "https://www.youtube.com/watch?v=beautiful123",
-      "description": "Testing the new soft, eye-friendly placeholder design",
-      "category": "Video Learning",
-      "tags": [
-        "beautiful",
-        "design"
-      ],
-      "id": "887e9be2-d8aa-4492-bb29-c4afb0a89165",
-      "thumbnail": "/thumbnails/887e9be2-d8aa-4492-bb29-c4afb0a89165.jpg"
-    },
-    {
-      "title": "Beautiful YouTube Tutorial",
-      "link": "https://www.youtube.com/watch?v=beautiful123",
-      "description": "Testing the new soft, eye-friendly placeholder design",
-      "category": "Video Learning",
-      "tags": [
-        "beautiful",
-        "design"
-      ],
-      "id": "13c8ac56-0c80-480d-95a3-c17be584c9b8",
-      "thumbnail": "/thumbnails/13c8ac56-0c80-480d-95a3-c17be584c9b8.jpg"
-    },
-    {
-      "title": "GitHub Open Source Project",
-      "link": "https://github.com/beautiful/project",
-      "description": "Testing the new gentle GitHub placeholder design",
-      "category": "Development Tools",
-      "tags": [
-        "github",
-        "opensource"
-      ],
-      "id": "4a525d2f-e126-4e1d-92c8-231cbed72828",
-      "thumbnail": "/thumbnails/4a525d2f-e126-4e1d-92c8-231cbed72828.jpg"
-    },
-    {
-      "title": "Clean Design Test",
-      "link": "https://www.youtube.com/watch?v=cleandesign123",
-      "description": "Testing improved thumbnail layout without overlapping text",
-      "category": "Video Learning",
-      "tags": [
-        "clean",
-        "design"
-      ],
-      "id": "b233b9d7-836b-471b-82c6-b89b4ecfbd59",
-      "thumbnail": "/thumbnails/b233b9d7-836b-471b-82c6-b89b4ecfbd59.jpg"
-    },
-    {
-      "title": "Clean GitHub Project",
-      "link": "https://github.com/clean/design",
-      "description": "Testing improved GitHub placeholder layout",
-      "category": "Development Tools",
-      "tags": [
-        "github",
-        "clean"
-      ],
-      "id": "9217844a-f675-4324-b83e-101d9407ef8b",
-      "thumbnail": "/thumbnails/9217844a-f675-4324-b83e-101d9407ef8b.jpg"
-    },
-    {
-      "title": "Simple Thumbnail Test",
-      "link": "https://example.com/simple-test",
-      "description": "Testing the new simple Generating... placeholder design",
-      "category": "Development Tools",
-      "tags": [
-        "simple",
-        "test"
-      ],
-      "id": "255c2226-a8f7-4d34-8b6c-5650772192f5",
-      "thumbnail": "/thumbnails/255c2226-a8f7-4d34-8b6c-5650772192f5.jpg"
-    },
-    {
-      "title": "Universal Simple Design",
-      "link": "https://docs.example.com/universal-test",
-      "description": "Testing the universal simple placeholder with just Generating text",
-      "category": "Documentation",
-      "tags": [
-        "universal",
+        "final",
         "simple"
       ],
-      "id": "6d62dadb-b48f-459c-9854-c10fe74b62ab",
-      "thumbnail": "/thumbnails/6d62dadb-b48f-459c-9854-c10fe74b62ab.jpg"
+      "id": "ba71e6c5-ee2e-473b-a590-8a6eb7802efb",
+      "thumbnail": "/thumbnails/ba71e6c5-ee2e-473b-a590-8a6eb7802efb.jpg"
     }
   ]
 }
