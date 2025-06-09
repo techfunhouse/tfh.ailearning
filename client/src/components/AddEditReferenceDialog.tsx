@@ -123,7 +123,7 @@ export default function AddEditReferenceDialog({
   };
 
   // Get tag suggestions based on current input
-  const getTagSuggestions = (input: string): Tag[] => {
+  const getTagSuggestions = (input: string): string[] => {
     if (!input.trim()) return [];
     
     const currentTags = parseTagsFromInput(input);
@@ -133,8 +133,8 @@ export default function AddEditReferenceDialog({
     
     return tags
       .filter(tag => 
-        tag.name.toLowerCase().includes(lastTag.toLowerCase()) &&
-        !currentTags.includes(tag.name)
+        tag.toLowerCase().includes(lastTag.toLowerCase()) &&
+        !currentTags.includes(tag)
       )
       .slice(0, 5);
   };
@@ -227,9 +227,9 @@ export default function AddEditReferenceDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
+      <DialogContent className="max-w-2xl max-h-[85vh] flex flex-col gap-0">
         {/* Sticky Header */}
-        <DialogHeader className="flex-shrink-0 pb-4">
+        <DialogHeader className="flex-shrink-0 pb-4 border-b">
           <DialogTitle className="flex items-center gap-2">
             {isEditing ? (
               <>
@@ -246,7 +246,7 @@ export default function AddEditReferenceDialog({
         </DialogHeader>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto pr-2">
+        <div className="flex-1 overflow-y-auto px-1 py-4" style={{ maxHeight: 'calc(85vh - 140px)' }}>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               {/* Title Field */}
@@ -373,12 +373,12 @@ export default function AddEditReferenceDialog({
                             <span className="text-xs text-muted-foreground">Suggestions:</span>
                             {getTagSuggestions(tagInput).map((tag) => (
                               <Badge
-                                key={tag.id}
+                                key={tag}
                                 variant="outline"
                                 className="cursor-pointer hover:bg-muted"
-                                onClick={() => addTagFromSuggestion(tag.name)}
+                                onClick={() => addTagFromSuggestion(tag)}
                               >
-                                {tag.name}
+                                {tag}
                               </Badge>
                             ))}
                           </div>
@@ -406,9 +406,8 @@ export default function AddEditReferenceDialog({
         </div>
 
         {/* Sticky Footer */}
-        <div className="flex-shrink-0 pt-4">
-          <Separator className="mb-4" />
-          <div className="flex justify-end gap-3">
+        <div className="flex-shrink-0 pt-4 border-t bg-background">
+          <div className="flex justify-end gap-3 pt-4">
             <Button variant="outline" onClick={onClose} disabled={isLoading}>
               Cancel
             </Button>
