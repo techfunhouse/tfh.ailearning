@@ -564,45 +564,7 @@ export class ThumbnailService {
       </svg>`;
   }
 
-  // Create loading thumbnail file that shows generation in progress
-  static async createLoadingThumbnail(filename: string, title: string, category: string): Promise<void> {
-    const loadingSvg = `
-    <svg width="1024" height="768" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
-        </linearGradient>
-      </defs>
-      <rect width="1024" height="768" fill="url(#grad)"/>
-      <circle cx="512" cy="300" r="48" fill="none" stroke="white" stroke-width="6">
-        <animateTransform attributeName="transform" type="rotate" values="0 512 300;360 512 300" dur="2s" repeatCount="indefinite"/>
-      </circle>
-      <text x="512" y="430" font-family="Arial, sans-serif" font-size="38" font-weight="bold" fill="white" text-anchor="middle">
-        ${title.length > 50 ? title.substring(0, 50) + '...' : title}
-      </text>
-      <text x="512" y="490" font-family="Arial, sans-serif" font-size="32" fill="rgba(255,255,255,0.8)" text-anchor="middle">
-        Generating thumbnail...
-      </text>
-      <text x="512" y="550" font-family="Arial, sans-serif" font-size="26" fill="rgba(255,255,255,0.6)" text-anchor="middle">
-        ${category}
-      </text>
-    </svg>`;
-    
-    // Save SVG directly as loading thumbnail
-    const svgBuffer = Buffer.from(loadingSvg);
-    
-    const fs = await import('fs');
-    const path = await import('path');
-    
-    const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
-    await fs.promises.mkdir(thumbnailsDir, { recursive: true });
-    
-    const filepath = path.join(thumbnailsDir, filename.replace('.jpg', '.svg'));
-    await fs.promises.writeFile(filepath, svgBuffer);
-    
-    console.log(`Created loading thumbnail: ${filename}`);
-  }
+
 
   // Generate thumbnail and overwrite the existing file
   static async generateThumbnailToFile(url: string, title: string, category: string, filename: string): Promise<void> {

@@ -310,10 +310,8 @@ export class JsonDbStorage implements IStorage {
     const thumbnailFilename = `${id}.jpg`;
     const thumbnailPath = `/thumbnails/${thumbnailFilename}`;
     
-    // Create loading thumbnail file immediately (non-blocking)
-    SimpleThumbnailService.createLoadingThumbnail(thumbnailFilename, reference.title, reference.category).catch(err => {
-      console.error('Failed to create loading thumbnail:', err);
-    });
+    // Generate elegant placeholder thumbnail
+    SimpleThumbnailService.generateThumbnailAsync(thumbnailFilename, reference.title, reference.category, reference.link);
     
     const newReference: Reference = {
       ...reference,
@@ -349,13 +347,7 @@ export class JsonDbStorage implements IStorage {
       const thumbnailFilename = existingReference.thumbnail?.split('/').pop() || `${uuid()}.jpg`;
       thumbnailPath = `/thumbnails/${thumbnailFilename}`;
       
-      SimpleThumbnailService.createLoadingThumbnail(
-        thumbnailFilename,
-        reference.title || existingReference.title,
-        reference.category || existingReference.category
-      ).catch(err => console.error('Failed to create loading thumbnail:', err));
-      
-      // Queue background generation
+      // Generate elegant placeholder thumbnail
       SimpleThumbnailService.generateThumbnailAsync(
         thumbnailFilename,
         reference.title || existingReference.title,
