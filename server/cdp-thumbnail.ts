@@ -422,40 +422,73 @@ export class CDPThumbnailService {
         const evalResult = await client.send('Runtime.evaluate', {
           expression: `
             (function() {
+              // Try to capture actual page visuals using html2canvas approach
               const canvas = document.createElement('canvas');
               canvas.width = 1024;
               canvas.height = 768;
               const ctx = canvas.getContext('2d');
               
-              // Fill with white background
-              ctx.fillStyle = 'white';
-              ctx.fillRect(0, 0, 1024, 768);
-              
-              // Add YouTube page info
-              ctx.fillStyle = 'black';
-              ctx.font = '20px Arial';
-              ctx.fillText('YouTube Page Captured Successfully', 50, 100);
-              ctx.font = '16px Arial';
-              ctx.fillStyle = 'gray';
-              ctx.fillText('${url}', 50, 150);
-              ctx.fillText('Timestamp: ' + new Date().toISOString(), 50, 200);
-              
-              // Try to get page title
               try {
-                ctx.fillStyle = 'blue';
-                ctx.font = '18px Arial';
-                ctx.fillText('Title: ' + document.title, 50, 250);
-              } catch (e) {
-                ctx.fillText('Error getting title: ' + e.message, 50, 250);
+                // Attempt to draw the actual page content
+                const html = document.documentElement;
+                const body = document.body;
+                
+                // Set canvas size to match viewport
+                const viewportWidth = Math.min(window.innerWidth || 1024, 1024);
+                const viewportHeight = Math.min(window.innerHeight || 768, 768);
+                
+                // Fill with page background color
+                const bodyStyles = window.getComputedStyle(body);
+                ctx.fillStyle = bodyStyles.backgroundColor || '#ffffff';
+                ctx.fillRect(0, 0, 1024, 768);
+                
+                // Try to draw visible elements
+                const elements = document.querySelectorAll('*');
+                let elementsDrawn = 0;
+                
+                for (let i = 0; i < Math.min(elements.length, 50); i++) {
+                  const el = elements[i];
+                  const rect = el.getBoundingClientRect();
+                  
+                  if (rect.width > 0 && rect.height > 0 && rect.top < 768 && rect.left < 1024) {
+                    const styles = window.getComputedStyle(el);
+                    
+                    // Draw background
+                    if (styles.backgroundColor && styles.backgroundColor !== 'rgba(0, 0, 0, 0)') {
+                      ctx.fillStyle = styles.backgroundColor;
+                      ctx.fillRect(rect.left, rect.top, Math.min(rect.width, 1024), Math.min(rect.height, 768));
+                    }
+                    
+                    // Draw text content
+                    if (el.textContent && el.textContent.trim() && styles.color) {
+                      ctx.fillStyle = styles.color;
+                      ctx.font = (styles.fontSize || '16px') + ' ' + (styles.fontFamily || 'Arial');
+                      const text = el.textContent.trim().substring(0, 100);
+                      ctx.fillText(text, rect.left + 5, rect.top + 20);
+                    }
+                    
+                    elementsDrawn++;
+                  }
+                }
+                
+                // Add overlay showing capture info
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+                ctx.fillRect(0, 0, 1024, 80);
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 16px Arial';
+                ctx.fillText('Live Page Capture - Elements: ' + elementsDrawn, 20, 30);
+                ctx.fillText('URL: ${url}', 20, 55);
+                
+              } catch (error) {
+                // Fallback to basic capture
+                ctx.fillStyle = '#f0f0f0';
+                ctx.fillRect(0, 0, 1024, 768);
+                ctx.fillStyle = 'black';
+                ctx.font = '20px Arial';
+                ctx.fillText('Page Content Capture', 50, 100);
+                ctx.fillText('Error: ' + error.message, 50, 150);
+                ctx.fillText('Title: ' + document.title, 50, 200);
               }
-              
-              // Add visual elements to show this is a real capture
-              ctx.fillStyle = '#ff0000';
-              ctx.fillRect(50, 300, 924, 400);
-              ctx.fillStyle = 'white';
-              ctx.font = '24px Arial';
-              ctx.textAlign = 'center';
-              ctx.fillText('Real YouTube Content Accessed', 512, 520);
               
               return canvas.toDataURL('image/png').split(',')[1];
             })()
