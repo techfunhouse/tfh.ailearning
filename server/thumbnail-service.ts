@@ -79,7 +79,20 @@ export class ThumbnailService {
         );
       }
 
-      this.browser = await puppeteer.launch(browserConfig);
+      try {
+        this.browser = await puppeteer.launch(browserConfig);
+        
+        // Set up browser-level error handling
+        this.browser.on('disconnected', () => {
+          console.log('Browser disconnected, will recreate on next request');
+          this.browser = null;
+        });
+        
+      } catch (launchError) {
+        console.error('Failed to launch browser:', launchError);
+        this.browser = null;
+        throw launchError;
+      }
     }
     return this.browser;
   }
@@ -87,13 +100,43 @@ export class ThumbnailService {
   private static async generateScreenshot(url: string, retryCount = 0): Promise<Buffer | null> {
     const isLocal = !process.env.REPL_ID && !process.env.REPLIT_ENV;
     
-    // Use Puppeteer for local development - more efficient and reliable
-    if (isLocal) {
-      return await this.generatePuppeteerScreenshot(url, retryCount);
+    // Try multiple strategies in order of preference
+    const strategies = [
+      {
+        name: 'Puppeteer',
+        enabled: isLocal,
+        method: () => this.generatePuppeteerScreenshot(url, retryCount)
+      },
+      {
+        name: 'Playwright', 
+        enabled: !isLocal,
+        method: () => this.generatePlaywrightScreenshot(url)
+      },
+      {
+        name: 'Simple Puppeteer',
+        enabled: true,
+        method: () => this.generateSimpleScreenshot(url)
+      }
+    ];
+    
+    for (const strategy of strategies) {
+      if (!strategy.enabled) continue;
+      
+      try {
+        console.log(`Attempting ${strategy.name} screenshot for ${url}`);
+        const result = await strategy.method();
+        if (result) {
+          console.log(`Successfully captured screenshot using ${strategy.name}`);
+          return result;
+        }
+      } catch (error: any) {
+        console.log(`${strategy.name} failed for ${url}: ${error.message}`);
+        continue;
+      }
     }
     
-    // Use Playwright for Replit environment to handle frame detachment issues
-    return await this.generatePlaywrightScreenshot(url);
+    console.log(`All screenshot strategies failed for ${url}`);
+    return null;
   }
 
   private static async generatePlaywrightScreenshot(url: string): Promise<Buffer | null> {
@@ -232,19 +275,29 @@ export class ThumbnailService {
   private static async generatePuppeteerScreenshot(url: string, retryCount = 0): Promise<Buffer | null> {
     const maxRetries = 3;
     let page;
+    let browser;
     
     try {
-      const browser = await this.getBrowser();
+      browser = await this.getBrowser();
       page = await browser.newPage();
+      
+      // Set up page event listeners to handle potential issues
+      page.on('error', (error) => {
+        console.log(`Page error for ${url}:`, error.message);
+      });
+      
+      page.on('pageerror', (error) => {
+        console.log(`Page script error for ${url}:`, error.message);
+      });
       
       // Set user agent to avoid bot detection
       await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
       
-      // High-resolution viewport for Replit
+      // High-resolution viewport
       await page.setViewport({ 
         width: 1920, 
         height: 1080,
-        deviceScaleFactor: 3
+        deviceScaleFactor: 2
       });
       
       // Set extra headers to avoid detection
@@ -253,23 +306,41 @@ export class ThumbnailService {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
       });
       
-      // Navigate with timeout
+      // Navigate with progressive timeout strategy
+      const timeoutDuration = Math.min(15000 + (retryCount * 5000), 30000);
+      
       await page.goto(url, { 
         waitUntil: 'domcontentloaded',
-        timeout: 20000
+        timeout: timeoutDuration
       });
       
-      // Wait for content to load
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      // Wait for content with adaptive timing
+      const waitTime = Math.min(2000 + (retryCount * 1000), 5000);
+      await new Promise(resolve => setTimeout(resolve, waitTime));
       
-      // Take screenshot
+      // Additional wait for any dynamic content
+      try {
+        await page.waitForSelector('body', { timeout: 3000 });
+      } catch (selectorError) {
+        console.log(`Selector wait failed for ${url}, proceeding with screenshot`);
+      }
+      
+      // Verify page is still valid before screenshot
+      if (page.isClosed()) {
+        throw new Error('Page was closed before screenshot');
+      }
+      
+      // Take screenshot with error handling
       const screenshot = await page.screenshot({
         type: 'png',
         clip: { x: 0, y: 0, width: 1920, height: 1080 },
         optimizeForSpeed: false
       });
       
-      await page.close();
+      // Safely close the page
+      if (!page.isClosed()) {
+        await page.close();
+      }
       
       // Process with Sharp for high quality
       const sharp = await import('sharp');
@@ -296,15 +367,40 @@ export class ThumbnailService {
         }
       }
       
-      // Handle frame detachment and other errors with retries
+      // Handle session closure and other errors with retries
       if (retryCount < maxRetries) {
-        if (error?.message?.includes('frame was detached') || 
-            error?.message?.includes('Navigation timeout') ||
-            error?.message?.includes('Target closed')) {
+        const retryableErrors = [
+          'frame was detached',
+          'Navigation timeout', 
+          'Target closed',
+          'Session closed',
+          'Protocol error',
+          'Page has been closed',
+          'Connection closed'
+        ];
+        
+        const shouldRetry = retryableErrors.some(errorType => 
+          error?.message?.includes(errorType)
+        );
+        
+        if (shouldRetry) {
           console.log(`Retry ${retryCount + 1}/${maxRetries} for ${url} due to: ${error.message}`);
           
-          // Wait before retry
-          await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+          // Progressive backoff delay
+          const delay = 1000 * Math.pow(2, retryCount);
+          await new Promise(resolve => setTimeout(resolve, delay));
+          
+          // Force browser refresh on session errors
+          if (error?.message?.includes('Session closed') || error?.message?.includes('Protocol error')) {
+            try {
+              if (this.browser) {
+                await this.browser.close();
+                this.browser = null;
+              }
+            } catch (browserCloseError) {
+              console.log('Browser cleanup error:', browserCloseError);
+            }
+          }
           
           return await this.generatePuppeteerScreenshot(url, retryCount + 1);
         }
@@ -321,28 +417,45 @@ export class ThumbnailService {
       const browser = await this.getBrowser();
       page = await browser.newPage();
       
-      // High-resolution viewport even for simple approach
+      // Set up minimal error handling
+      page.on('error', () => {
+        // Silent error handling for simple mode
+      });
+      
+      // Basic user agent
+      await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36');
+      
+      // Moderate resolution viewport
       await page.setViewport({ 
         width: 1280, 
         height: 720,
-        deviceScaleFactor: 2
+        deviceScaleFactor: 1.5
       });
       
-      // Simpler navigation without waiting for network idle
+      // Very simple navigation with shorter timeout
       await page.goto(url, { 
         waitUntil: 'domcontentloaded',
-        timeout: 15000
+        timeout: 10000
       });
       
-      // Shorter wait time
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Minimal wait time
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Verify page is still valid
+      if (page.isClosed()) {
+        throw new Error('Page closed during simple screenshot');
+      }
       
       const screenshot = await page.screenshot({
         type: 'png',
-        fullPage: false
+        fullPage: false,
+        clip: { x: 0, y: 0, width: 1280, height: 720 }
       });
       
-      await page.close();
+      // Safely close the page
+      if (!page.isClosed()) {
+        await page.close();
+      }
       
       // Resize with Sharp for consistent quality
       const sharp = await import('sharp');
