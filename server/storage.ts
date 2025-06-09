@@ -7,7 +7,7 @@ import {
   InsertCategory,
   Tag,
   InsertTag
-} from "../shared/schema";
+} from "../shared/schema.js";
 import { LowSync } from "lowdb";
 import { JSONFileSync } from "lowdb/node";
 import bcrypt from "bcrypt";
