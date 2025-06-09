@@ -82,6 +82,17 @@
       "thumbnail": "/thumbnails/3b9293a8-fbdb-4800-982a-8b7d65dcee3e.jpg",
       "id": "e6403033-0b73-4817-aaa7-2619899bc332",
       "updatedAt": "2025-06-09T10:06:51.841Z"
+    },
+    {
+      "title": "Test Reference",
+      "link": "https://example.com",
+      "description": "Test description",
+      "category": "Tutorials & Blogs",
+      "tags": [
+        "test-tag"
+      ],
+      "id": "47cec1ad-1856-4966-ba36-07363082c97d",
+      "thumbnail": "/thumbnails/47cec1ad-1856-4966-ba36-07363082c97d.jpg"
     }
   ]
 }
