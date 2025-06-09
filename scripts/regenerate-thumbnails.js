@@ -2,9 +2,14 @@
 
 import { promises as fs } from 'fs';
 import path from 'path';
+import dotenv from 'dotenv';
+
+// Load environment variables
+dotenv.config({ path: path.join(process.cwd(), '.env.local') });
 
 // Configuration
-const DEFAULT_BASE_URL = 'http://localhost:5000';
+const PORT = process.env.PORT || 5000;
+const DEFAULT_BASE_URL = `http://localhost:${PORT}`;
 const DEFAULT_IDS_FILE = 'reference-ids.txt';
 
 async function authenticate(baseUrl, username = 'admin', password = 'admin123') {

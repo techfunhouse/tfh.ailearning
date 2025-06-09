@@ -3,6 +3,10 @@
 import fs from 'fs';
 import path from 'path';
 import readline from 'readline';
+import dotenv from 'dotenv';
+
+// Load environment variables
+dotenv.config({ path: path.join(process.cwd(), '.env.local') });
 
 // CSV parsing function
 function parseCSV(csvContent) {
@@ -331,7 +335,8 @@ async function importReferences(csvFilePath, baseUrl = 'http://localhost:5000') 
 // CLI handling
 if (import.meta.url === `file://${process.argv[1]}`) {
   const csvFile = process.argv[2];
-  const baseUrl = process.argv[3] || 'http://localhost:5000';
+  const PORT = process.env.PORT || 5000;
+  const baseUrl = process.argv[3] || `http://localhost:${PORT}`;
 
   if (!csvFile) {
     console.log('Usage: node import-references.js <csv-file> [base-url]');
