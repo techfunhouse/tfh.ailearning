@@ -12,7 +12,7 @@ async function authenticate(baseUrl, username = 'admin', password = 'admin123') 
     // Use a global cookie jar for session persistence
     global.cookieJar = global.cookieJar || new Map();
     
-    const response = await fetch(`${baseUrl}/api/auth/login`, {
+    const response = await fetch(`${baseUrl}/api/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
