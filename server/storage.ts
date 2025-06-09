@@ -305,8 +305,8 @@ export class JsonDbStorage implements IStorage {
   async createReference(reference: InsertReference): Promise<Reference> {
     const id = uuid();
     
-    // Generate unique thumbnail filename that will be overwritten when generation completes
-    const thumbnailFilename = `${uuid()}.jpg`;
+    // Use reference ID as thumbnail filename
+    const thumbnailFilename = `${id}.jpg`;
     const thumbnailPath = `/thumbnails/${thumbnailFilename}`;
     
     // Create loading thumbnail file immediately (non-blocking)

@@ -25,6 +25,8 @@ export const referenceSchema = z.object({
 
 export const insertReferenceSchema = referenceSchema.omit({ 
   id: true
+}).extend({
+  thumbnail: z.string().optional() // Make thumbnail optional during creation
 });
 
 // Category Schema

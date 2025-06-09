@@ -21,6 +21,7 @@
     {
       "name": "ISG"
     },
-    "react"
+    "react",
+    "test-tag"
   ]
 }
