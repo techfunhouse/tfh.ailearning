@@ -1,134 +1,152 @@
-# CSV Import Script for References
+# Scripts Documentation
 
-This script allows bulk import of references from a CSV file with automatic thumbnail generation and duplicate detection.
+This directory contains utility scripts for managing the AI Learning Resources application.
 
-## Usage
+## Available Scripts
 
+### 1. Import References (`import-references.js`)
+
+Imports references from a CSV file into the application.
+
+**Usage:**
 ```bash
-# Navigate to the project root
-cd /path/to/your/project
-
-# Run the import script
-node scripts/import-references.js scripts/sample-references.csv
-
-# Or specify a custom server URL
-node scripts/import-references.js scripts/sample-references.csv http://localhost:5000
+node scripts/import-references.js path/to/references.csv [baseUrl] [username] [password]
 ```
 
-## CSV Format
+**Parameters:**
+- `csvFilePath` - Path to the CSV file containing references
+- `baseUrl` - Server URL (default: http://localhost:5000)
+- `username` - Admin username (default: admin)
+- `password` - Admin password (default: admin123)
 
-The CSV file must contain the following columns:
+**CSV Format:**
+```csv
+title,link,category,description,tags
+"Example Title","https://example.com","Technology","Description here","tag1,tag2,tag3"
+```
 
-| Column | Required | Description | Example |
-|--------|----------|-------------|---------|
-| title | Yes | Reference title | "React Documentation" |
-| link | Yes | URL to the resource | "https://react.dev/" |
-| description | No | Brief description | "Official React documentation" |
-| category | No | Category name (must exist) | "Documentation" |
-| tags | No | Semicolon-separated tags | "react;frontend;javascript" |
+**Features:**
+- Validates URLs and creates categories/tags as needed
+- Skips duplicate references based on URL
+- Provides detailed import progress and summary
+- Handles authentication automatically
 
-## Features
+### 2. Regenerate Specific Thumbnails (`regenerate-thumbnails.js`)
 
-- **Duplicate Detection**: Checks existing URLs and skips duplicates
-- **URL Validation**: Validates and normalizes URLs
-- **Category Validation**: Ensures categories exist in the system
-- **Auto Tag Creation**: Creates new tags automatically if they don't exist
-- **Progress Reporting**: Shows real-time import progress
-- **Error Handling**: Detailed error reporting with line numbers
-- **Thumbnail Generation**: Automatically triggers screenshot generation
+Regenerates thumbnails for specific references by ID.
+
+**Usage:**
+```bash
+node scripts/regenerate-thumbnails.js reference-ids.txt [baseUrl] [username] [password]
+```
+
+**Parameters:**
+- `idsFilePath` - Path to text file containing reference IDs (one per line)
+- `baseUrl` - Server URL (default: http://localhost:5000)
+- `username` - Admin username (default: admin)
+- `password` - Admin password (default: admin123)
+
+**ID File Format:**
+```
+e076fd42-240c-48f5-a4f9-f071f2f14b2c
+0f8f5b54-a751-423c-8a42-78731c549dc4
+b6879dcf-b2e4-4f66-9cde-adecef6fb300
+```
+
+### 3. Regenerate All Thumbnails (`regenerate-all-thumbnails.js`)
+
+Regenerates thumbnails for all references in the system.
+
+**Usage:**
+```bash
+node scripts/regenerate-all-thumbnails.js [baseUrl] [username] [password] [delayMs]
+```
+
+**Parameters:**
+- `baseUrl` - Server URL (default: http://localhost:5000)
+- `username` - Admin username (default: admin)
+- `password` - Admin password (default: admin123)
+- `delayMs` - Delay between requests in milliseconds (default: 2000)
+
+**Features:**
+- Processes all references automatically
+- Configurable delay to avoid server overload
+- Comprehensive progress reporting
+- Saves detailed results to timestamped JSON file
+- Shows success/failure summary
+
+**Example:**
+```bash
+# Regenerate all thumbnails with default settings
+node scripts/regenerate-all-thumbnails.js
+
+# Regenerate with faster processing (1 second delay)
+node scripts/regenerate-all-thumbnails.js http://localhost:5000 admin admin123 1000
+
+# Show help
+node scripts/regenerate-all-thumbnails.js --help
+```
+
+## Thumbnail System
+
+The application uses a Chrome DevTools Protocol (CDP) based thumbnail system that:
+
+- Captures high-quality 1024×768 screenshots
+- Handles complex websites including YouTube and LinkedIn
+- Removes overlays and sign-in modals automatically
+- Uses reference IDs as filenames for consistency
+- Provides fallback mechanisms for difficult sites
 
 ## Authentication
 
-The script uses session-based authentication:
-1. Prompts for admin username and password
-2. Authenticates with the server
-3. Uses session cookies for all API calls
+All scripts require admin authentication. Default credentials:
+- Username: `admin`
+- Password: `admin123`
 
-## Import Process
+Make sure the application server is running before executing any scripts.
 
-1. **File Validation**: Checks if CSV file exists and is readable
-2. **Authentication**: Login with admin credentials
-3. **Data Fetching**: Retrieves existing references, categories, and tags
-4. **Row Processing**: For each CSV row:
-   - Validates required fields
-   - Normalizes URLs
-   - Checks for duplicates
-   - Creates new tags if needed
-   - Creates the reference
-   - Triggers thumbnail generation
+## Output Files
+
+Scripts generate output files in the `scripts/` directory:
+- `thumbnail-regeneration-[timestamp].json` - Detailed regeneration results
+- Import scripts log to console with progress updates
 
 ## Error Handling
 
-The script handles various error conditions:
-- Missing or invalid CSV file
-- Authentication failures
-- Invalid URLs
-- Missing required fields
-- Server connection issues
-- API rate limiting
+All scripts include comprehensive error handling:
+- Network timeout handling
+- Authentication failure detection
+- Invalid URL validation
+- Detailed error reporting
+- Graceful continuation on individual failures
 
-## Sample CSV
+## Performance Considerations
 
-Use `scripts/sample-references.csv` as a template. It contains 15 sample references covering various categories and tags.
+- Use appropriate delays between requests to avoid overwhelming the server
+- Thumbnail generation is CPU-intensive; monitor system resources
+- Large batch operations may take significant time to complete
+- The CDP system shares Chrome instances for efficiency
 
-## Output
+## Troubleshooting
 
-The script provides:
-- Real-time progress updates
-- Summary statistics
-- List of newly created tags
-- Detailed error reports
+**Common Issues:**
 
-Example output:
+1. **Authentication Failed**
+   - Verify server is running
+   - Check admin credentials
+   - Ensure proper network connectivity
+
+2. **Thumbnail Generation Fails**
+   - Some websites may block automated access
+   - Network timeouts can occur for slow sites
+   - Chrome may need additional permissions in some environments
+
+3. **Import Errors**
+   - Verify CSV format matches expected structure
+   - Check for URL validation errors
+   - Ensure proper encoding (UTF-8) for special characters
+
+**Getting Help:**
+```bash
+node scripts/[script-name].js --help
 ```
-Starting CSV import process...
-Found 15 references to import
-Username: admin
-Password: 
-Authenticating...
-Fetching existing data...
-
-Processing imports...
-
-[1/15] CREATED:
-   Title: React Documentation
-   URL: https://react.dev/
-   Category: Documentation
-   Tags: react, frontend, javascript
-   Thumbnail: Generating screenshot...
-
-[2/15] NEW TAG CREATED: "react"
-
-[3/15] SKIPPED (duplicate):
-   Title: GitHub
-   URL: https://github.com/
-   Tags: git, github, collaboration
-
-[4/15] CREATED:
-   Title: Node.js Official Guide
-   URL: https://nodejs.org/en/docs/
-   Category: Documentation
-   Tags: nodejs, backend, javascript
-   Thumbnail: Generating screenshot...
-
-[5/15] FAILED (invalid URL):
-   Title: Invalid Example
-   URL: not-a-url -> https://not-a-url
-
-Import Summary:
-Successful: 12
-Skipped (duplicates): 2
-Failed: 1
-New tags created: react, frontend, typescript
-
-Import process completed!
-```
-
-## Best Practices
-
-1. **Backup Data**: Always backup your references before bulk imports
-2. **Test Small Batches**: Start with a few rows to test the process
-3. **Validate URLs**: Ensure all URLs are accessible
-4. **Check Categories**: Verify category names match existing ones
-5. **Tag Format**: Use semicolons to separate multiple tags
-6. **Encoding**: Save CSV files in UTF-8 encoding for special characters

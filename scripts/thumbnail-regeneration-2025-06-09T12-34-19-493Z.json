@@ -1,0 +1,98 @@
+{
+  "timestamp": "2025-06-09T12:34:19.494Z",
+  "summary": {
+    "total": 8,
+    "successful": 8,
+    "failed": 0
+  },
+  "results": [
+    {
+      "id": "e076fd42-240c-48f5-a4f9-f071f2f14b2c",
+      "title": "Canva",
+      "status": "success",
+      "result": {
+        "success": true,
+        "message": "Thumbnail regeneration started",
+        "referenceId": "e076fd42-240c-48f5-a4f9-f071f2f14b2c",
+        "filename": "ref_e076fd42-240c-48f5-a4f9-f071f2f14b2c.jpg"
+      }
+    },
+    {
+      "id": "0f8f5b54-a751-423c-8a42-78731c549dc4",
+      "title": "AI Summit",
+      "status": "success",
+      "result": {
+        "success": true,
+        "message": "Thumbnail regeneration started",
+        "referenceId": "0f8f5b54-a751-423c-8a42-78731c549dc4",
+        "filename": "ref_0f8f5b54-a751-423c-8a42-78731c549dc4.jpg"
+      }
+    },
+    {
+      "id": "b6879dcf-b2e4-4f66-9cde-adecef6fb300",
+      "title": "Event Mesh",
+      "status": "success",
+      "result": {
+        "success": true,
+        "message": "Thumbnail regeneration started",
+        "referenceId": "b6879dcf-b2e4-4f66-9cde-adecef6fb300",
+        "filename": "ref_b6879dcf-b2e4-4f66-9cde-adecef6fb300.jpg"
+      }
+    },
+    {
+      "id": "c1e67049-3350-47a8-be33-47b7aabea575",
+      "title": "MCP vs APIs",
+      "status": "success",
+      "result": {
+        "success": true,
+        "message": "Thumbnail regeneration started",
+        "referenceId": "c1e67049-3350-47a8-be33-47b7aabea575",
+        "filename": "ref_c1e67049-3350-47a8-be33-47b7aabea575.jpg"
+      }
+    },
+    {
+      "id": "4f937dca-14a7-4d23-9c51-fcee75f0acf0",
+      "title": "AAAAA",
+      "status": "success",
+      "result": {
+        "success": true,
+        "message": "Thumbnail regeneration started",
+        "referenceId": "4f937dca-14a7-4d23-9c51-fcee75f0acf0",
+        "filename": "ref_4f937dca-14a7-4d23-9c51-fcee75f0acf0.jpg"
+      }
+    },
+    {
+      "id": "791537b5-c703-4f81-826f-6ba44b384bf3",
+      "title": "Agents",
+      "status": "success",
+      "result": {
+        "success": true,
+        "message": "Thumbnail regeneration started",
+        "referenceId": "791537b5-c703-4f81-826f-6ba44b384bf3",
+        "filename": "ref_791537b5-c703-4f81-826f-6ba44b384bf3.jpg"
+      }
+    },
+    {
+      "id": "e6403033-0b73-4817-aaa7-2619899bc332",
+      "title": "ISG",
+      "status": "success",
+      "result": {
+        "success": true,
+        "message": "Thumbnail regeneration started",
+        "referenceId": "e6403033-0b73-4817-aaa7-2619899bc332",
+        "filename": "ref_e6403033-0b73-4817-aaa7-2619899bc332.jpg"
+      }
+    },
+    {
+      "id": "47cec1ad-1856-4966-ba36-07363082c97d",
+      "title": "Test Reference",
+      "status": "success",
+      "result": {
+        "success": true,
+        "message": "Thumbnail regeneration started",
+        "referenceId": "47cec1ad-1856-4966-ba36-07363082c97d",
+        "filename": "ref_47cec1ad-1856-4966-ba36-07363082c97d.jpg"
+      }
+    }
+  ]
+}
