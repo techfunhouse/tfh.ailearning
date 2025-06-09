@@ -198,6 +198,17 @@ export class SimpleThumbnailService {
     try {
       console.log(`Starting real screenshot generation for: ${url}`);
       
+      // First try CDP approach (highest quality)
+      const { CDPThumbnailService } = await import('./cdp-thumbnail');
+      const cdpSuccess = await CDPThumbnailService.takeScreenshot(url, filename);
+      
+      if (cdpSuccess) {
+        console.log(`CDP screenshot successful for: ${url}`);
+        return;
+      }
+      
+      console.log(`CDP failed, falling back to Puppeteer for: ${url}`);
+      
       // Use the already imported puppeteer module
       
       // Detect environment and configure browser accordingly
