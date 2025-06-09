@@ -1,40 +1,27 @@
 {
   "references": [
     {
-      "title": "YouTube Tutorial",
-      "link": "https://www.youtube.com/watch?v=example123",
-      "description": "Testing elegant placeholder generation",
+      "title": "Part 1",
+      "link": "https://www.youtube.com/watch?v=kXsy1JCTQms",
+      "description": "Part 1",
       "category": "Video Learning",
       "tags": [
-        "tutorial",
-        "test"
+        "parts"
       ],
-      "id": "2baf869a-3866-4dd8-a9d3-5faad463a3bf",
-      "thumbnail": "/thumbnails/2baf869a-3866-4dd8-a9d3-5faad463a3bf.jpg"
+      "thumbnail": "/thumbnails/28b3e24f-8552-45db-b76f-b1676eec5dbb.jpg",
+      "id": "28b3e24f-8552-45db-b76f-b1676eec5dbb"
     },
     {
-      "title": "GitHub Repository",
-      "link": "https://github.com/example/repo",
-      "description": "Testing GitHub placeholder",
-      "category": "Development Tools",
+      "title": "Beautiful YouTube Tutorial",
+      "link": "https://www.youtube.com/watch?v=beautiful123",
+      "description": "Testing the new soft, eye-friendly placeholder design",
+      "category": "Video Learning",
       "tags": [
-        "github",
-        "repository"
+        "beautiful",
+        "design"
       ],
-      "id": "de88591f-8d87-49e0-ae68-a79dae8b5102",
-      "thumbnail": "/thumbnails/de88591f-8d87-49e0-ae68-a79dae8b5102.jpg"
-    },
-    {
-      "title": "Documentation Site",
-      "link": "https://docs.example.com/guide",
-      "description": "Testing documentation placeholder",
-      "category": "Learning Resources",
-      "tags": [
-        "documentation",
-        "guide"
-      ],
-      "id": "9c183b25-5beb-4199-a8af-abf7dc58e43b",
-      "thumbnail": "/thumbnails/9c183b25-5beb-4199-a8af-abf7dc58e43b.jpg"
+      "id": "887e9be2-d8aa-4492-bb29-c4afb0a89165",
+      "thumbnail": "/thumbnails/887e9be2-d8aa-4492-bb29-c4afb0a89165.jpg"
     }
   ]
 }
