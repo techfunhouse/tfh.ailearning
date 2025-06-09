@@ -324,13 +324,22 @@ export class JsonDbStorage implements IStorage {
     this.referencesDb.data.references.push(newReference);
     this.saveReferenceData();
     
-    // Queue background thumbnail generation that will overwrite the loading image
-    SimpleThumbnailService.generateThumbnailAsync(
-      thumbnailFilename,
-      reference.title,
-      reference.category,
-      reference.link
-    );
+    // Queue real screenshot generation using Puppeteer (macOS compatible)
+    setTimeout(async () => {
+      try {
+        console.log(`[STORAGE] Starting Puppeteer screenshot for: ${reference.link}`);
+        const success = await PuppeteerThumbnailService.takeScreenshot(reference.link, thumbnailFilename);
+        if (success) {
+          console.log(`[STORAGE] Puppeteer screenshot successful: ${thumbnailFilename}`);
+        } else {
+          console.log(`[STORAGE] Puppeteer failed, using fallback for: ${thumbnailFilename}`);
+          SimpleThumbnailService.generateThumbnailAsync(thumbnailFilename, reference.title, reference.category, reference.link);
+        }
+      } catch (error) {
+        console.error(`[STORAGE] Puppeteer error for ${thumbnailFilename}:`, error);
+        SimpleThumbnailService.generateThumbnailAsync(thumbnailFilename, reference.title, reference.category, reference.link);
+      }
+    }, 1000);
     
     return newReference;
   }

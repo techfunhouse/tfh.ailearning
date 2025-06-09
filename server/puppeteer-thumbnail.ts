@@ -7,23 +7,51 @@ export class PuppeteerThumbnailService {
 
   static async getBrowser(): Promise<puppeteer.Browser> {
     if (!this.browser) {
-      console.log('[PUPPETEER] Launching browser...');
-      this.browser = await puppeteer.launch({
+      console.log('[PUPPETEER] Launching browser optimized for macOS...');
+      
+      // macOS-optimized configuration
+      const launchOptions: any = {
         headless: true,
+        defaultViewport: { width: 1024, height: 768 },
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
           '--disable-dev-shm-usage',
-          '--disable-accelerated-2d-canvas',
-          '--no-first-run',
-          '--no-zygote',
-          '--single-process',
           '--disable-gpu',
           '--disable-web-security',
           '--disable-features=VizDisplayCompositor',
-          '--window-size=1024,768'
-        ]
-      });
+          '--disable-background-timer-throttling',
+          '--disable-backgrounding-occluded-windows',
+          '--disable-renderer-backgrounding',
+          '--disable-ipc-flooding-protection',
+          '--window-size=1024,768',
+          '--force-device-scale-factor=1'
+        ],
+        timeout: 60000
+      };
+      
+      // Try to use system Chrome on macOS for better compatibility
+      const possibleChromePaths = [
+        '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+        '/Applications/Chromium.app/Contents/MacOS/Chromium',
+        '/usr/bin/google-chrome-stable',
+        '/usr/bin/chromium-browser'
+      ];
+      
+      for (const chromePath of possibleChromePaths) {
+        try {
+          const fs = await import('fs');
+          if (fs.existsSync(chromePath)) {
+            launchOptions.executablePath = chromePath;
+            console.log(`[PUPPETEER] Using Chrome at: ${chromePath}`);
+            break;
+          }
+        } catch (e) {
+          // Continue to next path
+        }
+      }
+      
+      this.browser = await puppeteer.launch(launchOptions);
     }
     return this.browser;
   }
