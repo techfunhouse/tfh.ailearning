@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import puppeteer from 'puppeteer';
+import { CDPThumbnailService } from './cdp-thumbnail.js';
 
 export class SimpleThumbnailService {
   private static processingQueue: Array<() => Promise<void>> = [];
@@ -617,14 +618,27 @@ export class SimpleThumbnailService {
     const isReplit = process.env.REPLIT_CLUSTER || process.env.REPL_SLUG;
     const isLocal = !isReplit;
     
-    // For local environments, skip browser automation entirely for YouTube
+    // Try CDP-based screenshot first (more robust than Puppeteer)
+    try {
+      console.log('Using CDP for YouTube screenshot');
+      const success = await CDPThumbnailService.takeScreenshot(url, filename);
+      if (success) {
+        console.log(`CDP YouTube screenshot created: ${filename}`);
+        return;
+      }
+    } catch (error: any) {
+      console.log(`CDP screenshot failed: ${error.message}`);
+    }
+    
+    // For local environments or CDP failure, use enhanced placeholder for YouTube
     if (isLocal) {
       console.log('Local environment detected - using enhanced placeholder for YouTube');
       await this.createYouTubeEnhancedPlaceholder(filename, url, title, category);
       return;
     }
     
-    // Replit-only browser automation for YouTube
+    // Replit fallback with Puppeteer if CDP fails
+    console.log('Falling back to Puppeteer for YouTube');
     const browserOptions: any = {
       headless: true,
       timeout: 60000,
@@ -680,8 +694,9 @@ export class SimpleThumbnailService {
       console.log(`Created YouTube screenshot: ${filename}`);
       
     } catch (error: any) {
-      console.log(`YouTube fallback failed for ${url}: ${error.message}`);
-      throw error;
+      console.log(`YouTube Puppeteer fallback failed for ${url}: ${error.message}`);
+      // Final fallback to enhanced placeholder
+      await this.createYouTubeEnhancedPlaceholder(filename, url, title, category);
     } finally {
       // Clean up
       if (page && !page.isClosed()) {

@@ -4,6 +4,7 @@ import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { CDPThumbnailService } from './cdp-thumbnail.js';
 
 // Ensure thumbnails directory exists
 const thumbnailsDir = path.join(process.cwd(), 'client', 'public', 'thumbnails');
@@ -100,7 +101,29 @@ export class ThumbnailService {
   private static async generateScreenshot(url: string, retryCount = 0): Promise<Buffer | null> {
     const isLocal = !process.env.REPL_ID && !process.env.REPLIT_ENV;
     
-    // Try multiple strategies in order of preference
+    // Try CDP first for better frame management
+    try {
+      console.log('Attempting CDP screenshot for', url);
+      const filename = `temp_${Date.now()}.png`;
+      const success = await CDPThumbnailService.takeScreenshot(url, filename);
+      
+      if (success) {
+        // Read the file and return buffer
+        const fs = await import('fs/promises');
+        const path = await import('path');
+        const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+        const filepath = path.join(thumbnailsDir, filename);
+        const buffer = await fs.readFile(filepath);
+        // Clean up temp file
+        await fs.unlink(filepath).catch(() => {});
+        console.log('CDP screenshot successful');
+        return buffer;
+      }
+    } catch (error: any) {
+      console.log('CDP screenshot failed:', error.message);
+    }
+    
+    // Fallback to other strategies
     const strategies = [
       {
         name: 'Puppeteer',
