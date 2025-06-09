@@ -46,6 +46,30 @@
       ],
       "id": "4a525d2f-e126-4e1d-92c8-231cbed72828",
       "thumbnail": "/thumbnails/4a525d2f-e126-4e1d-92c8-231cbed72828.jpg"
+    },
+    {
+      "title": "Clean Design Test",
+      "link": "https://www.youtube.com/watch?v=cleandesign123",
+      "description": "Testing improved thumbnail layout without overlapping text",
+      "category": "Video Learning",
+      "tags": [
+        "clean",
+        "design"
+      ],
+      "id": "b233b9d7-836b-471b-82c6-b89b4ecfbd59",
+      "thumbnail": "/thumbnails/b233b9d7-836b-471b-82c6-b89b4ecfbd59.jpg"
+    },
+    {
+      "title": "Clean GitHub Project",
+      "link": "https://github.com/clean/design",
+      "description": "Testing improved GitHub placeholder layout",
+      "category": "Development Tools",
+      "tags": [
+        "github",
+        "clean"
+      ],
+      "id": "9217844a-f675-4324-b83e-101d9407ef8b",
+      "thumbnail": "/thumbnails/9217844a-f675-4324-b83e-101d9407ef8b.jpg"
     }
   ]
 }

@@ -95,40 +95,40 @@ export class PuppeteerThumbnailService {
       ctx.shadowBlur = 0;
       ctx.shadowOffsetY = 0;
       
-      // Soft platform badge
-      const badgeGradient = ctx.createLinearGradient(0, 120, 0, 180);
+      // Compact platform badge
+      const badgeGradient = ctx.createLinearGradient(0, 120, 0, 160);
       badgeGradient.addColorStop(0, pageInfo.color);
       badgeGradient.addColorStop(1, pageInfo.secondaryColor);
       ctx.fillStyle = badgeGradient;
-      ctx.roundRect(120, 120, 180, 60, 30);
+      ctx.roundRect(120, 120, 140, 40, 20);
       ctx.fill();
       
-      // Badge text with better contrast
+      // Badge text - smaller and cleaner
       ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
-      ctx.font = 'bold 22px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial';
+      ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial';
       ctx.textAlign = 'center';
-      ctx.fillText(pageInfo.type, 210, 155);
+      ctx.fillText(pageInfo.type, 190, 143);
       
-      // Large elegant icon
-      ctx.font = '80px system-ui';
+      // Large icon positioned higher
+      ctx.font = '120px system-ui';
       ctx.fillStyle = pageInfo.color;
-      ctx.fillText(pageInfo.icon, 512, 340);
+      ctx.fillText(pageInfo.icon, 512, 300);
       
-      // Softer main text
+      // Clean main text - smaller and better positioned
       ctx.fillStyle = '#374151';
-      ctx.font = '36px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial';
-      ctx.fillText('Beautiful Preview', 512, 420);
+      ctx.font = '28px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial';
+      ctx.fillText('Content Preview', 512, 380);
       
-      // Subtitle
+      // Smaller subtitle
       ctx.fillStyle = '#6b7280';
-      ctx.font = '24px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial';
-      ctx.fillText('Loading content...', 512, 460);
-      
-      // Elegant URL display (truncated)
-      const truncatedUrl = url.length > 50 ? url.substring(0, 47) + '...' : url;
-      ctx.fillStyle = '#9ca3af';
       ctx.font = '18px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial';
-      ctx.fillText(truncatedUrl, 512, 520);
+      ctx.fillText('Thumbnail placeholder', 512, 410);
+      
+      // URL display - positioned lower to avoid overlap
+      const truncatedUrl = url.length > 45 ? url.substring(0, 42) + '...' : url;
+      ctx.fillStyle = '#9ca3af';
+      ctx.font = '16px -apple-system, BlinkMacSystemFont, "Segoe UI", Arial';
+      ctx.fillText(truncatedUrl, 512, 480);
       
       // Soft progress dots instead of harsh circle
       const dotY = 580;
