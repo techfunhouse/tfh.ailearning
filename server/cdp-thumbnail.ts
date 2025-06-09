@@ -54,7 +54,12 @@ export class CDPThumbnailService {
       '--remote-debugging-port=' + this.chromePort,
       '--window-size=1024,768',
       '--disable-extensions',
-      '--disable-plugins'
+      '--disable-plugins',
+      '--autoplay-policy=no-user-gesture-required',
+      '--mute-audio',
+      '--disable-background-timer-throttling',
+      '--disable-backgrounding-occluded-windows',
+      '--disable-renderer-backgrounding'
     ];
 
     console.log(`Launching Chrome with CDP on port ${this.chromePort}`);
@@ -222,6 +227,11 @@ export class CDPThumbnailService {
           await client.close();
         } catch {}
       }
+      
+      // Always cleanup Chrome process after each screenshot to prevent resource leaks
+      try {
+        await this.cleanup();
+      } catch {}
     }
   }
 
