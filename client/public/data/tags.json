@@ -8,6 +8,9 @@
     },
     {
       "name": "solace"
+    },
+    {
+      "name": "blog"
     }
   ]
 }

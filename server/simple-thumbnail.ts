@@ -400,6 +400,16 @@ export class SimpleThumbnailService {
             }
           }
           
+          // Special handling for LinkedIn URLs with login overlays and session issues
+          if (url.includes('linkedin.com')) {
+            try {
+              await SimpleThumbnailService.createLinkedInScreenshotFallback(filename, url, title, category);
+              return;
+            } catch (linkedinError) {
+              console.log(`LinkedIn fallback strategy failed for ${url}:`, linkedinError);
+            }
+          }
+          
           // Try a simpler approach with reduced settings
           try {
             await SimpleThumbnailService.createSimpleScreenshotFallback(filename, url, title, category);
@@ -417,6 +427,207 @@ export class SimpleThumbnailService {
       console.error('Error creating real screenshot:', error);
       // Fallback to error thumbnail
       await this.createErrorThumbnail(filename, title, category, url);
+    }
+  }
+
+  static async createLinkedInScreenshotFallback(filename: string, url: string, title: string, category: string): Promise<void> {
+    console.log(`Attempting specialized LinkedIn fallback for ${url}`);
+    
+    const browserOptions: any = {
+      headless: true,
+      timeout: 120000,
+      protocolTimeout: 120000,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--disable-web-security',
+        '--disable-features=VizDisplayCompositor',
+        '--disable-background-timer-throttling',
+        '--disable-renderer-backgrounding',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-hang-monitor',
+        '--disable-prompt-on-repost',
+        '--disable-sync',
+        '--disable-translate',
+        '--disable-extensions',
+        '--disable-default-apps',
+        '--disable-popup-blocking',
+        '--allow-running-insecure-content',
+        '--disable-features=TranslateUI',
+        '--disable-ipc-flooding-protection',
+        '--disable-blink-features=AutomationControlled',
+        '--disable-dev-shm-usage',
+        '--no-first-run',
+        '--no-default-browser-check',
+        '--disable-infobars',
+        '--disable-notifications'
+      ]
+    };
+    
+    let browser;
+    let page;
+    
+    try {
+      browser = await puppeteer.launch(browserOptions);
+      page = await browser.newPage();
+      
+      // Set LinkedIn-optimized configuration
+      await page.setViewport({ width: 1920, height: 1080 });
+      await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+      
+      // Set headers to appear as legitimate browser
+      await page.setExtraHTTPHeaders({
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Sec-Fetch-Site': 'none',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-User': '?1',
+        'Sec-Fetch-Dest': 'document'
+      });
+      
+      // Block unnecessary resources to reduce session pressure
+      await page.setRequestInterception(true);
+      page.on('request', (request) => {
+        const resourceType = request.resourceType();
+        if (['font', 'stylesheet', 'media', 'other'].includes(resourceType)) {
+          request.abort();
+        } else {
+          request.continue();
+        }
+      });
+      
+      // Multiple navigation attempts with different strategies
+      let navigationSuccess = false;
+      
+      // Strategy 1: Direct navigation with extended timeout
+      try {
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
+        navigationSuccess = true;
+      } catch (error1: any) {
+        console.log(`LinkedIn Strategy 1 failed: ${error1.message}`);
+        
+        // Strategy 2: Minimal wait conditions
+        try {
+          await page.goto(url, { waitUntil: 'load', timeout: 30000 });
+          navigationSuccess = true;
+        } catch (error2: any) {
+          console.log(`LinkedIn Strategy 2 failed: ${error2.message}`);
+          
+          // Strategy 3: No wait conditions, just navigate
+          try {
+            await page.goto(url, { timeout: 20000 });
+            navigationSuccess = true;
+          } catch (error3: any) {
+            console.log(`LinkedIn Strategy 3 failed: ${error3.message}`);
+            throw new Error('All LinkedIn navigation strategies failed');
+          }
+        }
+      }
+      
+      if (!navigationSuccess) {
+        throw new Error('Failed to navigate to LinkedIn page');
+      }
+      
+      // Wait for initial content load
+      await new Promise(resolve => setTimeout(resolve, 8000));
+      
+      // Hide LinkedIn login overlays and modals
+      await page.evaluate(() => {
+        // Remove common LinkedIn login overlays
+        const overlaySelectors = [
+          '.guest-homepage-overlay',
+          '.sign-in-modal',
+          '.authwall-join-form',
+          '.join-form',
+          '.visitor-nav',
+          '.top-card-layout__cta-container',
+          '[data-test-id="sign-in-modal"]',
+          '[data-test-id="guest-homepage-overlay"]',
+          '.artdeco-modal',
+          '.authentication-outlet',
+          '.nav-item--sign-in-cta'
+        ];
+        
+        overlaySelectors.forEach(selector => {
+          const elements = document.querySelectorAll(selector);
+          elements.forEach(el => {
+            if (el && el.parentNode) {
+              el.parentNode.removeChild(el);
+            }
+          });
+        });
+        
+        // Hide any elements with z-index above 1000 (likely modals)
+        const allElements = document.querySelectorAll('*');
+        allElements.forEach(el => {
+          const zIndex = window.getComputedStyle(el).zIndex;
+          if (zIndex && parseInt(zIndex) > 1000) {
+            (el as HTMLElement).style.display = 'none';
+          }
+        });
+        
+        // Remove authentication walls
+        const authWalls = document.querySelectorAll('[class*="auth"]');
+        authWalls.forEach(el => {
+          if (el.textContent && (
+            el.textContent.includes('Sign in') || 
+            el.textContent.includes('Join now') ||
+            el.textContent.includes('Log in')
+          )) {
+            (el as HTMLElement).style.display = 'none';
+          }
+        });
+      });
+      
+      // Additional wait for content stabilization
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      
+      // Check if page is still valid
+      if (page.isClosed()) {
+        throw new Error('Page closed during LinkedIn processing');
+      }
+      
+      // Take screenshot with high quality settings
+      const screenshotBuffer = await page.screenshot({
+        type: 'jpeg',
+        quality: 95,
+        clip: { x: 0, y: 0, width: 1920, height: 1080 }
+      });
+      
+      // Clean up immediately
+      if (!page.isClosed()) await page.close();
+      if (browser.isConnected()) await browser.close();
+      
+      // Process and save with high quality
+      const sharp = await import('sharp');
+      const thumbnailBuffer = await sharp.default(screenshotBuffer)
+        .resize(1024, 768, { 
+          fit: 'cover',
+          kernel: sharp.default.kernel.lanczos3
+        })
+        .jpeg({ quality: 90 })
+        .toBuffer();
+      
+      const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+      const filepath = path.join(thumbnailsDir, filename);
+      await fs.writeFile(filepath, thumbnailBuffer);
+      
+      console.log(`Created LinkedIn fallback screenshot: ${filename}`);
+      
+    } catch (error: any) {
+      console.log(`LinkedIn fallback failed for ${url}: ${error.message}`);
+      
+      // Clean up on error
+      if (page && !page.isClosed()) {
+        try { await page.close(); } catch {}
+      }
+      if (browser && browser.isConnected()) {
+        try { await browser.close(); } catch {}
+      }
+      
+      throw error;
     }
   }
 
