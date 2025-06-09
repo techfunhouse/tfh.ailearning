@@ -1,0 +1,32 @@
+Failed to capture screenshot for https://www.youtube.com/watch?v=z4zXicOAF28/: Error: Navigating frame was detached
+    at LifecycleWatcher.#onFrameDetached (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/LifecycleWatcher.ts:188:9)
+    at file:///Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/lib/esm/third_party/mitt/mitt.js:36:7
+    at Array.map (<anonymous>)
+    at Object.emit (file:///Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/lib/esm/third_party/mitt/mitt.js:35:20)
+    at CdpFrame.emit (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/common/EventEmitter.ts:135:19)
+    at FrameManager.#removeFramesRecursively (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/FrameManager.ts:572:11)
+    at FrameManager.#onClientDisconnect (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/FrameManager.ts:110:36)
+    at <anonymous> (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/FrameManager.ts:92:31)
+    at onceHandler (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/common/EventEmitter.ts:150:7)
+    at file:///Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/lib/esm/third_party/mitt/mitt.js:36:7
+    at Array.map (<anonymous>)
+    at Object.emit (file:///Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/lib/esm/third_party/mitt/mitt.js:35:20)
+    at CdpCDPSession.emit (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/common/EventEmitter.ts:135:19)
+    at CdpCDPSession.onClosed (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/CdpSession.ts:164:10)
+    at Connection.#onClose (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Connection.ts:226:15)
+    at WebSocket.<anonymous> (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/node/NodeWebSocketTransport.ts:51:22)
+    at callListener (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/ws/lib/event-target.js:290:14)
+    at WebSocket.onClose (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/ws/lib/event-target.js:220:9)
+    at WebSocket.emit (node:events:524:28)
+    at WebSocket.emitClose (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/ws/lib/websocket.js:272:10)
+    at Socket.socketOnClose (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/ws/lib/websocket.js:1341:15)
+    at Socket.emit (node:events:524:28)
+    at TCP.<anonymous> (node:net:343:12)
+Browser cleanup error: Error: Protocol error: Connection closed.
+    at Connection._rawSend (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Connection.ts:134:29)
+    at Connection.send (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Connection.ts:120:17)
+    at CdpPage.close (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/node_modules/puppeteer-core/src/cdp/Page.ts:1148:24)
+    at async Function.createRealScreenshot (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:313:13)
+    at async task (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:166:9)
+    at async Function.processQueue (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/simple-thumbnail.ts:186:9)
+Created error thumbnail: 78031add-5e68-4882-a380-192d209bf4b9.jpg

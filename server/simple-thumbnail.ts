@@ -204,6 +204,8 @@ export class SimpleThumbnailService {
       
       let browserOptions: any = {
         headless: true,
+        timeout: 60000,
+        protocolTimeout: 60000,
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
@@ -212,7 +214,23 @@ export class SimpleThumbnailService {
           '--no-first-run',
           '--no-zygote',
           '--single-process',
-          '--disable-gpu'
+          '--disable-gpu',
+          '--disable-background-timer-throttling',
+          '--disable-backgrounding-occluded-windows',
+          '--disable-renderer-backgrounding',
+          '--disable-features=TranslateUI',
+          '--disable-ipc-flooding-protection',
+          '--disable-hang-monitor',
+          '--disable-prompt-on-repost',
+          '--disable-sync',
+          '--force-device-scale-factor=1',
+          '--hide-scrollbars',
+          '--mute-audio',
+          '--no-default-browser-check',
+          '--no-pings',
+          '--disable-extensions-file-access-check',
+          '--disable-default-apps',
+          '--disable-popup-blocking'
         ]
       };
 
@@ -251,20 +269,53 @@ export class SimpleThumbnailService {
       });
       
       try {
-        // Navigate with progressive timeout and better wait strategy
-        await page.goto(url, { 
-          waitUntil: 'domcontentloaded',
-          timeout: 30000
-        });
-        
-        // Wait for content with additional checks
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        
-        // Wait for body element to ensure page is ready
-        try {
-          await page.waitForSelector('body', { timeout: 5000 });
-        } catch (selectorError) {
-          console.log(`Body selector wait failed for ${url}, proceeding with screenshot`);
+        // Special handling for YouTube and SPA websites that cause frame detachment
+        if (url.includes('youtube.com') || url.includes('youtu.be')) {
+          // For YouTube, use a more robust navigation strategy
+          try {
+            await page.goto(url, { 
+              waitUntil: 'networkidle0',
+              timeout: 45000
+            });
+          } catch (navigationError: any) {
+            if (navigationError.message.includes('frame was detached') || 
+                navigationError.message.includes('Navigation timeout')) {
+              console.log(`YouTube navigation failed, trying simpler approach for ${url}`);
+              // Fallback: reload with minimal wait conditions
+              await page.goto(url, { 
+                waitUntil: 'domcontentloaded',
+                timeout: 20000
+              });
+            } else {
+              throw navigationError;
+            }
+          }
+          
+          // Extended wait for YouTube's dynamic content
+          await new Promise(resolve => setTimeout(resolve, 8000));
+          
+          // Wait for YouTube-specific elements
+          try {
+            await page.waitForSelector('#movie_player, .ytd-player, video', { timeout: 10000 });
+          } catch {
+            console.log(`YouTube player elements not found for ${url}, proceeding with screenshot`);
+          }
+        } else {
+          // Standard navigation for other websites
+          await page.goto(url, { 
+            waitUntil: 'domcontentloaded',
+            timeout: 30000
+          });
+          
+          // Wait for content with additional checks
+          await new Promise(resolve => setTimeout(resolve, 3000));
+          
+          // Wait for body element to ensure page is ready
+          try {
+            await page.waitForSelector('body', { timeout: 5000 });
+          } catch (selectorError) {
+            console.log(`Body selector wait failed for ${url}, proceeding with screenshot`);
+          }
         }
         
         // Verify page is still valid before screenshot
@@ -326,7 +377,10 @@ export class SimpleThumbnailService {
           'Target closed',
           'Page was closed',
           'Connection closed',
-          'Navigation timeout'
+          'Navigation timeout',
+          'Navigating frame was detached',
+          'frame was detached',
+          'Frame was detached'
         ];
         
         const isRetryable = retryableErrors.some(errorType => 
@@ -335,6 +389,16 @@ export class SimpleThumbnailService {
         
         if (isRetryable) {
           console.log(`Retryable error detected for ${url}, will use fallback strategy`);
+          
+          // Special handling for YouTube URLs with frame detachment issues
+          if (url.includes('youtube.com') || url.includes('youtu.be')) {
+            try {
+              await SimpleThumbnailService.createYouTubeScreenshotFallback(filename, url, title, category);
+              return;
+            } catch (youtubeError) {
+              console.log(`YouTube fallback strategy failed for ${url}:`, youtubeError);
+            }
+          }
           
           // Try a simpler approach with reduced settings
           try {
@@ -353,6 +417,157 @@ export class SimpleThumbnailService {
       console.error('Error creating real screenshot:', error);
       // Fallback to error thumbnail
       await this.createErrorThumbnail(filename, title, category, url);
+    }
+  }
+
+  static async createYouTubeScreenshotFallback(filename: string, url: string, title: string, category: string): Promise<void> {
+    console.log(`Attempting specialized YouTube fallback for ${url}`);
+    
+    const browserOptions: any = {
+      headless: true,
+      timeout: 90000,
+      protocolTimeout: 90000,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--disable-web-security',
+        '--disable-features=VizDisplayCompositor',
+        '--disable-background-timer-throttling',
+        '--disable-renderer-backgrounding',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-hang-monitor',
+        '--disable-prompt-on-repost',
+        '--disable-sync',
+        '--disable-translate',
+        '--disable-extensions',
+        '--disable-default-apps',
+        '--disable-popup-blocking',
+        '--allow-running-insecure-content',
+        '--disable-features=TranslateUI',
+        '--disable-ipc-flooding-protection'
+      ]
+    };
+    
+    let browser;
+    let page;
+    
+    try {
+      browser = await puppeteer.launch(browserOptions);
+      page = await browser.newPage();
+      
+      // Set aggressive YouTube-specific configuration
+      await page.setViewport({ width: 1920, height: 1080 });
+      await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+      
+      // Set additional headers for YouTube
+      await page.setExtraHTTPHeaders({
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+      });
+      
+      // Multiple navigation attempts with different strategies
+      let navigationSuccess = false;
+      
+      // Strategy 1: Direct navigation with networkidle
+      try {
+        await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+        navigationSuccess = true;
+      } catch (error1) {
+        console.log(`YouTube Strategy 1 failed: ${error1.message}`);
+        
+        // Strategy 2: Domcontentloaded only
+        try {
+          await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 20000 });
+          navigationSuccess = true;
+        } catch (error2) {
+          console.log(`YouTube Strategy 2 failed: ${error2.message}`);
+          
+          // Strategy 3: Load event only
+          try {
+            await page.goto(url, { waitUntil: 'load', timeout: 15000 });
+            navigationSuccess = true;
+          } catch (error3) {
+            console.log(`YouTube Strategy 3 failed: ${error3.message}`);
+            throw new Error('All YouTube navigation strategies failed');
+          }
+        }
+      }
+      
+      if (!navigationSuccess) {
+        throw new Error('Failed to navigate to YouTube page');
+      }
+      
+      // Extended wait for YouTube to fully load
+      await new Promise(resolve => setTimeout(resolve, 12000));
+      
+      // Wait for key YouTube elements with multiple selectors
+      const youtubeSelectors = [
+        '#movie_player',
+        '.html5-video-container',
+        '.ytp-cued-thumbnail-overlay',
+        'video',
+        '.ytd-player'
+      ];
+      
+      for (const selector of youtubeSelectors) {
+        try {
+          await page.waitForSelector(selector, { timeout: 5000 });
+          console.log(`Found YouTube element: ${selector}`);
+          break;
+        } catch {
+          continue;
+        }
+      }
+      
+      // Additional wait for player to stabilize
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      
+      // Check if page is still valid
+      if (page.isClosed()) {
+        throw new Error('Page closed during YouTube processing');
+      }
+      
+      // Take screenshot with high quality settings
+      const screenshotBuffer = await page.screenshot({
+        type: 'jpeg',
+        quality: 95,
+        clip: { x: 0, y: 0, width: 1920, height: 1080 }
+      });
+      
+      // Clean up immediately
+      if (!page.isClosed()) await page.close();
+      if (browser.isConnected()) await browser.close();
+      
+      // Process and save with high quality
+      const sharp = await import('sharp');
+      const thumbnailBuffer = await sharp.default(screenshotBuffer)
+        .resize(1024, 768, { 
+          fit: 'cover',
+          kernel: sharp.default.kernel.lanczos3
+        })
+        .jpeg({ quality: 90 })
+        .toBuffer();
+      
+      const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+      const filepath = path.join(thumbnailsDir, filename);
+      await fs.writeFile(filepath, thumbnailBuffer);
+      
+      console.log(`Created YouTube fallback screenshot: ${filename}`);
+      
+    } catch (error: any) {
+      console.log(`YouTube fallback failed for ${url}: ${error.message}`);
+      
+      // Clean up on error
+      if (page && !page.isClosed()) {
+        try { await page.close(); } catch {}
+      }
+      if (browser && browser.isConnected()) {
+        try { await browser.close(); } catch {}
+      }
+      
+      throw error;
     }
   }
 
