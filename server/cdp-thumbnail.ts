@@ -44,7 +44,7 @@ export class CDPThumbnailService {
     }
 
     const args = [
-      '--headless',
+      '--headless=new',
       '--disable-gpu',
       '--no-sandbox',
       '--disable-setuid-sandbox',
@@ -54,11 +54,16 @@ export class CDPThumbnailService {
       '--disable-background-timer-throttling',
       '--disable-renderer-backgrounding',
       '--disable-backgrounding-occluded-windows',
+      '--disable-extensions',
+      '--disable-plugins',
+      '--disable-images',
+      '--disable-javascript',
       '--remote-debugging-port=' + this.chromePort,
       '--window-size=1024,768',
-      '--virtual-time-budget=5000',
+      '--virtual-time-budget=10000',
       '--run-all-compositor-stages-before-draw',
-      '--disable-new-content-rendering-timeout'
+      '--disable-new-content-rendering-timeout',
+      '--disable-ipc-flooding-protection'
     ];
 
     console.log(`Launching Chrome with CDP on port ${this.chromePort}`);

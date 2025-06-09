@@ -9,7 +9,8 @@ export class SimpleThumbnailService {
   static async createLoadingThumbnail(filename: string, title: string, category: string): Promise<void> {
     try {
       // Create a blue background with text overlay
-      const sharp = await import('sharp');
+      const sharpModule = await import('sharp');
+      const sharp = sharpModule.default || sharpModule;
       
       // Truncate and escape text for XML safety
       const maxTitleLength = 25;
@@ -73,7 +74,7 @@ export class SimpleThumbnailService {
   static async createSuccessThumbnail(filename: string, title: string, category: string): Promise<void> {
     try {
       // Create a simple green solid color JPG as success placeholder
-      const sharp = await import('sharp');
+      const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
       
       const successBuffer = await sharp.default({
         create: {
@@ -100,7 +101,7 @@ export class SimpleThumbnailService {
   static async createSimplePlaceholder(filename: string, title: string, category: string): Promise<void> {
     try {
       // Create a gray background with basic information
-      const sharp = await import('sharp');
+      const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
       
       // Truncate and escape text for XML safety
       const maxTitleLength = 20;
@@ -319,7 +320,7 @@ export class SimpleThumbnailService {
         }
 
         // Resize screenshot to thumbnail size using Sharp
-        const sharp = await import('sharp');
+        const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
         const thumbnailBuffer = await sharp.default(screenshotBuffer)
           .resize(1024, 768, { 
             fit: 'cover',
@@ -581,7 +582,7 @@ export class SimpleThumbnailService {
       if (browser.isConnected()) await browser.close();
       
       // Process and save with high quality
-      const sharp = await import('sharp');
+      const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
       const thumbnailBuffer = await sharp.default(screenshotBuffer)
         .resize(1024, 768, { 
           fit: 'cover',
@@ -678,7 +679,7 @@ export class SimpleThumbnailService {
       });
       
       // Process and save
-      const sharp = await import('sharp');
+      const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
       const thumbnailBuffer = await sharp.default(screenshotBuffer)
         .resize(1024, 768, { 
           kernel: sharp.kernel.lanczos3,
@@ -715,7 +716,7 @@ export class SimpleThumbnailService {
       // Extract video ID from URL
       const videoId = this.extractYouTubeVideoId(url);
       
-      const sharp = await import('sharp');
+      const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
       
       // Create enhanced YouTube-style thumbnail
       const svgContent = `
@@ -855,7 +856,7 @@ export class SimpleThumbnailService {
       if (browser.isConnected()) await browser.close();
       
       // Process and save
-      const sharp = await import('sharp');
+      const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
       const thumbnailBuffer = await sharp.default(screenshotBuffer)
         .resize(1024, 768, { 
           fit: 'cover',
@@ -888,7 +889,7 @@ export class SimpleThumbnailService {
   static async createErrorThumbnail(filename: string, title: string, category: string, url: string): Promise<void> {
     try {
       // Create a red background with error information
-      const sharp = await import('sharp');
+      const sharpModule = await import('sharp'); const sharp = sharpModule.default || sharpModule;
       
       // Truncate and escape text for XML safety
       const maxTitleLength = 22;
