@@ -26,7 +26,7 @@
     },
     {
       "title": "Event Mesh",
-      "link": "https://solace.com/",
+      "link": "https://solace.com",
       "description": "Event Mesh",
       "category": "Tutorials",
       "tags": [
@@ -34,7 +34,7 @@
       ],
       "thumbnail": "/thumbnails/ea8fcd5a-fc3d-4cc5-989a-42b1509744b5.jpg",
       "id": "b6879dcf-b2e4-4f66-9cde-adecef6fb300",
-      "updatedAt": "2025-06-09T06:21:12.394Z"
+      "updatedAt": "2025-06-09T10:08:52.048Z"
     },
     {
       "title": "MCP vs APIs",
@@ -46,7 +46,7 @@
       ],
       "thumbnail": "/thumbnails/817ed579-8290-4891-9fcd-164921116ae0.jpg",
       "id": "c1e67049-3350-47a8-be33-47b7aabea575",
-      "updatedAt": "2025-06-09T06:25:27.338Z"
+      "updatedAt": "2025-06-09T10:09:53.180Z"
     },
     {
       "title": "AAAAA",
@@ -73,14 +73,15 @@
     },
     {
       "title": "ISG",
-      "link": "https://research.isg-one.com/buyers-guide/artificial-intelligence/streaming-and-events/2025-buyers-guides-for-real-time-data",
+      "link": "https://research.isg-one.com/buyers-guide/artificial-intelligence/streaming-and-events/2025-buyers-guides-for-real-time-data/",
       "description": "ISFG",
       "category": "Research Portals",
       "tags": [
         "ISG"
       ],
       "thumbnail": "/thumbnails/3b9293a8-fbdb-4800-982a-8b7d65dcee3e.jpg",
-      "id": "e6403033-0b73-4817-aaa7-2619899bc332"
+      "id": "e6403033-0b73-4817-aaa7-2619899bc332",
+      "updatedAt": "2025-06-09T10:06:51.841Z"
     }
   ]
 }

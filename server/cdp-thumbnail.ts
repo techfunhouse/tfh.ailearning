@@ -199,6 +199,59 @@ export class CDPThumbnailService {
       // Wait for content to stabilize
       await new Promise(resolve => setTimeout(resolve, 3000));
       
+      // Remove LinkedIn overlays and sign-in modals
+      if (url.includes('linkedin.com')) {
+        try {
+          await TargetRuntime.evaluate({
+            expression: `
+              // Remove LinkedIn sign-in overlays and modals
+              const overlaySelectors = [
+                '[data-test-id="guest-homepage-basic-join-form"]',
+                '.authwall',
+                '.auth-wall',
+                '.guest-homepage-cta',
+                '.sign-in-modal',
+                '.join-form',
+                '.modal',
+                '.modal-backdrop',
+                '.overlay',
+                '[role="dialog"]',
+                '.artdeco-modal',
+                '.artdeco-modal-overlay',
+                '.contextual-sign-in-modal',
+                '.contextual-sign-in-modal__modal-container'
+              ];
+              
+              overlaySelectors.forEach(selector => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                  if (el) {
+                    el.style.display = 'none';
+                    el.style.visibility = 'hidden';
+                    el.remove();
+                  }
+                });
+              });
+              
+              // Remove scroll lock from body
+              document.body.style.overflow = 'auto';
+              document.documentElement.style.overflow = 'auto';
+              
+              // Remove modal classes
+              document.body.classList.remove('modal-open', 'overflow-hidden');
+              
+              // Wait a moment for DOM changes
+              new Promise(resolve => setTimeout(resolve, 1000));
+            `,
+            awaitPromise: true,
+            timeout: 5000
+          });
+          console.log('LinkedIn overlays removed');
+        } catch (error) {
+          console.log('Failed to remove LinkedIn overlays:', error);
+        }
+      }
+      
       // Additional wait for dynamic content
       try {
         await TargetRuntime.evaluate({
