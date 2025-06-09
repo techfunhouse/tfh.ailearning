@@ -243,6 +243,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post("/api/references/:id/regenerate-thumbnail", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      // Check if reference exists
+      const reference = await storage.getReference(id);
+      if (!reference) {
+        return res.status(404).json({ message: "Reference not found" });
+      }
+      
+      // Regenerate thumbnail using the thumbnail service
+      const { ThumbnailService } = await import('./thumbnail-service.js');
+      const filename = `ref_${id}.jpg`;
+      
+      // Start thumbnail regeneration in background
+      ThumbnailService.generateThumbnailToFile(reference.link, reference.title, reference.category, filename);
+      
+      return res.status(200).json({ 
+        success: true, 
+        message: "Thumbnail regeneration started",
+        referenceId: id,
+        filename: filename
+      });
+    } catch (error) {
+      console.error("Error regenerating thumbnail:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
   // Categories routes
   app.get("/api/categories", async (req, res) => {
     try {
