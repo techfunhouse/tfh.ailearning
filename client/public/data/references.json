@@ -1,3 +1,15 @@
 {
-  "references": []
+  "references": [
+    {
+      "title": "Parts 1",
+      "link": "https://www.youtube.com/watch?v=kXsy1JCTQms",
+      "description": "Parts 1",
+      "category": "Video Learning",
+      "tags": [
+        "parts"
+      ],
+      "thumbnail": "/thumbnails/4371eb94-9559-40b2-a7f0-7e2d0d8d8292.jpg",
+      "id": "4371eb94-9559-40b2-a7f0-7e2d0d8d8292"
+    }
+  ]
 }

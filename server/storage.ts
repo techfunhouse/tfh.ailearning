@@ -15,6 +15,7 @@ import { v4 as uuid } from "uuid";
 import path from "path";
 import fs from "fs";
 import { SimpleThumbnailService } from "./simple-thumbnail.js";
+import { PuppeteerThumbnailService } from "./puppeteer-thumbnail.js";
 
 // Storage interface
 export interface IStorage {
