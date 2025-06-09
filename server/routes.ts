@@ -243,7 +243,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/references/:id/regenerate-thumbnail", isAuthenticated, isAdmin, async (req, res) => {
+  app.post("/api/references/:id/regenerate-thumbnail", async (req, res) => {
     try {
       const { id } = req.params;
       
