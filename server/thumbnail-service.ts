@@ -235,9 +235,9 @@ export class ThumbnailService {
         
         await browser.close();
         
-        // Process with Sharp for high-quality 640x360 output
+        // Process with Sharp for high-quality 1024x768 output
         const resizedBuffer = await sharp(screenshot)
-          .resize(640, 360, {
+          .resize(1024, 768, {
             kernel: sharp.kernel.lanczos3,
             fit: 'cover',
             position: 'top'
@@ -345,7 +345,7 @@ export class ThumbnailService {
       // Process with Sharp for high quality
       const sharp = await import('sharp');
       const resizedBuffer = await sharp.default(screenshot)
-        .resize(640, 360, {
+        .resize(1024, 768, {
           kernel: sharp.default.kernel.lanczos3,
           fit: 'cover',
           position: 'top'
@@ -522,48 +522,48 @@ export class ThumbnailService {
     const safeCategory = escapeXml(category);
     const safeDomain = escapeXml(domain);
 
-    return `<svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
+    return `<svg width="1024" height="768" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" style="stop-color:${color};stop-opacity:1" />
             <stop offset="100%" style="stop-color:${color};stop-opacity:0.8" />
           </linearGradient>
-          <pattern id="dots" patternUnits="userSpaceOnUse" width="40" height="40">
-            <circle cx="20" cy="20" r="4" fill="rgba(255,255,255,0.1)"/>
+          <pattern id="dots" patternUnits="userSpaceOnUse" width="60" height="60">
+            <circle cx="30" cy="30" r="6" fill="rgba(255,255,255,0.1)"/>
           </pattern>
         </defs>
-        <rect width="640" height="360" fill="url(#bg)"/>
-        <rect width="640" height="360" fill="url(#dots)"/>
-        <rect x="20" y="20" width="${Math.min(safeCategory.length * 16 + 40, 300)}" height="50" rx="8" fill="rgba(0,0,0,0.3)"/>
-        <text x="40" y="54" font-family="Arial, sans-serif" font-size="24" fill="white">${safeCategory}</text>
-        <text x="320" y="180" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white" text-anchor="middle">
-          <tspan x="320" dy="0">${safeTruncatedTitle}</tspan>
+        <rect width="1024" height="768" fill="url(#bg)"/>
+        <rect width="1024" height="768" fill="url(#dots)"/>
+        <rect x="32" y="32" width="${Math.min(safeCategory.length * 24 + 60, 480)}" height="80" rx="12" fill="rgba(0,0,0,0.3)"/>
+        <text x="62" y="86" font-family="Arial, sans-serif" font-size="36" fill="white">${safeCategory}</text>
+        <text x="512" y="384" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">
+          <tspan x="512" dy="0">${safeTruncatedTitle}</tspan>
         </text>
-        <text x="320" y="320" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.8)" text-anchor="middle">Screenshot Unavailable</text>
+        <text x="512" y="480" font-family="Arial, sans-serif" font-size="32" fill="rgba(255,255,255,0.8)" text-anchor="middle">Screenshot Unavailable</text>
       </svg>`;
   }
 
   // Create loading thumbnail file that shows generation in progress
   static async createLoadingThumbnail(filename: string, title: string, category: string): Promise<void> {
     const loadingSvg = `
-    <svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
+    <svg width="1024" height="768" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
           <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
         </linearGradient>
       </defs>
-      <rect width="640" height="360" fill="url(#grad)"/>
-      <circle cx="320" cy="140" r="30" fill="none" stroke="white" stroke-width="4">
-        <animateTransform attributeName="transform" type="rotate" values="0 320 140;360 320 140" dur="2s" repeatCount="indefinite"/>
+      <rect width="1024" height="768" fill="url(#grad)"/>
+      <circle cx="512" cy="300" r="48" fill="none" stroke="white" stroke-width="6">
+        <animateTransform attributeName="transform" type="rotate" values="0 512 300;360 512 300" dur="2s" repeatCount="indefinite"/>
       </circle>
-      <text x="320" y="220" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">
+      <text x="512" y="430" font-family="Arial, sans-serif" font-size="38" font-weight="bold" fill="white" text-anchor="middle">
         ${title.length > 50 ? title.substring(0, 50) + '...' : title}
       </text>
-      <text x="320" y="260" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+      <text x="512" y="490" font-family="Arial, sans-serif" font-size="32" fill="rgba(255,255,255,0.8)" text-anchor="middle">
         Generating thumbnail...
       </text>
-      <text x="320" y="300" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.6)" text-anchor="middle">
+      <text x="512" y="550" font-family="Arial, sans-serif" font-size="26" fill="rgba(255,255,255,0.6)" text-anchor="middle">
         ${category}
       </text>
     </svg>`;

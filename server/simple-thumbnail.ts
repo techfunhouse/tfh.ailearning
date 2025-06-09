@@ -245,9 +245,9 @@ export class SimpleThumbnailService {
       
       // Set higher resolution viewport for better quality
       await page.setViewport({ 
-        width: 1920, 
-        height: 1008,
-        deviceScaleFactor: 1.5 // Reduced to prevent memory issues
+        width: 2048, 
+        height: 1536,
+        deviceScaleFactor: 1.5 // Optimal for 1024x768 output
       });
       
       try {
@@ -290,7 +290,10 @@ export class SimpleThumbnailService {
         // Resize screenshot to thumbnail size using Sharp
         const sharp = await import('sharp');
         const thumbnailBuffer = await sharp.default(screenshotBuffer)
-          .resize(320, 180, { fit: 'cover' })
+          .resize(1024, 768, { 
+            fit: 'cover',
+            kernel: sharp.default.kernel.lanczos3
+          })
           .jpeg({ quality: 90 })
           .toBuffer();
 
@@ -408,7 +411,10 @@ export class SimpleThumbnailService {
       // Process and save
       const sharp = await import('sharp');
       const thumbnailBuffer = await sharp.default(screenshotBuffer)
-        .resize(320, 180, { fit: 'cover' })
+        .resize(1024, 768, { 
+          fit: 'cover',
+          kernel: sharp.default.kernel.lanczos3
+        })
         .jpeg({ quality: 85 })
         .toBuffer();
       
