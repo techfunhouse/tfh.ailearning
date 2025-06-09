@@ -106,8 +106,8 @@ export class CDPThumbnailService {
       // Start checking after initial delay
       setTimeout(checkConnection, 1000);
       
-      // Timeout after 10 seconds
-      setTimeout(() => reject(new Error('Chrome startup timeout')), 10000);
+      // Timeout after 30 seconds for YouTube URLs
+      setTimeout(() => reject(new Error('Chrome startup timeout')), 30000);
     });
   }
 
@@ -136,8 +136,10 @@ export class CDPThumbnailService {
     try {
       await this.launchChrome();
       
-      // Wait for Chrome to stabilize
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Wait for Chrome to stabilize - longer delay for YouTube URLs
+      const isYouTube = url.includes('youtube.com') || url.includes('youtu.be');
+      const stabilizeDelay = isYouTube ? 5000 : 2000;
+      await new Promise(resolve => setTimeout(resolve, stabilizeDelay));
       
       // List available targets first
       const targets = await CDP.List({ port: this.chromePort });
@@ -196,8 +198,9 @@ export class CDPThumbnailService {
       await TargetPage.navigate({ url });
       await navigationPromise;
       
-      // Wait for content to stabilize
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      // Wait for content to stabilize - YouTube needs more time
+      const loadDelay = isYouTube ? 8000 : 3000;
+      await new Promise(resolve => setTimeout(resolve, loadDelay));
       
       // Remove LinkedIn overlays and sign-in modals
       if (url.includes('linkedin.com')) {

@@ -255,7 +255,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Regenerate thumbnail using the thumbnail service
       const { ThumbnailService } = await import('./thumbnail-service.js');
-      const filename = `ref_${id}.jpg`;
+      const filename = `${id}.jpg`;
       
       // Start thumbnail regeneration in background
       ThumbnailService.generateThumbnailToFile(reference.link, reference.title, reference.category, filename);
