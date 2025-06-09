@@ -411,13 +411,58 @@ export class CDPThumbnailService {
         }
       }
       
-      // Take screenshot with calculated clip area
+      // Take screenshot with calculated clip area and timeout protection
       console.log(`[CDP DEBUG] Step 11: Taking screenshot with clip area: ${JSON.stringify(clipArea)}...`);
-      const screenshot = await TargetPage.captureScreenshot({
+      
+      const screenshotPromise = TargetPage.captureScreenshot({
         format: 'png',
         clip: clipArea
       });
-      console.log(`[CDP DEBUG] Step 11: Screenshot captured successfully`);
+      
+      const screenshotTimeout = new Promise((_, reject) => {
+        setTimeout(() => {
+          console.log(`[CDP DEBUG] Step 11: Screenshot timeout reached, force killing Chrome...`);
+          if (this.chromeProcess && !this.chromeProcess.killed) {
+            this.chromeProcess.kill('SIGKILL');
+            this.chromeProcess = null;
+            this.chromePort = 0;
+          }
+          reject(new Error('Screenshot capture timeout'));
+        }, 15000); // Reduced to 15 seconds for faster failure
+      });
+      
+      let screenshot;
+      try {
+        screenshot = await Promise.race([screenshotPromise, screenshotTimeout]);
+        console.log(`[CDP DEBUG] Step 11: Screenshot captured successfully with clip area`);
+      } catch (screenshotError) {
+        console.log(`[CDP DEBUG] Step 11: Clip screenshot failed (${screenshotError.message}), trying full page...`);
+        
+        // Fallback to full page screenshot
+        try {
+          const fullPagePromise = TargetPage.captureScreenshot({
+            format: 'png'
+          });
+          
+          const fullPageTimeout = new Promise((_, reject) => {
+            setTimeout(() => {
+              console.log(`[CDP DEBUG] Step 11: Full page screenshot timeout, force killing Chrome...`);
+              if (this.chromeProcess && !this.chromeProcess.killed) {
+                this.chromeProcess.kill('SIGKILL');
+                this.chromeProcess = null;
+                this.chromePort = 0;
+              }
+              reject(new Error('Full page screenshot timeout'));
+            }, 15000);
+          });
+          
+          screenshot = await Promise.race([fullPagePromise, fullPageTimeout]);
+          console.log(`[CDP DEBUG] Step 11: Full page screenshot captured successfully`);
+        } catch (fullPageError) {
+          console.log(`[CDP DEBUG] Step 11: Full page screenshot also failed: ${fullPageError.message}`);
+          throw new Error(`Screenshot capture failed: ${fullPageError.message}`);
+        }
+      }
       
       // Process with Sharp for consistency
       console.log(`[CDP DEBUG] Step 12: Processing screenshot with Sharp...`);
