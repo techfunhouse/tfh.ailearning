@@ -38,7 +38,7 @@
     },
     {
       "title": "MCP vs APIs",
-      "link": "https://www.linkedin.com/pulse/mcp-apis-enterprise-ai-competition-coexistence-giri-venkatesan-atfuc",
+      "link": "https://www.linkedin.com/pulse/mcp-apis-enterprise-ai-competition-coexistence-giri-venkatesan-atfuc/",
       "description": "APIs vs MCP",
       "category": "Tutorials",
       "tags": [
@@ -46,7 +46,18 @@
       ],
       "thumbnail": "/thumbnails/817ed579-8290-4891-9fcd-164921116ae0.jpg",
       "id": "c1e67049-3350-47a8-be33-47b7aabea575",
-      "updatedAt": "2025-06-09T06:16:23.925Z"
+      "updatedAt": "2025-06-09T06:25:27.338Z"
+    },
+    {
+      "title": "AAAAA",
+      "link": "https://www.youtube.com/watch?v=z4zXicOAF28/",
+      "description": "AA",
+      "category": "Communities",
+      "tags": [
+        "AAA"
+      ],
+      "thumbnail": "/thumbnails/959e77a3-1141-431d-b76f-6c22f1c9aa68.jpg",
+      "id": "4f937dca-14a7-4d23-9c51-fcee75f0acf0"
     }
   ]
 }
