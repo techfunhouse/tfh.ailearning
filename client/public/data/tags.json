@@ -10,6 +10,12 @@
     "parts",
     "react",
     "solace",
-    "test-tag"
+    "test-tag",
+    {
+      "name": "test"
+    },
+    {
+      "name": "screenshot"
+    }
   ]
 }

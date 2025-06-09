@@ -2,14 +2,15 @@
   "references": [
     {
       "title": "Parts 1",
-      "link": "https://www.youtube.com/watch?v=kXsy1JCTQms",
+      "link": "https://www.youtube.com/watch?v=kXsy1JCTQms/",
       "description": "Parts 1",
       "category": "Video Learning",
       "tags": [
         "parts"
       ],
       "thumbnail": "/thumbnails/4371eb94-9559-40b2-a7f0-7e2d0d8d8292.jpg",
-      "id": "4371eb94-9559-40b2-a7f0-7e2d0d8d8292"
+      "id": "4371eb94-9559-40b2-a7f0-7e2d0d8d8292",
+      "updatedAt": "2025-06-09T16:58:38.599Z"
     },
     {
       "title": "P1",
@@ -21,6 +22,18 @@
       ],
       "thumbnail": "/thumbnails/a0f8b8d7-a4fb-4b74-9dec-66d51526b260.jpg",
       "id": "a0f8b8d7-a4fb-4b74-9dec-66d51526b260"
+    },
+    {
+      "title": "Example Test Site",
+      "link": "https://example.com",
+      "description": "Testing real screenshot capture",
+      "category": "Web Development",
+      "tags": [
+        "test",
+        "screenshot"
+      ],
+      "id": "57468f4f-6491-4188-8138-56c1a92bb80f",
+      "thumbnail": "/thumbnails/57468f4f-6491-4188-8138-56c1a92bb80f.jpg"
     }
   ]
 }

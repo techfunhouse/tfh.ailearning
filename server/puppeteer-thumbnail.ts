@@ -48,9 +48,23 @@ export class PuppeteerThumbnailService {
     try {
       console.log(`[SCREENSHOT] Starting for: ${url}`);
       
-      // Launch browser with simplified, proven configuration
+      // Find system Chrome/Chromium
+      const { execSync } = require('child_process');
+      let executablePath;
+      
+      try {
+        executablePath = execSync('which chromium-browser || which google-chrome || which chromium', { encoding: 'utf8' }).trim();
+        console.log(`[SCREENSHOT] Using browser: ${executablePath}`);
+      } catch (e) {
+        console.log(`[SCREENSHOT] No system browser found, using Puppeteer default`);
+        executablePath = undefined;
+      }
+      
+      // Launch browser
       browser = await puppeteer.launch({
-        headless: 'new'
+        headless: 'new',
+        executablePath,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
       });
       
       const page = await browser.newPage();
