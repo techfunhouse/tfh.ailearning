@@ -240,13 +240,16 @@ export class CDPThumbnailService {
               // Remove modal classes
               document.body.classList.remove('modal-open', 'overflow-hidden');
               
-              // Wait a moment for DOM changes
-              new Promise(resolve => setTimeout(resolve, 1000));
+              // Return success indicator
+              true;
             `,
             awaitPromise: true,
             timeout: 5000
           });
           console.log('LinkedIn overlays removed');
+          
+          // Short wait for DOM cleanup
+          await new Promise(resolve => setTimeout(resolve, 1000));
         } catch (error) {
           console.log('Failed to remove LinkedIn overlays:', error);
         }
