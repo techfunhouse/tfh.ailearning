@@ -22,6 +22,30 @@
       ],
       "id": "887e9be2-d8aa-4492-bb29-c4afb0a89165",
       "thumbnail": "/thumbnails/887e9be2-d8aa-4492-bb29-c4afb0a89165.jpg"
+    },
+    {
+      "title": "Beautiful YouTube Tutorial",
+      "link": "https://www.youtube.com/watch?v=beautiful123",
+      "description": "Testing the new soft, eye-friendly placeholder design",
+      "category": "Video Learning",
+      "tags": [
+        "beautiful",
+        "design"
+      ],
+      "id": "13c8ac56-0c80-480d-95a3-c17be584c9b8",
+      "thumbnail": "/thumbnails/13c8ac56-0c80-480d-95a3-c17be584c9b8.jpg"
+    },
+    {
+      "title": "GitHub Open Source Project",
+      "link": "https://github.com/beautiful/project",
+      "description": "Testing the new gentle GitHub placeholder design",
+      "category": "Development Tools",
+      "tags": [
+        "github",
+        "opensource"
+      ],
+      "id": "4a525d2f-e126-4e1d-92c8-231cbed72828",
+      "thumbnail": "/thumbnails/4a525d2f-e126-4e1d-92c8-231cbed72828.jpg"
     }
   ]
 }
