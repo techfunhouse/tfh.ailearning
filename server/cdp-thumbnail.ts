@@ -131,18 +131,50 @@ export class CDPThumbnailService {
 
   static async takeScreenshot(url: string, filename: string): Promise<boolean> {
     let client: any = null;
+    let pageClient: any = null;
     
     try {
       await this.launchChrome();
       
+      // Wait for Chrome to stabilize
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // List available targets first
+      const targets = await CDP.List({ port: this.chromePort });
+      console.log(`Available targets: ${targets.length}`);
+      
+      if (targets.length === 0) {
+        // Try to create a new page if no targets exist
+        console.log('No targets found, creating new page...');
+        try {
+          await CDP.New({ port: this.chromePort });
+          await new Promise(resolve => setTimeout(resolve, 1500));
+        } catch (createError) {
+          console.log('Failed to create new page:', createError);
+        }
+      }
+      
+      // Connect to browser first
       client = await CDP({ port: this.chromePort });
-      const { Page, Runtime, Network, Target } = client;
+      const { Target } = client;
       
-      // Create a new target (page) 
-      const { targetId } = await Target.createTarget({ url: 'about:blank' });
+      let targetId: string;
       
-      // Connect to the new target
-      const pageClient = await CDP({ port: this.chromePort, target: targetId });
+      // Try to use existing target or create new one
+      const updatedTargets = await CDP.List({ port: this.chromePort });
+      if (updatedTargets.length > 0) {
+        // Use existing target
+        targetId = updatedTargets[0].id;
+        console.log(`Using existing target: ${targetId}`);
+      } else {
+        // Create new target as last resort
+        console.log('Creating new target...');
+        const result = await Target.createTarget({ url: 'about:blank' });
+        targetId = result.targetId;
+      }
+      
+      // Connect to the target page
+      pageClient = await CDP({ port: this.chromePort, target: targetId });
       const { Page: TargetPage, Runtime: TargetRuntime, Network: TargetNetwork } = pageClient;
       
       // Enable necessary domains on the target page
@@ -282,6 +314,11 @@ export class CDPThumbnailService {
       console.log(`CDP screenshot failed for ${url}: ${error.message}`);
       return false;
     } finally {
+      if (pageClient) {
+        try {
+          await pageClient.close();
+        } catch {}
+      }
       if (client) {
         try {
           await client.close();

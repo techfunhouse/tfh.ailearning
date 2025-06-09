@@ -61,7 +61,7 @@
     },
     {
       "title": "Agents",
-      "link": "https://www.youtube.com/watch?v=YAQqAIBcLQ4/",
+      "link": "https://www.youtube.com/watch?v=YAQqAIBcLQ4",
       "description": "Agents",
       "category": "Tutorials",
       "tags": [
@@ -69,7 +69,18 @@
       ],
       "thumbnail": "/thumbnails/02dfea10-67ab-44f0-b1af-04d72634237e.jpg",
       "id": "791537b5-c703-4f81-826f-6ba44b384bf3",
-      "updatedAt": "2025-06-09T09:48:57.901Z"
+      "updatedAt": "2025-06-09T10:04:51.451Z"
+    },
+    {
+      "title": "ISG",
+      "link": "https://research.isg-one.com/buyers-guide/artificial-intelligence/streaming-and-events/2025-buyers-guides-for-real-time-data",
+      "description": "ISFG",
+      "category": "Research Portals",
+      "tags": [
+        "ISG"
+      ],
+      "thumbnail": "/thumbnails/3b9293a8-fbdb-4800-982a-8b7d65dcee3e.jpg",
+      "id": "e6403033-0b73-4817-aaa7-2619899bc332"
     }
   ]
 }
