@@ -61,14 +61,15 @@
     },
     {
       "title": "Agents",
-      "link": "https://www.youtube.com/watch?v=YAQqAIBcLQ4",
+      "link": "https://www.youtube.com/watch?v=YAQqAIBcLQ4/",
       "description": "Agents",
       "category": "Tutorials",
       "tags": [
         "agent"
       ],
       "thumbnail": "/thumbnails/02dfea10-67ab-44f0-b1af-04d72634237e.jpg",
-      "id": "791537b5-c703-4f81-826f-6ba44b384bf3"
+      "id": "791537b5-c703-4f81-826f-6ba44b384bf3",
+      "updatedAt": "2025-06-09T09:43:26.992Z"
     }
   ]
 }

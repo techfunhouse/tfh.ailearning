@@ -5,12 +5,15 @@ import path from 'path';
 
 export class CDPThumbnailService {
   private static chromeProcess: any = null;
-  private static chromePort: number = 9222;
+  private static chromePort: number = 0;
 
   static async launchChrome(): Promise<void> {
     if (this.chromeProcess) {
       return;
     }
+
+    // Find available port for Chrome debugging
+    this.chromePort = await this.findAvailablePort();
 
     // Detect environment for Chrome executable path
     const isReplit = process.env.REPLIT_CLUSTER || process.env.REPL_SLUG;
@@ -58,13 +61,64 @@ export class CDPThumbnailService {
       '--disable-new-content-rendering-timeout'
     ];
 
+    console.log(`Launching Chrome with CDP on port ${this.chromePort}`);
     this.chromeProcess = spawn(chromePath, args, {
-      stdio: 'pipe',
+      stdio: ['ignore', 'pipe', 'pipe'],
       detached: false
     });
 
-    // Wait for Chrome to start
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Handle process errors
+    this.chromeProcess.on('error', (error: any) => {
+      console.log('Chrome process error:', error.message);
+      this.chromeProcess = null;
+    });
+
+    this.chromeProcess.on('exit', (code: number) => {
+      console.log(`Chrome process exited with code ${code}`);
+      this.chromeProcess = null;
+    });
+
+    // Wait for Chrome to start and verify connection
+    await new Promise((resolve, reject) => {
+      const checkConnection = async () => {
+        try {
+          const response = await fetch(`http://localhost:${this.chromePort}/json/version`);
+          if (response.ok) {
+            console.log(`Chrome CDP connection established on port ${this.chromePort}`);
+            resolve(undefined);
+          } else {
+            throw new Error('CDP not ready');
+          }
+        } catch (error) {
+          // Continue checking
+          setTimeout(checkConnection, 500);
+        }
+      };
+      
+      // Start checking after initial delay
+      setTimeout(checkConnection, 1000);
+      
+      // Timeout after 10 seconds
+      setTimeout(() => reject(new Error('Chrome startup timeout')), 10000);
+    });
+  }
+
+  private static async findAvailablePort(): Promise<number> {
+    const net = await import('net');
+    
+    return new Promise((resolve, reject) => {
+      const server = net.createServer();
+      server.listen(0, () => {
+        const port = (server.address() as any)?.port;
+        server.close(() => {
+          if (port) {
+            resolve(port);
+          } else {
+            reject(new Error('Could not find available port'));
+          }
+        });
+      });
+    });
   }
 
   static async takeScreenshot(url: string, filename: string): Promise<boolean> {
