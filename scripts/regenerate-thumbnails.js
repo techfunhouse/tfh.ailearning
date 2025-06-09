@@ -4,8 +4,8 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
 
-// Load environment variables
-dotenv.config({ path: path.join(process.cwd(), '.env.local') });
+// Load environment variables from .env file if it exists
+dotenv.config();
 
 // Configuration
 const PORT = process.env.PORT || 5000;
