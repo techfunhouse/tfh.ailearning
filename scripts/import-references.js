@@ -118,7 +118,7 @@ async function createTag(baseUrl, cookies, tagName) {
       'Content-Type': 'application/json',
       Cookie: cookies,
     },
-    body: JSON.stringify({ name: tagName }),
+    body: JSON.stringify({ tag: tagName }),
   });
 
   if (!response.ok) {

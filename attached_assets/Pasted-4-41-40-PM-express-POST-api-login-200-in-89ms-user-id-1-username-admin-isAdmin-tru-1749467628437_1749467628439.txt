@@ -1,0 +1,288 @@
+4:41:40 PM [express] POST /api/login 200 in 89ms :: {"user":{"id":1,"username":"admin","isAdmin":tru…
+4:41:40 PM [express] GET /api/references 200 in 0ms :: []
+4:41:40 PM [express] GET /api/categories 200 in 0ms :: [{"name":"Video Learning","id":"02cc8bb3-99c1…
+4:41:40 PM [express] GET /api/tags 200 in 1ms :: [{"name":"canva"},{"name":"conference"},{"name":"so…
+4:41:40 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:41:40 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:41:40 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+Auto-created new tag: react
+Auto-created new tag: frontend
+Auto-created new tag: javascript
+Reference data saved to file
+Starting real screenshot generation for: https://react.dev
+4:41:40 PM [express] POST /api/references 201 in 10ms :: {"title":"React Documentation","link":"http…
+Created loading thumbnail: 3bd5840d-7796-4261-9058-842486bd04ef.jpg
+4:41:42 PM [express] POST /api/tags 400 in 2ms :: {"message":"Invalid tag name"}
+4:41:42 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+Available targets: 2
+4:41:42 PM [express] POST /api/tags 400 in 2ms :: {"message":"Invalid tag name"}
+Auto-created new tag: nodejs
+Auto-created new tag: backend
+Reference data saved to file
+4:41:42 PM [express] POST /api/references 201 in 5ms :: {"title":"Node.js Official Guide","link":"ht…
+Using existing target: B6954FC258121288D40A88A92850B1DD
+Created loading thumbnail: 9e5fc4d1-775e-4169-b9a6-3a01169e28f2.jpg
+4:41:43 PM [express] GET /api/references 200 in 3ms :: [{"title":"React Documentation","link":"https…
+4:41:43 PM [express] GET /api/categories 304 in 5ms :: [{"name":"Video Learning","id":"02cc8bb3-99c1…
+4:41:43 PM [express] GET /api/tags 200 in 4ms :: [{"name":"canva"},{"name":"conference"},{"name":"so…
+4:41:44 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:41:44 PM [express] POST /api/tags 400 in 0ms :: {"message":"Invalid tag name"}
+4:41:44 PM [express] POST /api/tags 400 in 0ms :: {"message":"Invalid tag name"}
+4:41:44 PM [express] POST /api/tags 400 in 0ms :: {"message":"Invalid tag name"}
+Auto-created new tag: web
+Auto-created new tag: html
+Auto-created new tag: css
+Reference data saved to file
+4:41:44 PM [express] POST /api/references 201 in 4ms :: {"title":"MDN Web Docs","link":"https://deve…
+Created loading thumbnail: 1c3033d5-4ec0-4820-baeb-40fd721cc899.jpg
+4:41:45 PM [express] GET /api/references 200 in 4ms :: [{"title":"React Documentation","link":"https…
+4:41:45 PM [express] GET /api/categories 304 in 3ms :: [{"name":"Video Learning","id":"02cc8bb3-99c1…
+4:41:45 PM [express] GET /api/tags 200 in 4ms :: [{"name":"canva"},{"name":"conference"},{"name":"so…
+4:41:46 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:41:46 PM [express] POST /api/tags 400 in 0ms :: {"message":"Invalid tag name"}
+4:41:46 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+Auto-created new tag: git
+Auto-created new tag: github
+Auto-created new tag: collaboration
+Reference data saved to file
+4:41:46 PM [express] POST /api/references 201 in 4ms :: {"title":"GitHub","link":"https://github.com…
+Created loading thumbnail: bebef979-cebd-4e20-956a-1f1f44c2a502.jpg
+4:41:47 PM [express] GET /api/references 200 in 5ms :: [{"title":"React Documentation","link":"https…
+4:41:47 PM [express] GET /api/categories 304 in 3ms :: [{"name":"Video Learning","id":"02cc8bb3-99c1…
+4:41:47 PM [express] GET /api/tags 200 in 3ms :: [{"name":"canva"},{"name":"conference"},{"name":"so…
+Thumbnail generation failed for 13d29b93-af78-42f5-874c-902fa0e55255.jpg: Error: Thumbnail generation timeout
+    at Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:617:37)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+Created failure thumbnail: 13d29b93-af78-42f5-874c-902fa0e55255.jpg
+Failed to trigger thumbnail refresh: Error: ENOENT: no such file or directory, utime '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/13d29b93-af78-42f5-874c-902fa0e55255.jpg'
+    at async Object.utimes (node:internal/fs/promises:1138:10)
+    at async Function.triggerThumbnailRefresh (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:706:7)
+    at async Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:651:9) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'utime',
+  path: '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/13d29b93-af78-42f5-874c-902fa0e55255.jpg'
+}
+4:41:48 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:41:48 PM [express] POST /api/tags 400 in 2ms :: {"message":"Invalid tag name"}
+4:41:48 PM [express] POST /api/tags 400 in 2ms :: {"message":"Invalid tag name"}
+Auto-created new tag: programming
+Auto-created new tag: qa
+Auto-created new tag: help
+Reference data saved to file
+4:41:48 PM [express] POST /api/references 201 in 8ms :: {"title":"Stack Overflow","link":"https://st…
+4:41:48 PM [express] GET /api/references 200 in 5ms :: [{"title":"React Documentation","link":"https…
+4:41:48 PM [express] GET /api/categories 304 in 4ms :: [{"name":"Video Learning","id":"02cc8bb3-99c1…
+4:41:48 PM [express] GET /api/tags 200 in 4ms :: [{"name":"canva"},{"name":"conference"},{"name":"so…
+Created loading thumbnail: df78613e-369a-47e1-8f8c-39c6e68cc73a.jpg
+4:41:49 PM [express] GET /api/references 304 in 2ms :: [{"title":"React Documentation","link":"https…
+4:41:49 PM [express] GET /api/categories 304 in 3ms :: [{"name":"Video Learning","id":"02cc8bb3-99c1…
+4:41:49 PM [express] GET /api/tags 304 in 4ms :: [{"name":"canva"},{"name":"conference"},{"name":"so…
+4:41:50 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:41:50 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:41:50 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+Auto-created new tag: typescript
+Auto-created new tag: types
+Reference data saved to file
+4:41:50 PM [express] POST /api/references 201 in 3ms :: {"title":"TypeScript Handbook","link":"https…
+Created loading thumbnail: 18d9a1c6-e69f-4165-aa98-c9ef570e7749.jpg
+Thumbnail generation failed for 78031add-5e68-4882-a380-192d209bf4b9.jpg: Error: Thumbnail generation timeout
+    at Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:617:37)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+Created failure thumbnail: 78031add-5e68-4882-a380-192d209bf4b9.jpg
+Failed to trigger thumbnail refresh: Error: ENOENT: no such file or directory, utime '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/78031add-5e68-4882-a380-192d209bf4b9.jpg'
+    at async Object.utimes (node:internal/fs/promises:1138:10)
+    at async Function.triggerThumbnailRefresh (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:706:7)
+    at async Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:651:9) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'utime',
+  path: '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/78031add-5e68-4882-a380-192d209bf4b9.jpg'
+}
+4:41:52 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:41:52 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:41:52 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+Auto-created new tag: editor
+Auto-created new tag: ide
+Auto-created new tag: development
+Reference data saved to file
+4:41:52 PM [express] POST /api/references 201 in 3ms :: {"title":"VS Code","link":"https://code.visu…
+Created loading thumbnail: 5beaf511-a95b-4178-a999-154be30c93ba.jpg
+4:41:54 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:41:54 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:41:54 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+Auto-created new tag: npm
+Auto-created new tag: packages
+Reference data saved to file
+4:41:54 PM [express] POST /api/references 201 in 3ms :: {"title":"npm Registry","link":"https://www.…
+Created loading thumbnail: 033e7053-9a11-4f2b-aec2-081940105972.jpg
+Thumbnail generation failed for ea8fcd5a-fc3d-4cc5-989a-42b1509744b5.jpg: Error: Thumbnail generation timeout
+    at Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:617:37)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+Created failure thumbnail: ea8fcd5a-fc3d-4cc5-989a-42b1509744b5.jpg
+Failed to trigger thumbnail refresh: Error: ENOENT: no such file or directory, utime '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/ea8fcd5a-fc3d-4cc5-989a-42b1509744b5.jpg'
+    at async Object.utimes (node:internal/fs/promises:1138:10)
+    at async Function.triggerThumbnailRefresh (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:706:7)
+    at async Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:651:9) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'utime',
+  path: '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/ea8fcd5a-fc3d-4cc5-989a-42b1509744b5.jpg'
+}
+4:41:56 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:41:56 PM [express] POST /api/tags 400 in 0ms :: {"message":"Invalid tag name"}
+4:41:56 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+Auto-created new tag: webpack
+Auto-created new tag: build
+Auto-created new tag: bundler
+Reference data saved to file
+4:41:56 PM [express] POST /api/references 201 in 4ms :: {"title":"Webpack Documentation","link":"htt…
+Created loading thumbnail: a2897764-83e7-4ba4-8dd6-8175571b2bff.jpg
+4:41:58 PM [express] POST /api/tags 400 in 0ms :: {"message":"Invalid tag name"}
+4:41:58 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:41:58 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:41:58 PM [express] POST /api/tags 400 in 0ms :: {"message":"Invalid tag name"}
+Auto-created new tag: express
+Auto-created new tag: framework
+Reference data saved to file
+4:41:58 PM [express] POST /api/references 201 in 3ms :: {"title":"Express.js Guide","link":"https://…
+Created loading thumbnail: 7a74f23e-647b-436b-87af-ded7c8177905.jpg
+Thumbnail generation failed for 817ed579-8290-4891-9fcd-164921116ae0.jpg: Error: Thumbnail generation timeout
+    at Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:617:37)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+Created failure thumbnail: 817ed579-8290-4891-9fcd-164921116ae0.jpg
+Failed to trigger thumbnail refresh: Error: ENOENT: no such file or directory, utime '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/817ed579-8290-4891-9fcd-164921116ae0.jpg'
+    at async Object.utimes (node:internal/fs/promises:1138:10)
+    at async Function.triggerThumbnailRefresh (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:706:7)
+    at async Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:651:9) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'utime',
+  path: '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/817ed579-8290-4891-9fcd-164921116ae0.jpg'
+}
+4:42:00 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:42:00 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:42:00 PM [express] POST /api/tags 400 in 0ms :: {"message":"Invalid tag name"}
+Auto-created new tag: mongodb
+Auto-created new tag: database
+Auto-created new tag: nosql
+Reference data saved to file
+4:42:00 PM [express] POST /api/references 201 in 4ms :: {"title":"MongoDB Manual","link":"https://do…
+Created loading thumbnail: e140b58e-2830-4309-aaa1-68a5efb0498e.jpg
+4:42:02 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:42:02 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:42:02 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+Auto-created new tag: postgresql
+Auto-created new tag: sql
+Reference data saved to file
+4:42:02 PM [express] POST /api/references 201 in 4ms :: {"title":"PostgreSQL Documentation","link":"…
+Created loading thumbnail: 8cabfd8f-092c-4b2d-a323-bbac2d41e1c3.jpg
+Thumbnail generation failed for 959e77a3-1141-431d-b76f-6c22f1c9aa68.jpg: Error: Thumbnail generation timeout
+    at Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:617:37)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+Created failure thumbnail: 959e77a3-1141-431d-b76f-6c22f1c9aa68.jpg
+Failed to trigger thumbnail refresh: Error: ENOENT: no such file or directory, utime '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/959e77a3-1141-431d-b76f-6c22f1c9aa68.jpg'
+    at async Object.utimes (node:internal/fs/promises:1138:10)
+    at async Function.triggerThumbnailRefresh (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:706:7)
+    at async Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:651:9) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'utime',
+  path: '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/959e77a3-1141-431d-b76f-6c22f1c9aa68.jpg'
+}
+4:42:04 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:42:04 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:42:04 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+Auto-created new tag: docker
+Auto-created new tag: containers
+Auto-created new tag: devops
+Reference data saved to file
+4:42:04 PM [express] POST /api/references 201 in 4ms :: {"title":"Docker Hub","link":"https://hub.do…
+Created loading thumbnail: 3f5927fc-19e8-4014-990e-d72be7f5f6d0.jpg
+4:42:06 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:42:06 PM [express] POST /api/tags 400 in 0ms :: {"message":"Invalid tag name"}
+4:42:06 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+Auto-created new tag: aws
+Auto-created new tag: cloud
+Auto-created new tag: infrastructure
+Reference data saved to file
+4:42:06 PM [express] POST /api/references 201 in 5ms :: {"title":"AWS Documentation","link":"https:/…
+Created loading thumbnail: 390ade77-c1cf-4188-8e7e-87612a8aab70.jpg
+Thumbnail generation failed for 02dfea10-67ab-44f0-b1af-04d72634237e.jpg: Error: Thumbnail generation timeout
+    at Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:617:37)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+Created failure thumbnail: 02dfea10-67ab-44f0-b1af-04d72634237e.jpg
+Failed to trigger thumbnail refresh: Error: ENOENT: no such file or directory, utime '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/02dfea10-67ab-44f0-b1af-04d72634237e.jpg'
+    at async Object.utimes (node:internal/fs/promises:1138:10)
+    at async Function.triggerThumbnailRefresh (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:706:7)
+    at async Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:651:9) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'utime',
+  path: '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/02dfea10-67ab-44f0-b1af-04d72634237e.jpg'
+}
+4:42:08 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:42:08 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+4:42:08 PM [express] POST /api/tags 400 in 1ms :: {"message":"Invalid tag name"}
+Auto-created new tag: jest
+Auto-created new tag: testing
+Reference data saved to file
+4:42:08 PM [express] POST /api/references 201 in 3ms :: {"title":"Jest Testing Framework","link":"ht…
+Created loading thumbnail: f5334a57-1ddd-44c9-b895-3f943ee2cc89.jpg
+Thumbnail generation failed for 3b9293a8-fbdb-4800-982a-8b7d65dcee3e.jpg: Error: Thumbnail generation timeout
+    at Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:617:37)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+Created failure thumbnail: 3b9293a8-fbdb-4800-982a-8b7d65dcee3e.jpg
+Failed to trigger thumbnail refresh: Error: ENOENT: no such file or directory, utime '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/3b9293a8-fbdb-4800-982a-8b7d65dcee3e.jpg'
+    at async Object.utimes (node:internal/fs/promises:1138:10)
+    at async Function.triggerThumbnailRefresh (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:706:7)
+    at async Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:651:9) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'utime',
+  path: '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/3b9293a8-fbdb-4800-982a-8b7d65dcee3e.jpg'
+}
+4:42:15 PM [express] GET /api/references 200 in 5ms :: [{"title":"React Documentation","link":"https…
+4:42:15 PM [express] GET /api/categories 304 in 12ms :: [{"name":"Video Learning","id":"02cc8bb3-99c…
+4:42:15 PM [express] GET /api/tags 200 in 12ms :: [{"name":"canva"},{"name":"conference"},{"name":"s…
+Thumbnail generation failed for 13d29b93-af78-42f5-874c-902fa0e55255.jpg: Error: Thumbnail generation timeout
+    at Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:617:37)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+Created failure thumbnail: 13d29b93-af78-42f5-874c-902fa0e55255.jpg
+Failed to trigger thumbnail refresh: Error: ENOENT: no such file or directory, utime '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/13d29b93-af78-42f5-874c-902fa0e55255.jpg'
+    at async Object.utimes (node:internal/fs/promises:1138:10)
+    at async Function.triggerThumbnailRefresh (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:706:7)
+    at async Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:651:9) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'utime',
+  path: '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/13d29b93-af78-42f5-874c-902fa0e55255.jpg'
+}
+4:42:47 PM [express] GET /api/references 304 in 3ms :: [{"title":"React Documentation","link":"https…
+4:42:47 PM [express] GET /api/categories 304 in 5ms :: [{"name":"Video Learning","id":"02cc8bb3-99c1…
+4:42:47 PM [express] GET /api/tags 304 in 8ms :: [{"name":"canva"},{"name":"conference"},{"name":"so…
+4:43:09 PM [express] GET /api/references 304 in 2ms :: [{"title":"React Documentation","link":"https…
+4:43:09 PM [express] GET /api/categories 304 in 9ms :: [{"name":"Video Learning","id":"02cc8bb3-99c1…
+4:43:09 PM [express] GET /api/tags 304 in 10ms :: [{"name":"canva"},{"name":"conference"},{"name":"s…
+Thumbnail generation failed for 78031add-5e68-4882-a380-192d209bf4b9.jpg: Error: Thumbnail generation timeout
+    at Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:617:37)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+Created failure thumbnail: 78031add-5e68-4882-a380-192d209bf4b9.jpg
+Failed to trigger thumbnail refresh: Error: ENOENT: no such file or directory, utime '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/78031add-5e68-4882-a380-192d209bf4b9.jpg'
+    at async Object.utimes (node:internal/fs/promises:1138:10)
+    at async Function.triggerThumbnailRefresh (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:706:7)
+    at async Timeout._onTimeout (/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/server/thumbnail-service.ts:651:9) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'utime',
+  path: '/Users/vengatagirivenkatesan/gitmine/techfunhouse/tfh.ailearning/client/public/thumbnails/78031add-5e68-4882-a380-192d209bf4b9.jpg'
+}
