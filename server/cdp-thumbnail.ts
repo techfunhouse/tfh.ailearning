@@ -186,16 +186,76 @@ export class CDPThumbnailService {
         // Continue if evaluation fails
       }
       
-      // Take screenshot
+      // For YouTube videos, get video player dimensions
+      let clipArea = { x: 0, y: 0, width: 1024, height: 768, scale: 1 };
+      
+      if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        try {
+          const playerInfo = await TargetRuntime.evaluate({
+            expression: `
+              // Wait for YouTube player to load
+              const waitForPlayer = () => {
+                const selectors = [
+                  '#movie_player',
+                  '.html5-video-player',
+                  '#player-container',
+                  '.video-stream'
+                ];
+                
+                for (const selector of selectors) {
+                  const element = document.querySelector(selector);
+                  if (element) {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.width > 0 && rect.height > 0) {
+                      return {
+                        x: Math.max(0, rect.left),
+                        y: Math.max(0, rect.top),
+                        width: Math.min(rect.width, window.innerWidth - rect.left),
+                        height: Math.min(rect.height, window.innerHeight - rect.top)
+                      };
+                    }
+                  }
+                }
+                return null;
+              };
+              
+              // Try multiple times to find the player
+              let attempts = 0;
+              const tryFind = () => {
+                const info = waitForPlayer();
+                if (info || attempts > 10) {
+                  return info;
+                }
+                attempts++;
+                return new Promise(resolve => setTimeout(() => resolve(tryFind()), 500));
+              };
+              
+              tryFind();
+            `,
+            awaitPromise: true,
+            timeout: 15000
+          });
+          
+          if (playerInfo.result && playerInfo.result.value) {
+            const player = playerInfo.result.value;
+            clipArea = {
+              x: Math.round(player.x),
+              y: Math.round(player.y),
+              width: Math.round(player.width),
+              height: Math.round(player.height),
+              scale: 1
+            };
+            console.log(`YouTube player found at: ${clipArea.x},${clipArea.y} ${clipArea.width}x${clipArea.height}`);
+          }
+        } catch (error) {
+          console.log('Could not locate YouTube player, using full page capture');
+        }
+      }
+      
+      // Take screenshot with calculated clip area
       const screenshot = await TargetPage.captureScreenshot({
         format: 'png',
-        clip: {
-          x: 0,
-          y: 0,
-          width: 1024,
-          height: 768,
-          scale: 1
-        }
+        clip: clipArea
       });
       
       // Process with Sharp for consistency
