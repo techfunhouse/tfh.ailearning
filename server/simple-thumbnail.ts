@@ -275,8 +275,8 @@ export class SimpleThumbnailService {
         // Take screenshot with better error handling
         const screenshotBuffer = await page.screenshot({
           type: 'jpeg',
-          quality: 85,
-          clip: { x: 0, y: 0, width: 1920, height: 1008 }
+          quality: 90,
+          clip: { x: 0, y: 0, width: 2048, height: 1536 }
         });
 
         // Safely close resources
@@ -380,7 +380,7 @@ export class SimpleThumbnailService {
       page = await browser.newPage();
       
       // Minimal configuration
-      await page.setViewport({ width: 1280, height: 720 });
+      await page.setViewport({ width: 1600, height: 1200 });
       await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36');
       
       // Simple navigation with short timeout
@@ -400,8 +400,8 @@ export class SimpleThumbnailService {
       // Simple screenshot
       const screenshotBuffer = await page.screenshot({
         type: 'jpeg',
-        quality: 80,
-        fullPage: false
+        quality: 85,
+        clip: { x: 0, y: 0, width: 1600, height: 1200 }
       });
       
       // Clean up immediately
