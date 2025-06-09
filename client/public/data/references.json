@@ -1,39 +1,40 @@
 {
   "references": [
     {
-      "title": "Parts 1",
-      "link": "https://www.youtube.com/watch?v=kXsy1JCTQms/",
-      "description": "Parts 1",
+      "title": "YouTube Tutorial",
+      "link": "https://www.youtube.com/watch?v=example123",
+      "description": "Testing elegant placeholder generation",
       "category": "Video Learning",
       "tags": [
-        "parts"
+        "tutorial",
+        "test"
       ],
-      "thumbnail": "/thumbnails/4371eb94-9559-40b2-a7f0-7e2d0d8d8292.jpg",
-      "id": "4371eb94-9559-40b2-a7f0-7e2d0d8d8292",
-      "updatedAt": "2025-06-09T16:58:38.599Z"
+      "id": "2baf869a-3866-4dd8-a9d3-5faad463a3bf",
+      "thumbnail": "/thumbnails/2baf869a-3866-4dd8-a9d3-5faad463a3bf.jpg"
     },
     {
-      "title": "P1",
-      "link": "https://www.youtube.com/watch?v=kXsy1JCTQms",
-      "description": "P1",
-      "category": "Video Learning",
+      "title": "GitHub Repository",
+      "link": "https://github.com/example/repo",
+      "description": "Testing GitHub placeholder",
+      "category": "Development Tools",
       "tags": [
-        "parts"
+        "github",
+        "repository"
       ],
-      "thumbnail": "/thumbnails/a0f8b8d7-a4fb-4b74-9dec-66d51526b260.jpg",
-      "id": "a0f8b8d7-a4fb-4b74-9dec-66d51526b260"
+      "id": "de88591f-8d87-49e0-ae68-a79dae8b5102",
+      "thumbnail": "/thumbnails/de88591f-8d87-49e0-ae68-a79dae8b5102.jpg"
     },
     {
-      "title": "Example Test Site",
-      "link": "https://example.com",
-      "description": "Testing real screenshot capture",
-      "category": "Web Development",
+      "title": "Documentation Site",
+      "link": "https://docs.example.com/guide",
+      "description": "Testing documentation placeholder",
+      "category": "Learning Resources",
       "tags": [
-        "test",
-        "screenshot"
+        "documentation",
+        "guide"
       ],
-      "id": "57468f4f-6491-4188-8138-56c1a92bb80f",
-      "thumbnail": "/thumbnails/57468f4f-6491-4188-8138-56c1a92bb80f.jpg"
+      "id": "9c183b25-5beb-4199-a8af-abf7dc58e43b",
+      "thumbnail": "/thumbnails/9c183b25-5beb-4199-a8af-abf7dc58e43b.jpg"
     }
   ]
 }
