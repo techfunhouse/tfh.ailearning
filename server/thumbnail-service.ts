@@ -261,7 +261,6 @@ export class ThumbnailService {
         // Process with Sharp for high-quality 1024x768 output
         const resizedBuffer = await sharp(screenshot)
           .resize(1024, 768, {
-            kernel: sharp.kernel.lanczos3,
             fit: 'cover',
             position: 'top'
           })
@@ -369,7 +368,6 @@ export class ThumbnailService {
       const sharp = await import('sharp');
       const resizedBuffer = await sharp.default(screenshot)
         .resize(1024, 768, {
-          kernel: sharp.default.kernel.lanczos3,
           fit: 'cover',
           position: 'top'
         })

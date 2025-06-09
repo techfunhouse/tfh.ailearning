@@ -762,9 +762,9 @@ export class SimpleThumbnailService {
         </svg>
       `;
       
-      const thumbnailBuffer = await sharp.default(Buffer.from(svgContent))
+      const sharpLib = await import('sharp');
+      const thumbnailBuffer = await sharpLib.default(Buffer.from(svgContent))
         .resize(1024, 768, { 
-          kernel: sharp.kernel.lanczos3,
           fit: 'contain',
           background: { r: 0, g: 0, b: 0, alpha: 1 }
         })
