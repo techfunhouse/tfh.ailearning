@@ -1,16 +1,2346 @@
 {
   "references": [
     {
-      "title": "Final Simple Test",
-      "link": "https://www.youtube.com/watch?v=final123",
-      "description": "Testing the final simplified thumbnail system",
-      "category": "Video Learning",
+      "title": "CS231n: Convolutional Neural Networks for Visual Recognition",
+      "link": "http://cs231n.stanford.edu/",
+      "description": "Stanford's flagship computer vision course covering CNNs, deep learning for images, and visual recognition",
+      "category": "online learning",
       "tags": [
-        "final",
-        "simple"
+        "course",
+        "university",
+        "stanford",
+        "computer-vision",
+        "deep-learning",
+        "cnn",
+        "academic"
       ],
-      "id": "ba71e6c5-ee2e-473b-a590-8a6eb7802efb",
-      "thumbnail": "/thumbnails/ba71e6c5-ee2e-473b-a590-8a6eb7802efb.jpg"
+      "id": "1b0c3c94-9cbd-4283-9afd-6a5473bc2491",
+      "thumbnail": "/thumbnails/1b0c3c94-9cbd-4283-9afd-6a5473bc2491.jpg"
+    },
+    {
+      "title": "CMU Neural Networks for NLP",
+      "link": "http://phontron.com/class/nn4nlp2021/",
+      "description": "Carnegie Mellon course on neural networks for natural language processing applications",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "university",
+        "cmu",
+        "nlp",
+        "neural-networks",
+        "academic"
+      ],
+      "id": "3f3fa381-cd30-4b09-b61c-716e39516c99",
+      "thumbnail": "/thumbnails/3f3fa381-cd30-4b09-b61c-716e39516c99.jpg"
+    },
+    {
+      "title": "CS224n: Natural Language Processing with Deep Learning",
+      "link": "http://web.stanford.edu/class/cs224n/",
+      "description": "Stanford's comprehensive NLP course using deep learning techniques",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "university",
+        "stanford",
+        "nlp",
+        "deep-learning",
+        "academic"
+      ],
+      "id": "a126c759-ce29-4d61-a644-165aa4aabe7a",
+      "thumbnail": "/thumbnails/a126c759-ce29-4d61-a644-165aa4aabe7a.jpg"
+    },
+    {
+      "title": "OpenAI Academy",
+      "link": "https://academy.openai.com/",
+      "description": "Free AI education platform by OpenAI with workshops, tutorials, and community learning",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "openai",
+        "free",
+        "community",
+        "workshops",
+        "beginner-friendly"
+      ],
+      "id": "8508ca17-1441-4e59-99f0-c2669446b854",
+      "thumbnail": "/thumbnails/8508ca17-1441-4e59-99f0-c2669446b854.jpg"
+    },
+    {
+      "title": "OpenAI Academy Content",
+      "link": "https://academy.openai.com/public/content",
+      "description": "Public educational content and resources from OpenAI Academy",
+      "category": "online learning",
+      "tags": [
+        "content",
+        "openai",
+        "tutorials",
+        "free",
+        "educational-materials"
+      ],
+      "id": "8df62ad4-7cb2-46f7-a1fa-ce5b7435b6b7",
+      "thumbnail": "/thumbnails/8df62ad4-7cb2-46f7-a1fa-ce5b7435b6b7.jpg"
+    },
+    {
+      "title": "AI at CMU",
+      "link": "https://ai.cmu.edu/",
+      "description": "Carnegie Mellon University's central hub for artificial intelligence research and education",
+      "category": "online learning",
+      "tags": [
+        "university",
+        "cmu",
+        "research",
+        "ai-hub",
+        "academic"
+      ],
+      "id": "15e9a113-637f-49b6-ae8b-f0d5bc7d1d7a",
+      "thumbnail": "/thumbnails/15e9a113-637f-49b6-ae8b-f0d5bc7d1d7a.jpg"
+    },
+    {
+      "title": "Google AI Education",
+      "link": "https://ai.google/education/",
+      "description": "Google's educational resources and courses for artificial intelligence",
+      "category": "video learning",
+      "tags": [
+        "google",
+        "education",
+        "corporate",
+        "beginner-friendly",
+        "free"
+      ],
+      "id": "59629fea-ae18-40b4-b55e-b1887d2439b3",
+      "thumbnail": "/thumbnails/59629fea-ae18-40b4-b55e-b1887d2439b3.jpg"
+    },
+    {
+      "title": "Stanford AI Courses",
+      "link": "https://ai.stanford.edu/stanford-ai-courses",
+      "description": "Collection of Stanford's artificial intelligence courses and educational materials",
+      "category": "online learning",
+      "tags": [
+        "university",
+        "stanford",
+        "course-collection",
+        "academic"
+      ],
+      "id": "b4a6c812-34a8-4580-929e-21616191abf3",
+      "thumbnail": "/thumbnails/b4a6c812-34a8-4580-929e-21616191abf3.jpg"
+    },
+    {
+      "title": "Artificial Intelligence for Beginners - Alison",
+      "link": "https://alison.com/course/artificial-intelligence-for-beginners",
+      "description": "Free introductory AI course covering basic concepts and applications",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "free",
+        "beginner",
+        "certification",
+        "online-platform"
+      ],
+      "id": "dff5eb7c-c9cb-4292-8e6c-def1bb9b318c",
+      "thumbnail": "/thumbnails/dff5eb7c-c9cb-4292-8e6c-def1bb9b318c.jpg"
+    },
+    {
+      "title": "Machine Learning with Artificial Intelligence - Alison",
+      "link": "https://alison.com/course/machine-learning-with-artificial-intelligence",
+      "description": "Comprehensive course combining ML and AI concepts with practical applications",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "free",
+        "machine-learning",
+        "certification",
+        "online-platform"
+      ],
+      "id": "19bc44d7-13d2-45d2-8948-214e04cd7094",
+      "thumbnail": "/thumbnails/19bc44d7-13d2-45d2-8948-214e04cd7094.jpg"
+    },
+    {
+      "title": "Complete Artificial Intelligence Masterclass - Alison",
+      "link": "https://alison.com/course/the-complete-artificial-intelligence-masterclass",
+      "description": "Advanced AI course covering comprehensive topics from basics to advanced applications",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "free",
+        "advanced",
+        "masterclass",
+        "certification"
+      ],
+      "id": "1a4c099a-731c-4663-9789-5f4399d8f56f",
+      "thumbnail": "/thumbnails/1a4c099a-731c-4663-9789-5f4399d8f56f.jpg"
+    },
+    {
+      "title": "arXiv AI Papers",
+      "link": "https://arxiv.org/list/cs.AI/recent",
+      "description": "Latest artificial intelligence research papers and preprints",
+      "category": "research portals",
+      "tags": [
+        "research",
+        "papers",
+        "academic",
+        "cutting-edge",
+        "preprints"
+      ],
+      "id": "14f043c2-8bb8-480d-9d39-5489731a61f5",
+      "thumbnail": "/thumbnails/14f043c2-8bb8-480d-9d39-5489731a61f5.jpg"
+    },
+    {
+      "title": "AWS Machine Learning Training",
+      "link": "https://aws.amazon.com/training/learn-about/machine-learning/",
+      "description": "Amazon Web Services training courses and resources for machine learning",
+      "category": "online learning",
+      "tags": [
+        "aws",
+        "cloud",
+        "corporate",
+        "certification",
+        "hands-on"
+      ],
+      "id": "56035286-81aa-4621-a46b-397cf231a7cb",
+      "thumbnail": "/thumbnails/56035286-81aa-4621-a46b-397cf231a7cb.jpg"
+    },
+    {
+      "title": "Artificial Neural Networks - Brilliant",
+      "link": "https://brilliant.org/courses/artificial-neural-networks/",
+      "description": "Interactive course on neural networks with visual explanations and problem-solving",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "interactive",
+        "neural-networks",
+        "visual",
+        "problem-solving"
+      ],
+      "id": "3df5c4d2-d94e-443b-858c-d03a2489c8f6",
+      "thumbnail": "/thumbnails/3df5c4d2-d94e-443b-858c-d03a2489c8f6.jpg"
+    },
+    {
+      "title": "Machine Learning - Brilliant",
+      "link": "https://brilliant.org/courses/machine-learning/",
+      "description": "Interactive machine learning course with hands-on problem solving",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "interactive",
+        "machine-learning",
+        "visual",
+        "problem-solving"
+      ],
+      "id": "cdf577c7-21f1-4c16-b2cf-2d18f9c68ed9",
+      "thumbnail": "/thumbnails/cdf577c7-21f1-4c16-b2cf-2d18f9c68ed9.jpg"
+    },
+    {
+      "title": "Building AI - Elements of AI",
+      "link": "https://buildingai.elementsofai.com",
+      "description": "Practical course on building AI applications and understanding implementation",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "free",
+        "practical",
+        "building",
+        "finland-university"
+      ],
+      "id": "2d1e4aab-5467-4a1a-85b4-53ff2e691fcc",
+      "thumbnail": "/thumbnails/2d1e4aab-5467-4a1a-85b4-53ff2e691fcc.jpg"
+    },
+    {
+      "title": "Building AI - Elements of AI",
+      "link": "https://buildingai.elementsofai.com/",
+      "description": "Practical course on building AI applications and understanding implementation",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "free",
+        "practical",
+        "building",
+        "finland-university"
+      ],
+      "id": "499ede80-9593-45f5-a129-68615eea30b6",
+      "thumbnail": "/thumbnails/499ede80-9593-45f5-a129-68615eea30b6.jpg"
+    },
+    {
+      "title": "Google Cloud AI/ML Training",
+      "link": "https://cloud.google.com/learn/training/machinelearning-ai",
+      "description": "Google Cloud training courses for artificial intelligence and machine learning",
+      "category": "online learning",
+      "tags": [
+        "google-cloud",
+        "cloud",
+        "corporate",
+        "certification",
+        "hands-on"
+      ],
+      "id": "8ab6aaec-be4b-43bd-9cad-6143d6f2cd70",
+      "thumbnail": "/thumbnails/8ab6aaec-be4b-43bd-9cad-6143d6f2cd70.jpg"
+    },
+    {
+      "title": "Google Cloud Skills Boost AI Path",
+      "link": "https://cloudskillsboost.google/paths/118",
+      "description": "Structured learning path for AI and ML on Google Cloud platform",
+      "category": "online learning",
+      "tags": [
+        "google-cloud",
+        "learning-path",
+        "certification",
+        "structured"
+      ],
+      "id": "c60f75d5-0027-436f-91cf-65a1f70c4a34",
+      "thumbnail": "/thumbnails/c60f75d5-0027-436f-91cf-65a1f70c4a34.jpg"
+    },
+    {
+      "title": "Codecademy AI Courses",
+      "link": "https://codecademy.com/catalog/subject/artificial-intelligence",
+      "description": "Interactive coding courses focused on artificial intelligence programming",
+      "category": "general",
+      "tags": [
+        "platform",
+        "interactive",
+        "coding",
+        "freemium",
+        "hands-on"
+      ],
+      "id": "2cd85391-de58-4caa-a32d-6977b0c478ee",
+      "thumbnail": "/thumbnails/2cd85391-de58-4caa-a32d-6977b0c478ee.jpg"
+    },
+    {
+      "title": "Codecademy Machine Learning",
+      "link": "https://codecademy.com/catalog/subject/machine-learning",
+      "description": "Interactive machine learning courses with coding practice",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "interactive",
+        "coding",
+        "machine-learning",
+        "hands-on"
+      ],
+      "id": "efd9a74c-751c-45e7-9a38-d718d237bc0a",
+      "thumbnail": "/thumbnails/efd9a74c-751c-45e7-9a38-d718d237bc0a.jpg"
+    },
+    {
+      "title": "Intro to Generative AI - Codecademy",
+      "link": "https://codecademy.com/learn/intro-to-generative-ai",
+      "description": "Introduction to generative AI concepts and applications",
+      "category": "general",
+      "tags": [
+        "course",
+        "interactive",
+        "generative-ai",
+        "beginner",
+        "coding"
+      ],
+      "id": "38a30aa8-8bcb-4e92-a581-477684543d8c",
+      "thumbnail": "/thumbnails/38a30aa8-8bcb-4e92-a581-477684543d8c.jpg"
+    },
+    {
+      "title": "Machine Learning Path - Codecademy",
+      "link": "https://codecademy.com/learn/paths/machine-learning",
+      "description": "Comprehensive learning path for machine learning with hands-on projects",
+      "category": "online learning",
+      "tags": [
+        "learning-path",
+        "interactive",
+        "machine-learning",
+        "projects",
+        "hands-on"
+      ],
+      "id": "2553a7b5-9067-4177-988d-e8466e9560cc",
+      "thumbnail": "/thumbnails/2553a7b5-9067-4177-988d-e8466e9560cc.jpg"
+    },
+    {
+      "title": "ML/AI Engineering Foundations - Codecademy",
+      "link": "https://codecademy.com/learn/paths/machine-learning-ai-engineering-foundations",
+      "description": "Foundational skills for machine learning and AI engineering careers",
+      "category": "online learning",
+      "tags": [
+        "learning-path",
+        "engineering",
+        "foundations",
+        "career-focused",
+        "hands-on"
+      ],
+      "id": "ad8ccf75-ddd5-4c93-9e8f-3335c053d196",
+      "thumbnail": "/thumbnails/ad8ccf75-ddd5-4c93-9e8f-3335c053d196.jpg"
+    },
+    {
+      "title": "Machine Learning Engineer Path - Codecademy",
+      "link": "https://codecademy.com/learn/paths/machine-learning-engineer",
+      "description": "Complete career path for becoming a machine learning engineer",
+      "category": "online learning",
+      "tags": [
+        "learning-path",
+        "career",
+        "engineering",
+        "comprehensive",
+        "hands-on"
+      ],
+      "id": "2cacf3ad-1427-4090-93a0-22ee54865323",
+      "thumbnail": "/thumbnails/2cacf3ad-1427-4090-93a0-22ee54865323.jpg"
+    },
+    {
+      "title": "Cognitive Class AI Courses",
+      "link": "https://cognitiveclass.ai/courses",
+      "description": "IBM's free courses on AI, data science, and cognitive computing",
+      "category": "video learning",
+      "tags": [
+        "ibm",
+        "free",
+        "cognitive-computing",
+        "certification",
+        "corporate"
+      ],
+      "id": "2376a69c-9cab-4384-8dd3-3b69e5b3b5c4",
+      "thumbnail": "/thumbnails/2376a69c-9cab-4384-8dd3-3b69e5b3b5c4.jpg"
+    },
+    {
+      "title": "LLM Course - Comet",
+      "link": "https://comet.com/site/llm-course/",
+      "description": "Comprehensive course on Large Language Models and their applications",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "llm",
+        "large-language-models",
+        "advanced",
+        "practical"
+      ],
+      "id": "3dd9c897-fe90-44c0-a9b4-eb76c6d29603",
+      "thumbnail": "/thumbnails/3dd9c897-fe90-44c0-a9b4-eb76c6d29603.jpg"
+    },
+    {
+      "title": "Practical Deep Learning for Coders - Fast.ai",
+      "link": "https://course.fast.ai/",
+      "description": "Hands-on deep learning course focusing on practical applications",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "practical",
+        "deep-learning",
+        "coding",
+        "project-based"
+      ],
+      "id": "1b735db3-d38c-458a-82f9-07039009ebf8",
+      "thumbnail": "/thumbnails/1b735db3-d38c-458a-82f9-07039009ebf8.jpg"
+    },
+    {
+      "title": "Coursera AI Courses",
+      "link": "https://coursera.org/courses?query=artificial+intelligence",
+      "description": "Collection of artificial intelligence courses from top universities",
+      "category": "video learning",
+      "tags": [
+        "platform",
+        "university",
+        "mooc",
+        "certification",
+        "comprehensive"
+      ],
+      "id": "276372c5-42f8-42f1-8b7a-e2860d689658",
+      "thumbnail": "/thumbnails/276372c5-42f8-42f1-8b7a-e2860d689658.jpg"
+    },
+    {
+      "title": "Coursera PyTorch Courses",
+      "link": "https://coursera.org/courses?query=pytorch",
+      "description": "PyTorch-focused courses for deep learning and neural networks",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "pytorch",
+        "deep-learning",
+        "framework-specific",
+        "hands-on"
+      ],
+      "id": "dddb88f4-af09-42a6-96e7-1a7fe5fcf49a",
+      "thumbnail": "/thumbnails/dddb88f4-af09-42a6-96e7-1a7fe5fcf49a.jpg"
+    },
+    {
+      "title": "AI for Everyone - Coursera",
+      "link": "https://coursera.org/learn/ai-for-everyone",
+      "description": "Non-technical introduction to AI by Andrew Ng for business professionals",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "andrew-ng",
+        "non-technical",
+        "business",
+        "beginner"
+      ],
+      "id": "36de9826-e947-41dd-9096-f5b8842a4e60",
+      "thumbnail": "/thumbnails/36de9826-e947-41dd-9096-f5b8842a4e60.jpg"
+    },
+    {
+      "title": "Generative AI for Everyone - Coursera",
+      "link": "https://coursera.org/learn/generative-ai-for-everyone",
+      "description": "Introduction to generative AI concepts for non-technical audiences",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "generative-ai",
+        "non-technical",
+        "beginner",
+        "popular"
+      ],
+      "id": "44ec31ba-ee02-42f9-8b20-2da1886bd612",
+      "thumbnail": "/thumbnails/44ec31ba-ee02-42f9-8b20-2da1886bd612.jpg"
+    },
+    {
+      "title": "Generative AI with LLMs - Coursera",
+      "link": "https://coursera.org/learn/generative-ai-with-llms",
+      "description": "Technical course on building applications with large language models",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "generative-ai",
+        "llm",
+        "technical",
+        "hands-on"
+      ],
+      "id": "2571be0b-d54d-4487-bfc5-67c2fc92191c",
+      "thumbnail": "/thumbnails/2571be0b-d54d-4487-bfc5-67c2fc92191c.jpg"
+    },
+    {
+      "title": "Introduction to AI - Coursera",
+      "link": "https://coursera.org/learn/introduction-to-ai",
+      "description": "Foundational course covering basic artificial intelligence concepts",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "introduction",
+        "beginner",
+        "foundations",
+        "comprehensive"
+      ],
+      "id": "b5c6d30b-31a1-4a01-89e5-4fd72d505854",
+      "thumbnail": "/thumbnails/b5c6d30b-31a1-4a01-89e5-4fd72d505854.jpg"
+    },
+    {
+      "title": "Prompt Engineering - Coursera",
+      "link": "https://coursera.org/learn/prompt-engineering",
+      "description": "Specialized course on prompt engineering for LLMs and generative AI",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "prompt-engineering",
+        "llm",
+        "specialized",
+        "practical"
+      ],
+      "id": "d01e8d6b-96b5-43c5-99e4-5a46d47930b6",
+      "thumbnail": "/thumbnails/d01e8d6b-96b5-43c5-99e4-5a46d47930b6.jpg"
+    },
+    {
+      "title": "Open Source Models with Hugging Face - Coursera",
+      "link": "https://coursera.org/projects/open-source-models-with-hugging-face",
+      "description": "Hands-on project using Hugging Face for open-source AI models",
+      "category": "video learning",
+      "tags": [
+        "project",
+        "hugging-face",
+        "open-source",
+        "hands-on",
+        "practical"
+      ],
+      "id": "d97095d2-3d13-491a-8334-2cd444e994a7",
+      "thumbnail": "/thumbnails/d97095d2-3d13-491a-8334-2cd444e994a7.jpg"
+    },
+    {
+      "title": "AI Foundations for Everyone - Coursera",
+      "link": "https://coursera.org/specializations/ai-foundations-for-everyone",
+      "description": "Comprehensive AI specialization for beginners and non-technical learners",
+      "category": "video learning",
+      "tags": [
+        "specialization",
+        "foundations",
+        "beginner",
+        "non-technical",
+        "comprehensive"
+      ],
+      "id": "a334ad91-a697-48ca-bcaa-fbe19bfdc5bc",
+      "thumbnail": "/thumbnails/a334ad91-a697-48ca-bcaa-fbe19bfdc5bc.jpg"
+    },
+    {
+      "title": "Introduction to Generative AI - Coursera",
+      "link": "https://coursera.org/specializations/introduction-to-generative-ai",
+      "description": "Specialization covering generative AI concepts and applications",
+      "category": "video learning",
+      "tags": [
+        "specialization",
+        "generative-ai",
+        "comprehensive",
+        "multi-course"
+      ],
+      "id": "ac259145-af42-4c81-ad3b-58be811952d4",
+      "thumbnail": "/thumbnails/ac259145-af42-4c81-ad3b-58be811952d4.jpg"
+    },
+    {
+      "title": "Machine Learning Specialization - Coursera",
+      "link": "https://coursera.org/specializations/machine-learning-introduction",
+      "description": "Andrew Ng's updated machine learning specialization for beginners",
+      "category": "online learning",
+      "tags": [
+        "specialization",
+        "andrew-ng",
+        "machine-learning",
+        "beginner",
+        "popular"
+      ],
+      "id": "3308f701-7e90-43bf-8538-06e08253455c",
+      "thumbnail": "/thumbnails/3308f701-7e90-43bf-8538-06e08253455c.jpg"
+    },
+    {
+      "title": "DataCamp AI Courses",
+      "link": "https://datacamp.com/category/artificial-intelligence",
+      "description": "Interactive AI courses with hands-on coding and data analysis",
+      "category": "research portals",
+      "tags": [
+        "platform",
+        "interactive",
+        "data-analysis",
+        "hands-on",
+        "freemium"
+      ],
+      "id": "e8bf9c1f-d68d-4df1-aed3-096c8eaf0c41",
+      "thumbnail": "/thumbnails/e8bf9c1f-d68d-4df1-aed3-096c8eaf0c41.jpg"
+    },
+    {
+      "title": "DataCamp Machine Learning",
+      "link": "https://datacamp.com/category/machine-learning",
+      "description": "Interactive machine learning courses with practical coding exercises",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "interactive",
+        "machine-learning",
+        "coding",
+        "data-science"
+      ],
+      "id": "bdb95470-b742-465f-a078-0a23b70c12c4",
+      "thumbnail": "/thumbnails/bdb95470-b742-465f-a078-0a23b70c12c4.jpg"
+    },
+    {
+      "title": "Understanding Machine Learning - DataCamp",
+      "link": "https://datacamp.com/courses/understanding-machine-learning",
+      "description": "Foundational course on machine learning concepts and techniques",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "interactive",
+        "machine-learning",
+        "foundations",
+        "data-science"
+      ],
+      "id": "a1e2b146-c15c-48f4-b00d-ab63c694424a",
+      "thumbnail": "/thumbnails/a1e2b146-c15c-48f4-b00d-ab63c694424a.jpg"
+    },
+    {
+      "title": "ML Scientist with Python - DataCamp",
+      "link": "https://datacamp.com/tracks/machine-learning-scientist-with-python",
+      "description": "Career track for becoming a machine learning scientist using Python",
+      "category": "online learning",
+      "tags": [
+        "career-track",
+        "python",
+        "machine-learning",
+        "comprehensive",
+        "data-science"
+      ],
+      "id": "9955fe80-7f60-434d-b9a1-7dfe8c5f7e23",
+      "thumbnail": "/thumbnails/9955fe80-7f60-434d-b9a1-7dfe8c5f7e23.jpg"
+    },
+    {
+      "title": "DeepLearning.AI Courses",
+      "link": "https://deeplearning.ai/courses",
+      "description": "Andrew Ng's collection of deep learning and AI courses",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "andrew-ng",
+        "deep-learning",
+        "comprehensive",
+        "popular"
+      ],
+      "id": "a2e0c22b-0322-4200-8d3c-1dffae4ffeb5",
+      "thumbnail": "/thumbnails/a2e0c22b-0322-4200-8d3c-1dffae4ffeb5.jpg"
+    },
+    {
+      "title": "CMU Deep Learning Course",
+      "link": "https://deeplearning.cs.cmu.edu/F23/index.html",
+      "description": "Carnegie Mellon's comprehensive deep learning course with lectures and assignments",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "university",
+        "cmu",
+        "deep-learning",
+        "academic",
+        "comprehensive"
+      ],
+      "id": "a3f2048c-4287-40ac-b71c-36d5ac37defd",
+      "thumbnail": "/thumbnails/a3f2048c-4287-40ac-b71c-36d5ac37defd.jpg"
+    },
+    {
+      "title": "NVIDIA Deep Learning Courses",
+      "link": "https://developer.nvidia.com/deep-learning-courses",
+      "description": "NVIDIA's courses on deep learning and GPU computing",
+      "category": "online learning",
+      "tags": [
+        "nvidia",
+        "deep-learning",
+        "gpu",
+        "corporate",
+        "hardware-focused"
+      ],
+      "id": "8e258473-78f1-410f-b29b-a496e716e779",
+      "thumbnail": "/thumbnails/8e258473-78f1-410f-b29b-a496e716e779.jpg"
+    },
+    {
+      "title": "Distill Publication",
+      "link": "https://distill.pub/",
+      "description": "High-quality explanations of machine learning and AI concepts with interactive visualizations",
+      "category": "research portals",
+      "tags": [
+        "publication",
+        "visual",
+        "explanations",
+        "interactive",
+        "research"
+      ],
+      "id": "1eb67912-1800-4211-bd3d-bac0ba7d2829",
+      "thumbnail": "/thumbnails/1eb67912-1800-4211-bd3d-bac0ba7d2829.jpg"
+    },
+    {
+      "title": "Claude Code Tutorials - Anthropic",
+      "link": "https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/tutorials",
+      "description": "Tutorials for using Claude Code for AI-assisted programming",
+      "category": "general",
+      "tags": [
+        "tutorials",
+        "anthropic",
+        "claude",
+        "coding",
+        "ai-assistant"
+      ],
+      "id": "68f8af00-f1a1-4420-a2da-04fd7b44a219",
+      "thumbnail": "/thumbnails/68f8af00-f1a1-4420-a2da-04fd7b44a219.jpg"
+    },
+    {
+      "title": "Anthropic Courses",
+      "link": "https://docs.anthropic.com/en/docs/resources/courses",
+      "description": "Educational resources and courses from Anthropic",
+      "category": "general",
+      "tags": [
+        "courses",
+        "anthropic",
+        "documentation",
+        "educational-resources"
+      ],
+      "id": "89486106-c3a3-465a-9848-ffad92b79612",
+      "thumbnail": "/thumbnails/89486106-c3a3-465a-9848-ffad92b79612.jpg"
+    },
+    {
+      "title": "PyTorch Tutorials",
+      "link": "https://docs.pytorch.org/tutorials/",
+      "description": "Official PyTorch tutorials covering deep learning and neural networks",
+      "category": "online learning",
+      "tags": [
+        "tutorials",
+        "pytorch",
+        "official",
+        "deep-learning",
+        "framework"
+      ],
+      "id": "7cdb7fe5-b7af-49d2-9aa7-b96a1555c4f7",
+      "thumbnail": "/thumbnails/7cdb7fe5-b7af-49d2-9aa7-b96a1555c4f7.jpg"
+    },
+    {
+      "title": "PyTorch Basics Introduction",
+      "link": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+      "description": "Introduction to PyTorch fundamentals for beginners",
+      "category": "general",
+      "tags": [
+        "tutorial",
+        "pytorch",
+        "beginner",
+        "basics",
+        "framework"
+      ],
+      "id": "652625de-a132-48c6-9b73-0e1cd0600913",
+      "thumbnail": "/thumbnails/652625de-a132-48c6-9b73-0e1cd0600913.jpg"
+    },
+    {
+      "title": "PyTorch 60-Minute Deep Learning Blitz",
+      "link": "https://docs.pytorch.org/tutorials/beginner/deep_learning_60min_blitz.html",
+      "description": "Quick introduction to deep learning with PyTorch",
+      "category": "online learning",
+      "tags": [
+        "tutorial",
+        "pytorch",
+        "deep-learning",
+        "quick-start",
+        "beginner"
+      ],
+      "id": "28c7d33d-4708-4ec2-b778-0bdde1c3299a",
+      "thumbnail": "/thumbnails/28c7d33d-4708-4ec2-b778-0bdde1c3299a.jpg"
+    },
+    {
+      "title": "PyTorch with Examples",
+      "link": "https://docs.pytorch.org/tutorials/beginner/pytorch_with_examples.html",
+      "description": "PyTorch tutorials with practical examples and implementations",
+      "category": "general",
+      "tags": [
+        "tutorial",
+        "pytorch",
+        "examples",
+        "practical",
+        "hands-on"
+      ],
+      "id": "514997e6-76eb-4d18-bd5c-e43b03db4b30",
+      "thumbnail": "/thumbnails/514997e6-76eb-4d18-bd5c-e43b03db4b30.jpg"
+    },
+    {
+      "title": "Weights & Biases Tutorials",
+      "link": "https://docs.wandb.ai/tutorials/",
+      "description": "Tutorials for ML experiment tracking and model management",
+      "category": "research portals",
+      "tags": [
+        "tutorials",
+        "wandb",
+        "ml-ops",
+        "experiment-tracking",
+        "tools"
+      ],
+      "id": "546b47f0-afe8-4e84-8b70-5050d499bd46",
+      "thumbnail": "/thumbnails/546b47f0-afe8-4e84-8b70-5050d499bd46.jpg"
+    },
+    {
+      "title": "edX AI Courses for Beginners",
+      "link": "https://edx.org/courses?q=ai+courses+for+beginners",
+      "description": "Beginner-friendly AI courses from top universities on edX",
+      "category": "video learning",
+      "tags": [
+        "platform",
+        "university",
+        "beginner",
+        "mooc",
+        "free"
+      ],
+      "id": "8da77735-5dad-4c83-906b-ea566cd97225",
+      "thumbnail": "/thumbnails/8da77735-5dad-4c83-906b-ea566cd97225.jpg"
+    },
+    {
+      "title": "edX Free AI Courses",
+      "link": "https://edx.org/courses?q=free+ai+courses",
+      "description": "Collection of free artificial intelligence courses on edX",
+      "category": "video learning",
+      "tags": [
+        "platform",
+        "university",
+        "free",
+        "mooc",
+        "comprehensive"
+      ],
+      "id": "1178ca98-e2e7-4179-914e-d29aa11b737f",
+      "thumbnail": "/thumbnails/1178ca98-e2e7-4179-914e-d29aa11b737f.jpg"
+    },
+    {
+      "title": "edX AI Learning Hub",
+      "link": "https://edx.org/learn/artificial-intelligence",
+      "description": "Comprehensive AI learning resources and courses from universities",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "university",
+        "comprehensive",
+        "mooc",
+        "free"
+      ],
+      "id": "1d4007c0-f48e-4d96-9397-f11f8b68a5ad",
+      "thumbnail": "/thumbnails/1d4007c0-f48e-4d96-9397-f11f8b68a5ad.jpg"
+    },
+    {
+      "title": "Google AI for Anyone - edX",
+      "link": "https://edx.org/learn/artificial-intelligence/google-google-ai-for-anyone",
+      "description": "Google's introductory AI course for general audiences",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "google",
+        "beginner",
+        "non-technical",
+        "free"
+      ],
+      "id": "750f3162-0b1f-4085-8c23-937b730e2cb2",
+      "thumbnail": "/thumbnails/750f3162-0b1f-4085-8c23-937b730e2cb2.jpg"
+    },
+    {
+      "title": "Harvard CS50 AI with Python - edX",
+      "link": "https://edx.org/learn/artificial-intelligence/harvard-university-cs50-s-introduction-to-artificial-intelligence-with-python",
+      "description": "Harvard's introduction to AI using Python programming",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "harvard",
+        "university",
+        "python",
+        "programming",
+        "academic"
+      ],
+      "id": "6b11ef50-0122-46bc-abc0-d27cf9cffd11",
+      "thumbnail": "/thumbnails/6b11ef50-0122-46bc-abc0-d27cf9cffd11.jpg"
+    },
+    {
+      "title": "Harvard Data Science with Python - edX",
+      "link": "https://edx.org/learn/data-science/harvard-university-introduction-to-data-science-with-python",
+      "description": "Harvard's introduction to data science using Python",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "harvard",
+        "university",
+        "data-science",
+        "python",
+        "academic"
+      ],
+      "id": "845d13f5-8aea-4e13-8d55-8fca4022b7c7",
+      "thumbnail": "/thumbnails/845d13f5-8aea-4e13-8d55-8fca4022b7c7.jpg"
+    },
+    {
+      "title": "Elements of AI",
+      "link": "https://elementsofai.com",
+      "description": "Free AI course by University of Helsinki covering AI fundamentals",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "free",
+        "university",
+        "finland",
+        "beginner",
+        "comprehensive"
+      ],
+      "id": "fb92fcfb-268c-4da5-b876-c797431521b8",
+      "thumbnail": "/thumbnails/fb92fcfb-268c-4da5-b876-c797431521b8.jpg"
+    },
+    {
+      "title": "Berkeley Executive ML/AI Certificate",
+      "link": "https://em-executive.berkeley.edu/professional-certificate-machine-learning-artificial-intelligence",
+      "description": "UC Berkeley's executive education program for ML and AI",
+      "category": "online learning",
+      "tags": [
+        "certificate",
+        "berkeley",
+        "university",
+        "executive",
+        "professional"
+      ],
+      "id": "0cbce3ce-6e63-40b2-9382-c93572317405",
+      "thumbnail": "/thumbnails/0cbce3ce-6e63-40b2-9382-c93572317405.jpg"
+    },
+    {
+      "title": "AWS Skill Builder",
+      "link": "https://explore.skillbuilder.aws/learn",
+      "description": "Amazon's learning platform for cloud and AI skills",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "aws",
+        "cloud",
+        "corporate",
+        "certification"
+      ],
+      "id": "52be28b0-3128-43c7-8016-0fb565c3320a",
+      "thumbnail": "/thumbnails/52be28b0-3128-43c7-8016-0fb565c3320a.jpg"
+    },
+    {
+      "title": "Building ML-Ready Organization - AWS",
+      "link": "https://explore.skillbuilder.aws/learn/course/external/view/elearning/11323/building-a-machine-learning-ready-organization",
+      "description": "Course on organizational readiness for machine learning adoption",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "aws",
+        "organizational",
+        "business",
+        "ml-strategy"
+      ],
+      "id": "5d233f8d-d4fa-4990-8f8e-77f125a517c4",
+      "thumbnail": "/thumbnails/5d233f8d-d4fa-4990-8f8e-77f125a517c4.jpg"
+    },
+    {
+      "title": "Introduction to Generative AI - AWS",
+      "link": "https://explore.skillbuilder.aws/learn/course/external/view/elearning/17176/introduction-to-generative-ai-art-of-the-possible",
+      "description": "AWS course on generative AI possibilities and applications",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "aws",
+        "generative-ai",
+        "business",
+        "introduction"
+      ],
+      "id": "66e743fd-3b48-48eb-b25b-b2211d543950",
+      "thumbnail": "/thumbnails/66e743fd-3b48-48eb-b25b-b2211d543950.jpg"
+    },
+    {
+      "title": "Introduction to Responsible AI - AWS",
+      "link": "https://explore.skillbuilder.aws/learn/course/external/view/elearning/19495/introduction-to-responsible-ai",
+      "description": "Course on responsible AI practices and ethics",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "aws",
+        "responsible-ai",
+        "ethics",
+        "business"
+      ],
+      "id": "6755fced-bb10-4931-b157-3ac9ae067c1f",
+      "thumbnail": "/thumbnails/6755fced-bb10-4931-b157-3ac9ae067c1f.jpg"
+    },
+    {
+      "title": "Essentials of Prompt Engineering - AWS",
+      "link": "https://explore.skillbuilder.aws/learn/course/external/view/elearning/19611/essentials-of-prompt-engineering",
+      "description": "AWS course on prompt engineering fundamentals",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "aws",
+        "prompt-engineering",
+        "practical",
+        "hands-on"
+      ],
+      "id": "173675fc-127b-4fc2-8616-a3b7090b2579",
+      "thumbnail": "/thumbnails/173675fc-127b-4fc2-8616-a3b7090b2579.jpg"
+    },
+    {
+      "title": "Learn Generative AI in 23 Hours - FreeCodeCamp",
+      "link": "https://freecodecamp.org/news/learn-generative-ai-in-23-hours/",
+      "description": "Comprehensive free course on generative AI fundamentals",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "free",
+        "freecodecamp",
+        "generative-ai",
+        "comprehensive"
+      ],
+      "id": "0dc82421-c7c8-493a-8159-3c3348453aff",
+      "thumbnail": "/thumbnails/0dc82421-c7c8-493a-8159-3c3348453aff.jpg"
+    },
+    {
+      "title": "FreeCodeCamp AI Articles",
+      "link": "https://freecodecamp.org/news/tag/artificial-intelligence/",
+      "description": "Collection of AI tutorials and articles from FreeCodeCamp",
+      "category": "online learning",
+      "tags": [
+        "articles",
+        "freecodecamp",
+        "tutorials",
+        "free",
+        "comprehensive"
+      ],
+      "id": "ad0cdd36-c3f9-4669-85e1-15f0da66abe0",
+      "thumbnail": "/thumbnails/ad0cdd36-c3f9-4669-85e1-15f0da66abe0.jpg"
+    },
+    {
+      "title": "Artificial Intelligence - FutureLearn",
+      "link": "https://futurelearn.com/courses/artificial-intelligence",
+      "description": "University courses on AI fundamentals and applications",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "university",
+        "course",
+        "uk-focused",
+        "free"
+      ],
+      "id": "8b323f08-4953-4624-b12f-6f1c82c5ee16",
+      "thumbnail": "/thumbnails/8b323f08-4953-4624-b12f-6f1c82c5ee16.jpg"
+    },
+    {
+      "title": "FutureLearn AI Courses",
+      "link": "https://futurelearn.com/subjects/it-and-computer-science-courses/artificial-intelligence",
+      "description": "Collection of AI courses from UK universities",
+      "category": "general",
+      "tags": [
+        "platform",
+        "university",
+        "uk-focused",
+        "course-collection"
+      ],
+      "id": "925ac6fc-1b3d-4709-b692-2aabb95249fd",
+      "thumbnail": "/thumbnails/925ac6fc-1b3d-4709-b692-2aabb95249fd.jpg"
+    },
+    {
+      "title": "Google Gemini Overview",
+      "link": "https://gemini.google/overview/",
+      "description": "Information about Google's Gemini AI model and capabilities",
+      "category": "general",
+      "tags": [
+        "product",
+        "google",
+        "gemini",
+        "llm",
+        "information"
+      ],
+      "id": "042d8c49-0325-46b8-b73b-ff491eb16d81",
+      "thumbnail": "/thumbnails/042d8c49-0325-46b8-b73b-ff491eb16d81.jpg"
+    },
+    {
+      "title": "Anthropic Courses GitHub",
+      "link": "https://github.com/anthropics/courses",
+      "description": "Open-source courses and educational materials from Anthropic",
+      "category": "communities",
+      "tags": [
+        "github",
+        "anthropic",
+        "open-source",
+        "courses",
+        "educational"
+      ],
+      "id": "261a8d28-1200-45ff-8e06-1567e3d116e8",
+      "thumbnail": "/thumbnails/261a8d28-1200-45ff-8e06-1567e3d116e8.jpg"
+    },
+    {
+      "title": "Prompt Engineering Tutorial - Anthropic",
+      "link": "https://github.com/anthropics/prompt-eng-interactive-tutorial",
+      "description": "Interactive tutorial for prompt engineering with Claude",
+      "category": "communities",
+      "tags": [
+        "tutorial",
+        "anthropic",
+        "prompt-engineering",
+        "interactive",
+        "github"
+      ],
+      "id": "a968d832-91f0-4060-ae40-94c2dd81d316",
+      "thumbnail": "/thumbnails/a968d832-91f0-4060-ae40-94c2dd81d316.jpg"
+    },
+    {
+      "title": "Hugging Face Transformers",
+      "link": "https://github.com/huggingface/transformers",
+      "description": "Open-source library for transformer models and NLP",
+      "category": "communities",
+      "tags": [
+        "github",
+        "hugging-face",
+        "transformers",
+        "nlp",
+        "library"
+      ],
+      "id": "9d538042-07c2-4af7-b21d-b077d3a4a744",
+      "thumbnail": "/thumbnails/9d538042-07c2-4af7-b21d-b077d3a4a744.jpg"
+    },
+    {
+      "title": "LangChain GitHub",
+      "link": "https://github.com/langchain-ai/langchain",
+      "description": "Framework for developing applications with language models",
+      "category": "communities",
+      "tags": [
+        "github",
+        "langchain",
+        "framework",
+        "llm",
+        "development"
+      ],
+      "id": "f26e5f87-5c19-41e0-8b6f-d77ce133c9b3",
+      "thumbnail": "/thumbnails/f26e5f87-5c19-41e0-8b6f-d77ce133c9b3.jpg"
+    },
+    {
+      "title": "Microsoft AutoGen",
+      "link": "https://github.com/microsoft/autogen",
+      "description": "Framework for multi-agent conversational AI systems",
+      "category": "communities",
+      "tags": [
+        "github",
+        "microsoft",
+        "multi-agent",
+        "conversational-ai",
+        "framework"
+      ],
+      "id": "9d7f4ea5-736c-446b-a3bc-5b6b820f3431",
+      "thumbnail": "/thumbnails/9d7f4ea5-736c-446b-a3bc-5b6b820f3431.jpg"
+    },
+    {
+      "title": "TensorFlow Deep Learning Course",
+      "link": "https://github.com/mrdbourke/tensorflow-deep-learning",
+      "description": "Comprehensive TensorFlow course materials on GitHub",
+      "category": "communities",
+      "tags": [
+        "github",
+        "tensorflow",
+        "deep-learning",
+        "course",
+        "hands-on"
+      ],
+      "id": "56a0c58d-7e6b-4dd3-a3fe-8d7500b749b8",
+      "thumbnail": "/thumbnails/56a0c58d-7e6b-4dd3-a3fe-8d7500b749b8.jpg"
+    },
+    {
+      "title": "OpenAI GPT-2",
+      "link": "https://github.com/openai/gpt-2",
+      "description": "OpenAI's GPT-2 model implementation and resources",
+      "category": "communities",
+      "tags": [
+        "github",
+        "openai",
+        "gpt-2",
+        "language-model",
+        "open-source"
+      ],
+      "id": "4fa0a9d6-dd08-40c8-b3c5-79386efdd745",
+      "thumbnail": "/thumbnails/4fa0a9d6-dd08-40c8-b3c5-79386efdd745.jpg"
+    },
+    {
+      "title": "PyTorch GitHub",
+      "link": "https://github.com/pytorch/pytorch",
+      "description": "Official PyTorch deep learning framework repository",
+      "category": "communities",
+      "tags": [
+        "github",
+        "pytorch",
+        "framework",
+        "deep-learning",
+        "official"
+      ],
+      "id": "fbb90fb6-4055-4f50-b5a1-77f8c260d496",
+      "thumbnail": "/thumbnails/fbb90fb6-4055-4f50-b5a1-77f8c260d496.jpg"
+    },
+    {
+      "title": "TensorFlow GitHub",
+      "link": "https://github.com/tensorflow/tensorflow",
+      "description": "Official TensorFlow machine learning framework repository",
+      "category": "communities",
+      "tags": [
+        "github",
+        "tensorflow",
+        "framework",
+        "machine-learning",
+        "official"
+      ],
+      "id": "18bf5cde-0612-4220-a628-1c095971ee1b",
+      "thumbnail": "/thumbnails/18bf5cde-0612-4220-a628-1c095971ee1b.jpg"
+    },
+    {
+      "title": "Gradio",
+      "link": "https://gradio.app/",
+      "description": "Platform for building and sharing machine learning demos",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "gradio",
+        "demos",
+        "machine-learning",
+        "sharing"
+      ],
+      "id": "58dcbcf9-ad2f-4bf8-ae11-c533e0938b2d",
+      "thumbnail": "/thumbnails/58dcbcf9-ad2f-4bf8-ae11-c533e0938b2d.jpg"
+    },
+    {
+      "title": "Grow with Google AI",
+      "link": "https://grow.google/ai/",
+      "description": "Google's AI training and certification programs",
+      "category": "video learning",
+      "tags": [
+        "google",
+        "training",
+        "certification",
+        "career",
+        "corporate"
+      ],
+      "id": "7b147393-6cc7-4873-a9bd-bbf16fafd36b",
+      "thumbnail": "/thumbnails/7b147393-6cc7-4873-a9bd-bbf16fafd36b.jpg"
+    },
+    {
+      "title": "Hugging Face Training Docs",
+      "link": "https://huggingface.co/docs/transformers/en/training",
+      "description": "Documentation for training transformer models",
+      "category": "video learning",
+      "tags": [
+        "documentation",
+        "hugging-face",
+        "training",
+        "transformers",
+        "technical"
+      ],
+      "id": "877bd837-10ad-4068-9e00-579de5826d3e",
+      "thumbnail": "/thumbnails/877bd837-10ad-4068-9e00-579de5826d3e.jpg"
+    },
+    {
+      "title": "Hugging Face Learn",
+      "link": "https://huggingface.co/learn",
+      "description": "Educational resources and courses from Hugging Face",
+      "category": "general",
+      "tags": [
+        "platform",
+        "hugging-face",
+        "education",
+        "nlp",
+        "transformers"
+      ],
+      "id": "2621a4db-661c-48d2-8e96-31b1eb93bb90",
+      "thumbnail": "/thumbnails/2621a4db-661c-48d2-8e96-31b1eb93bb90.jpg"
+    },
+    {
+      "title": "Computer Vision Course - Hugging Face",
+      "link": "https://huggingface.co/learn/computer-vision-course/unit0/welcome/welcome",
+      "description": "Free computer vision course using Hugging Face tools",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "hugging-face",
+        "computer-vision",
+        "free",
+        "hands-on"
+      ],
+      "id": "5a7cd9b3-f7b0-4eea-ae6f-eb4f4a78dd3f",
+      "thumbnail": "/thumbnails/5a7cd9b3-f7b0-4eea-ae6f-eb4f4a78dd3f.jpg"
+    },
+    {
+      "title": "Deep RL Course - Hugging Face",
+      "link": "https://huggingface.co/learn/deep-rl-course/en/unit0/introduction",
+      "description": "Free deep reinforcement learning course",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "hugging-face",
+        "reinforcement-learning",
+        "free",
+        "deep-learning"
+      ],
+      "id": "966a1487-544c-4e89-8ed5-b29cc87e7148",
+      "thumbnail": "/thumbnails/966a1487-544c-4e89-8ed5-b29cc87e7148.jpg"
+    },
+    {
+      "title": "UC Berkeley CS188 AI",
+      "link": "https://inst.eecs.berkeley.edu/~cs188/fa22/",
+      "description": "Berkeley's introduction to artificial intelligence course",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "university",
+        "berkeley",
+        "ai-fundamentals",
+        "academic"
+      ],
+      "id": "032655db-379b-45ac-9bde-9724c4a8d697",
+      "thumbnail": "/thumbnails/032655db-379b-45ac-9bde-9724c4a8d697.jpg"
+    },
+    {
+      "title": "MIT Introduction to Deep Learning",
+      "link": "https://introtodeeplearning.com/",
+      "description": "MIT's comprehensive deep learning course with lectures and labs",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "mit",
+        "university",
+        "deep-learning",
+        "comprehensive",
+        "academic"
+      ],
+      "id": "2c42ffb4-e530-49dd-8c94-802f7dc292d2",
+      "thumbnail": "/thumbnails/2c42ffb4-e530-49dd-8c94-802f7dc292d2.jpg"
+    },
+    {
+      "title": "Kaggle Learn",
+      "link": "https://kaggle.com/learn",
+      "description": "Free micro-courses on data science and machine learning",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "kaggle",
+        "micro-courses",
+        "data-science",
+        "free"
+      ],
+      "id": "c148b9d7-3114-4e09-b689-f1a36e65ef87",
+      "thumbnail": "/thumbnails/c148b9d7-3114-4e09-b689-f1a36e65ef87.jpg"
+    },
+    {
+      "title": "Intermediate Machine Learning - Kaggle",
+      "link": "https://kaggle.com/learn/intermediate-machine-learning",
+      "description": "Intermediate level machine learning concepts and techniques",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "kaggle",
+        "intermediate",
+        "machine-learning",
+        "hands-on"
+      ],
+      "id": "0c4424fa-b294-4892-bcf0-05068cec6532",
+      "thumbnail": "/thumbnails/0c4424fa-b294-4892-bcf0-05068cec6532.jpg"
+    },
+    {
+      "title": "Intro to Machine Learning - Kaggle",
+      "link": "https://kaggle.com/learn/intro-to-machine-learning",
+      "description": "Beginner-friendly introduction to machine learning",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "kaggle",
+        "beginner",
+        "machine-learning",
+        "hands-on"
+      ],
+      "id": "e47bb004-545a-4c7a-be1b-9319491c32bb",
+      "thumbnail": "/thumbnails/e47bb004-545a-4c7a-be1b-9319491c32bb.jpg"
+    },
+    {
+      "title": "Khan Academy",
+      "link": "https://khanacademy.org/",
+      "description": "Free educational platform with various subjects including AI",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "khan-academy",
+        "free",
+        "educational",
+        "comprehensive"
+      ],
+      "id": "f3f74fb0-71c8-46f0-b8c8-9f445f3a886c",
+      "thumbnail": "/thumbnails/f3f74fb0-71c8-46f0-b8c8-9f445f3a886c.jpg"
+    },
+    {
+      "title": "Microsoft Learn AI",
+      "link": "https://learn.microsoft.com/en-us/ai/",
+      "description": "Microsoft's learning platform for AI and machine learning",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "microsoft",
+        "corporate",
+        "certification",
+        "azure"
+      ],
+      "id": "daf1ce50-85c9-453b-a176-142c44a197ff",
+      "thumbnail": "/thumbnails/daf1ce50-85c9-453b-a176-142c44a197ff.jpg"
+    },
+    {
+      "title": "Azure AI Fundamentals Certification",
+      "link": "https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-fundamentals/",
+      "description": "Microsoft certification for AI fundamentals on Azure",
+      "category": "general",
+      "tags": [
+        "certification",
+        "microsoft",
+        "azure",
+        "ai-fundamentals",
+        "corporate"
+      ],
+      "id": "b7aaa90d-ebe9-4167-b686-7e63d55f8392",
+      "thumbnail": "/thumbnails/b7aaa90d-ebe9-4167-b686-7e63d55f8392.jpg"
+    },
+    {
+      "title": "AI-900 Azure AI Fundamentals Course",
+      "link": "https://learn.microsoft.com/en-us/training/courses/ai-900t00",
+      "description": "Official Microsoft course for Azure AI certification",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "microsoft",
+        "azure",
+        "certification",
+        "ai-fundamentals"
+      ],
+      "id": "57fa6e7f-da8e-4c20-8750-6fefb2082bda",
+      "thumbnail": "/thumbnails/57fa6e7f-da8e-4c20-8750-6fefb2082bda.jpg"
+    },
+    {
+      "title": "Fundamentals of Generative AI - Microsoft",
+      "link": "https://learn.microsoft.com/en-us/training/modules/fundamentals-generative-ai",
+      "description": "Microsoft module on generative AI basics",
+      "category": "general",
+      "tags": [
+        "module",
+        "microsoft",
+        "generative-ai",
+        "fundamentals",
+        "azure"
+      ],
+      "id": "5c5b9369-396a-4ccb-88f1-566edf8a31ad",
+      "thumbnail": "/thumbnails/5c5b9369-396a-4ccb-88f1-566edf8a31ad.jpg"
+    },
+    {
+      "title": "Get Started with AI Fundamentals - Microsoft",
+      "link": "https://learn.microsoft.com/en-us/training/modules/get-started-ai-fundamentals/",
+      "description": "Introduction to AI concepts and Azure AI services",
+      "category": "general",
+      "tags": [
+        "module",
+        "microsoft",
+        "ai-fundamentals",
+        "beginner",
+        "azure"
+      ],
+      "id": "2df9dd7a-b823-435a-b713-d8cad75d2a55",
+      "thumbnail": "/thumbnails/2df9dd7a-b823-435a-b713-d8cad75d2a55.jpg"
+    },
+    {
+      "title": "Effective Prompts for Copilot - Microsoft",
+      "link": "https://learn.microsoft.com/en-us/training/paths/craft-effective-prompts-copilot-microsoft-365",
+      "description": "Learning path for prompt engineering with Microsoft Copilot",
+      "category": "online learning",
+      "tags": [
+        "learning-path",
+        "microsoft",
+        "copilot",
+        "prompt-engineering",
+        "office365"
+      ],
+      "id": "c7f3cbaa-c65c-4f21-82e7-5b3f9f590424",
+      "thumbnail": "/thumbnails/c7f3cbaa-c65c-4f21-82e7-5b3f9f590424.jpg"
+    },
+    {
+      "title": "Introduction to Generative AI - Microsoft",
+      "link": "https://learn.microsoft.com/en-us/training/paths/introduction-generative-ai/",
+      "description": "Microsoft learning path for generative AI fundamentals",
+      "category": "online learning",
+      "tags": [
+        "learning-path",
+        "microsoft",
+        "generative-ai",
+        "azure",
+        "fundamentals"
+      ],
+      "id": "0627f6df-57dc-4610-ac1f-5fc0f75d62af",
+      "thumbnail": "/thumbnails/0627f6df-57dc-4610-ac1f-5fc0f75d62af.jpg"
+    },
+    {
+      "title": "TensorFlow Fundamentals - Microsoft",
+      "link": "https://learn.microsoft.com/en-us/training/paths/tensorflow-fundamentals/",
+      "description": "Microsoft learning path for TensorFlow basics",
+      "category": "online learning",
+      "tags": [
+        "learning-path",
+        "microsoft",
+        "tensorflow",
+        "fundamentals",
+        "framework"
+      ],
+      "id": "11d0d62b-8e1c-4a29-a83f-f4334008225b",
+      "thumbnail": "/thumbnails/11d0d62b-8e1c-4a29-a83f-f4334008225b.jpg"
+    },
+    {
+      "title": "NVIDIA Self-Paced Courses",
+      "link": "https://learn.nvidia.com/en-us/training/self-paced-courses",
+      "description": "NVIDIA's collection of AI and deep learning courses",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "nvidia",
+        "deep-learning",
+        "gpu",
+        "self-paced"
+      ],
+      "id": "47276691-8012-4d5e-ad1f-2205cc9a213d",
+      "thumbnail": "/thumbnails/47276691-8012-4d5e-ad1f-2205cc9a213d.jpg"
+    },
+    {
+      "title": "Learn PyTorch",
+      "link": "https://learnpytorch.io/",
+      "description": "Comprehensive PyTorch learning resource with tutorials",
+      "category": "online learning",
+      "tags": [
+        "tutorial",
+        "pytorch",
+        "comprehensive",
+        "hands-on",
+        "framework"
+      ],
+      "id": "7837054d-671f-414f-8998-5e0225a47236",
+      "thumbnail": "/thumbnails/7837054d-671f-414f-8998-5e0225a47236.jpg"
+    },
+    {
+      "title": "Deep Learning Fundamentals - Lightning AI",
+      "link": "https://lightning.ai/courses/deep-learning-fundamentals/",
+      "description": "Course on deep learning fundamentals using PyTorch Lightning",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "lightning-ai",
+        "deep-learning",
+        "pytorch",
+        "fundamentals"
+      ],
+      "id": "66945346-eef5-4376-8697-54cfa484954c",
+      "thumbnail": "/thumbnails/66945346-eef5-4376-8697-54cfa484954c.jpg"
+    },
+    {
+      "title": "PyTorch Introduction - Lightning AI",
+      "link": "https://lightning.ai/docs/pytorch/stable/notebooks/course_UvA-DL/01-introduction-to-pytorch.html",
+      "description": "Introduction to PyTorch tutorial from University of Amsterdam",
+      "category": "video learning",
+      "tags": [
+        "tutorial",
+        "lightning-ai",
+        "pytorch",
+        "university",
+        "introduction"
+      ],
+      "id": "cccc8fad-a8b9-4d0a-a763-a75935c49568",
+      "thumbnail": "/thumbnails/cccc8fad-a8b9-4d0a-a763-a75935c49568.jpg"
+    },
+    {
+      "title": "PyTorch Lightning Tutorials",
+      "link": "https://lightning.ai/docs/pytorch/stable/tutorials.html",
+      "description": "Official tutorials for PyTorch Lightning framework",
+      "category": "general",
+      "tags": [
+        "tutorials",
+        "lightning-ai",
+        "pytorch",
+        "framework",
+        "official"
+      ],
+      "id": "808b71e4-48f0-443d-9363-515c18696ce0",
+      "thumbnail": "/thumbnails/808b71e4-48f0-443d-9363-515c18696ce0.jpg"
+    },
+    {
+      "title": "Career Essentials in Generative AI - LinkedIn",
+      "link": "https://linkedin.com/learning/paths/career-essentials-in-generative-ai-by-microsoft-and-linkedin",
+      "description": "Career-focused learning path for generative AI skills",
+      "category": "online learning",
+      "tags": [
+        "learning-path",
+        "linkedin",
+        "career",
+        "generative-ai",
+        "microsoft"
+      ],
+      "id": "e369176f-191f-45d8-a3af-5cc1e090088c",
+      "thumbnail": "/thumbnails/e369176f-191f-45d8-a3af-5cc1e090088c.jpg"
+    },
+    {
+      "title": "LinkedIn Learning AI Topics",
+      "link": "https://linkedin.com/learning/topics/artificial-intelligence",
+      "description": "AI courses and learning paths on LinkedIn Learning",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "linkedin",
+        "professional",
+        "career-focused",
+        "comprehensive"
+      ],
+      "id": "14f3939a-f676-4bc1-b634-2b30d8f0147b",
+      "thumbnail": "/thumbnails/14f3939a-f676-4bc1-b634-2b30d8f0147b.jpg"
+    },
+    {
+      "title": "Maven AI Courses",
+      "link": "https://maven.com/courses/ai",
+      "description": "Live cohort-based AI courses with expert instructors",
+      "category": "general",
+      "tags": [
+        "platform",
+        "maven",
+        "cohort-based",
+        "live",
+        "expert-led"
+      ],
+      "id": "259e4d5f-ad26-4f7e-b808-a0f9d9593a52",
+      "thumbnail": "/thumbnails/259e4d5f-ad26-4f7e-b808-a0f9d9593a52.jpg"
+    },
+    {
+      "title": "Modal Documentation",
+      "link": "https://modal.com/docs",
+      "description": "Documentation for Modal's cloud computing platform for AI",
+      "category": "tutorials",
+      "tags": [
+        "documentation",
+        "modal",
+        "cloud",
+        "ai-infrastructure",
+        "platform"
+      ],
+      "id": "96769dfd-cca2-4eda-9810-b4fe7ef7fe81",
+      "thumbnail": "/thumbnails/96769dfd-cca2-4eda-9810-b4fe7ef7fe81.jpg"
+    },
+    {
+      "title": "Great Learning Free AI Courses",
+      "link": "https://mygreatlearning.com/ai/free-courses",
+      "description": "Collection of free AI courses with certificates",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "great-learning",
+        "free",
+        "certification",
+        "comprehensive"
+      ],
+      "id": "a8b17f09-307c-4637-aeac-ca1e8acb2c2c",
+      "thumbnail": "/thumbnails/a8b17f09-307c-4637-aeac-ca1e8acb2c2c.jpg"
+    },
+    {
+      "title": "NVIDIA Online Training",
+      "link": "https://nvidia.com/en-sg/training/online/",
+      "description": "NVIDIA's online training programs for AI and deep learning",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "nvidia",
+        "training",
+        "deep-learning",
+        "gpu"
+      ],
+      "id": "f4efda40-5cd3-43f2-a9d0-8a6f118dfed5",
+      "thumbnail": "/thumbnails/f4efda40-5cd3-43f2-a9d0-8a6f118dfed5.jpg"
+    },
+    {
+      "title": "NVIDIA Deep Learning Education",
+      "link": "https://nvidia.com/en-us/deep-learning-ai/education/",
+      "description": "Educational resources and courses for deep learning",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "nvidia",
+        "deep-learning",
+        "education",
+        "gpu"
+      ],
+      "id": "1f003149-0e9c-4e60-9fac-7ed49737c785",
+      "thumbnail": "/thumbnails/1f003149-0e9c-4e60-9fac-7ed49737c785.jpg"
+    },
+    {
+      "title": "NVIDIA Training Center",
+      "link": "https://nvidia.com/en-us/training/",
+      "description": "Comprehensive training programs for AI and accelerated computing",
+      "category": "video learning",
+      "tags": [
+        "platform",
+        "nvidia",
+        "training",
+        "ai",
+        "accelerated-computing"
+      ],
+      "id": "383a23dd-657a-4df8-b893-3623edb03ccf",
+      "thumbnail": "/thumbnails/383a23dd-657a-4df8-b893-3623edb03ccf.jpg"
+    },
+    {
+      "title": "MIT 6.034 Artificial Intelligence",
+      "link": "https://ocw.mit.edu/courses/6-034-artificial-intelligence-fall-2010/",
+      "description": "MIT's foundational AI course with lectures and assignments",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "mit",
+        "university",
+        "ai-fundamentals",
+        "academic",
+        "opencourseware"
+      ],
+      "id": "204164ea-2a32-442a-a3bd-dfa8050dbbf2",
+      "thumbnail": "/thumbnails/204164ea-2a32-442a-a3bd-dfa8050dbbf2.jpg"
+    },
+    {
+      "title": "Stanford Online AI Programs",
+      "link": "https://online.stanford.edu/artificial-intelligence/courses-and-programs",
+      "description": "Stanford's collection of online AI courses and programs",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "stanford",
+        "university",
+        "online",
+        "comprehensive"
+      ],
+      "id": "e4da65d8-862a-4c8f-8e2f-0b561003d063",
+      "thumbnail": "/thumbnails/e4da65d8-862a-4c8f-8e2f-0b561003d063.jpg"
+    },
+    {
+      "title": "Stanford CS229 Machine Learning",
+      "link": "https://online.stanford.edu/courses/cs229-machine-learning",
+      "description": "Stanford's famous machine learning course by Andrew Ng",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "stanford",
+        "university",
+        "machine-learning",
+        "andrew-ng",
+        "academic"
+      ],
+      "id": "1e5d35a2-581b-416e-9c7a-6842dd7593ac",
+      "thumbnail": "/thumbnails/1e5d35a2-581b-416e-9c7a-6842dd7593ac.jpg"
+    },
+    {
+      "title": "Stanford Free Online Courses",
+      "link": "https://online.stanford.edu/free-courses",
+      "description": "Collection of free courses from Stanford University",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "stanford",
+        "university",
+        "free",
+        "comprehensive"
+      ],
+      "id": "8aa4a113-b015-4a5f-a67d-c39124588908",
+      "thumbnail": "/thumbnails/8aa4a113-b015-4a5f-a67d-c39124588908.jpg"
+    },
+    {
+      "title": "Stanford AI Professional Program",
+      "link": "https://online.stanford.edu/programs/artificial-intelligence-professional-program",
+      "description": "Professional certificate program in AI from Stanford",
+      "category": "online learning",
+      "tags": [
+        "certificate",
+        "stanford",
+        "university",
+        "professional",
+        "ai-comprehensive"
+      ],
+      "id": "6d142916-c77e-4006-9064-3c3b7a7e5eb7",
+      "thumbnail": "/thumbnails/6d142916-c77e-4006-9064-3c3b7a7e5eb7.jpg"
+    },
+    {
+      "title": "Stanford Generative AI Program",
+      "link": "https://online.stanford.edu/programs/generative-ai-technology-business-and-society-program",
+      "description": "Stanford program on generative AI technology and business impact",
+      "category": "online learning",
+      "tags": [
+        "program",
+        "stanford",
+        "university",
+        "generative-ai",
+        "business",
+        "society"
+      ],
+      "id": "6c58aabd-8cf1-4b9f-be32-7bb6f0407227",
+      "thumbnail": "/thumbnails/6c58aabd-8cf1-4b9f-be32-7bb6f0407227.jpg"
+    },
+    {
+      "title": "Free OpenCV Course",
+      "link": "https://opencv.org/university/free-opencv-course/",
+      "description": "Computer vision course using OpenCV library",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "opencv",
+        "computer-vision",
+        "free",
+        "hands-on"
+      ],
+      "id": "3c5e118e-72a1-4395-9ede-c0dc2aaa3db6",
+      "thumbnail": "/thumbnails/3c5e118e-72a1-4395-9ede-c0dc2aaa3db6.jpg"
+    },
+    {
+      "title": "Free PyTorch Course - OpenCV",
+      "link": "https://opencv.org/university/free-pytorch-course/",
+      "description": "PyTorch course focused on computer vision applications",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "opencv",
+        "pytorch",
+        "computer-vision",
+        "free"
+      ],
+      "id": "e3d9f391-3ecd-4147-ace5-6750471164e5",
+      "thumbnail": "/thumbnails/e3d9f391-3ecd-4147-ace5-6750471164e5.jpg"
+    },
+    {
+      "title": "Free TensorFlow Keras Course - OpenCV",
+      "link": "https://opencv.org/university/free-tensorflow-keras-course/",
+      "description": "TensorFlow and Keras course for computer vision",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "opencv",
+        "tensorflow",
+        "keras",
+        "computer-vision",
+        "free"
+      ],
+      "id": "66bfe724-123b-431b-b77a-87ef53937134",
+      "thumbnail": "/thumbnails/66bfe724-123b-431b-b77a-87ef53937134.jpg"
+    },
+    {
+      "title": "MIT 6.036 Introduction to ML",
+      "link": "https://openlearninglibrary.mit.edu/courses/course-v1:MITx+6.036+1T2019/",
+      "description": "MIT's introduction to machine learning course",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "mit",
+        "university",
+        "machine-learning",
+        "academic",
+        "opencourseware"
+      ],
+      "id": "c467cef5-2fc5-4c76-93d7-b1eb08608c74",
+      "thumbnail": "/thumbnails/c467cef5-2fc5-4c76-93d7-b1eb08608c74.jpg"
+    },
+    {
+      "title": "Papers with Code",
+      "link": "https://paperswithcode.com/",
+      "description": "Repository of AI research papers with code implementations",
+      "category": "research portals",
+      "tags": [
+        "platform",
+        "research",
+        "papers",
+        "code",
+        "cutting-edge"
+      ],
+      "id": "8eeac602-d635-47c9-be09-e66a72647d3d",
+      "thumbnail": "/thumbnails/8eeac602-d635-47c9-be09-e66a72647d3d.jpg"
+    },
+    {
+      "title": "OpenAI Embeddings Tutorial",
+      "link": "https://platform.openai.com/docs/tutorials/web-qa-embeddings",
+      "description": "Tutorial on using OpenAI embeddings for web Q&A",
+      "category": "video learning",
+      "tags": [
+        "tutorial",
+        "openai",
+        "embeddings",
+        "web-qa",
+        "practical"
+      ],
+      "id": "cec932bb-d4b0-42ba-a2a0-587ab9c97601",
+      "thumbnail": "/thumbnails/cec932bb-d4b0-42ba-a2a0-587ab9c97601.jpg"
+    },
+    {
+      "title": "Harvard Professional Learning Catalog",
+      "link": "https://pll.harvard.edu/catalog",
+      "description": "Harvard's continuing education and professional courses",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "harvard",
+        "university",
+        "professional",
+        "continuing-education"
+      ],
+      "id": "6be6c1ce-d22a-4d27-aed4-0a0daae1c70a",
+      "thumbnail": "/thumbnails/6be6c1ce-d22a-4d27-aed4-0a0daae1c70a.jpg"
+    },
+    {
+      "title": "Harvard CS50 Introduction to Computer Science",
+      "link": "https://pll.harvard.edu/course/cs50-introduction-computer-science",
+      "description": "Harvard's famous introduction to computer science",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "harvard",
+        "university",
+        "computer-science",
+        "popular",
+        "academic"
+      ],
+      "id": "1f398c9e-cbdf-4073-b62e-84e7f3cdc341",
+      "thumbnail": "/thumbnails/1f398c9e-cbdf-4073-b62e-84e7f3cdc341.jpg"
+    },
+    {
+      "title": "Harvard CS50 AI with Python",
+      "link": "https://pll.harvard.edu/course/cs50s-introduction-artificial-intelligence-python",
+      "description": "Harvard's introduction to AI using Python programming",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "harvard",
+        "university",
+        "ai",
+        "python",
+        "academic"
+      ],
+      "id": "3fb0ca7a-ba05-4203-8e72-46632dddcb6b",
+      "thumbnail": "/thumbnails/3fb0ca7a-ba05-4203-8e72-46632dddcb6b.jpg"
+    },
+    {
+      "title": "Harvard AI Courses",
+      "link": "https://pll.harvard.edu/subject/artificial-intelligence",
+      "description": "Collection of AI courses from Harvard University",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "harvard",
+        "university",
+        "ai",
+        "academic"
+      ],
+      "id": "06066e23-7b3e-4d42-bd53-63c71d687433",
+      "thumbnail": "/thumbnails/06066e23-7b3e-4d42-bd53-63c71d687433.jpg"
+    },
+    {
+      "title": "Pluralsight AI Courses",
+      "link": "https://pluralsight.com/ai",
+      "description": "Professional AI and machine learning courses",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "pluralsight",
+        "professional",
+        "comprehensive",
+        "subscription"
+      ],
+      "id": "cc13f5e7-83f1-4c79-9f68-7b41ccb7c50c",
+      "thumbnail": "/thumbnails/cc13f5e7-83f1-4c79-9f68-7b41ccb7c50c.jpg"
+    },
+    {
+      "title": "Introduction to AI - Pluralsight",
+      "link": "https://pluralsight.com/professional-services/data-machine-learning/introduction-to-artificial-intelligence",
+      "description": "Professional introduction to artificial intelligence course",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "pluralsight",
+        "professional",
+        "ai-introduction",
+        "corporate"
+      ],
+      "id": "1564ac6c-a6c8-4781-993f-91eacaed8cf5",
+      "thumbnail": "/thumbnails/1564ac6c-a6c8-4781-993f-91eacaed8cf5.jpg"
+    },
+    {
+      "title": "MIT Professional ML/AI Certificate",
+      "link": "https://professional.mit.edu/course-catalog/professional-certificate-program-machine-learning-artificial-intelligence-0",
+      "description": "MIT's professional certificate program in ML and AI",
+      "category": "online learning",
+      "tags": [
+        "certificate",
+        "mit",
+        "university",
+        "professional",
+        "comprehensive"
+      ],
+      "id": "d3de1735-6392-4fa1-a2ad-05c7fc367ebd",
+      "thumbnail": "/thumbnails/d3de1735-6392-4fa1-a2ad-05c7fc367ebd.jpg"
+    },
+    {
+      "title": "PyTorch Resources",
+      "link": "https://pytorch.org/resources/",
+      "description": "Official PyTorch learning resources and documentation",
+      "category": "online learning",
+      "tags": [
+        "resources",
+        "pytorch",
+        "official",
+        "framework",
+        "comprehensive"
+      ],
+      "id": "13d2aa1e-6d6c-45ca-937f-01e6edc4bb21",
+      "thumbnail": "/thumbnails/13d2aa1e-6d6c-45ca-937f-01e6edc4bb21.jpg"
+    },
+    {
+      "title": "PyTorch Tutorials",
+      "link": "https://pytorch.org/tutorials/",
+      "description": "Comprehensive PyTorch tutorials for deep learning",
+      "category": "online learning",
+      "tags": [
+        "tutorials",
+        "pytorch",
+        "deep-learning",
+        "framework",
+        "official"
+      ],
+      "id": "d891432e-f69b-46a3-80a3-d39b686b545e",
+      "thumbnail": "/thumbnails/d891432e-f69b-46a3-80a3-d39b686b545e.jpg"
+    },
+    {
+      "title": "Google ML Event 2025",
+      "link": "https://rsvp.withgoogle.com/events/gdg-understanding-machine-learning-2025_q1_61868c",
+      "description": "Google Developer Group event on understanding machine learning",
+      "category": "podcasts",
+      "tags": [
+        "event",
+        "google",
+        "machine-learning",
+        "2025",
+        "developer-group"
+      ],
+      "id": "22ac108f-fa21-4a8a-9e5a-124ed48e6ef9",
+      "thumbnail": "/thumbnails/22ac108f-fa21-4a8a-9e5a-124ed48e6ef9.jpg"
+    },
+    {
+      "title": "Scikit-learn Tutorials",
+      "link": "https://scikit-learn.org/stable/tutorial/index.html",
+      "description": "Official tutorials for scikit-learn machine learning library",
+      "category": "online learning",
+      "tags": [
+        "tutorials",
+        "scikit-learn",
+        "machine-learning",
+        "python",
+        "official"
+      ],
+      "id": "fd4e833e-41f6-434a-a7f3-1ea3544727e4",
+      "thumbnail": "/thumbnails/fd4e833e-41f6-434a-a7f3-1ea3544727e4.jpg"
+    },
+    {
+      "title": "Stanford Engineering CS229",
+      "link": "https://see.stanford.edu/course/cs229",
+      "description": "Stanford Engineering Everywhere CS229 Machine Learning course",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "stanford",
+        "university",
+        "machine-learning",
+        "engineering",
+        "andrew-ng"
+      ],
+      "id": "12370a69-ba37-49cc-b2fc-98f8f9bf4fc8",
+      "thumbnail": "/thumbnails/12370a69-ba37-49cc-b2fc-98f8f9bf4fc8.jpg"
+    },
+    {
+      "title": "Simplilearn IIT AI/ML Certificate",
+      "link": "https://simplilearn.com/iitk-professional-certificate-course-ai-machine-learning",
+      "description": "Professional certificate course in AI and ML with IIT Kanpur",
+      "category": "online learning",
+      "tags": [
+        "certificate",
+        "simplilearn",
+        "iit",
+        "professional",
+        "ai-ml"
+      ],
+      "id": "6b7da425-0e33-4d0d-95b3-81c755dcc28c",
+      "thumbnail": "/thumbnails/6b7da425-0e33-4d0d-95b3-81c755dcc28c.jpg"
+    },
+    {
+      "title": "Berkeley Deep Unsupervised Learning",
+      "link": "https://sites.google.com/view/berkeley-cs294-158-sp20/home",
+      "description": "UC Berkeley course on deep unsupervised learning techniques",
+      "category": "online learning",
+      "tags": [
+        "course",
+        "berkeley",
+        "university",
+        "deep-learning",
+        "unsupervised",
+        "academic"
+      ],
+      "id": "f0b0c671-b4dd-4234-a5ed-6b809e212321",
+      "thumbnail": "/thumbnails/f0b0c671-b4dd-4234-a5ed-6b809e212321.jpg"
+    },
+    {
+      "title": "IBM SkillsBuild College Courses",
+      "link": "https://skillsbuild.org/college-students/course-catalog",
+      "description": "IBM's free courses for college students in AI and tech",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "ibm",
+        "free",
+        "college-students",
+        "career-focused"
+      ],
+      "id": "138da0f3-dcae-4770-ad2c-e5a6930b3508",
+      "thumbnail": "/thumbnails/138da0f3-dcae-4770-ad2c-e5a6930b3508.jpg"
+    },
+    {
+      "title": "IBM SkillsBuild AI Courses",
+      "link": "https://skillsbuild.org/students/course-catalog/artificial-intelligence",
+      "description": "Free AI courses for students from IBM",
+      "category": "general",
+      "tags": [
+        "platform",
+        "ibm",
+        "free",
+        "students",
+        "ai",
+        "career-focused"
+      ],
+      "id": "910d44f7-d01c-46f9-93f1-2cdc1c683e39",
+      "thumbnail": "/thumbnails/910d44f7-d01c-46f9-93f1-2cdc1c683e39.jpg"
+    },
+    {
+      "title": "Skillshare AI Innovation",
+      "link": "https://skillshare.com/en/browse/ai-innovation",
+      "description": "AI and innovation courses on Skillshare platform",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "skillshare",
+        "ai-innovation",
+        "creative",
+        "subscription"
+      ],
+      "id": "f4dafb66-c360-4813-af94-8f659209a0a4",
+      "thumbnail": "/thumbnails/f4dafb66-c360-4813-af94-8f659209a0a4.jpg"
+    },
+    {
+      "title": "Google Workspace AI Help",
+      "link": "https://support.google.com/a/users/answer/14506784?hl=en",
+      "description": "Google support documentation for AI features in Workspace",
+      "category": "podcasts",
+      "tags": [
+        "documentation",
+        "google",
+        "workspace",
+        "ai-features",
+        "support"
+      ],
+      "id": "7c71c570-cea8-47f3-a0ec-8c1b0832f22f",
+      "thumbnail": "/thumbnails/7c71c570-cea8-47f3-a0ec-8c1b0832f22f.jpg"
+    },
+    {
+      "title": "AI at UC Berkeley",
+      "link": "https://technology.berkeley.edu/AI",
+      "description": "UC Berkeley's AI resources and community information",
+      "category": "communities",
+      "tags": [
+        "platform",
+        "berkeley",
+        "university",
+        "ai-community",
+        "resources"
+      ],
+      "id": "3abb5943-a1fb-41d8-a57b-96e574f3705f",
+      "thumbnail": "/thumbnails/3abb5943-a1fb-41d8-a57b-96e574f3705f.jpg"
+    },
+    {
+      "title": "AI Nanodegree - Udacity",
+      "link": "https://udacity.com/course/ai-artificial-intelligence-nanodegree--nd898",
+      "description": "Comprehensive AI nanodegree program with projects",
+      "category": "online learning",
+      "tags": [
+        "nanodegree",
+        "udacity",
+        "ai",
+        "comprehensive",
+        "project-based"
+      ],
+      "id": "4b77cd17-b37c-444b-aa93-d305d4628436",
+      "thumbnail": "/thumbnails/4b77cd17-b37c-444b-aa93-d305d4628436.jpg"
+    },
+    {
+      "title": "Intro to AI - Udacity",
+      "link": "https://udacity.com/course/intro-to-artificial-intelligence--cs271",
+      "description": "Introduction to artificial intelligence course",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "udacity",
+        "ai-introduction",
+        "university-level",
+        "structured"
+      ],
+      "id": "62ef7a67-a368-4246-892f-c221ab8feaf7",
+      "thumbnail": "/thumbnails/62ef7a67-a368-4246-892f-c221ab8feaf7.jpg"
+    },
+    {
+      "title": "Udacity AI School",
+      "link": "https://udacity.com/school/artificial-intelligence",
+      "description": "Collection of AI nanodegrees and courses",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "udacity",
+        "ai-school",
+        "nanodegree",
+        "career-focused"
+      ],
+      "id": "e86668de-d2a2-492c-a941-688b6ff8bd1c",
+      "thumbnail": "/thumbnails/e86668de-d2a2-492c-a941-688b6ff8bd1c.jpg"
+    },
+    {
+      "title": "Introduction to Databases and SQL - Udemy",
+      "link": "https://udemy.com/course/introduction-to-databases-and-sql-querying",
+      "description": "Database and SQL course relevant for data science",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "udemy",
+        "database",
+        "sql",
+        "data-science",
+        "freemium"
+      ],
+      "id": "9c49c716-735b-4f98-b9d1-3cade8d21b0b",
+      "thumbnail": "/thumbnails/9c49c716-735b-4f98-b9d1-3cade8d21b0b.jpg"
+    },
+    {
+      "title": "Udemy AI Courses",
+      "link": "https://udemy.com/topic/artificial-intelligence/",
+      "description": "Collection of AI courses on Udemy platform",
+      "category": "online learning",
+      "tags": [
+        "platform",
+        "udemy",
+        "ai",
+        "comprehensive",
+        "freemium"
+      ],
+      "id": "afcf4a26-ce42-49c4-9e85-01e3c3db86b1",
+      "thumbnail": "/thumbnails/afcf4a26-ce42-49c4-9e85-01e3c3db86b1.jpg"
+    },
+    {
+      "title": "Udemy Free PyTorch Courses",
+      "link": "https://udemy.com/topic/pytorch/free/",
+      "description": "Free PyTorch courses on Udemy",
+      "category": "video learning",
+      "tags": [
+        "platform",
+        "udemy",
+        "pytorch",
+        "free",
+        "hands-on"
+      ],
+      "id": "8ea58c09-7efa-4496-b317-29e5ca903bea",
+      "thumbnail": "/thumbnails/8ea58c09-7efa-4496-b317-29e5ca903bea.jpg"
+    },
+    {
+      "title": "Weights & Biases Courses",
+      "link": "https://wandb.ai/site/courses/",
+      "description": "MLOps and experiment tracking courses",
+      "category": "research portals",
+      "tags": [
+        "platform",
+        "wandb",
+        "mlops",
+        "experiment-tracking",
+        "professional"
+      ],
+      "id": "623efe53-cb2a-43f9-ba5b-75e1fb068565",
+      "thumbnail": "/thumbnails/623efe53-cb2a-43f9-ba5b-75e1fb068565.jpg"
+    },
+    {
+      "title": "Weave 101 Course - W&B",
+      "link": "https://wandb.courses/courses/101-weave",
+      "description": "Introduction to Weights & Biases Weave for ML workflows",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "wandb",
+        "weave",
+        "mlops",
+        "workflow"
+      ],
+      "id": "166f7187-cfb9-45f8-b4a2-75d0f1ba903f",
+      "thumbnail": "/thumbnails/166f7187-cfb9-45f8-b4a2-75d0f1ba903f.jpg"
+    },
+    {
+      "title": "Top Free AI Courses 2025",
+      "link": "https://www.amalytix.com/en/blog/free-ai-courses/",
+      "description": "Curated list of the best free AI courses for 2025",
+      "category": "general",
+      "tags": [
+        "blog",
+        "curation",
+        "free-courses",
+        "2025",
+        "comprehensive"
+      ],
+      "id": "155acb53-7d66-452d-b9b3-c11824278449",
+      "thumbnail": "/thumbnails/155acb53-7d66-452d-b9b3-c11824278449.jpg"
+    },
+    {
+      "title": "Anthropic AWS re:Invent 2024 Course",
+      "link": "https://www.anthropic.com/aws-reinvent-2024/course",
+      "description": "Anthropic's course material from AWS re:Invent 2024",
+      "category": "video learning",
+      "tags": [
+        "course",
+        "anthropic",
+        "aws",
+        "reinvent",
+        "2024",
+        "enterprise"
+      ],
+      "id": "030bc6e0-7d24-47fc-9ec8-cfe96ad5c446",
+      "thumbnail": "/thumbnails/030bc6e0-7d24-47fc-9ec8-cfe96ad5c446.jpg"
     }
   ]
 }

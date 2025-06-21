@@ -11,7 +11,7 @@ node scripts/regenerate-thumbnails.js [ids-file] [server-url]
 ### Arguments
 
 - `ids-file` (optional): Path to text file containing reference IDs (default: `reference-ids.txt`)
-- `server-url` (optional): Base URL of the server (default: `http://localhost:5000`)
+- `server-url` (optional): Base URL of the server (default: `http://localhost:5002`)
 
 ### Examples
 
@@ -48,7 +48,7 @@ You can get reference IDs from the database in several ways:
 
 ### Method 1: Using API (requires jq)
 ```bash
-curl -s http://localhost:5000/api/references | jq -r '.[].id' > reference-ids.txt
+curl -s http://localhost:5002/api/references | jq -r '.[].id' > reference-ids.txt
 ```
 
 ### Method 2: Using the web interface
@@ -58,7 +58,7 @@ curl -s http://localhost:5000/api/references | jq -r '.[].id' > reference-ids.tx
 
 ### Method 3: Filter by category
 ```bash
-curl -s "http://localhost:5000/api/references?category=AI%20%26%20Machine%20Learning" | jq -r '.[].id' > ai-references.txt
+curl -s "http://localhost:5002/api/references?category=AI%20%26%20Machine%20Learning" | jq -r '.[].id' > ai-references.txt
 ```
 
 ## Output
@@ -69,12 +69,12 @@ The script provides detailed progress information:
 🔄 Thumbnail Regeneration Script
 ================================
 📁 Reading IDs from: reference-ids.txt
-🌐 Server URL: http://localhost:5000
+🌐 Server URL: http://localhost:5002
 
 📖 Reading reference IDs...
 ✅ Found 2 reference ID(s)
 
-🔐 Authenticating...
+�� Authenticating...
 ✅ Authentication successful
 
 [1/2] Processing reference: e076fd42-240c-48f5-a4f9-f071f2f14b2c
@@ -133,11 +133,11 @@ Thumbnail generation runs in the background after the script completes. You can 
 ### Batch processing with categories
 ```bash
 # Get all AI references
-curl -s "http://localhost:5000/api/references?category=AI%20%26%20Machine%20Learning" | jq -r '.[].id' > ai-refs.txt
+curl -s "http://localhost:5002/api/references?category=AI%20%26%20Machine%20Learning" | jq -r '.[].id' > ai-refs.txt
 node scripts/regenerate-thumbnails.js ai-refs.txt
 
 # Get all references with a specific tag
-curl -s "http://localhost:5000/api/references?tag=conference" | jq -r '.[].id' > conference-refs.txt
+curl -s "http://localhost:5002/api/references?tag=conference" | jq -r '.[].id' > conference-refs.txt
 node scripts/regenerate-thumbnails.js conference-refs.txt
 ```
 

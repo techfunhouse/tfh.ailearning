@@ -23,7 +23,7 @@
    Create a `.env.local` file in the root directory:
    ```env
    NODE_ENV=development
-   PORT=5000
+   PORT=5002
    
    # Optional: Database (leave empty to use JSON files)
    # DATABASE_URL=postgresql://username:password@localhost:5432/refhub
@@ -69,7 +69,7 @@ By default, the app uses JSON files for data storage:
 
 ### Network Access
 Ensure your firewall allows:
-- **Port 5000** (backend server)
+- **Port 5002** (backend server)
 - **Port 5173** (Vite dev server, auto-assigned)
 - **Outbound HTTPS** (for screenshot generation)
 
@@ -90,7 +90,7 @@ Ensure your firewall allows:
    const chromePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'; // macOS
    ```
 
-2. **Port Conflicts**: If port 5000 is busy, modify `package.json`:
+2. **Port Conflicts**: If port 5002 is busy, modify `package.json`:
    ```json
    {
      "scripts": {

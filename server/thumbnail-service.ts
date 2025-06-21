@@ -102,26 +102,26 @@ export class ThumbnailService {
     const isLocal = !process.env.REPL_ID && !process.env.REPLIT_ENV;
     
     // Try CDP first for better frame management
-    try {
-      console.log('Attempting CDP screenshot for', url);
-      const filename = `temp_${Date.now()}.png`;
-      const success = await CDPThumbnailService.takeScreenshot(url, filename);
-      
-      if (success) {
-        // Read the file and return buffer
-        const fs = await import('fs/promises');
-        const path = await import('path');
-        const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
-        const filepath = path.join(thumbnailsDir, filename);
-        const buffer = await fs.readFile(filepath);
-        // Clean up temp file
-        await fs.unlink(filepath).catch(() => {});
-        console.log('CDP screenshot successful');
-        return buffer;
-      }
-    } catch (error: any) {
-      console.log('CDP screenshot failed:', error.message);
-    }
+    // try {
+    //   console.log('Attempting CDP screenshot for', url);
+    //   const filename = `temp_${Date.now()}.png`;
+    //   const success = await CDPThumbnailService.takeScreenshot(url, filename);
+    //   
+    //   if (success) {
+    //     // Read the file and return buffer
+    //     const fs = await import('fs/promises');
+    //     const path = await import('path');
+    //     const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+    //     const filepath = path.join(thumbnailsDir, filename);
+    //     const buffer = await fs.readFile(filepath);
+    //     // Clean up temp file
+    //     await fs.unlink(filepath).catch(() => {});
+    //     console.log('CDP screenshot successful');
+    //     return buffer;
+    //   }
+    // } catch (error: any) {
+    //   console.log('CDP screenshot failed:', error.message);
+    // }
     
     // Fallback to other strategies
     const strategies = [
@@ -507,23 +507,23 @@ export class ThumbnailService {
   }
 
   private static generateSVGThumbnail(url: string, title: string, category: string): string {
-    // Category colors
-    const categoryColors: Record<string, string> = {
-      'AI & Machine Learning': '#8B5CF6',
-      'Web Development': '#3B82F6',
-      'Design': '#EC4899',
-      'Productivity': '#10B981',
-      'Marketing': '#F59E0B',
-      'Business': '#EF4444',
-      'Education': '#06B6D4',
-      'Technology': '#6366F1',
-      'default': '#6B7280'
+    // Enhanced category colors with better visual appeal
+    const categoryColors: Record<string, { primary: string; secondary: string; accent: string }> = {
+      'Video Learning': { primary: '#3B82F6', secondary: '#1D4ED8', accent: '#60A5FA' },
+      'Tutorials': { primary: '#10B981', secondary: '#059669', accent: '#34D399' },
+      'Online Learning': { primary: '#8B5CF6', secondary: '#7C3AED', accent: '#A78BFA' },
+      'Communities': { primary: '#F59E0B', secondary: '#D97706', accent: '#FBBF24' },
+      'Research Portals': { primary: '#EF4444', secondary: '#DC2626', accent: '#F87171' },
+      'Academic Papers': { primary: '#06B6D4', secondary: '#0891B2', accent: '#22D3EE' },
+      'Workshops': { primary: '#EC4899', secondary: '#DB2777', accent: '#F472B6' },
+      'Podcasts': { primary: '#6366F1', secondary: '#4F46E5', accent: '#818CF8' },
+      'General': { primary: '#6B7280', secondary: '#4B5563', accent: '#9CA3AF' }
     };
 
-    const color = categoryColors[category] || categoryColors.default;
+    const colors = categoryColors[category] || categoryColors['General'];
     let domain = '';
     try {
-      domain = new URL(url).hostname;
+      domain = new URL(url).hostname.replace('www.', '');
     } catch {
       domain = 'Unknown';
     }
@@ -538,29 +538,67 @@ export class ThumbnailService {
         .replace(/'/g, '&apos;');
     };
     
-    // Truncate title if too long and escape XML entities
-    const safeTruncatedTitle = escapeXml(title.length > 50 ? title.substring(0, 47) + '...' : title);
+    // Smart title truncation with word boundaries
+    const truncateTitle = (text: string, maxLength: number) => {
+      if (text.length <= maxLength) return text;
+      const truncated = text.substring(0, maxLength);
+      const lastSpace = truncated.lastIndexOf(' ');
+      return lastSpace > maxLength * 0.7 ? truncated.substring(0, lastSpace) + '...' : truncated + '...';
+    };
+    
+    const safeTitle = escapeXml(truncateTitle(title || 'Untitled', 60));
     const safeCategory = escapeXml(category);
     const safeDomain = escapeXml(domain);
 
-    return `<svg width="1024" height="768" xmlns="http://www.w3.org/2000/svg">
+    return `<svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:${color};stop-opacity:1" />
-            <stop offset="100%" style="stop-color:${color};stop-opacity:0.8" />
+          <!-- Main gradient background -->
+          <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:${colors.primary};stop-opacity:1" />
+            <stop offset="50%" style="stop-color:${colors.secondary};stop-opacity:1" />
+            <stop offset="100%" style="stop-color:${colors.accent};stop-opacity:0.9" />
           </linearGradient>
-          <pattern id="dots" patternUnits="userSpaceOnUse" width="60" height="60">
-            <circle cx="30" cy="30" r="6" fill="rgba(255,255,255,0.1)"/>
+          
+          <!-- Subtle pattern overlay -->
+          <pattern id="dots" patternUnits="userSpaceOnUse" width="40" height="40">
+            <circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/>
           </pattern>
+          
+          <!-- Category badge gradient -->
+          <linearGradient id="badgeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:rgba(255,255,255,0.2);stop-opacity:1" />
+            <stop offset="100%" style="stop-color:rgba(255,255,255,0.1);stop-opacity:1" />
+          </linearGradient>
+          
+          <!-- Text shadow filter -->
+          <filter id="textShadow" x="-50%" y="-50%" width="200%" height="200%">
+            <feDropShadow dx="1" dy="1" stdDeviation="2" flood-color="rgba(0,0,0,0.5)"/>
+          </filter>
         </defs>
-        <rect width="1024" height="768" fill="url(#bg)"/>
-        <rect width="1024" height="768" fill="url(#dots)"/>
-        <rect x="32" y="32" width="${Math.min(safeCategory.length * 24 + 60, 480)}" height="80" rx="12" fill="rgba(0,0,0,0.3)"/>
-        <text x="62" y="86" font-family="Arial, sans-serif" font-size="36" fill="white">${safeCategory}</text>
-        <text x="512" y="384" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">
-          <tspan x="512" dy="0">${safeTruncatedTitle}</tspan>
+        
+        <!-- Background -->
+        <rect width="640" height="360" fill="url(#bgGradient)"/>
+        <rect width="640" height="360" fill="url(#dots)"/>
+        
+        <!-- Category badge -->
+        <rect x="24" y="24" width="${Math.min(safeCategory.length * 14 + 40, 200)}" height="32" rx="16" fill="url(#badgeGradient)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+        <text x="44" y="44" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="white" filter="url(#textShadow)">${safeCategory}</text>
+        
+        <!-- Main title -->
+        <text x="320" y="180" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle" filter="url(#textShadow)">
+          <tspan x="320" dy="0">${safeTitle}</tspan>
         </text>
-        <text x="512" y="480" font-family="Arial, sans-serif" font-size="32" fill="rgba(255,255,255,0.8)" text-anchor="middle">Screenshot Unavailable</text>
+        
+        <!-- Domain info -->
+        <text x="320" y="220" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.9)" text-anchor="middle" filter="url(#textShadow)">${safeDomain}</text>
+        
+        <!-- Decorative elements -->
+        <circle cx="80" cy="280" r="3" fill="rgba(255,255,255,0.3)"/>
+        <circle cx="560" cy="280" r="3" fill="rgba(255,255,255,0.3)"/>
+        <rect x="120" y="278" width="400" height="2" fill="rgba(255,255,255,0.2)" rx="1"/>
+        
+        <!-- Status indicator -->
+        <text x="320" y="320" font-family="Arial, sans-serif" font-size="14" fill="rgba(255,255,255,0.7)" text-anchor="middle">Generated Preview</text>
       </svg>`;
   }
 
@@ -620,39 +658,36 @@ export class ThumbnailService {
     const safeTruncatedTitle = (title || 'Untitled').replace(/[<>&"']/g, ' ').substring(0, 50);
     const safeDomain = url.replace(/^https?:\/\//, '').split('/')[0].substring(0, 40);
     
-    const failureSvg = `
-    <svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="failGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#ee5a52;stop-opacity:1" />
-        </linearGradient>
-      </defs>
-      <rect width="640" height="360" fill="url(#failGrad)"/>
-      <text x="320" y="120" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">
-        ${safeTruncatedTitle}
-      </text>
-      <text x="320" y="180" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.9)" text-anchor="middle">
-        ${safeDomain}
-      </text>
-      <text x="320" y="240" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.7)" text-anchor="middle">
-        ${category}
-      </text>
-      <text x="320" y="300" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.8)" text-anchor="middle">
-        Preview unavailable
-      </text>
-    </svg>`;
+    // Use the same enhanced SVG generation but for failure state
+    const failureSvg = this.generateSVGThumbnail(url, title, category);
     
-    const svgBuffer = Buffer.from(failureSvg);
-    
-    const fs = await import('fs');
-    const path = await import('path');
-    
-    const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
-    const filepath = path.join(thumbnailsDir, filename.replace('.jpg', '.svg'));
-    await fs.promises.writeFile(filepath, svgBuffer);
-    
-    console.log(`Created failure thumbnail: ${filename}`);
+    try {
+      // Convert SVG to JPG using Sharp
+      const jpegBuffer = await sharp(Buffer.from(failureSvg))
+        .jpeg({ quality: 95, progressive: true, mozjpeg: true })
+        .toBuffer();
+      
+      const fs = await import('fs');
+      const path = await import('path');
+      
+      const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+      const filepath = path.join(thumbnailsDir, filename);
+      await fs.promises.writeFile(filepath, jpegBuffer);
+      
+      console.log(`Created enhanced JPG failure thumbnail: ${filename}`);
+    } catch (error) {
+      console.error(`Failed to create JPG failure thumbnail:`, error);
+      // Fallback to SVG if JPG conversion fails
+      const svgBuffer = Buffer.from(failureSvg);
+      const fs = await import('fs');
+      const path = await import('path');
+      
+      const thumbnailsDir = path.join(process.cwd(), 'client/public/thumbnails');
+      const filepath = path.join(thumbnailsDir, filename.replace('.jpg', '.svg'));
+      await fs.promises.writeFile(filepath, svgBuffer);
+      
+      console.log(`Created SVG fallback thumbnail: ${filename}`);
+    }
   }
 
   // Trigger UI refresh by updating file timestamp and broadcasting change

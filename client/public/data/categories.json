@@ -31,6 +31,10 @@
     {
       "name": "Podcasts",
       "id": "67ffc874-666d-47fd-9404-e62330a0fd70"
+    },
+    {
+      "name": "General",
+      "id": "general-default-category-1234-5678-9abc-def0"
     }
   ]
 }

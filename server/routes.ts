@@ -7,8 +7,6 @@ import session from "express-session";
 import createMemoryStore from "memorystore";
 import { ThumbnailService } from "./thumbnail-service.js";
 
-
-
 // Create memory store for sessions
 const MemoryStore = createMemoryStore(session);
 
@@ -40,6 +38,37 @@ const isAdmin = (req: Request, res: Response, next: Function) => {
   }
   next();
 };
+
+// Clean up HTML entities and tags from text
+function cleanTitle(text: string): string {
+  if (!text) return '';
+  // Remove HTML tags
+  let clean = text.replace(/<[^>]*>/g, ' ');
+  // Decode HTML entities
+  clean = clean.replace(/&amp;/gi, '&')
+               .replace(/&lt;/gi, '<')
+               .replace(/&gt;/gi, '>')
+               .replace(/&quot;/gi, '"')
+               .replace(/&#39;/gi, "'")
+               .replace(/&nbsp;/gi, ' ')
+               .replace(/&rsquo;/gi, "'")
+               .replace(/&lsquo;/gi, "'")
+               .replace(/&ldquo;/gi, '"')
+               .replace(/&rdquo;/gi, '"')
+               .replace(/&hellip;/gi, '...')
+               .replace(/&mdash;/gi, '-')
+               .replace(/&ndash;/gi, '-')
+               .replace(/&copy;/gi, '(c)')
+               .replace(/&reg;/gi, '(R)')
+               .replace(/&euro;/gi, '€')
+               .replace(/&pound;/gi, '£')
+               .replace(/&yen;/gi, '¥')
+               .replace(/&bull;/gi, '•')
+               .replace(/&apos;/gi, "'");
+  // Remove extra whitespace
+  clean = clean.replace(/\s+/g, ' ').trim();
+  return clean;
+}
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Configure sessions
@@ -113,6 +142,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // References routes
   app.get("/api/references", async (req, res) => {
     try {
+      // Add cache-busting headers
+      res.set({
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'Last-Modified': new Date().toUTCString(),
+        'ETag': `"${Date.now()}"`
+      });
+      
       const { category, tag, search } = req.query;
       
       let references = await storage.getReferences();
@@ -139,6 +177,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/references/:id", async (req, res) => {
     try {
+      // Add cache-busting headers
+      res.set({
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      });
+      
       const { id } = req.params;
       const reference = await storage.getReference(id);
       
@@ -166,11 +211,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const referenceData = validationResult.data;
       
+      // Clean up title and description
+      const cleanedReferenceData = {
+        ...referenceData,
+        title: referenceData.title ? cleanTitle(referenceData.title) : '',
+        description: referenceData.description ? cleanTitle(referenceData.description) : ''
+      };
+      
       // Auto-create any new tags that don't exist
       const existingTags = await storage.getTags();
       const existingTagNames = existingTags.map(tag => tag.name);
       
-      for (const tagName of referenceData.tags) {
+      for (const tagName of cleanedReferenceData.tags) {
         if (!existingTagNames.includes(tagName)) {
           try {
             await storage.createTag({ name: tagName });
@@ -184,7 +236,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // For create, we'll pass the user's username separately since it's omitted from the schema
       const createdBy = req.session!.user!.username;
       
-      const reference = await storage.createReference(referenceData, createdBy);
+      const reference = await storage.createReference(cleanedReferenceData, createdBy);
       return res.status(201).json(reference);
     } catch (error) {
       console.error("Error creating reference:", error);
@@ -212,7 +264,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const referenceData = validationResult.data;
       console.log("Validated reference data:", referenceData);
       
-      const updatedReference = await storage.updateReference(id, referenceData);
+      // Clean up title and description
+      const cleanedReferenceData = {
+        ...referenceData,
+        title: referenceData.title ? cleanTitle(referenceData.title) : '',
+        description: referenceData.description ? cleanTitle(referenceData.description) : ''
+      };
+      
+      const updatedReference = await storage.updateReference(id, cleanedReferenceData);
       
       if (!updatedReference) {
         console.log(`Reference ${id} not found`);
@@ -275,6 +334,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Categories routes
   app.get("/api/categories", async (req, res) => {
     try {
+      // Add cache-busting headers
+      res.set({
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'Last-Modified': new Date().toUTCString(),
+        'ETag': `"${Date.now()}"`
+      });
+      
       const categories = await storage.getCategories();
       return res.status(200).json(categories);
     } catch (error) {
@@ -345,6 +413,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Tags routes
   app.get("/api/tags", async (req, res) => {
     try {
+      // Add cache-busting headers
+      res.set({
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'Last-Modified': new Date().toUTCString(),
+        'ETag': `"${Date.now()}"`
+      });
+      
       const tags = await storage.getTags();
       return res.status(200).json(tags);
     } catch (error) {

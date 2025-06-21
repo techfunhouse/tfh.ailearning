@@ -16,6 +16,7 @@ import path from "path";
 import fs from "fs";
 import { SimpleThumbnailService } from "./simple-thumbnail.js";
 import { PuppeteerThumbnailService } from "./puppeteer-thumbnail.js";
+import { ThumbnailService } from './thumbnail-service.js';
 
 // Storage interface
 export interface IStorage {
@@ -310,8 +311,8 @@ export class JsonDbStorage implements IStorage {
     const thumbnailFilename = `${id}.jpg`;
     const thumbnailPath = `/thumbnails/${thumbnailFilename}`;
     
-    // Generate elegant placeholder thumbnail
-    SimpleThumbnailService.generateThumbnailAsync(thumbnailFilename, reference.title, reference.category, reference.link);
+    // Generate enhanced JPG thumbnail
+    ThumbnailService.generateThumbnailToFile(reference.link, reference.title, reference.category, thumbnailFilename);
     
     const newReference: Reference = {
       ...reference,
@@ -321,9 +322,6 @@ export class JsonDbStorage implements IStorage {
     
     this.referencesDb.data.references.push(newReference);
     this.saveReferenceData();
-    
-    // Generate elegant placeholder thumbnail
-    SimpleThumbnailService.generateThumbnailAsync(thumbnailFilename, reference.title, reference.category, reference.link);
     
     return newReference;
   }
@@ -338,21 +336,19 @@ export class JsonDbStorage implements IStorage {
     const existingReference = this.referencesDb.data.references[index];
     
     let thumbnailPath = reference.thumbnail || existingReference.thumbnail;
-    let thumbnailStatus = existingReference.thumbnailStatus;
-    let thumbnailId = existingReference.thumbnailId;
     
     // Check if URL changed - if so, regenerate thumbnail
     if (reference.link && reference.link !== existingReference.link) {
-      // Generate new thumbnail using simplified service
+      // Generate new thumbnail using enhanced service
       const thumbnailFilename = existingReference.thumbnail?.split('/').pop() || `${uuid()}.jpg`;
       thumbnailPath = `/thumbnails/${thumbnailFilename}`;
       
-      // Generate elegant placeholder thumbnail
-      SimpleThumbnailService.generateThumbnailAsync(
-        thumbnailFilename,
+      // Generate enhanced JPG thumbnail
+      ThumbnailService.generateThumbnailToFile(
+        reference.link,
         reference.title || existingReference.title,
         reference.category || existingReference.category,
-        reference.link
+        thumbnailFilename
       );
     }
     
@@ -361,8 +357,6 @@ export class JsonDbStorage implements IStorage {
       ...reference,
       id: existingReference.id,
       thumbnail: thumbnailPath,
-      thumbnailStatus,
-      thumbnailId,
       updatedAt: new Date().toISOString(),
     };
     
@@ -385,7 +379,6 @@ export class JsonDbStorage implements IStorage {
     if (index !== -1) {
       console.log(`[Storage] Found reference at index ${index}, updating...`);
       this.referencesDb.data.references[index].thumbnail = thumbnailPath;
-      this.referencesDb.data.references[index].thumbnailStatus = status;
       this.referencesDb.data.references[index].updatedAt = new Date().toISOString();
       this.saveReferenceData();
       
@@ -565,8 +558,6 @@ export class JsonDbStorage implements IStorage {
       reference.tags.some(t => t.toLowerCase() === tag.toLowerCase())
     );
   }
-
-
 
   async searchReferences(query: string): Promise<Reference[]> {
     const normalizedQuery = query.toLowerCase();

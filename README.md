@@ -69,7 +69,7 @@ You can run the client and server components separately or together:
   npm run server
   ```
 
-The client runs on http://localhost:3000 and the server on http://localhost:5000.
+The client runs on http://localhost:3000 and the server on http://localhost:5002.
 
 ### Building for Production
 
