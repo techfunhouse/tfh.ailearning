@@ -1,12 +1,40 @@
 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="64" height="64" rx="12" fill="url(#paint0_linear)" />
-  <path d="M18 18H46V24H18V18Z" fill="white" />
-  <path d="M18 28H46V34H18V28Z" fill="white" />
-  <path d="M18 38H36V44H18V38Z" fill="white" />
+  <!-- Background with rounded corners -->
+  <rect width="64" height="64" rx="12" fill="url(#gradient)" />
+  
+  <!-- Stacked books -->
+  <g transform="translate(12, 20)">
+    <!-- Book 1 (bottom) -->
+    <rect x="0" y="8" width="16" height="20" rx="2" fill="#ffffff" opacity="0.9"/>
+    <rect x="2" y="10" width="12" height="2" fill="#3b82f6"/>
+    <rect x="2" y="14" width="12" height="2" fill="#3b82f6"/>
+    <rect x="2" y="18" width="8" height="2" fill="#3b82f6"/>
+    
+    <!-- Book 2 (middle) -->
+    <rect x="4" y="4" width="16" height="20" rx="2" fill="#ffffff" opacity="0.8"/>
+    <rect x="6" y="6" width="12" height="2" fill="#8b5cf6"/>
+    <rect x="6" y="10" width="12" height="2" fill="#8b5cf6"/>
+    <rect x="6" y="14" width="10" height="2" fill="#8b5cf6"/>
+    
+    <!-- Book 3 (top) -->
+    <rect x="8" y="0" width="16" height="20" rx="2" fill="#ffffff" opacity="0.7"/>
+    <rect x="10" y="2" width="12" height="2" fill="#06b6d4"/>
+    <rect x="10" y="6" width="12" height="2" fill="#06b6d4"/>
+    <rect x="10" y="10" width="10" height="2" fill="#06b6d4"/>
+  </g>
+  
+  <!-- Bookmark icon -->
+  <g transform="translate(40, 16)">
+    <path d="M8 0L8 16L12 12L16 16L16 0L8 0Z" fill="#ffffff" opacity="0.9"/>
+    <path d="M9 1L9 14L12 11L15 14L15 1L9 1Z" fill="#ef4444"/>
+  </g>
+  
+  <!-- Gradient definition -->
   <defs>
-    <linearGradient id="paint0_linear" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#4F46E5" />
-      <stop offset="1" stop-color="#7C3AED" />
+    <linearGradient id="gradient" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1e40af"/>
+      <stop offset="0.5" stop-color="#3730a3"/>
+      <stop offset="1" stop-color="#7c3aed"/>
     </linearGradient>
   </defs>
 </svg>

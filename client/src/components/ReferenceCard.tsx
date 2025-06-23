@@ -147,7 +147,7 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
                 variant="secondary"
                 size="sm"
                 onClick={handleEditClick}
-                className="h-8 w-8 p-0 bg-blue-500 hover:bg-blue-600 text-white shadow-md"
+                className="h-8 w-8 p-0 bg-green-500 hover:bg-green-600 text-white shadow-md"
                 title="Edit Reference"
               >
                 <Edit className="h-4 w-4" />
@@ -257,7 +257,7 @@ export default function ReferenceCard({ reference, isAdmin, onEdit, onDelete, on
           )}
           
           <div className="flex gap-3 pt-4 border-t">
-            <Button asChild className="flex-1">
+            <Button asChild className="flex-1 bg-green-600 hover:bg-green-700 text-white border-none shadow-md">
               <a href={link} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="h-4 w-4 mr-2" />
                 View Resource
