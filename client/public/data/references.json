@@ -1322,7 +1322,7 @@
       "title": "Agent Network Protocol",
       "link": "https://github.com/agent-network-protocol/AgentNetworkProtocol",
       "description": "Protocol for connecting and coordinating AI agents in distributed systems",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "protocol",
@@ -1338,7 +1338,7 @@
       "title": "Slim Agent Framework",
       "link": "https://github.com/agntcy/slim",
       "description": "Lightweight framework for building AI agents with minimal overhead",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "framework",
@@ -1354,7 +1354,7 @@
       "title": "Anthropic Courses GitHub",
       "link": "https://github.com/anthropics/courses",
       "description": "Open-source courses and educational materials from Anthropic",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "anthropic",
@@ -1369,7 +1369,7 @@
       "title": "Prompt Engineering Tutorial - Anthropic",
       "link": "https://github.com/anthropics/prompt-eng-interactive-tutorial",
       "description": "Interactive tutorial for prompt engineering with Claude",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "tutorial",
         "anthropic",
@@ -1384,7 +1384,7 @@
       "title": "RAG Cookbooks",
       "link": "https://github.com/athina-ai/rag-cookbooks",
       "description": "Collection of recipes and tutorials for Retrieval Augmented Generation",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "rag",
@@ -1400,7 +1400,7 @@
       "title": "Voice Agent Base",
       "link": "https://github.com/benjichat/voice_agent_base",
       "description": "Base implementation for building voice-enabled AI agents",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "voice-agents",
@@ -1416,7 +1416,7 @@
       "title": "CrewAI Framework",
       "link": "https://github.com/crewAIInc/crewAI",
       "description": "Framework for orchestrating role-playing autonomous AI agents",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "crewai",
@@ -1433,7 +1433,7 @@
       "title": "Prompt Engineering Guide",
       "link": "https://github.com/dair-ai/Prompt-Engineering-Guide",
       "description": "Comprehensive guide to prompt engineering techniques and best practices",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "prompt-engineering",
@@ -1449,7 +1449,7 @@
       "title": "Embabel Agent",
       "link": "https://github.com/embabel/embabel-agent",
       "description": "AI agent implementation for embedding and semantic search applications",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "ai-agent",
@@ -1465,7 +1465,7 @@
       "title": "All RAG Techniques",
       "link": "https://github.com/FareedKhan-dev/all-rag-techniques",
       "description": "Comprehensive collection of Retrieval Augmented Generation techniques",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "rag",
@@ -1481,7 +1481,7 @@
       "title": "Flowise",
       "link": "https://github.com/FlowiseAI/Flowise",
       "description": "Drag & drop UI to build customized LLM flows and AI agents",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "flowise",
@@ -1498,7 +1498,7 @@
       "title": "GenAI Agent OS",
       "link": "https://github.com/genai-works-org/genai-agentos",
       "description": "Operating system for generative AI agents and workflows",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "genai",
@@ -1514,7 +1514,7 @@
       "title": "Made With ML",
       "link": "https://github.com/GokuMohandas/Made-With-ML",
       "description": "MLOps and production machine learning best practices and tutorials",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "mlops",
@@ -1531,7 +1531,7 @@
       "title": "Google A2A Protocol",
       "link": "https://github.com/google-a2a/A2A",
       "description": "Agent-to-Agent communication protocol by Google",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "google",
@@ -1548,7 +1548,7 @@
       "title": "MLOps Basics",
       "link": "https://github.com/graviraja/MLOps-Basics",
       "description": "Fundamental MLOps concepts and implementation tutorials",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "mlops",
@@ -1565,7 +1565,7 @@
       "title": "Advanced RAG",
       "link": "https://github.com/guyernest/advanced-rag",
       "description": "Advanced techniques and implementations for Retrieval Augmented Generation",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "rag",
@@ -1581,7 +1581,7 @@
       "title": "Hands-On Large Language Models",
       "link": "https://github.com/HandsOnLLM/Hands-On-Large-Language-Models",
       "description": "Practical tutorials and implementations for working with LLMs",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "llm",
@@ -1598,7 +1598,7 @@
       "title": "Hugging Face Transformers",
       "link": "https://github.com/huggingface/transformers",
       "description": "Open-source library for transformer models and NLP",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "hugging-face",
@@ -1613,7 +1613,7 @@
       "title": "Bee ACP",
       "link": "https://github.com/i-am-bee/acp",
       "description": "Agent Communication Protocol implementation for AI systems",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "protocol",
@@ -1628,7 +1628,7 @@
       "title": "II Researcher",
       "link": "https://github.com/Intelligent-Internet/ii-researcher",
       "description": "AI-powered research assistant for intelligent internet applications",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "ai-researcher",
@@ -1643,7 +1643,7 @@
       "title": "LangChain GitHub",
       "link": "https://github.com/langchain-ai/langchain",
       "description": "Framework for developing applications with language models",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "langchain",
@@ -1658,7 +1658,7 @@
       "title": "LangChain",
       "link": "https://github.com/langchain-ai/langchain",
       "description": "Framework for developing applications with language models",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "langchain",
@@ -1675,7 +1675,7 @@
       "title": "LangGraph",
       "link": "https://github.com/langchain-ai/langgraph",
       "description": "Library for building stateful, multi-actor applications with LLMs",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "langgraph",
@@ -1692,7 +1692,7 @@
       "title": "Open Agent Platform",
       "link": "https://github.com/langchain-ai/open-agent-platform",
       "description": "Open platform for building and deploying AI agents",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "langchain",
@@ -1708,7 +1708,7 @@
       "title": "Mem0 AI",
       "link": "https://github.com/mem0ai/mem0",
       "description": "Memory layer for AI applications and personalized experiences",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "mem0",
@@ -1724,7 +1724,7 @@
       "title": "AI Agents for Beginners - Microsoft",
       "link": "https://github.com/microsoft/ai-agents-for-beginners",
       "description": "Microsoft's beginner guide to building AI agents",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "microsoft",
@@ -1741,7 +1741,7 @@
       "title": "Microsoft AutoGen",
       "link": "https://github.com/microsoft/autogen",
       "description": "Framework for multi-agent conversational AI systems",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "microsoft",
@@ -1756,7 +1756,7 @@
       "title": "MindsDB",
       "link": "https://github.com/mindsdb/mindsdb",
       "description": "ML platform that brings machine learning to databases",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "mindsdb",
@@ -1773,7 +1773,7 @@
       "title": "Model Context Protocol",
       "link": "https://github.com/modelcontextprotocol",
       "description": "Protocol for AI models to access external context and tools",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "protocol",
@@ -1789,7 +1789,7 @@
       "title": "TensorFlow Deep Learning Course",
       "link": "https://github.com/mrdbourke/tensorflow-deep-learning",
       "description": "Comprehensive TensorFlow course materials on GitHub",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "tensorflow",
@@ -1804,7 +1804,7 @@
       "title": "Philosophy Agents Course",
       "link": "https://github.com/neural-maze/philoagents-course",
       "description": "Course on building philosophical reasoning AI agents",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "course",
@@ -1821,7 +1821,7 @@
       "title": "GenAI Agents",
       "link": "https://github.com/NirDiamant/GenAI_Agents",
       "description": "Collection of generative AI agent implementations and tutorials",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "genai",
@@ -1838,7 +1838,7 @@
       "title": "RAG Techniques",
       "link": "https://github.com/NirDiamant/RAG_Techniques",
       "description": "Comprehensive collection of RAG implementation techniques",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "rag",
@@ -1854,7 +1854,7 @@
       "title": "OpenAI GPT-2",
       "link": "https://github.com/openai/gpt-2",
       "description": "OpenAI's GPT-2 model implementation and resources",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "openai",
@@ -1869,7 +1869,7 @@
       "title": "AI Engineering Hub",
       "link": "https://github.com/patchy631/ai-engineering-hub",
       "description": "Hub for AI engineering resources, tutorials, and best practices",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "ai-engineering",
@@ -1886,7 +1886,7 @@
       "title": "PyTorch GitHub",
       "link": "https://github.com/pytorch/pytorch",
       "description": "Official PyTorch deep learning framework repository",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "pytorch",
@@ -1901,7 +1901,7 @@
       "title": "LlamaIndex",
       "link": "https://github.com/run-llama/llama_index",
       "description": "Data framework for connecting custom data sources to large language models",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "llamaindex",
@@ -1918,7 +1918,7 @@
       "title": "Awesome LLM Apps",
       "link": "https://github.com/Shubhamsaboo/awesome-llm-apps",
       "description": "Curated collection of LLM applications and projects",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "awesome-list",
@@ -1935,7 +1935,7 @@
       "title": "SuperAgent",
       "link": "https://github.com/superagent-ai/superagent",
       "description": "Platform for building, deploying and managing AI agents",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "superagent",
@@ -1952,7 +1952,7 @@
       "title": "TensorFlow GitHub",
       "link": "https://github.com/tensorflow/tensorflow",
       "description": "Official TensorFlow machine learning framework repository",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "tensorflow",
@@ -1967,7 +1967,7 @@
       "title": "WaterCrawl",
       "link": "https://github.com/watercrawl/WaterCrawl",
       "description": "Web crawling framework for AI and data collection applications",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "github",
         "web-crawling",
@@ -3191,7 +3191,7 @@
       "title": "AI at UC Berkeley",
       "link": "https://technology.berkeley.edu/AI",
       "description": "UC Berkeley's AI resources and community information",
-      "category": "communities",
+      "category": "github collections",
       "tags": [
         "platform",
         "berkeley",
@@ -6047,6 +6047,625 @@
       ],
       "thumbnail": "/thumbnails/14490218-f061-48e5-b512-ec635d39d397.jpg",
       "id": "14490218-f061-48e5-b512-ec635d39d397"
+    },
+    {
+      "title": "YouTube Playlists - Krish Naik",
+      "link": "https://www.krishnaik.in/playlists",
+      "description": "Krish Naik's YouTube playlists covering AI, machine learning, deep learning, and data science tutorials",
+      "category": "video learning",
+      "tags": [
+        "youtube",
+        "tutorial",
+        "ai",
+        "machine-learning",
+        "deep-learning",
+        "data-science",
+        "krish-naik",
+        "playlist"
+      ],
+      "id": "a3b44131-8be0-462e-aed8-1c30ab2259e2",
+      "thumbnail": "/thumbnails/a3b44131-8be0-462e-aed8-1c30ab2259e2.jpg"
+    },
+    {
+      "title": "Krish Naik YouTube Channel",
+      "link": "https://youtube.com/@krishnaik06",
+      "description": "Popular YouTube channel for AI, ML, and data science education with practical tutorials and courses",
+      "category": "video learning",
+      "tags": [
+        "youtube",
+        "channel",
+        "ai",
+        "machine-learning",
+        "deep-learning",
+        "data-science",
+        "education",
+        "tutorial"
+      ],
+      "id": "9f538ebe-22c9-43fb-b4a2-11de36a402d1",
+      "thumbnail": "/thumbnails/9f538ebe-22c9-43fb-b4a2-11de36a402d1.jpg"
+    },
+    {
+      "title": "Awesome AI Agents - 300+ Agentic AI Resources",
+      "link": "https://github.com/slavakurilyak/awesome-ai-agents",
+      "description": "Comprehensive curated list of 300+ AI agents and agentic AI resources including tools, frameworks, and projects",
+      "category": "github collections",
+      "tags": [
+        "github",
+        "awesome-list",
+        "ai-agents",
+        "agentic-ai",
+        "curated",
+        "resources",
+        "open-source",
+        "tools",
+        "frameworks"
+      ],
+      "id": "6e0bc2f3-a69f-467e-8dfc-5a9117614040",
+      "thumbnail": "/thumbnails/6e0bc2f3-a69f-467e-8dfc-5a9117614040.jpg"
+    },
+    {
+      "title": "E2B Awesome AI Agents - List of AI Autonomous Agents",
+      "link": "https://github.com/e2b-dev/awesome-ai-agents",
+      "description": "Curated collection of AI autonomous agents with focus on practical implementations and real-world applications",
+      "category": "github collections",
+      "tags": [
+        "github",
+        "awesome-list",
+        "ai-agents",
+        "autonomous-agents",
+        "open-source",
+        "practical",
+        "implementations"
+      ],
+      "id": "3f9a76e8-d4b4-4f5b-8298-3c145b478487",
+      "thumbnail": "/thumbnails/3f9a76e8-d4b4-4f5b-8298-3c145b478487.jpg"
+    },
+    {
+      "title": "KyroLabs Awesome Agents - Curated List of AI Agents",
+      "link": "https://github.com/kyrolabs/awesome-agents",
+      "description": "Comprehensive list of open source AI agents including frameworks, tools, and agent development resources",
+      "category": "github collections",
+      "tags": [
+        "github",
+        "awesome-list",
+        "ai-agents",
+        "open-source",
+        "frameworks",
+        "agent-development",
+        "curated",
+        "tools"
+      ],
+      "id": "32fe34ee-1fe2-4d3e-a586-d04516db1d53",
+      "thumbnail": "/thumbnails/32fe34ee-1fe2-4d3e-a586-d04516db1d53.jpg"
+    },
+    {
+      "title": "500 AI Agents Projects - Industry Use Cases Collection",
+      "link": "https://github.com/ashishpatel26/500-AI-Agents-Projects",
+      "description": "Curated collection of 500 AI agent use cases across industries with practical applications and implementation links",
+      "category": "github collections",
+      "tags": [
+        "github",
+        "ai-agents",
+        "use-cases",
+        "industry-applications",
+        "projects",
+        "practical",
+        "healthcare",
+        "finance",
+        "education",
+        "retail"
+      ],
+      "id": "917d7cc5-0c13-4d12-8039-db6aaf5098ab",
+      "thumbnail": "/thumbnails/917d7cc5-0c13-4d12-8039-db6aaf5098ab.jpg"
+    },
+    {
+      "title": "Awesome AI Agents Collection - LLM-powered Autonomous Agents",
+      "link": "https://github.com/Jenqyang/Awesome-AI-Agents",
+      "description": "Collection of autonomous agents powered by LLM including single-agent, multi-agent, and social simulation systems",
+      "category": "github collections",
+      "tags": [
+        "github",
+        "awesome-list",
+        "ai-agents",
+        "llm",
+        "autonomous-agents",
+        "multi-agent",
+        "social-simulation",
+        "open-source"
+      ],
+      "id": "04c73384-5aef-47d2-8500-731f80621640",
+      "thumbnail": "/thumbnails/04c73384-5aef-47d2-8500-731f80621640.jpg"
+    },
+    {
+      "title": "Learn Agentic AI - DACA Design Pattern Course",
+      "link": "https://github.com/panaversity/learn-agentic-ai",
+      "description": "Comprehensive course on Agentic AI using Dapr Agentic Cloud Ascent design pattern with OpenAI Agents SDK and cloud technologies",
+      "category": "github collections",
+      "tags": [
+        "github",
+        "course",
+        "agentic-ai",
+        "dapr",
+        "openai-agents-sdk",
+        "cloud-native",
+        "kubernetes",
+        "learning-path",
+        "tutorial"
+      ],
+      "id": "ecef9421-4d88-4545-b7a2-7321029d4b34",
+      "thumbnail": "/thumbnails/ecef9421-4d88-4545-b7a2-7321029d4b34.jpg"
+    },
+    {
+      "title": "Complete Agentic AI Engineering Course Repository",
+      "link": "https://github.com/ed-donner/agents",
+      "description": "6-week journey repository for learning to code and deploy AI Agents using OpenAI Agents SDK, CrewAI, LangGraph, AutoGen and MCP",
+      "category": "github collections",
+      "tags": [
+        "github",
+        "course",
+        "agentic-ai",
+        "openai-agents-sdk",
+        "crewai",
+        "langgraph",
+        "autogen",
+        "mcp",
+        "engineering",
+        "tutorial"
+      ],
+      "id": "920685a0-8243-4fe0-a4cb-cf948d698ee6",
+      "thumbnail": "/thumbnails/920685a0-8243-4fe0-a4cb-cf948d698ee6.jpg"
+    },
+    {
+      "title": "Lex Fridman Podcast",
+      "link": "https://lexfridman.com/podcast/",
+      "description": "Conversations about science, technology, history, philosophy and the nature of intelligence, consciousness, love, and power with AI researcher and MIT affiliate",
+      "category": "podcasts",
+      "tags": [
+        "podcast",
+        "ai",
+        "technology",
+        "philosophy",
+        "science",
+        "interviews",
+        "mit",
+        "consciousness",
+        "intelligence"
+      ],
+      "id": "a40edbbe-584c-4696-8be4-d1853775582f",
+      "thumbnail": "/thumbnails/a40edbbe-584c-4696-8be4-d1853775582f.jpg"
+    },
+    {
+      "title": "TWIML AI Podcast - The Voice of Machine Learning and Artificial Intelligence",
+      "link": "https://twimlai.com/",
+      "description": "Leading podcast bringing top minds and ideas from ML and AI to researchers, data scientists, engineers and tech leaders",
+      "category": "podcasts",
+      "tags": [
+        "podcast",
+        "machine-learning",
+        "ai",
+        "data-science",
+        "ml",
+        "researchers",
+        "enterprise",
+        "technical"
+      ],
+      "id": "00ff5c9a-7932-4fdc-8e41-fa5513906885",
+      "thumbnail": "/thumbnails/00ff5c9a-7932-4fdc-8e41-fa5513906885.jpg"
+    },
+    {
+      "title": "AI Today Podcast - Cognilytica",
+      "link": "https://www.cognilytica.com/aitoday/",
+      "description": "No-hype, practical, real-world insight into AI implementation across enterprises, public sector agencies, and leading technology companies",
+      "category": "podcasts",
+      "tags": [
+        "podcast",
+        "ai",
+        "business",
+        "enterprise",
+        "practical",
+        "real-world",
+        "implementation",
+        "industry"
+      ],
+      "id": "fc306256-49ac-4079-ba93-7a97d2a5c5d8",
+      "thumbnail": "/thumbnails/fc306256-49ac-4079-ba93-7a97d2a5c5d8.jpg"
+    },
+    {
+      "title": "Practical AI - The Changelog",
+      "link": "https://changelog.com/practicalai/",
+      "description": "Making artificial intelligence practical, productive and accessible to everyone with focus on real-world scenarios and implementations",
+      "category": "podcasts",
+      "tags": [
+        "podcast",
+        "ai",
+        "practical",
+        "accessible",
+        "real-world",
+        "implementations",
+        "changelog",
+        "productive"
+      ],
+      "id": "352e81b9-6d11-4743-93ce-066c58d24a98",
+      "thumbnail": "/thumbnails/352e81b9-6d11-4743-93ce-066c58d24a98.jpg"
+    },
+    {
+      "title": "Latent Space - The AI Engineer Podcast",
+      "link": "https://www.latent.space/",
+      "description": "The podcast by and for AI Engineers covering Foundation Models, Code Generation, Multimodality, AI Agents, GPU Infra and more",
+      "category": "podcasts",
+      "tags": [
+        "podcast",
+        "ai-engineering",
+        "foundation-models",
+        "ai-agents",
+        "gpu",
+        "multimodal",
+        "code-generation",
+        "technical"
+      ],
+      "id": "d36d74f4-ac47-4521-8fab-aaac86c1b316",
+      "thumbnail": "/thumbnails/d36d74f4-ac47-4521-8fab-aaac86c1b316.jpg"
+    },
+    {
+      "title": "DeepMind: The Podcast - Google DeepMind",
+      "link": "https://deepmind.google/discover/blog/welcome-to-the-deepmind-podcast/",
+      "description": "Inside look at AI research from DeepMind covering neuroscience, games, safety, and general AI with host Dr Hannah Fry",
+      "category": "podcasts",
+      "tags": [
+        "podcast",
+        "deepmind",
+        "ai-research",
+        "neuroscience",
+        "google",
+        "hannah-fry",
+        "safety",
+        "agi"
+      ],
+      "id": "17d34a2e-2ad3-4133-8cc2-fdabe839562c",
+      "thumbnail": "/thumbnails/17d34a2e-2ad3-4133-8cc2-fdabe839562c.jpg"
+    },
+    {
+      "title": "Machine Learning Street Talk (MLST)",
+      "link": "https://www.mlst.ai/",
+      "description": "Highest-rated technical AI podcast on Spotify covering AI, cognitive science, neuroscience and philosophy of mind with rigorous analysis",
+      "category": "podcasts",
+      "tags": [
+        "podcast",
+        "machine-learning",
+        "technical",
+        "cognitive-science",
+        "neuroscience",
+        "philosophy",
+        "rigorous",
+        "academic"
+      ],
+      "id": "afa262fb-cd9f-4569-8a17-ff0b76199561",
+      "thumbnail": "/thumbnails/afa262fb-cd9f-4569-8a17-ff0b76199561.jpg"
+    },
+    {
+      "title": "TWIML AI Podcast - Apple Podcasts",
+      "link": "https://podcasts.apple.com/us/podcast/the-twiml-ai-podcast-formerly-this-week-in-machine/id1116303051",
+      "description": "Machine learning and AI podcast bringing top minds to ML/AI researchers, data scientists, engineers and tech leaders",
+      "category": "podcasts",
+      "tags": [
+        "podcast",
+        "apple-podcasts",
+        "machine-learning",
+        "ai",
+        "data-science",
+        "technical",
+        "researchers"
+      ],
+      "id": "d2943c65-0a2c-466a-8c12-9edf138a4bbf",
+      "thumbnail": "/thumbnails/d2943c65-0a2c-466a-8c12-9edf138a4bbf.jpg"
+    },
+    {
+      "title": "AI Today Podcast - Apple Podcasts",
+      "link": "https://podcasts.apple.com/us/podcast/ai-today-podcast-artificial-intelligence-insights-experts/id1279927057",
+      "description": "Practical AI insights for enterprises, public sector agencies, thought leaders and technology companies",
+      "category": "podcasts",
+      "tags": [
+        "podcast",
+        "apple-podcasts",
+        "ai",
+        "practical",
+        "enterprise",
+        "business",
+        "industry-insights"
+      ],
+      "id": "59d04f8f-f506-459c-b7a9-e2a06b80e83f",
+      "thumbnail": "/thumbnails/59d04f8f-f506-459c-b7a9-e2a06b80e83f.jpg"
+    },
+    {
+      "title": "Practical AI - Apple Podcasts",
+      "link": "https://podcasts.apple.com/us/podcast/practical-ai-machine-learning-data-science-llm/id1406537385",
+      "description": "Making AI practical, productive and accessible with discussions on ML, Deep Learning, LLMs and real-world scenarios",
+      "category": "podcasts",
+      "tags": [
+        "podcast",
+        "apple-podcasts",
+        "practical-ai",
+        "machine-learning",
+        "llm",
+        "deep-learning",
+        "accessible"
+      ],
+      "id": "4ac43189-4041-4f13-b48a-6ed7d2c42cd1",
+      "thumbnail": "/thumbnails/4ac43189-4041-4f13-b48a-6ed7d2c42cd1.jpg"
+    },
+    {
+      "title": "Latent Space: The AI Engineer Podcast - Apple Podcasts",
+      "link": "https://podcasts.apple.com/us/podcast/latent-space-the-ai-engineer-podcast/id1674008350",
+      "description": "Podcast by and for AI Engineers covering Foundation Models, AI Agents, GPU infrastructure and Software 3.0",
+      "category": "podcasts",
+      "tags": [
+        "podcast",
+        "apple-podcasts",
+        "ai-engineering",
+        "foundation-models",
+        "ai-agents",
+        "gpu",
+        "software-3.0"
+      ],
+      "id": "30bcca4d-df3e-4254-9bae-2c0c560b35cd",
+      "thumbnail": "/thumbnails/30bcca4d-df3e-4254-9bae-2c0c560b35cd.jpg"
+    },
+    {
+      "title": "Machine Learning Street Talk - Apple Podcasts",
+      "link": "https://podcasts.apple.com/us/podcast/machine-learning-street-talk-mlst/id1510472996",
+      "description": "Technical discussions with pre-eminent AI figures covering cognitive science, neuroscience and philosophy of mind",
+      "category": "podcasts",
+      "tags": [
+        "podcast",
+        "apple-podcasts",
+        "machine-learning",
+        "technical",
+        "cognitive-science",
+        "neuroscience",
+        "philosophy"
+      ],
+      "id": "0f9d5311-45de-4cb6-83c8-041dfb2afb95",
+      "thumbnail": "/thumbnails/0f9d5311-45de-4cb6-83c8-041dfb2afb95.jpg"
+    },
+    {
+      "title": "Lex Fridman Podcast",
+      "link": "https://lexfridman.com/podcast/",
+      "description": "Conversations about science, technology, history, philosophy and the nature of intelligence, consciousness, love, and power with AI researcher and MIT affiliate",
+      "category": "podcasts",
+      "tags": [
+        "podcast",
+        "ai",
+        "technology",
+        "philosophy",
+        "science",
+        "interviews",
+        "mit",
+        "consciousness",
+        "intelligence"
+      ],
+      "id": "6319d14d-fab1-4ff4-8739-74f07f55cc50",
+      "thumbnail": "/thumbnails/6319d14d-fab1-4ff4-8739-74f07f55cc50.jpg"
+    },
+    {
+      "title": "Lex Fridman Podcast - Spotify",
+      "link": "https://open.spotify.com/show/2MAi0BvDc6GTFvKFPXnkCL",
+      "description": "Conversations about science, technology, history, philosophy and intelligence with AI researcher Lex Fridman",
+      "category": "podcasts",
+      "tags": [
+        "podcast",
+        "spotify",
+        "science",
+        "technology",
+        "philosophy",
+        "ai",
+        "intelligence",
+        "conversations"
+      ],
+      "id": "40f42cbf-c2e9-4c18-8194-2f93cf45d055",
+      "thumbnail": "/thumbnails/40f42cbf-c2e9-4c18-8194-2f93cf45d055.jpg"
+    },
+    {
+      "title": "Machine Learning Street Talk - Spotify",
+      "link": "https://open.spotify.com/show/02e6PZeIOdpmBGT9THuzwR",
+      "description": "Technical AI discussions with pre-eminent figures covering cognitive science and philosophy of mind",
+      "category": "podcasts",
+      "tags": [
+        "podcast",
+        "spotify",
+        "machine-learning",
+        "technical",
+        "cognitive-science",
+        "philosophy"
+      ],
+      "id": "c84e4387-6716-4bf0-93cc-6d98f321a7bc",
+      "thumbnail": "/thumbnails/c84e4387-6716-4bf0-93cc-6d98f321a7bc.jpg"
+    },
+    {
+      "title": "Lex Fridman YouTube Channel",
+      "link": "https://www.youtube.com/@lexfridman",
+      "description": "AI researcher's channel featuring podcast episodes and conversations about technology, science, and philosophy",
+      "category": "podcasts",
+      "tags": [
+        "youtube",
+        "ai",
+        "technology",
+        "science",
+        "philosophy",
+        "conversations",
+        "mit",
+        "researcher"
+      ],
+      "id": "3b003e56-dbe0-4182-b20b-8a14cf8032e6",
+      "thumbnail": "/thumbnails/3b003e56-dbe0-4182-b20b-8a14cf8032e6.jpg"
+    },
+    {
+      "title": "Machine Learning Street Talk YouTube",
+      "link": "https://www.youtube.com/@MachineLearningStreetTalk",
+      "description": "Technical AI discussions and interviews with leading researchers in machine learning and cognitive science",
+      "category": "podcasts",
+      "tags": [
+        "youtube",
+        "machine-learning",
+        "technical",
+        "ai",
+        "researchers",
+        "cognitive-science",
+        "interviews"
+      ],
+      "id": "c097dcbc-658d-4fc0-9658-11c63d565df2",
+      "thumbnail": "/thumbnails/c097dcbc-658d-4fc0-9658-11c63d565df2.jpg"
+    },
+    {
+      "title": "Two Minute Papers YouTube",
+      "link": "https://www.youtube.com/@TwoMinutePapers",
+      "description": "Latest AI and machine learning research papers explained in accessible 2-minute format",
+      "category": "podcasts",
+      "tags": [
+        "youtube",
+        "ai",
+        "machine-learning",
+        "research-papers",
+        "accessible",
+        "academic",
+        "explained"
+      ],
+      "id": "57f0078f-d996-47a4-8853-903e31bf52a8",
+      "thumbnail": "/thumbnails/57f0078f-d996-47a4-8853-903e31bf52a8.jpg"
+    },
+    {
+      "title": "DeepLearning.AI YouTube",
+      "link": "https://www.youtube.com/@DeepLearningAI",
+      "description": "AI education platform by Andrew Ng covering deep learning, machine learning and AI courses",
+      "category": "podcasts",
+      "tags": [
+        "youtube",
+        "deep-learning",
+        "ai",
+        "education",
+        "andrew-ng",
+        "courses",
+        "machine-learning"
+      ],
+      "id": "97e37387-d209-4b10-9b08-f8bba3079b7d",
+      "thumbnail": "/thumbnails/97e37387-d209-4b10-9b08-f8bba3079b7d.jpg"
+    },
+    {
+      "title": "AI Explained YouTube",
+      "link": "https://www.youtube.com/@AIExplained-official",
+      "description": "Technical explanations of AI concepts, research papers, and developments in artificial intelligence",
+      "category": "podcasts",
+      "tags": [
+        "youtube",
+        "ai",
+        "explained",
+        "technical",
+        "research",
+        "concepts",
+        "education"
+      ],
+      "id": "5461b203-e3a1-43a9-bac2-765c74f0f587",
+      "thumbnail": "/thumbnails/5461b203-e3a1-43a9-bac2-765c74f0f587.jpg"
+    },
+    {
+      "title": "AI Advantage YouTube",
+      "link": "https://www.youtube.com/@AIAdvantage",
+      "description": "Practical AI implementation tutorials and how to leverage AI for competitive business advantage",
+      "category": "podcasts",
+      "tags": [
+        "youtube",
+        "ai",
+        "practical",
+        "business",
+        "advantage",
+        "tutorials",
+        "implementation"
+      ],
+      "id": "d4868264-ba56-4523-9d49-041da2676fbb",
+      "thumbnail": "/thumbnails/d4868264-ba56-4523-9d49-041da2676fbb.jpg"
+    },
+    {
+      "title": "Krish Naik YouTube",
+      "link": "https://www.youtube.com/@krishnaik06",
+      "description": "Data science, machine learning, and AI tutorials with practical implementation and career guidance",
+      "category": "podcasts",
+      "tags": [
+        "youtube",
+        "data-science",
+        "machine-learning",
+        "ai",
+        "tutorials",
+        "practical",
+        "career"
+      ],
+      "id": "67745fe7-1267-4d07-8c61-5562f5c3f8a6",
+      "thumbnail": "/thumbnails/67745fe7-1267-4d07-8c61-5562f5c3f8a6.jpg"
+    },
+    {
+      "title": "Google AI Release Notes Podcast",
+      "link": "https://blog.google/technology/ai/release-notes-podcast-io-2025/",
+      "description": "Google's official AI podcast covering latest products, tools and research announcements from Google I/O",
+      "category": "podcasts",
+      "tags": [
+        "podcast",
+        "google",
+        "ai",
+        "release-notes",
+        "official",
+        "products",
+        "research",
+        "io"
+      ],
+      "id": "3e4fa3a6-62b0-419d-837d-96fb5d90e138",
+      "thumbnail": "/thumbnails/3e4fa3a6-62b0-419d-837d-96fb5d90e138.jpg"
+    },
+    {
+      "title": "Best AI Podcasts 2025 - Humanloop",
+      "link": "https://humanloop.com/blog/best-ai-podcasts",
+      "description": "Comprehensive guide to top AI podcasts for engineers, enthusiasts and entrepreneurs in 2025",
+      "category": "podcasts",
+      "tags": [
+        "blog",
+        "ai-podcasts",
+        "guide",
+        "2025",
+        "engineers",
+        "entrepreneurs",
+        "recommendations"
+      ],
+      "id": "22fc14ed-c344-40dc-9cdc-f450e8c592d9",
+      "thumbnail": "/thumbnails/22fc14ed-c344-40dc-9cdc-f450e8c592d9.jpg"
+    },
+    {
+      "title": "Machine Learning Street Talk - Podtail",
+      "link": "https://podtail.com/podcast/machine-learning-street-talk/",
+      "description": "Technical AI podcast platform page featuring episodes on cognitive science, neuroscience and AI philosophy",
+      "category": "podcasts",
+      "tags": [
+        "podcast-platform",
+        "machine-learning",
+        "technical",
+        "cognitive-science",
+        "neuroscience",
+        "philosophy"
+      ],
+      "id": "ff065ba5-8ad8-4e99-a396-c99f4d3073ea",
+      "thumbnail": "/thumbnails/ff065ba5-8ad8-4e99-a396-c99f4d3073ea.jpg"
+    },
+    {
+      "title": "TWIML AI Podcast Analytics - Rephonic",
+      "link": "https://rephonic.com/podcasts/the-twiml-ai-podcast-formerly-this-week-in-machine",
+      "description": "Podcast analytics and information for TWIML AI podcast including audience demographics and download statistics",
+      "category": "podcasts",
+      "tags": [
+        "podcast-analytics",
+        "twiml",
+        "ai",
+        "machine-learning",
+        "audience-data",
+        "statistics"
+      ],
+      "id": "5fba5d08-699a-4b63-9277-aed0d4d0ebe3",
+      "thumbnail": "/thumbnails/5fba5d08-699a-4b63-9277-aed0d4d0ebe3.jpg"
     }
   ]
 }
