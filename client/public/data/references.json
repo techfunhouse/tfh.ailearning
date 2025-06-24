@@ -6034,6 +6034,19 @@
       ],
       "id": "8f10b025-93ed-4e3f-86a3-2df5d19f9d17",
       "thumbnail": "/thumbnails/8f10b025-93ed-4e3f-86a3-2df5d19f9d17.jpg"
+    },
+    {
+      "title": "A curated collection of tutorials targeted at AI developers.",
+      "link": "https://www.theunwindai.com/archive?tags=AI+Tutorial",
+      "description": "Features hands-on, project-based tutorials—like building AI voice agents—with open-source code and step-by-step guides, tailored for developers exploring practical AI applications",
+      "category": "Tutorials",
+      "tags": [
+        "ai-tutorials",
+        "ai-agents",
+        "hands-on"
+      ],
+      "thumbnail": "/thumbnails/14490218-f061-48e5-b512-ec635d39d397.jpg",
+      "id": "14490218-f061-48e5-b512-ec635d39d397"
     }
   ]
 }
